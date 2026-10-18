@@ -1,0 +1,112 @@
+diff -ru a/docs/mediciones/toma-25-min/herramientas/detalle.ts b/docs/mediciones/toma-25-min/herramientas/detalle.ts
+--- a/docs/mediciones/toma-25-min/herramientas/detalle.ts	2026-10-17 23:32:59.495267866 -0300
++++ b/docs/mediciones/toma-25-min/herramientas/detalle.ts	2026-10-17 23:32:59.495267866 -0300
+@@ -6,8 +6,14 @@
+ // la detención es del seguidor -no encuentra- o de la ventana del motor -encuentra y se rechaza-.
+ // mano=<s>:<token> mueve el texto a mano en ese segundo, como Javier -se pueden poner varios-.
+ //
++// -motor-suelta, 17-10-2026- con «rastro» imprime también los parciales del tramo y, en cada 'oyo', lo
++// que el motor guarda de la suelta del ancla: lo confirmado por un final, el ancla de los parciales y
++// fallosFinalesSeguidos. avance.ts no los expone: se llevan aquí con las mismas reglas -confirmar,
++// tentativo y falloCalce, avance.ts:188-242- y se comprueban contra ultimoCalce, que es el mayor de los
++// dos. «FUERA» es un calce del seguidor que la ventana de conduccion.ts rechazó -ref-10..ref+40-.
++//
+ // Uso: npx vite-node docs/mediciones/toma-25-min/herramientas/detalle.ts -- <registro.motor.txt>
+-//        <desde s> <hasta s> [mano=345:291 ...] [sin-parentesis]
++//        <desde s> <hasta s> [mano=345:291 ...] [sin-parentesis] [rastro]
+ import fs from 'fs'
+ import { leerCorpus } from '../../../../src/lib/repetidor'
+ import { tokenizarGuion, crearSeguidor } from '../../../../src/lib/seguidor'
+@@ -26,11 +32,38 @@
+ const seg = crearSeguidor(tokens, { idioma: detectarIdioma(c.guion) ?? undefined })
+ const cond = { seguidor: seg, motor, tokens, limitesDeLinea: [...lm.values()].sort((a, b) => a - b) }
+ const a = Number(desde) * 1000, b = Number(hasta) * 1000
++// -motor-suelta- el rastro: lo confirmado, el ancla y los fallos, con las reglas de avance.ts.
++const rastro = args.includes('rastro')
++let confirmado = 0, ancla = 0, fallos = 0
++const { confirmar, tentativo, falloCalce, irAToken } = motor
++motor.confirmar = (t, ms) => { confirmar(t, ms); confirmado = Math.max(confirmado, t); ancla = Math.max(ancla, t); fallos = 0 }
++motor.tentativo = (t, ms) => { tentativo(t, ms); ancla = Math.max(ancla, t); fallos = 0 }
++motor.falloCalce = (ms, p) => { falloCalce(ms, p); if (!p) fallos++ }
++motor.irAToken = (t, ms) => { irAToken(t, ms); confirmado = ancla = Math.max(0, t); fallos = 0 }
++// Si ultimoCalce quedó debajo del ancla de aquí, el motor la soltó: vuelve a lo confirmado.
++// El calce del seguidor y si conduccion.ts lo devolvió -irAToken tras un rechazo de la ventana-.
++let calceSeguidor: number | null = null, devuelto = false
++const { avanzar, avanzarTentativo, irAToken: segIrAToken } = seg
++seg.avanzar = (...x) => { const r = avanzar(...x); calceSeguidor = r.movio ? r.hastaToken : null; return r }
++seg.avanzarTentativo = (...x) => { const r = avanzarTentativo(...x); calceSeguidor = r.movio ? r.hastaToken : null; return r }
++seg.irAToken = (t) => { devuelto = true; segIrAToken(t) }
++const soltada = () => { const u = motor.leerEstado().ultimoCalce; if (u < Math.max(confirmado, ancla)) { ancla = confirmado; return true } return false }
+ for (const e of c.eventos) {
+   if (e.tipo !== 'oyo') continue
+   while (manos.length && manos[0].ms <= e.ms) { const m = manos.shift()!; seg.irAToken(m.token); motor.irAToken(m.token, m.ms) }
+   const st0 = motor.estadoEn(e.ms)
++  calceSeguidor = null; devuelto = false
+   const res = e.final ? procesarFinal(cond as any, e.texto, e.ms) : procesarParcial(cond as any, e.texto, e.ms)
++  if (rastro) {
++    const solto = soltada()
++    if (e.ms >= a && e.ms <= b) {
++      const st = motor.leerEstado()
++      const ref = Math.max(st0.ultimoCalce, Math.floor(st0.posicion))
++      const fuera = !res && devuelto && calceSeguidor !== null
++      console.log(`${(e.ms / 1000).toFixed(3)} ${e.final ? 'FINAL  ' : 'parcial'} ${res ? 'calce ' + res.hastaToken : fuera ? `FUERA ${calceSeguidor} (ventana ${Math.max(0, ref - 10)}..${ref + 40})` : 'nada'} | confirmado ${confirmado} ancla ${ancla} fallos ${fallos}${solto ? ' SOLTÓ EL ANCLA' : ''} | pos ${st0.posicion.toFixed(2)} ultimoCalce ${st0.ultimoCalce}→${st.ultimoCalce} | «${e.texto.length > 90 ? e.texto.slice(0, 90) + '…' : e.texto}»`)
++    }
++    continue
++  }
+   if (e.ms >= a && e.ms <= b && e.final) {
+     const st = motor.estadoEn(e.ms)
+     console.log(`${(e.ms / 1000).toFixed(1)} FINAL «${e.texto}» -> ${res ? 'calce ' + res.hastaToken : 'nada'} | seguidor ${seg.posicionToken()} | motor pos ${st0.posicion.toFixed(1)}→${st.posicion.toFixed(1)} calce ${st.ultimoCalce} freno ${st.motivoFreno}`)
+diff -ru a/docs/mediciones/toma-25-min/herramientas/medir.ts b/docs/mediciones/toma-25-min/herramientas/medir.ts
+--- a/docs/mediciones/toma-25-min/herramientas/medir.ts	2026-10-17 23:32:59.491267866 -0300
++++ b/docs/mediciones/toma-25-min/herramientas/medir.ts	2026-10-17 23:32:59.495267866 -0300
+@@ -15,7 +15,9 @@
+ // mientras la voz avanza al menos TOKENS_DETENIDO tokens. Como Javier, si la detención dura
+ // MS_A_MANO se mueve el texto a mano a donde va la voz -un cuadro con la posición nueva: repetirLectura
+ // lo toma como arrastre, igual que en las tomas del banco- y se sigue. LOS ADELANTOS: tramos en que
+-// la posición del motor va más de TOKENS_ADELANTO delante de la voz.
++// la posición del motor va más de TOKENS_ADELANTO delante de la voz. LOS RETROCESOS -motor-suelta,
++// 17-10-2026-: la posición del motor baja más de TOKENS_RETROCESO palabras de un cuadro al siguiente
++// -el texto salta atrás-; no cuentan los cuadros movidos a mano por esta misma medición.
+ //
+ // Uso: npx vite-node docs/mediciones/toma-25-min/herramientas/medir.ts -- <registro.motor.txt>
+ //        <palabras.json> [sin-parentesis] [salida.json]
+@@ -30,6 +32,7 @@
+ const MS_A_MANO = Number((process.argv.find((a) => a.startsWith('a-mano=')) || 'a-mano=20').slice(7)) * 1000
+ const TOKENS_ADELANTO = 8
+ const VENTANA = 40 // conduccion.ts: posMax = ref + 40
++const TOKENS_RETROCESO = 10 // -motor-suelta- el 10 hacia atrás de la ventana de conduccion.ts: posMin = ref - 10
+ 
+ const args = process.argv.slice(2).filter((a) => a !== '--')
+ const [rutaRegistro, rutaPalabras] = args
+@@ -123,6 +126,13 @@
+ }
+ if (enAd) adelantos.push(enAd)
+ 
++// Retrocesos -motor-suelta-: la posición baja más de TOKENS_RETROCESO de un cuadro al siguiente.
++const retrocesos: Array<{ ms: number; desde: number; hasta: number; calceAntes: number; calceDespues: number; voz: number }> = []
++for (let i = 1; i < serie.length; i++) {
++  if (serie[i].aMano) continue
++  if (serie[i - 1].pos - serie[i].pos > TOKENS_RETROCESO) retrocesos.push({ ms: serie[i].ms, desde: serie[i - 1].pos, hasta: serie[i].pos, calceAntes: serie[i - 1].calce, calceDespues: serie[i].calce, voz: vozEn(serie[i].ms) })
++}
++
+ const mmss = (ms: number) => `${Math.floor(ms / 60000)}:${String(Math.floor((ms % 60000) / 1000)).padStart(2, '0')}`
+ const totalAcot = tokens.filter((t) => t.esAcotacion).length
+ console.log(`guion ${sinParentesis ? 'SIN paréntesis' : 'tal cual'}: ${tokens.length} tokens, ${totalAcot} en acotación; vara: ${pares.length} palabras alineadas de ${oidas.length}`)
+@@ -131,7 +141,7 @@
+ console.log('voz por minuto: ' + Array.from({ length: Math.ceil(finMs / 60000) }, (_, m) => `${m}:${vozEn(m * 60000)}/${Math.floor(serie.find((x) => x.ms >= m * 60000)?.pos ?? 0)}`).join(' '))
+ const total = detenciones.reduce((x, d) => x + d.hastaMs - d.desdeMs, 0)
+ const conAcot = detenciones.filter((d) => d.acotacionesDichas > 0)
+-console.log(`RESUMEN: ${detenciones.length} detenciones, ${(total / 1000).toFixed(0)} s quieto; ${conAcot.length} con acotación dicha (${(conAcot.reduce((x, d) => x + d.hastaMs - d.desdeMs, 0) / 1000).toFixed(0)} s); fuera de ventana: ${detenciones.filter((d) => d.fueraDeVentana).length}; movidas a mano: ${manos.length}`)
++console.log(`RESUMEN: ${detenciones.length} detenciones, ${(total / 1000).toFixed(0)} s quieto; ${conAcot.length} con acotación dicha (${(conAcot.reduce((x, d) => x + d.hastaMs - d.desdeMs, 0) / 1000).toFixed(0)} s); fuera de ventana: ${detenciones.filter((d) => d.fueraDeVentana).length}; movidas a mano: ${manos.length}; retrocesos: ${retrocesos.length}`)
+ console.log('\nDETENCIONES')
+ for (const d of detenciones) {
+   console.log(`- ${mmss(d.desdeMs)}–${mmss(d.hastaMs)} (${((d.hastaMs - d.desdeMs) / 1000).toFixed(0)} s)${d.aMano ? ' hasta moverlo a mano' : ''}: motor en ${d.tokMotor} «${textoDe(d.tokMotor - 4, d.tokMotor)}»; voz ${d.vozDesde}→${d.vozHasta}, ${d.delante} tokens delante -${d.fueraDeVentana ? 'FUERA' : 'dentro'} de la ventana de ${VENTANA}-; acotación dicha: ${d.acotacionesDichas} tokens; freno ${d.frenos.join(',')}`)
+@@ -140,4 +150,7 @@
+ }
+ console.log('\nADELANTOS (> ' + TOKENS_ADELANTO + ' tokens delante de la voz)')
+ for (const a of adelantos) console.log(`- ${mmss(a.desdeMs)}–${mmss(a.hastaMs)}: hasta ${a.max.toFixed(1)} tokens; motor ${a.tokMotor} «${textoDe(a.tokMotor - 3, a.tokMotor)}», voz ${a.voz} «${textoDe(a.voz - 3, a.voz)}»; acotación entre medio: ${acotEntre(a.voz, a.tokMotor)}`)
+-if (rutaSalida) fs.writeFileSync(rutaSalida, JSON.stringify({ sinParentesis, tokens: tokens.length, acotacion: totalAcot, manos, detenciones, adelantos }, null, 1) + '\n')
++console.log('\nRETROCESOS (la posición baja más de ' + TOKENS_RETROCESO + ' palabras de un cuadro al siguiente)')
++for (const r of retrocesos) console.log(`- ${mmss(r.ms)} (${r.ms} ms): ${r.desde.toFixed(2)} → ${r.hasta.toFixed(2)}, ${(r.desde - r.hasta).toFixed(1)} palabras atrás; calce ${r.calceAntes} → ${r.calceDespues}; voz ${r.voz}`)
++// Antes: if (rutaSalida) fs.writeFileSync(rutaSalida, JSON.stringify({ sinParentesis, tokens: tokens.length, acotacion: totalAcot, manos, detenciones, adelantos }, null, 1) + '\n')
++if (rutaSalida) fs.writeFileSync(rutaSalida, JSON.stringify({ sinParentesis, tokens: tokens.length, acotacion: totalAcot, manos, detenciones, adelantos, retrocesos }, null, 1) + '\n')

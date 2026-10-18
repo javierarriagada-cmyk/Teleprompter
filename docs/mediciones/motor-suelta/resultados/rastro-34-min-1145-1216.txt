@@ -1,0 +1,617 @@
+1145.340 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos»
+1145.440 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos»
+1145.540 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos»
+1145.640 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos»
+1145.740 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos»
+1145.840 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de»
+1145.940 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de»
+1145.960 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de ambos»
+1146.000 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de»
+1146.060 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos»
+1146.160 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos»
+1146.180 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos»
+1146.260 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de ambos»
+1146.360 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de ambos territorios»
+1146.380 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de ambos temas»
+1146.440 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de ambos te»
+1146.500 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de ambos te va»
+1146.600 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de ambos te va»
+1146.620 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de ambos»
+1146.680 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de ambos debajo»
+1146.780 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de ambos debajo»
+1146.880 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de ambos debajo»
+1146.980 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de ambos debajo»
+1147.080 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de ambos debajo»
+1147.180 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de ambos debajo»
+1147.280 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de ambos debajo»
+1147.380 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de ambos debajo»
+1147.480 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de ambos debajo»
+1147.560 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de ambos te va a»
+1147.640 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos de ambos debajo»
+1147.740 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos»
+1147.840 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos»
+1147.920 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí»
+1148.020 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí»
+1148.120 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí»
+1148.220 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí»
+1148.280 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este»
+1148.380 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este»
+1148.460 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí en este artículo»
+1148.520 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí en este barrio»
+1148.540 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo»
+1148.640 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo»
+1148.740 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo»
+1148.840 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo»
+1148.940 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo»
+1149.040 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo»
+1149.140 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo»
+1149.240 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo»
+1149.340 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo»
+1149.420 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque»
+1149.520 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque»
+1149.540 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque me»
+1149.600 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque»
+1149.700 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque»
+1149.800 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque»
+1149.840 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque me dijo»
+1149.940 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque me dijo»
+1149.980 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque me dijo que»
+1150.040 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque me»
+1150.080 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque me hizo pensar»
+1150.160 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque inexistencia»
+1150.260 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque inexistencia»
+1150.280 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque inexistencia de»
+1150.380 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque inexistencia de»
+1150.480 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque inexistencia de»
+1150.500 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque inexistencia»
+1150.580 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque inexistencia tenga»
+1150.680 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón»
+1150.780 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón»
+1150.880 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón»
+1150.980 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de»
+1151.080 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de»
+1151.180 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de»
+1151.280 parcial nada | confirmado 909 ancla 922 fallos 5 | pos 922.66 ultimoCalce 922→922 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de»
+1151.300 parcial calce 935 | confirmado 909 ancla 935 fallos 0 | pos 922.66 ultimoCalce 922→935 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser»
+1151.400 parcial nada | confirmado 909 ancla 935 fallos 0 | pos 922.74 ultimoCalce 935→935 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser»
+1151.500 parcial nada | confirmado 909 ancla 935 fallos 0 | pos 922.91 ultimoCalce 935→935 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser»
+1151.580 parcial nada | confirmado 909 ancla 935 fallos 0 | pos 923.09 ultimoCalce 935→935 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón desee comprar»
+1151.600 parcial calce 935 | confirmado 909 ancla 935 fallos 0 | pos 923.14 ultimoCalce 935→935 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser»
+1151.640 parcial nada | confirmado 909 ancla 935 fallos 0 | pos 923.25 ultimoCalce 935→935 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón desee»
+1151.660 parcial nada | confirmado 909 ancla 935 fallos 0 | pos 923.31 ultimoCalce 935→935 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser»
+1151.720 parcial nada | confirmado 909 ancla 935 fallos 0 | pos 923.51 ultimoCalce 935→935 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser peor»
+1151.760 parcial calce 935 | confirmado 909 ancla 935 fallos 0 | pos 923.66 ultimoCalce 935→935 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser»
+1151.820 parcial nada | confirmado 909 ancla 935 fallos 0 | pos 923.92 ultimoCalce 935→935 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser una»
+1151.920 parcial nada | confirmado 909 ancla 935 fallos 0 | pos 924.41 ultimoCalce 935→935 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser una»
+1152.020 parcial nada | confirmado 909 ancla 935 fallos 0 | pos 924.91 ultimoCalce 935→935 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser una»
+1152.120 parcial calce 937 | confirmado 909 ancla 937 fallos 0 | pos 925.40 ultimoCalce 935→937 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser un accidente»
+1152.220 parcial nada | confirmado 909 ancla 937 fallos 0 | pos 925.90 ultimoCalce 937→937 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser un accidente»
+1152.320 parcial nada | confirmado 909 ancla 937 fallos 0 | pos 926.39 ultimoCalce 937→937 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser un accidente»
+1152.420 parcial nada | confirmado 909 ancla 937 fallos 0 | pos 926.89 ultimoCalce 937→937 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser un accidente»
+1152.520 parcial nada | confirmado 909 ancla 937 fallos 0 | pos 927.38 ultimoCalce 937→937 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser un accidente»
+1152.620 parcial nada | confirmado 909 ancla 937 fallos 0 | pos 927.88 ultimoCalce 937→937 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser un accidente»
+1152.720 parcial nada | confirmado 909 ancla 937 fallos 0 | pos 928.37 ultimoCalce 937→937 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser un accidente»
+1152.820 parcial nada | confirmado 909 ancla 937 fallos 0 | pos 928.87 ultimoCalce 937→937 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser un accidente»
+1152.920 parcial nada | confirmado 909 ancla 937 fallos 0 | pos 929.36 ultimoCalce 937→937 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser un accidente»
+1153.020 parcial nada | confirmado 909 ancla 937 fallos 0 | pos 929.86 ultimoCalce 937→937 | «queremos tenemos aquí este párrafo aunque inexistencia tenga razón de ser un accidente»
+1153.080 FINAL   nada | confirmado 909 ancla 937 fallos 1 | pos 930.16 ultimoCalce 937→937 | «queremos de ambos debajo aquí este párrafo aunque inexistencia tenga razón de ser un accid…»
+1154.720 parcial nada | confirmado 909 ancla 937 fallos 1 | pos 930.16 ultimoCalce 937→937 | «y belleza natural»
+1155.000 parcial nada | confirmado 909 ancla 937 fallos 1 | pos 930.16 ultimoCalce 937→937 | «nació»
+1155.120 parcial nada | confirmado 909 ancla 937 fallos 1 | pos 930.16 ultimoCalce 937→937 | «nació en»
+1155.200 parcial nada | confirmado 909 ancla 937 fallos 1 | pos 930.16 ultimoCalce 937→937 | «nacido en»
+1155.300 parcial nada | confirmado 909 ancla 937 fallos 1 | pos 930.16 ultimoCalce 937→937 | «nacido en»
+1155.400 parcial nada | confirmado 909 ancla 937 fallos 1 | pos 930.16 ultimoCalce 937→937 | «nacido en»
+1155.500 parcial nada | confirmado 909 ancla 937 fallos 1 | pos 930.16 ultimoCalce 937→937 | «nació en»
+1155.540 parcial nada | confirmado 909 ancla 937 fallos 1 | pos 930.16 ultimoCalce 937→937 | «nació en madrid»
+1155.640 parcial nada | confirmado 909 ancla 937 fallos 1 | pos 930.16 ultimoCalce 937→937 | «nació en madrid»
+1155.740 parcial nada | confirmado 909 ancla 937 fallos 1 | pos 930.16 ultimoCalce 937→937 | «nació en»
+1155.840 parcial calce 941 | confirmado 909 ancla 941 fallos 0 | pos 930.16 ultimoCalce 937→941 | «el hecho de haber nacido luciérnaga»
+1155.940 parcial calce 941 | confirmado 909 ancla 941 fallos 0 | pos 930.24 ultimoCalce 941→941 | «el hecho de haber nacido luciérnaga»
+1156.040 parcial calce 941 | confirmado 909 ancla 941 fallos 0 | pos 930.40 ultimoCalce 941→941 | «el hecho de haber nacido luciérnaga»
+1156.140 parcial calce 941 | confirmado 909 ancla 941 fallos 0 | pos 930.65 ultimoCalce 941→941 | «el hecho de haber nacido luciérnaga»
+1156.240 parcial calce 941 | confirmado 909 ancla 941 fallos 0 | pos 930.97 ultimoCalce 941→941 | «el hecho de haber nacido luciérnaga»
+1156.340 parcial calce 941 | confirmado 909 ancla 941 fallos 0 | pos 931.38 ultimoCalce 941→941 | «el hecho de haber nacido luciérnaga»
+1156.440 parcial calce 941 | confirmado 909 ancla 941 fallos 0 | pos 931.87 ultimoCalce 941→941 | «el hecho de haber nacido luciérnaga»
+1156.500 parcial calce 942 | confirmado 909 ancla 942 fallos 0 | pos 932.17 ultimoCalce 941→942 | «el hecho de haber nacido luciérnaga aquí»
+1156.600 parcial calce 942 | confirmado 909 ancla 942 fallos 0 | pos 932.66 ultimoCalce 942→942 | «el hecho de haber nacido luciérnaga aquí»
+1156.700 parcial calce 942 | confirmado 909 ancla 942 fallos 0 | pos 933.16 ultimoCalce 942→942 | «el hecho de haber nacido luciérnaga aquí»
+1156.800 parcial calce 942 | confirmado 909 ancla 942 fallos 0 | pos 933.65 ultimoCalce 942→942 | «el hecho de haber nacido luciérnaga aquí»
+1156.900 parcial calce 942 | confirmado 909 ancla 942 fallos 0 | pos 934.15 ultimoCalce 942→942 | «el hecho de haber nacido luciérnaga aquí»
+1156.980 parcial calce 943 | confirmado 909 ancla 943 fallos 0 | pos 934.55 ultimoCalce 942→943 | «el hecho de haber nacido luciérnaga aquí aquí»
+1157.080 parcial calce 943 | confirmado 909 ancla 943 fallos 0 | pos 935.04 ultimoCalce 943→943 | «el hecho de haber nacido luciérnaga aquí aquí»
+1157.180 parcial calce 943 | confirmado 909 ancla 943 fallos 0 | pos 935.54 ultimoCalce 943→943 | «el hecho de haber nacido luciérnaga aquí aquí»
+1157.220 parcial calce 944 | confirmado 909 ancla 944 fallos 0 | pos 935.73 ultimoCalce 943→944 | «el hecho de haber nacido luciérnaga aquí aquí aquí»
+1157.280 parcial calce 944 | confirmado 909 ancla 944 fallos 0 | pos 936.03 ultimoCalce 944→944 | «el hecho de haber nacido luciérnaga aquí aquí está»
+1157.380 parcial calce 944 | confirmado 909 ancla 944 fallos 0 | pos 936.53 ultimoCalce 944→944 | «el hecho de haber nacido luciérnaga aquí aquí está»
+1157.400 parcial calce 944 | confirmado 909 ancla 944 fallos 0 | pos 936.63 ultimoCalce 944→944 | «el hecho de haber nacido luciérnaga aquí aquí te»
+1157.420 parcial calce 944 | confirmado 909 ancla 944 fallos 0 | pos 936.72 ultimoCalce 944→944 | «el hecho de haber nacido luciérnaga aquí aquí está»
+1157.520 parcial calce 944 | confirmado 909 ancla 944 fallos 0 | pos 937.22 ultimoCalce 944→944 | «el hecho de haber nacido luciérnaga aquí aquí está»
+1157.620 parcial calce 944 | confirmado 909 ancla 944 fallos 0 | pos 937.71 ultimoCalce 944→944 | «el hecho de haber nacido luciérnaga aquí aquí está»
+1157.660 parcial calce 945 | confirmado 909 ancla 945 fallos 0 | pos 937.91 ultimoCalce 944→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón»
+1157.760 parcial calce 945 | confirmado 909 ancla 945 fallos 0 | pos 938.46 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón»
+1157.860 parcial calce 945 | confirmado 909 ancla 945 fallos 0 | pos 939.00 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón»
+1157.960 parcial calce 945 | confirmado 909 ancla 945 fallos 0 | pos 939.55 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón»
+1158.060 parcial calce 945 | confirmado 909 ancla 945 fallos 0 | pos 940.09 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón»
+1158.160 parcial calce 945 | confirmado 909 ancla 945 fallos 0 | pos 940.63 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón»
+1158.260 parcial calce 945 | confirmado 909 ancla 945 fallos 0 | pos 941.18 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón»
+1158.320 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 941.51 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico»
+1158.420 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 942.05 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico»
+1158.520 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 942.59 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico»
+1158.620 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 943.14 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico»
+1158.720 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 943.63 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico»
+1158.820 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 944.07 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico»
+1158.920 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 944.45 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico»
+1159.020 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 944.79 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico»
+1159.120 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.08 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico»
+1159.220 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.34 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico»
+1159.260 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.43 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y»
+1159.360 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.65 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y»
+1159.460 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.73 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y»
+1159.560 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.73 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y»
+1159.660 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.73 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y»
+1159.760 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.73 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y»
+1159.860 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.73 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y»
+1159.960 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.73 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y»
+1160.060 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.73 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y»
+1160.100 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.73 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón»
+1160.200 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.73 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón»
+1160.300 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.73 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón»
+1160.400 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.73 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón»
+1160.500 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.73 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón»
+1160.600 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.73 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón»
+1160.640 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.73 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón los»
+1160.720 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.73 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón»
+1160.820 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.73 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón»
+1160.920 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.73 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón»
+1161.020 parcial nada | confirmado 909 ancla 945 fallos 0 | pos 945.73 ultimoCalce 945→945 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón»
+1161.060 parcial calce 948 | confirmado 909 ancla 948 fallos 0 | pos 945.73 ultimoCalce 945→948 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1161.160 parcial nada | confirmado 909 ancla 948 fallos 0 | pos 945.82 ultimoCalce 948→948 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1161.200 parcial nada | confirmado 909 ancla 948 fallos 0 | pos 945.88 ultimoCalce 948→948 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1161.260 parcial nada | confirmado 909 ancla 948 fallos 0 | pos 946.00 ultimoCalce 948→948 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1161.300 parcial calce 949 | confirmado 909 ancla 949 fallos 0 | pos 946.09 ultimoCalce 948→949 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1161.320 parcial nada | confirmado 909 ancla 949 fallos 0 | pos 946.14 ultimoCalce 949→949 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1161.360 parcial nada | confirmado 909 ancla 949 fallos 0 | pos 946.26 ultimoCalce 949→949 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1161.440 parcial nada | confirmado 909 ancla 949 fallos 0 | pos 946.56 ultimoCalce 949→949 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1161.540 parcial calce 950 | confirmado 909 ancla 950 fallos 0 | pos 947.04 ultimoCalce 949→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1161.640 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 947.58 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1161.720 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 947.99 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1161.820 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 948.48 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1161.920 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 948.93 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1162.020 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 949.33 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1162.120 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 949.68 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1162.220 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 949.99 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1162.320 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.26 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1162.420 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.49 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1162.500 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.66 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1162.520 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.70 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1162.620 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1162.720 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1162.820 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1162.920 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1163.020 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1163.120 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1163.220 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1163.320 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1163.420 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1163.520 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1163.620 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1163.720 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1163.820 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1163.920 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1164.020 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1164.120 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1164.220 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1164.320 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1164.420 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1164.520 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1164.620 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1164.720 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1164.820 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1164.920 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1165.020 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1165.120 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1165.220 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1165.320 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1165.420 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1165.520 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1165.620 parcial nada | confirmado 909 ancla 950 fallos 0 | pos 950.73 ultimoCalce 950→950 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1165.640 parcial calce 952 | confirmado 909 ancla 952 fallos 0 | pos 950.73 ultimoCalce 950→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1165.740 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 950.82 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1165.840 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 951.02 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1165.940 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 951.32 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1166.040 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 951.67 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1166.140 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 951.98 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1166.240 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.25 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1166.340 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.49 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1166.360 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.53 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1166.420 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.66 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1166.480 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1166.520 parcial calce 952 | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1166.540 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1166.640 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1166.740 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1166.840 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1166.940 parcial calce 952 | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1167.040 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1167.140 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1167.240 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1167.300 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1167.400 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1167.500 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1167.600 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1167.700 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1167.800 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1167.900 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1168.000 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1168.100 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1168.200 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1168.300 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1168.400 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1168.460 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1168.560 parcial nada | confirmado 909 ancla 952 fallos 0 | pos 952.73 ultimoCalce 952→952 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1168.620 parcial calce 954 | confirmado 909 ancla 954 fallos 0 | pos 952.73 ultimoCalce 952→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1168.680 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 952.86 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1168.700 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 952.90 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1168.740 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 953.01 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1168.840 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 953.28 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1168.940 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 953.55 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1169.040 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 953.80 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1169.140 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 954.02 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1169.240 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 954.22 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1169.280 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 954.30 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1169.380 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 954.47 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1169.480 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 954.59 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1169.580 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 954.59 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1169.680 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 954.59 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1169.780 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 954.59 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1169.880 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 954.59 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1169.980 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 954.59 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1170.080 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 954.59 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1170.180 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 954.59 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1170.280 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 954.59 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1170.380 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 954.59 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1170.480 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 954.59 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1170.580 parcial nada | confirmado 909 ancla 954 fallos 0 | pos 954.59 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1170.660 FINAL   nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico y el corazón filosóf…»
+1171.020 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «la»
+1171.120 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «la»
+1171.220 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «la»
+1171.320 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «la»
+1171.420 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «la»
+1171.520 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «la»
+1171.620 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «la»
+1171.720 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «la»
+1171.820 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «la»
+1171.920 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «la»
+1172.020 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «la»
+1172.120 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «la»
+1172.160 FINAL   nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «la vez»
+1172.540 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora»
+1172.640 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora»
+1172.720 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que»
+1172.820 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que»
+1172.920 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que»
+1173.020 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que»
+1173.120 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que»
+1173.220 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que»
+1173.300 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es»
+1173.320 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que que»
+1173.380 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es»
+1173.420 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que que»
+1173.440 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al menos»
+1173.540 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al menos»
+1173.560 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al»
+1173.620 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio»
+1173.680 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al mediodía»
+1173.780 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio de»
+1173.840 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio»
+1173.900 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio de este»
+1173.960 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio»
+1174.040 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio de»
+1174.100 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio de este»
+1174.200 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio de este tema»
+1174.300 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio de este tema»
+1174.400 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio de este tema»
+1174.500 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio de este tema»
+1174.600 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio de este tema»
+1174.700 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio de este tema»
+1174.800 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio de este tema»
+1174.900 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio de este tema»
+1175.000 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio de este tema»
+1175.100 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio de este tema»
+1175.200 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio de este tema»
+1175.300 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio de este tema»
+1175.400 parcial nada | confirmado 909 ancla 954 fallos 1 | pos 954.59 ultimoCalce 954→954 | «ahora que es al medio de este tema»
+1175.420 FINAL   nada | confirmado 909 ancla 909 fallos 2 SOLTÓ EL ANCLA | pos 954.59 ultimoCalce 954→909 | «ahora que es al medio en este tema»
+1176.800 parcial nada | confirmado 909 ancla 909 fallos 2 | pos 912.00 ultimoCalce 909→909 | «agregue»
+1176.900 parcial nada | confirmado 909 ancla 909 fallos 2 | pos 912.00 ultimoCalce 909→909 | «agregue»
+1176.960 parcial nada | confirmado 909 ancla 909 fallos 2 | pos 912.00 ultimoCalce 909→909 | «agregue uno»
+1177.060 parcial nada | confirmado 909 ancla 909 fallos 2 | pos 912.00 ultimoCalce 909→909 | «agregue uno»
+1177.100 parcial nada | confirmado 909 ancla 909 fallos 2 | pos 912.00 ultimoCalce 909→909 | «agregue uno de»
+1177.200 parcial nada | confirmado 909 ancla 909 fallos 2 | pos 912.00 ultimoCalce 909→909 | «agregue uno de»
+1177.300 parcial nada | confirmado 909 ancla 909 fallos 2 | pos 912.00 ultimoCalce 909→909 | «agregue uno de»
+1177.400 parcial nada | confirmado 909 ancla 909 fallos 2 | pos 912.00 ultimoCalce 909→909 | «agregue uno de»
+1177.500 parcial nada | confirmado 909 ancla 909 fallos 2 | pos 912.00 ultimoCalce 909→909 | «agregue uno de»
+1177.600 parcial nada | confirmado 909 ancla 909 fallos 2 | pos 912.00 ultimoCalce 909→909 | «agregue uno de»
+1177.700 parcial nada | confirmado 909 ancla 909 fallos 2 | pos 912.00 ultimoCalce 909→909 | «agregue uno de»
+1177.800 parcial nada | confirmado 909 ancla 909 fallos 2 | pos 912.00 ultimoCalce 909→909 | «agregue uno de»
+1177.900 parcial nada | confirmado 909 ancla 909 fallos 2 | pos 912.00 ultimoCalce 909→909 | «agregue uno de»
+1178.000 parcial nada | confirmado 909 ancla 909 fallos 2 | pos 912.00 ultimoCalce 909→909 | «agregue uno de»
+1178.060 FINAL   nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «agregue uno federer»
+1180.380 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «he»
+1180.500 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «dice»
+1180.600 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «dice»
+1180.700 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «dice»
+1180.800 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «dice»
+1180.900 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «dice»
+1181.000 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «dice»
+1181.100 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «dice»
+1181.200 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «dice»
+1181.300 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «dice»
+1181.400 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «dice»
+1181.500 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «dice»
+1181.600 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «dice»
+1181.700 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «dice»
+1181.720 FINAL   nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «y dice»
+1182.240 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que»
+1182.340 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que»
+1182.440 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que»
+1182.500 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos»
+1182.600 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos»
+1182.700 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos»
+1182.800 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos»
+1182.900 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos»
+1183.000 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos»
+1183.100 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos»
+1183.200 parcial nada | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos»
+1183.260 parcial FUERA 962 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados»
+1183.360 parcial FUERA 962 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados»
+1183.400 parcial FUERA 963 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados a»
+1183.440 parcial FUERA 963 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados al»
+1183.540 parcial FUERA 963 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados al»
+1183.620 parcial FUERA 964 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados al mar»
+1183.700 parcial FUERA 963 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados al»
+1183.800 parcial FUERA 963 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados al»
+1183.900 parcial FUERA 963 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados al»
+1183.940 parcial FUERA 964 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados al mundo»
+1184.040 parcial FUERA 964 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados al mundo»
+1184.140 parcial FUERA 964 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados al mundo»
+1184.240 parcial FUERA 964 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados al mundo»
+1184.340 parcial FUERA 964 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados al mundo»
+1184.440 parcial FUERA 964 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados al mundo»
+1184.540 parcial FUERA 964 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados al mundo»
+1184.640 parcial FUERA 964 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados al mundo»
+1184.740 parcial FUERA 964 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados al mundo»
+1184.840 parcial FUERA 964 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados al mundo»
+1184.940 parcial FUERA 964 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados al mundo»
+1185.040 parcial FUERA 964 (ventana 902..952) | confirmado 909 ancla 909 fallos 3 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados al mundo»
+1185.120 FINAL   FUERA 964 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «que somos arrojados al mundo»
+1186.400 parcial nada | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie»
+1186.500 parcial nada | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie»
+1186.600 parcial nada | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie»
+1186.700 parcial nada | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie»
+1186.800 parcial nada | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie»
+1186.900 parcial nada | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie»
+1186.920 parcial FUERA 966 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos»
+1187.020 parcial FUERA 966 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos»
+1187.120 parcial FUERA 966 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos»
+1187.220 parcial FUERA 966 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos»
+1187.320 parcial FUERA 966 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos»
+1187.400 parcial FUERA 967 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió»
+1187.500 parcial FUERA 967 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió»
+1187.600 parcial FUERA 968 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió permiso»
+1187.700 parcial FUERA 968 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió permiso»
+1187.800 parcial FUERA 968 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió permiso»
+1187.900 parcial FUERA 968 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió permiso»
+1188.000 parcial FUERA 968 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió permiso»
+1188.100 parcial FUERA 968 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió permiso»
+1188.200 parcial FUERA 968 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió permiso»
+1188.300 parcial FUERA 968 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió permiso»
+1188.400 parcial FUERA 968 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió permiso»
+1188.500 parcial FUERA 968 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió permiso»
+1188.600 parcial FUERA 968 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió permiso»
+1188.700 parcial FUERA 968 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió permiso»
+1188.800 parcial FUERA 968 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió permiso»
+1188.900 parcial FUERA 968 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió permiso»
+1189.000 parcial FUERA 968 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió permiso»
+1189.100 parcial FUERA 968 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió permiso»
+1189.200 parcial FUERA 968 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió permiso»
+1189.300 parcial FUERA 968 (ventana 902..952) | confirmado 909 ancla 909 fallos 4 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió permiso»
+1189.320 FINAL   FUERA 968 (ventana 902..952) | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie nos pidió permiso»
+1194.500 parcial nada | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «la»
+1194.720 parcial nada | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie»
+1194.820 parcial nada | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie»
+1194.920 parcial FUERA 966 (ventana 902..952) | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie nos»
+1194.960 parcial nada | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie os»
+1195.020 parcial FUERA 966 (ventana 902..952) | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie nos»
+1195.100 parcial nada | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie os digo que»
+1195.140 parcial nada | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió»
+1195.200 parcial nada | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso»
+1195.300 parcial nada | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso»
+1195.400 parcial nada | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso»
+1195.440 parcial FUERA 969 (ventana 902..952) | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para»
+1195.540 parcial FUERA 969 (ventana 902..952) | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para»
+1195.640 parcial FUERA 969 (ventana 902..952) | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para»
+1195.680 parcial FUERA 970 (ventana 902..952) | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para la»
+1195.760 parcial FUERA 970 (ventana 902..952) | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para las»
+1195.860 parcial FUERA 970 (ventana 902..952) | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para las»
+1195.880 parcial FUERA 970 (ventana 902..952) | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para la»
+1195.980 parcial FUERA 970 (ventana 902..952) | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para la»
+1196.080 parcial FUERA 970 (ventana 902..952) | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para la»
+1196.100 parcial nada | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para la se»
+1196.200 parcial nada | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para la se»
+1196.300 parcial nada | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para la se»
+1196.400 parcial FUERA 971 (ventana 902..952) | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para la se»
+1196.500 parcial nada | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para la se»
+1196.600 parcial nada | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para la se»
+1196.700 parcial nada | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para la se»
+1196.800 parcial FUERA 971 (ventana 902..952) | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para la se»
+1196.900 parcial nada | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para la se»
+1197.000 parcial nada | confirmado 909 ancla 909 fallos 5 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para la se»
+1197.080 FINAL   nada | confirmado 909 ancla 909 fallos 6 | pos 912.00 ultimoCalce 909→909 | «nadie pidió permiso para la fe»
+1201.640 parcial nada | confirmado 909 ancla 909 fallos 6 | pos 912.00 ultimoCalce 909→909 | «por»
+1201.800 parcial calce 926 | confirmado 909 ancla 926 fallos 0 | pos 912.00 ultimoCalce 909→926 | «porque aunque»
+1201.900 parcial calce 926 | confirmado 909 ancla 926 fallos 0 | pos 912.06 ultimoCalce 926→926 | «porque aunque»
+1202.000 parcial calce 926 | confirmado 909 ancla 926 fallos 0 | pos 912.19 ultimoCalce 926→926 | «porque aunque»
+1202.100 parcial calce 926 | confirmado 909 ancla 926 fallos 0 | pos 912.39 ultimoCalce 926→926 | «porque aunque»
+1202.200 parcial calce 926 | confirmado 909 ancla 926 fallos 0 | pos 912.65 ultimoCalce 926→926 | «porque aunque»
+1202.300 parcial calce 926 | confirmado 909 ancla 926 fallos 0 | pos 912.97 ultimoCalce 926→926 | «porque aunque»
+1202.400 parcial calce 926 | confirmado 909 ancla 926 fallos 0 | pos 913.36 ultimoCalce 926→926 | «porque aunque»
+1202.420 parcial nada | confirmado 909 ancla 926 fallos 0 | pos 913.44 ultimoCalce 926→926 | «porque aunque la insistencia»
+1202.520 parcial nada | confirmado 909 ancla 926 fallos 0 | pos 913.89 ultimoCalce 926→926 | «porque aunque la insistencia»
+1202.540 parcial nada | confirmado 909 ancla 926 fallos 0 | pos 913.97 ultimoCalce 926→926 | «porque aunque existencias»
+1202.580 parcial nada | confirmado 909 ancla 926 fallos 0 | pos 914.15 ultimoCalce 926→926 | «porque aunque la insistencia»
+1202.640 parcial nada | confirmado 909 ancla 926 fallos 0 | pos 914.42 ultimoCalce 926→926 | «porque aunque»
+1202.740 parcial nada | confirmado 909 ancla 926 fallos 0 | pos 914.86 ultimoCalce 926→926 | «porque aunque»
+1202.760 parcial nada | confirmado 909 ancla 926 fallos 0 | pos 914.95 ultimoCalce 926→926 | «porque aunque sensaciones»
+1202.780 parcial nada | confirmado 909 ancla 926 fallos 0 | pos 915.03 ultimoCalce 926→926 | «porque aunque dispensación»
+1202.880 parcial nada | confirmado 909 ancla 926 fallos 0 | pos 915.48 ultimoCalce 926→926 | «porque aunque dispensación»
+1202.980 parcial nada | confirmado 909 ancla 926 fallos 0 | pos 915.92 ultimoCalce 926→926 | «porque aunque dispensación»
+1203.060 parcial nada | confirmado 909 ancla 926 fallos 0 | pos 916.27 ultimoCalce 926→926 | «porque aunque dispensación así»
+1203.080 parcial nada | confirmado 909 ancla 926 fallos 0 | pos 916.36 ultimoCalce 926→926 | «porque aunque dispensación»
+1203.140 parcial nada | confirmado 909 ancla 926 fallos 0 | pos 916.62 ultimoCalce 926→926 | «porque aunque dispensación accidentes»
+1203.240 parcial nada | confirmado 909 ancla 926 fallos 0 | pos 917.06 ultimoCalce 926→926 | «porque aunque dispensación accidentes»
+1203.300 parcial nada | confirmado 909 ancla 926 fallos 0 | pos 917.33 ultimoCalce 926→926 | «porque aunque dispensación accidente»
+1203.400 parcial nada | confirmado 909 ancla 926 fallos 0 | pos 917.77 ultimoCalce 926→926 | «porque aunque dispensación accidente»
+1203.440 parcial nada | confirmado 909 ancla 926 fallos 0 | pos 917.95 ultimoCalce 926→926 | «porque aunque dispensación accidente tengo»
+1203.540 parcial nada | confirmado 909 ancla 926 fallos 0 | pos 918.39 ultimoCalce 926→926 | «porque aunque dispensación accidente tengo»
+1203.640 parcial nada | confirmado 909 ancla 926 fallos 0 | pos 918.83 ultimoCalce 926→926 | «porque aunque dispensación accidente tengo»
+1203.680 parcial calce 933 | confirmado 909 ancla 933 fallos 0 | pos 919.01 ultimoCalce 926→933 | «porque aunque dispensación accidente tengo razón»
+1203.780 parcial calce 933 | confirmado 909 ancla 933 fallos 0 | pos 919.59 ultimoCalce 933→933 | «porque aunque dispensación accidente tengo razón»
+1203.800 parcial calce 934 | confirmado 909 ancla 934 fallos 0 | pos 919.71 ultimoCalce 933→934 | «porque aunque dispensación accidente tengo razón de»
+1203.860 parcial calce 934 | confirmado 909 ancla 934 fallos 0 | pos 920.15 ultimoCalce 934→934 | «porque aunque dispensación accidente tengo razón del»
+1203.900 parcial calce 934 | confirmado 909 ancla 934 fallos 0 | pos 920.48 ultimoCalce 934→934 | «porque aunque dispensación accidente tengo razón de»
+1204.000 parcial calce 934 | confirmado 909 ancla 934 fallos 0 | pos 921.29 ultimoCalce 934→934 | «porque aunque dispensación accidente tengo razón de»
+1204.080 parcial calce 935 | confirmado 909 ancla 935 fallos 0 | pos 921.94 ultimoCalce 934→935 | «porque aunque dispensación accidente tengo razón de ser»
+1204.180 parcial calce 935 | confirmado 909 ancla 935 fallos 0 | pos 922.86 ultimoCalce 935→935 | «porque aunque dispensación accidente tengo razón de ser»
+1204.280 parcial calce 935 | confirmado 909 ancla 935 fallos 0 | pos 923.78 ultimoCalce 935→935 | «porque aunque dispensación accidente tengo razón de ser»
+1204.380 parcial calce 935 | confirmado 909 ancla 935 fallos 0 | pos 924.70 ultimoCalce 935→935 | «porque aunque dispensación accidente tengo razón de ser»
+1204.480 parcial calce 935 | confirmado 909 ancla 935 fallos 0 | pos 925.63 ultimoCalce 935→935 | «porque aunque dispensación accidente tengo razón de ser»
+1204.580 parcial calce 935 | confirmado 909 ancla 935 fallos 0 | pos 926.55 ultimoCalce 935→935 | «porque aunque dispensación accidente tengo razón de ser»
+1204.680 parcial calce 935 | confirmado 909 ancla 935 fallos 0 | pos 927.47 ultimoCalce 935→935 | «porque aunque dispensación accidente tengo razón de ser»
+1204.780 parcial calce 935 | confirmado 909 ancla 935 fallos 0 | pos 928.40 ultimoCalce 935→935 | «porque aunque dispensación accidente tengo razón de ser»
+1204.880 parcial calce 935 | confirmado 909 ancla 935 fallos 0 | pos 929.32 ultimoCalce 935→935 | «porque aunque dispensación accidente tengo razón de ser»
+1204.980 parcial calce 935 | confirmado 909 ancla 935 fallos 0 | pos 930.24 ultimoCalce 935→935 | «porque aunque dispensación accidente tengo razón de ser»
+1205.080 parcial calce 935 | confirmado 909 ancla 935 fallos 0 | pos 931.16 ultimoCalce 935→935 | «porque aunque dispensación accidente tengo razón de ser»
+1205.120 parcial calce 936 | confirmado 909 ancla 936 fallos 0 | pos 931.53 ultimoCalce 935→936 | «porque aunque dispensación accidente tengo razón de ser cierto»
+1205.180 parcial calce 935 | confirmado 909 ancla 936 fallos 0 | pos 932.09 ultimoCalce 936→936 | «porque aunque dispensación accidente tengo razón de ser»
+1205.240 parcial calce 936 | confirmado 909 ancla 936 fallos 0 | pos 932.64 ultimoCalce 936→936 | «porque aunque dispensación accidente tengo razón de ser cierto»
+1205.340 parcial calce 936 | confirmado 909 ancla 936 fallos 0 | pos 933.56 ultimoCalce 936→936 | «porque aunque dispensación accidente tengo razón de ser cierto»
+1205.440 parcial calce 936 | confirmado 909 ancla 936 fallos 0 | pos 934.43 ultimoCalce 936→936 | «porque aunque dispensación accidente tengo razón de ser cierto»
+1205.540 parcial calce 936 | confirmado 909 ancla 936 fallos 0 | pos 935.13 ultimoCalce 936→936 | «porque aunque dispensación accidente tengo razón de ser cierto»
+1205.640 parcial calce 936 | confirmado 909 ancla 936 fallos 0 | pos 935.68 ultimoCalce 936→936 | «porque aunque dispensación accidente tengo razón de ser cierto»
+1205.740 parcial calce 936 | confirmado 909 ancla 936 fallos 0 | pos 936.11 ultimoCalce 936→936 | «porque aunque dispensación accidente tengo razón de ser cierto»
+1205.840 FINAL   calce 936 | confirmado 936 ancla 936 fallos 0 | pos 936.31 ultimoCalce 936→936 | «porque aunque dispensación accidente tengo razón de ser cierto»
+1206.180 parcial nada | confirmado 936 ancla 936 fallos 0 | pos 936.87 ultimoCalce 936→936 | «con»
+1206.460 parcial nada | confirmado 936 ancla 936 fallos 0 | pos 937.03 ultimoCalce 936→936 | «corazón»
+1206.480 parcial nada | confirmado 936 ancla 936 fallos 0 | pos 937.03 ultimoCalce 936→936 | «corazón que»
+1206.540 parcial nada | confirmado 936 ancla 936 fallos 0 | pos 937.03 ultimoCalce 936→936 | «corazón»
+1206.640 parcial nada | confirmado 936 ancla 936 fallos 0 | pos 937.03 ultimoCalce 936→936 | «corazón»
+1206.740 parcial nada | confirmado 936 ancla 936 fallos 0 | pos 937.03 ultimoCalce 936→936 | «corazón»
+1206.840 parcial nada | confirmado 936 ancla 936 fallos 0 | pos 937.03 ultimoCalce 936→936 | «corazón»
+1206.940 parcial nada | confirmado 936 ancla 936 fallos 0 | pos 937.03 ultimoCalce 936→936 | «corazón»
+1207.020 parcial calce 948 | confirmado 936 ancla 948 fallos 0 | pos 937.03 ultimoCalce 936→948 | «corazón filosófico»
+1207.120 parcial calce 948 | confirmado 936 ancla 948 fallos 0 | pos 937.57 ultimoCalce 948→948 | «corazón filosófico»
+1207.220 parcial calce 948 | confirmado 936 ancla 948 fallos 0 | pos 938.41 ultimoCalce 948→948 | «corazón filosófico»
+1207.300 parcial calce 949 | confirmado 936 ancla 949 fallos 0 | pos 939.16 ultimoCalce 948→949 | «corazón filosófico que»
+1207.400 parcial calce 949 | confirmado 936 ancla 949 fallos 0 | pos 940.36 ultimoCalce 949→949 | «corazón filosófico que»
+1207.500 parcial calce 949 | confirmado 936 ancla 949 fallos 0 | pos 941.55 ultimoCalce 949→949 | «corazón filosófico que»
+1207.600 parcial calce 949 | confirmado 936 ancla 949 fallos 0 | pos 942.74 ultimoCalce 949→949 | «corazón filosófico que»
+1207.700 parcial calce 949 | confirmado 936 ancla 949 fallos 0 | pos 943.94 ultimoCalce 949→949 | «corazón filosófico que»
+1207.800 parcial calce 949 | confirmado 936 ancla 949 fallos 0 | pos 945.13 ultimoCalce 949→949 | «corazón filosófico que»
+1207.900 parcial calce 949 | confirmado 936 ancla 949 fallos 0 | pos 946.32 ultimoCalce 949→949 | «corazón filosófico que»
+1208.000 parcial calce 949 | confirmado 936 ancla 949 fallos 0 | pos 947.52 ultimoCalce 949→949 | «corazón filosófico que»
+1208.100 parcial calce 950 | confirmado 936 ancla 950 fallos 0 | pos 948.41 ultimoCalce 949→950 | «corazón filosófico que realmente»
+1208.200 parcial calce 950 | confirmado 936 ancla 950 fallos 0 | pos 949.39 ultimoCalce 950→950 | «corazón filosófico que realmente»
+1208.300 parcial calce 950 | confirmado 936 ancla 950 fallos 0 | pos 950.10 ultimoCalce 950→950 | «corazón filosófico que realmente»
+1208.400 parcial calce 951 | confirmado 936 ancla 951 fallos 0 | pos 950.42 ultimoCalce 950→951 | «corazón filosófico que realmente es»
+1208.460 parcial calce 950 | confirmado 936 ancla 951 fallos 0 | pos 950.86 ultimoCalce 951→951 | «corazón filosófico que realmente»
+1208.560 parcial calce 950 | confirmado 936 ancla 951 fallos 0 | pos 951.47 ultimoCalce 951→951 | «corazón filosófico que realmente»
+1208.660 parcial calce 950 | confirmado 936 ancla 951 fallos 0 | pos 951.47 ultimoCalce 951→951 | «corazón filosófico que realmente»
+1208.760 parcial calce 950 | confirmado 936 ancla 951 fallos 0 | pos 951.47 ultimoCalce 951→951 | «corazón filosófico que realmente»
+1208.860 parcial calce 950 | confirmado 936 ancla 951 fallos 0 | pos 951.47 ultimoCalce 951→951 | «corazón filosófico que realmente»
+1208.960 parcial calce 950 | confirmado 936 ancla 951 fallos 0 | pos 951.47 ultimoCalce 951→951 | «corazón filosófico que realmente»
+1209.060 parcial calce 950 | confirmado 936 ancla 951 fallos 0 | pos 951.47 ultimoCalce 951→951 | «corazón filosófico que realmente»
+1209.160 parcial calce 951 | confirmado 936 ancla 951 fallos 0 | pos 951.47 ultimoCalce 951→951 | «corazón filosófico que realmente desconcertante»
+1209.260 parcial calce 951 | confirmado 936 ancla 951 fallos 0 | pos 951.47 ultimoCalce 951→951 | «corazón filosófico que realmente desconcertante»
+1209.360 parcial calce 951 | confirmado 936 ancla 951 fallos 0 | pos 951.47 ultimoCalce 951→951 | «corazón filosófico que realmente desconcertante»
+1209.460 parcial calce 951 | confirmado 936 ancla 951 fallos 0 | pos 951.47 ultimoCalce 951→951 | «corazón filosófico que realmente desconcertante»
+1209.520 parcial calce 952 | confirmado 936 ancla 952 fallos 0 | pos 951.47 ultimoCalce 951→952 | «corazón filosófico que realmente desconcertante de»
+1209.620 parcial calce 952 | confirmado 936 ancla 952 fallos 0 | pos 952.07 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de»
+1209.700 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 952.30 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de cosas»
+1209.780 parcial calce 952 | confirmado 936 ancla 952 fallos 0 | pos 952.60 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de»
+1209.880 parcial calce 952 | confirmado 936 ancla 952 fallos 0 | pos 952.60 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de»
+1209.960 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 952.60 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar»
+1210.020 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 952.60 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una»
+1210.120 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 952.90 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una»
+1210.220 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.28 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una»
+1210.240 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.36 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una cita»
+1210.300 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una»
+1210.360 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una alfombra»
+1210.420 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una combinación»
+1210.480 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia»
+1210.580 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia»
+1210.680 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia»
+1210.780 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia»
+1210.880 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia»
+1210.980 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia»
+1211.080 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia»
+1211.180 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia»
+1211.280 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia»
+1211.380 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia»
+1211.440 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una asamblea general»
+1211.540 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una asamblea general»
+1211.560 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia»
+1211.640 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una asamblea general»
+1211.740 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una autonomía de»
+1211.760 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia de»
+1211.860 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia de»
+1211.960 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia de»
+1212.000 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia que»
+1212.060 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia que llegue»
+1212.160 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia que llegue»
+1212.220 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia que deje de»
+1212.320 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia que deje de»
+1212.340 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia de»
+1212.440 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia de»
+1212.460 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia que he»
+1212.520 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia de»
+1212.580 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice»
+1212.680 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice»
+1212.760 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia de dice»
+1212.860 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia de dice»
+1212.960 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia de dice»
+1213.060 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia de dice»
+1213.160 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia de dice»
+1213.260 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia de dice»
+1213.360 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia de dice»
+1213.460 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia de dice»
+1213.560 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia de dice»
+1213.620 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice»
+1213.720 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que»
+1213.820 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que»
+1213.920 parcial nada | confirmado 936 ancla 952 fallos 0 | pos 953.51 ultimoCalce 952→952 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que»
+1213.980 parcial calce 961 | confirmado 936 ancla 961 fallos 0 | pos 953.51 ultimoCalce 952→961 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1214.080 parcial nada | confirmado 936 ancla 961 fallos 0 | pos 953.93 ultimoCalce 961→961 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1214.180 parcial nada | confirmado 936 ancla 961 fallos 0 | pos 954.78 ultimoCalce 961→961 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1214.280 parcial nada | confirmado 936 ancla 961 fallos 0 | pos 955.91 ultimoCalce 961→961 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1214.380 parcial nada | confirmado 936 ancla 961 fallos 0 | pos 957.04 ultimoCalce 961→961 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1214.480 parcial nada | confirmado 936 ancla 961 fallos 0 | pos 958.17 ultimoCalce 961→961 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1214.580 parcial nada | confirmado 936 ancla 961 fallos 0 | pos 959.30 ultimoCalce 961→961 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1214.680 parcial nada | confirmado 936 ancla 961 fallos 0 | pos 960.43 ultimoCalce 961→961 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1214.760 parcial nada | confirmado 936 ancla 961 fallos 0 | pos 961.15 ultimoCalce 961→961 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1214.860 parcial nada | confirmado 936 ancla 961 fallos 0 | pos 961.87 ultimoCalce 961→961 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1214.920 parcial nada | confirmado 936 ancla 961 fallos 0 | pos 962.19 ultimoCalce 961→961 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1214.940 parcial nada | confirmado 936 ancla 961 fallos 0 | pos 962.28 ultimoCalce 961→961 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1215.040 parcial nada | confirmado 936 ancla 961 fallos 0 | pos 962.51 ultimoCalce 961→961 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1215.100 parcial nada | confirmado 936 ancla 961 fallos 0 | pos 962.51 ultimoCalce 961→961 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1215.200 parcial nada | confirmado 936 ancla 961 fallos 0 | pos 962.51 ultimoCalce 961→961 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1215.220 parcial calce 963 | confirmado 936 ancla 963 fallos 0 | pos 962.51 ultimoCalce 961→963 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1215.320 parcial nada | confirmado 936 ancla 963 fallos 0 | pos 963.10 ultimoCalce 963→963 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1215.420 parcial nada | confirmado 936 ancla 963 fallos 0 | pos 963.64 ultimoCalce 963→963 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1215.480 parcial nada | confirmado 936 ancla 963 fallos 0 | pos 963.92 ultimoCalce 963→963 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1215.580 parcial nada | confirmado 936 ancla 963 fallos 0 | pos 964.36 ultimoCalce 963→963 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1215.680 parcial nada | confirmado 936 ancla 963 fallos 0 | pos 964.51 ultimoCalce 963→963 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1215.780 parcial nada | confirmado 936 ancla 963 fallos 0 | pos 964.51 ultimoCalce 963→963 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1215.880 parcial nada | confirmado 936 ancla 963 fallos 0 | pos 964.51 ultimoCalce 963→963 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»
+1215.980 parcial nada | confirmado 936 ancla 963 fallos 0 | pos 964.51 ultimoCalce 963→963 | «corazón filosófico que realmente desconcertante de concertar una familia que y le dice que…»

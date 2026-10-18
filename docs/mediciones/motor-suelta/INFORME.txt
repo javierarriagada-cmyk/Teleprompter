@@ -1,0 +1,71 @@
+MOTOR-SUELTA: LA SUELTA DEL ANCLA NO PUEDE TIRAR ATRÁS UN TEXTO QUE IBA JUNTO A LA VOZ -17-10-2026-
+======================================================================================================
+
+Rama motor-suelta desde origin/main 4cc21a8 -`git log --oneline -1 origin/main` antes de partir: 4cc21a8,
+la que pide la orden-. Relojes: "bitácora" = el de la bitácora del teléfono -el del video y el de Javier-;
+"audio" = el de audio.wav y del registro de transcribir.py. audio = bitácora + 2.714 ms -LEEME de la toma,
+fila 'oido' inicio=-2714-.
+
+MATERIAL, SIN SUBIR. La toma de 34 min viene de la rama motor-toma-34-min (008a4a2) y las herramientas de
+la #125, motor-investigacion (1d5572c):
+  git fetch origin
+  git checkout origin/motor-toma-34-min -- docs/mediciones/toma-34-min/
+  git checkout origin/motor-investigacion -- docs/mediciones/toma-25-min/herramientas/
+  git restore --staged docs/mediciones/toma-34-min/ docs/mediciones/toma-25-min/herramientas/
+Las dos carpetas van en .git/info/exclude: ningún commit de esta rama las trae.
+
+LAS HERRAMIENTAS NO SE DUPLICAN. medir.ts y detalle.ts viven en motor-investigacion (#125, abierta). El
+cambio que les hice -la columna «retrocesos» de medir.ts y la opción «rastro» de detalle.ts- va como
+parche sobre esas dos, en herramientas.diff, y no como copia: si esta rama trajera los dos archivos,
+cuando entre la #125 habría dos versiones del mismo archivo peleando en el mismo lugar. Para usarlas:
+  (después de traerlas) patch -p1 < docs/mediciones/motor-suelta/herramientas.diff
+puntaje.ts sí es nuevo -no existía nada que hiciera esa cuenta-: está aquí, en docs/mediciones/motor-suelta/.
+
+EL REGISTRO DE LA TOMA DE 34 MIN -el de transcribir.py, igual que las otras dos largas-:
+  python3 docs/mediciones/toma-25-min/herramientas/transcribir.py <vosk-model-small-es-0.42 con
+     --frames-per-chunk=3> docs/mediciones/toma-34-min/audio.wav docs/mediciones/toma-34-min/guion.txt \
+     toma-34-min.transcrita.motor.txt palabras34.json
+  -el entorno de la caja que ya armó las de 25 y 30: Python 3.13 con vosk, soundfile y numpy en
+   ~/.local; el modelo, el mismo directorio que usó banco-largo-. Da: eventos 15336, finales 381,
+  palabras 2419, audio 2047,452 s -lo mismo que dice el LEEME de la toma: 2047,5 s-. El rótulo
+  «# toma:» de la cabecera se cambia a toma-34-min a mano -transcribir.py escribe toma-25-min-.
+Medir.ts revienta la pila en las tomas largas -Math.max(...eventos), lo dijo el #129-: se corre con
+  node --stack-size=8000 node_modules/vite-node/vite-node.mjs docs/mediciones/toma-25-min/herramientas/medir.ts -- ...
+
+
+0. ¿LA REPETICIÓN REPRODUCE EL RETROCESO? SÍ.
+---------------------------------------------
+
+LOS RELOJES. De 377 finales de la bitácora, 317 salen con el mismo texto en la transcripción; la
+diferencia audio - bitácora de esos 317: mediana 2.687 ms, p10 2.492, p90 2.710. Es 2.714 menos lo que
+tarda el teléfono en entregar el final -unas decenas de ms, lo dice transcribir.py-: el desfase del
+LEEME se confirma.
+
+a) LA TRANSCRIPCIÓN DEL PC CON EL MOTOR DE 4cc21a8 -medir.ts sin movidas a mano, a-mano=100000,
+   resultados/comprobacion-34-min-sin-mano.txt-:
+     RETROCESOS: uno solo en toda la toma.
+     - 19:35 audio (1.175.424 ms): 954,59 → 912,00, 42,6 palabras atrás; calce 954 → 909; voz 957.
+   1.175.424 audio = 1.172.710 bitácora. En el teléfono: 1.172.718, 954,61 → 912, calce=909.
+   La vara dice que la voz iba en 957: el texto iba 2,4 palabras detrás de la voz cuando saltó atrás.
+   Vuelve a 953 a los 1.210.160 audio: 34,7 s -en el teléfono 38,6 s; ver abajo por qué 4 s menos-.
+b) LA MISMA BITÁCORA, con el motor de 4cc21a8 -sus 'oyo', sin los cuadros del teléfono, reloj de 16 ms-:
+     retroceso a los 1.172.704 ms: 954,51 → 912,00, calce 954 → 909; vuelve a 953 a los 1.211.392: 38,7 s.
+   El teléfono: 1.172.718, 954,61 → 912, vuelve a 953 a los 1.211.351 -38,6 s-.
+
+LOS TRES FINALES, en el PC:
+  bitácora 1.150.404 «queremos de ambos debajo aquí este párrafo aunque inexistencia tenga razón de ser
+           un accidente»   → PC 1.153.080 audio, el mismo texto;
+  bitácora 1.167.961 «el hecho de haber nacido luciérnaga aquí aquí está corazón filosófico ... y es
+           desconcertante por su profundidad» → PC 1.170.660 audio, el mismo texto;
+  bitácora 1.172.703 «la pensadores que es al medio en este tema» → PC 1.175.420 audio «ahora que es al
+           medio en este tema», y antes, a 1.172.160, un final de dos palabras «la vez» -con menos de
+           tres palabras no cuenta como fallo, conduccion.ts:107-.
+Ninguno calza en los dos. El tercero es otro texto en el PC, pero hace lo mismo: es el segundo final
+seguido sin calce y suelta el ancla 15 ms después -en el PC, 4 ms-.
+
+Diferencia: en el PC, al volver, el final de 1.205.840 audio «porque aunque dispensación accidente tengo
+razón de ser cierto» calza en 936; en el teléfono el mismo final dice «... hacienda tengo razón de ser
+cierto» y no calza. Por eso el PC vuelve en 34,7 s y el teléfono en 38,6.
+
+Conclusión: la repetición -PC y bitácora- da el mismo retroceso, en el mismo momento, con las mismas
+cifras. Se sigue.
