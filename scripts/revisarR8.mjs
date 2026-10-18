@@ -25,7 +25,10 @@ const CLASES_CON_SU_NOMBRE = [
   'app.capgo.capacitor.camera.preview.CameraPreview',
   'com.sigoteleprompter.app.VoskNativoPlugin',
   'com.sigoteleprompter.app.CamaraNativaPlugin',
-  'org.vosk.LibVosk'
+  'org.vosk.LibVosk',
+  // -18-10-2026- Flogger la busca por su nombre en texto. En la 0.9.1 quedó como v7.b y MediaPipe no
+  // arrancaba: los gestos rotos en Play -proguard-rules.pro, FLOGGER-.
+  'com.google.common.flogger.backend.system.DefaultPlatform'
 ]
 
 // Los miembros que la caída de Grabar necesitaba, cada uno en su clase. El mapping solo nombra un

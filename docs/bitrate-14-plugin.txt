@@ -1,0 +1,30 @@
+COMO QUEDO -18-10-2026, Claude-: lo aplica scripts/parcharCamara.mjs antes de cada compilacion -npm run apk
+y npm run play-, porque el plugin vive en node_modules y cada npm install lo trae limpio. En la 8.11.4 el
+Recorder se arma en dos pasos -CameraXView.java:1153 y 1158-, no en una cadena como dice abajo: la linea
+recorderBuilder.setTargetVideoEncodingBitRate(14000000) va justo antes de
+«Recorder recorder = recorderBuilder.build();». Si ese texto no esta una sola vez, la compilacion para.
+
+Lo que proponia el encargo:
+
+Parche para @capgo/camera-preview, para que la grabacion salga a 14 Mbps.
+
+El plugin no expone un bitrate. CameraX lo permite con
+Recorder.Builder.setTargetVideoEncodingBitRate.
+
+En android/src/main/java/.../CameraXView.java, donde se arma el Recorder:
+
+  Recorder recorder = new Recorder.Builder()
+      .setQualitySelector(...)
+      .build();
+
+agregar:
+
+      .setTargetVideoEncodingBitRate(14_000_000)
+
+antes del .build().
+
+La licencia del plugin es MPL-2.0: si se modifica y se distribuye el APK,
+hay que publicar los archivos modificados.
+
+Este cambio va junto con el de CamaraNativaPlugin.java, que deja la
+recodificacion en 14 Mbps.

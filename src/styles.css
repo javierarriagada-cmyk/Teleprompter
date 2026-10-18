@@ -2449,6 +2449,39 @@ button.btn-deformable.miniatura-banda:not(:active) {
   margin-bottom: 0 !important; /* el indicador trae su margen para el flujo de la página: aquí flota */
 }
 
+/* «GUARDANDO LA TOMA…», AL CENTRO -18-10-2026-. Javier, al tocar Parar: «muy pequeño y en un rincón».
+   Usaba .aviso-voz, que es solo la capa fija de arriba, sin fondo: el texto quedaba pelado en la esquina,
+   sobre la cámara, en 15 px. Ahora tiene su propio aviso. Va al centro, porque mientras se guarda no se
+   puede tocar nada -Parar queda apagado- y ahí es donde se espera ver qué pasa. Lleva la superficie que
+   flota en las fichas -.panel-ficha: canto y sombra-, que se lee sobre cualquier imagen de la cámara, la
+   letra de los títulos -18 px- y el indicador de carga de «Preparando la voz» -DockListo-. No oscurece
+   la pantalla, porque es un aviso de un momento y no un diálogo, y la capa no recibe toques. */
+.capa-guardando-toma {
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--aire-4);
+  pointer-events: none;
+}
+.aviso-guardando-toma {
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+  padding: 16px 24px;
+  border-radius: var(--forma-grande);
+  background-image: linear-gradient(var(--bg-superficie), var(--bg-superficie)), var(--sup-canto);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border: 1px solid transparent;
+  box-shadow: var(--prot-sombra);
+  color: var(--color-texto);
+  font-size: var(--texto-titulo);
+  font-weight: 600;
+}
+
 /* SELECCIÓN DE TOMAS -tarea 94, 05-10-2026-. La barra reemplaza la de la portada.
    El círculo con ✓ va en la esquina de la miniatura. Colores de la vara. */
 .barra-seleccion-tomas {

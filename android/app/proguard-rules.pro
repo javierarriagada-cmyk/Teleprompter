@@ -138,6 +138,16 @@
 # Protobuf liviano, el que usa MediaPipe para sus opciones y resultados: lee los campos por nombre.
 -keep class * extends com.google.protobuf.GeneratedMessageLite { *; }
 -dontwarn com.google.protobuf.**
+# FLOGGER, EL REGISTRO DE GOOGLE QUE MEDIAPIPE TRAE ADENTRO -18-10-2026-. La 0.9.1 de Play salió con
+# los gestos rotos -«gestos reconocedor no arranca: ExceptionInInitializerError»- aunque MediaPipe
+# estaba conservado entero. Las clases de MediaPipe -Graph, AssetCache, PacketGetter...- arman su
+# registro al cargarse con FluentLogger, y Flogger busca su plataforma POR NOMBRE: el texto
+# "com.google.common.flogger.backend.system.DefaultPlatform" va tal cual en el paquete -classes.dex del
+# AAB-, pero R8 le cambió el nombre a esa clase, a v7.b -mapping.txt-. Sin plataforma, Flogger falla al
+# cargarse, y con él la primera clase de MediaPipe que lo usa. Se conserva entero, como MediaPipe y
+# Capacitor: es chico, y buscar clase por clase es lo que ya falló.
+-keep class com.google.common.flogger.** { *; }
+-dontwarn com.google.common.flogger.**
 # Lo que MediaPipe trae y en Android no siempre está: anotaciones de compilación y AutoValue.
 -dontwarn com.google.auto.value.**
 -dontwarn javax.annotation.**

@@ -33,7 +33,9 @@ const CLASES = [
   'com.getcapacitor.annotation.PermissionCallback', 'com.getcapacitor.annotation.ActivityCallback',
   'com.getcapacitor.PluginMethod', 'com.getcapacitor.Plugin', 'com.getcapacitor.PluginHandle',
   'com.getcapacitor.Bridge', 'app.capgo.capacitor.camera.preview.CameraPreview',
-  'com.sigoteleprompter.app.VoskNativoPlugin', 'com.sigoteleprompter.app.CamaraNativaPlugin', 'org.vosk.LibVosk'
+  'com.sigoteleprompter.app.VoskNativoPlugin', 'com.sigoteleprompter.app.CamaraNativaPlugin', 'org.vosk.LibVosk',
+  // -18-10-2026- La plataforma de Flogger, que se busca por su nombre: sin ella MediaPipe no arranca.
+  'com.google.common.flogger.backend.system.DefaultPlatform'
 ]
 const MIEMBROS_BIEN: Record<string, string[]> = {
   'com.getcapacitor.Plugin': [
@@ -69,6 +71,18 @@ describe('T85f R8 y el núcleo de Capacitor', () => {
     expect(revisarR8(sinMetodo, USAGE_BIEN)).toEqual(['Plugin.getPermissionState(String) quedó con otro nombre en el mapping'])
     // Y si R8 quita algo de verdad del núcleo, también.
     expect(revisarR8(MAPPING_BIEN, USAGE_BIEN + '\ncom.getcapacitor.JSValue')).toEqual(['R8 quitó cosas del núcleo de Capacitor -usage.txt-: com.getcapacitor.JSValue -entera-'])
+  })
+
+  // -18-10-2026- La línea tal cual del mapping del AAB con los gestos rotos.
+  test('la revisión del mapping marca la plataforma de Flogger renombrada, la que rompía los gestos', async () => {
+    const revisarR8 = await cargarRevisar()
+    const roto = MAPPING_BIEN.replace(
+      'com.google.common.flogger.backend.system.DefaultPlatform -> com.google.common.flogger.backend.system.DefaultPlatform:',
+      'com.google.common.flogger.backend.system.DefaultPlatform -> v7.b:'
+    )
+    expect(revisarR8(roto, USAGE_BIEN)).toEqual([
+      'com.google.common.flogger.backend.system.DefaultPlatform quedó renombrada: com.google.common.flogger.backend.system.DefaultPlatform -> v7.b:'
+    ])
   })
 
   test('proguard-rules.pro conserva el núcleo de Capacitor y sus anotaciones', () => {

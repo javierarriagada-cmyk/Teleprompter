@@ -42,7 +42,10 @@ import { movimientoApagado, CURVA_RESORTE } from './movimiento'
 // type MenuDock = 'letra' | 'tipo' | 'ancho' | 'colores' | 'calidad' | 'subtitulos' | null
 // vivían aquí. Se mudaron a PanelAjustes.tsx con la sección Video.
 
-export function IndicadorCargaExpressive() {
+// -guardando, 18-10-2026- tamano: el aviso de «Guardando la toma…» -App.tsx- lo usa más grande, al centro
+// de la pantalla. El espacio hasta el texto crece con él. Sin tamano queda como siempre: 12 y 8.
+// Antes: export function IndicadorCargaExpressive() { ... width: 12, height: 12, marginRight: 8,
+export function IndicadorCargaExpressive({ tamano = 12 }: { tamano?: number } = {}) {
   const animar = !movimientoApagado()
   return (
     <span
@@ -50,9 +53,10 @@ export function IndicadorCargaExpressive() {
       aria-hidden="true"
       style={{
         display: 'inline-block',
-        width: 12,
-        height: 12,
-        marginRight: 8,
+        flexShrink: 0,
+        width: tamano,
+        height: tamano,
+        marginRight: Math.round(tamano * 2 / 3),
         verticalAlign: 'middle',
         backgroundColor: 'currentColor',
         borderRadius: animar ? '50%' : '3px',

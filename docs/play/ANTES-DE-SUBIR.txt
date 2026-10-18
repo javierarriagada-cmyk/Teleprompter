@@ -10,6 +10,10 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
 
 2. TODA BIBLIOTECA NATIVA CON SUS REGLAS DE R8, desde su fuente oficial: MediaPipe, Vosk y JNA, Media3,
    CameraX. Una biblioteca nativa nueva suma su línea aquí y en el punto 1.
+   Y también lo que cada una trae ADENTRO: conservar MediaPipe entero no alcanzó.
+   -18-10-2026: la causa de los gestos rotos de la 0.9.1 fue Flogger, el registro de Google que MediaPipe
+   trae. Busca su plataforma por nombre -DefaultPlatform- y R8 se lo cambió a v7.b. Hoy npm run play lo
+   revisa en el mapping -scripts/revisarR8.mjs-.-
 
 3. LO QUE NO TIENE QUE VIAJAR: la bitácora del motor -.motor.txt-, los bancos, los paneles y las líneas
    de medición. Se revisa que no estén en el paquete de Play.
@@ -19,6 +23,11 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
 4. PÁGINAS DE 16 KB: la prueba oficial completa sobre cada .so -developer.android.com/guide/practices/
    page-sizes-: LOAD alineado a 2^14 Y RELRO con (VirtAddr + MemSiz) % 0x4000 == 0. PAGE_ALIGNMENT_16K del
    paquete no alcanza.
+   LA CONDICIÓN DEL RELRO OBLIGA SOLO SI COMPARTE SEGMENTO -18-10-2026, leído en esa misma página-: la
+   fórmula vale cuando el GNU_RELRO comparte su LOAD con datos escribibles que vienen después. Si el RELRO
+   tiene su propio LOAD, un resto distinto de cero igual cumple. Sin esto se marcan fallas falsas: en el
+   AAB del 18-10, libvosk.so -resto 12288- y libsurface_util_jni.so -resto 4096- tienen su RELRO en su
+   propio LOAD y cumplen. libjnidispatch.so sí comparte, y con la 5.18.1 termina en 16 KB exactos.
    -15-10-2026: Play avisó por libjnidispatch.so. JNA 5.13 tenía la alineación bien y el RELRO mal; se
    subió a 5.18.1, la que pide Vosk.-
 
