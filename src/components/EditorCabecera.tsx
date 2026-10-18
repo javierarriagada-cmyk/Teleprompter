@@ -40,12 +40,20 @@ export function EditorCabecera({
   const [menuAbierto, setMenuAbierto] = useState(false)
   const [pos, setPos] = useState<{ top: number; left: number } | null>(null)
   const refBtn = useRef<HTMLButtonElement>(null)
-  const refMenuEl = useRef<HTMLDivElement | null>(null)
-  const refMenu = useCerrarAfuera(menuAbierto, () => setMenuAbierto(false), [refMenuEl])
+  // -guia-sigo, corrección del 18-10- El menú se abría fuera de la pantalla en el Redmi: iba conectado
+  // a refMenu, pero la posición se medía con otro ref, refMenuEl, que nunca se llenaba. pos quedaba en
+  // null y el menú en top -9999. Y como ⋮ no estaba entre los «también» de useCerrarAfuera, tocarlo
+  // con el menú abierto contaba como tocar afuera. Ahora se mide refMenu, y ⋮ está entre los «también».
+  // Antes:
+  // const refMenuEl = useRef<HTMLDivElement | null>(null)
+  // const refMenu = useCerrarAfuera(menuAbierto, () => setMenuAbierto(false), [refMenuEl])
+  // if (!menuAbierto || !refBtn.current || !refMenuEl.current) return
+  // const m = refMenuEl.current
+  const refMenu = useCerrarAfuera<HTMLDivElement>(menuAbierto, () => setMenuAbierto(false), [refBtn])
   React.useLayoutEffect(() => {
-    if (!menuAbierto || !refBtn.current || !refMenuEl.current) return
+    if (!menuAbierto || !refBtn.current || !refMenu.current) return
     const r = refBtn.current.getBoundingClientRect()
-    const m = refMenuEl.current
+    const m = refMenu.current
     const c = colocarMenu(
       { top: r.top, bottom: r.bottom, left: r.left, right: r.right },
       { alto: m.offsetHeight, ancho: m.offsetWidth },
