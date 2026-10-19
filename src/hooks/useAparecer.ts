@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { movimientoApagado } from '../components/movimiento'
+import { movimientoApagado } from '../lib/movimientoApagado'
 
 // APARECER Y DESVANECERSE -controles-que-se-desvanecen, 14-10-2026-. El patrón del símbolo grande de
 // pausa -'visible' | 'saliendo' | null en App-, sacado aquí para usarlo en los controles de la toma.
