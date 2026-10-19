@@ -147,7 +147,7 @@ export function useSeguidor(guionEntrada: Guion | string) {
   // PARAR TERMINA LA TOMA -tarea 89, cuarta vuelta, 04-10-2026-. Seguidor y motor como recién
   // creados, puestos en `token`: 0 al Parar, o donde el usuario deja el texto en LISTO. Lo hace
   // reiniciarToma -conduccion.ts-, el único punto de reinicio entre tomas. Pausa → Seguir no pasa por
-  // aquí. reiniciar() de abajo -sin uso- no limpiaba fallosParcialesSeguidos ni dejaba elegir dónde.
+  // aquí. Antes: reiniciar() de abajo -sin uso- no limpiaba fallosParcialesSeguidos ni dejaba elegir dónde.
   function reiniciarEn(token: number) {
     const seg = seguidorRef.current
     const motor = motorAvanceRef.current
@@ -161,14 +161,6 @@ export function useSeguidor(guionEntrada: Guion | string) {
     setPosicion({ bloque: t.bloque, linea: t.linea, palabra: t.indiceEnLinea, desdeToken: destino, hastaToken: destino, movio: destino > 0 })
   }
 
-  function reiniciar() {
-    if (seguidorRef.current) seguidorRef.current.reiniciar()
-    if (motorAvanceRef.current) motorAvanceRef.current.reiniciar()
-    if (registroRef.current) registroRef.current.limpiar()
-    bloqueConfirmadoRef.current = 0
-    setPosicion({ bloque: 0, linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false })
-  }
-
   return {
     bloqueActual: posicion.bloque,
     lineaActual: posicion.linea,
@@ -179,7 +171,6 @@ export function useSeguidor(guionEntrada: Guion | string) {
     alRecibirFinal,
     alNotificarVoz,
     irAToken,
-    reiniciar,
     reiniciarEn,
     motorAvance,
     registro: registroRef.current
