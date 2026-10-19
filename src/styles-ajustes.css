@@ -916,13 +916,14 @@
   /* -cuarta vuelta- El panel flotante es siempre el panel abierto: también al 90 %. Antes el selector era
      solo .dock-listo.abierto::before. */
   /* Antes: background: rgba(0, 0, 0, 0.9); */
-  background: color-mix(in srgb, var(--bg-panel) 94%, transparent);
+  /* Antes: background: color-mix(in srgb, var(--bg-panel) 94%, transparent); 19-10-2026: se quita la capa duplicada para que el vidrio se note. */
+  background-color: transparent;
   /* Tanda 2, 15-10-2026: el canto de 1px --sup-canto va en esta capa y no en la caja: la caja no tiene
      fondo propio y el ::before -inset -1px- tapa su borde. El vidrio sigue igual adentro. Antes: sin borde
      propio -se veia el borde blanco al 12 % de la caja solo donde el vidrio no lo tapaba-. */
   border: 1px solid transparent;
   /* El color va como gradiente de un tono: un color solo no puede ir en una capa que no sea la ultima. */
-  background-image: linear-gradient(color-mix(in srgb, var(--bg-panel) 94%, transparent), color-mix(in srgb, var(--bg-panel) 94%, transparent)), var(--sup-canto);
+  background-image: linear-gradient(color-mix(in srgb, var(--bg-panel) 80%, transparent), color-mix(in srgb, var(--bg-panel) 80%, transparent)), var(--sup-canto);
   background-origin: border-box;
   background-clip: padding-box, border-box;
 }
