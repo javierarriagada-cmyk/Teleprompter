@@ -3,7 +3,7 @@
 // Play: aislada, sacarla es borrar este archivo y una linea de App. La condicion
 // mostrarDiagnostico queda en App.
 import React from 'react'
-import type { FondoToma } from '../App'
+import type { FondoToma } from '../lib/fondoToma'
 import { IdMotor } from '../motor/MotorDeVoz'
 import { hapticaToqueSuave } from '../haptica'
 

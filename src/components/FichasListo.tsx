@@ -1,5 +1,5 @@
 import React, { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
-import type { FondoToma } from '../App'
+import type { FondoToma } from '../lib/fondoToma'
 import { AnclajeZona } from './banda'
 import {
   IconoEngranaje, IconoVoltear, IconoImagenDetras, IconoImagenRecuadro,

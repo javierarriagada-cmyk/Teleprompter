@@ -94,6 +94,7 @@ import type { AjustesLectura } from './components/FilasAjustesLectura'
 import { DialogoMicrofono } from './components/DialogoMicrofono'
 import { DialogoPermiso } from './components/DialogoPermiso'
 import { tituloDeBienvenida, bloqueDeBienvenida } from './app/bienvenida'
+import type { FondoToma } from './lib/fondoToma'
 // -recuadro-arrastre- Antes: import { GUION_VACIO, sanitizarColores, sanitizarEngine, cargarAjustesGuardados, ajustarFuenteValida } from './app/ajustesIniciales'
 import { GUION_VACIO, sanitizarColores, sanitizarEngine, cargarAjustesGuardados, ajustarFuenteValida, corregirRecuadroEnCero } from './app/ajustesIniciales'
 import { useAviso } from './hooks/useAviso'
@@ -118,8 +119,6 @@ interface AppProps {
 
 type Vista = 'biblioteca' | 'editor' | 'lectura'
 type EstadoToma = 'listo' | 'leyendo'
-
-export type FondoToma = 'detras' | 'recuadro' | 'oculta'
 
 export { PAREJAS_COLOR }
 
