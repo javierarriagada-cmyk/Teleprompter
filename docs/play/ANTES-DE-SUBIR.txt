@@ -7,6 +7,13 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
    gestos -palma y V-, grabar, pausa, guardar, visor, subtítulos y filtro.
    -15-10-2026: la 0.9.1 salió con los gestos rotos. R8 sacó piezas de MediaPipe: «gestos reconocedor
    no arranca: ExceptionInInitializerError» en cada sesión del moto g86. La ficha los anuncia.-
+   -18-10-2026, Javier: la versión de Play NO se instala en el Redmi desde el PC. Cada app nueva que no
+   viene de Play abre la pregunta de Play Protect, y Google recibe datos de la app. Por eso va en dos
+   partes. ANTES de subir, el paquete de Play corre en el EMULADOR -con otro applicationId, ver el paso a
+   paso de abajo- para ver que ARRANQUE cada pieza nativa: voz, gestos, grabar con guardar y el visor.
+   Toda falla se investiga en el registro antes de culpar al emulador: el 18-10 una toma no abrió el visor
+   y se dejó pasar. DESPUÉS de publicar, Javier instala desde Play en el g86 y hace la toma larga con su
+   voz -punto 5-.-
 
 2. TODA BIBLIOTECA NATIVA CON SUS REGLAS DE R8, desde su fuente oficial: MediaPipe, Vosk y JNA, Media3,
    CameraX. Una biblioteca nativa nueva suma su línea aquí y en el punto 1.
@@ -45,3 +52,55 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
 
 Conocido y aceptado: la advertencia de símbolos de depuración por las .so de Vosk, que vienen sin
 símbolos. No bloquea.
+
+
+EL PASO A PASO DE UNA SUBIDA -como salió la 0.9.2 a la prueba cerrada, 18-10-2026; Google la publicó en
+minutos-. Javier: «para que con ese doc lo tengamos clarísimo».
+
+A. EN EL PC -Claude-
+  1. La versión: versionName a mano en android/app/build.gradle, con su comentario y su «Antes:». El
+     versionCode sube solo -cantidad de commits-. Las notas en docs/play/notas-version.txt, un bloque
+     <es-419> y otro <en-US>, con 500 caracteres como máximo cada uno: se cuentan. Javier las aprueba.
+     Commit en main con su correo y se sube.
+  2. `npm run play` en la CARPETA DEL REPO, sin «subir». No se corre en una copia del scratchpad: ahí npm ls
+     tapa la ruta con *** y la comprobación de licencias da FALLA. Deja Escritorio\Sigo-play.aab, firmado
+     con la llave de subida. Todas sus comprobaciones tienen que salir en OK.
+  3. Las revisiones a mano, sobre ese mismo AAB -los archivos se sacan del .aab con unzip-:
+     - 16 KB en cada .so de base/lib/arm64-v8a, con las dos condiciones del punto 4.
+     - Lo que no viaja -punto 3-: en base/assets/public/assets/*.js no tienen que estar panel-corpus,
+       panel-mediciones, btn-abrir-mediciones, btn-abrir-corpus ni btn-borrar-copias-medicion. CON
+       CONTRAPRUEBA: ahí mismo SÍ tiene que estar guardando-toma. El 18-10 la primera búsqueda miraba una
+       carpeta vacía, daba 0 en todo y parecía bien.
+     - Sin service worker: ni registerSW ni sw.js en el .aab.
+     - versionName: `bundletool dump manifest --xpath=/manifest/@android:versionName`.
+     - Flogger con su nombre en android/app/build/outputs/mapping/release/mapping.txt -punto 2-.
+  4. Antes de subir, el emulador con el paquete de Play -punto 1-: otro applicationId y
+     webContentsDebuggingEnabled, SOLO en una copia del scratchpad y nunca en el commit; `bundletool
+     build-apks --local-testing` e `install-apks` al emulador, una sola vez. El emulador motog86 no tiene
+     cuenta de Google, así que Play Protect no pregunta. Con -no-snapshot-save, lo instalado se pierde al
+     apagarlo.
+
+B. EN LA CONSOLA -Javier-. `npm run play -- subir` solo sabe la PRUEBA INTERNA y se niega a las demás
+   pistas: la prueba cerrada se sube a mano. Ayuda oficial: support.google.com/googleplay/android-developer/
+   answer/9859348.
+  1. Antes: ver si la publicación administrada está encendida o apagada -con la 0.9.1 y la 0.9.2,
+     apagada-. Ver que la prueba cerrada esté Activa y cuántos testers tiene.
+  2. Probar y publicar > Pruebas > Prueba cerrada > «Gestionar canal» en el canal que YA EXISTE. Nunca
+     «Crear pista».
+  3. «Crear nueva versión». Así se actualiza: cada entrega es una versión del mismo canal, y a los testers
+     les llega como actualización porque es la misma app con un versionCode mayor.
+  4. En app bundles, subir Escritorio\Sigo-play.aab y esperar a que muestre su versionCode y su versión.
+     El nombre de la versión, como venga.
+  5. Notas de la versión: pegar tal cual el bloque <es-419>...</es-419> <en-US>...</en-US> de
+     notas-version.txt.
+  6. «Guardar como borrador» y «Siguiente». En la revisión no puede haber errores. La advertencia de
+     símbolos de Vosk es conocida; cualquier otra se le muestra a Claude antes de seguir. Si pide un
+     porcentaje de lanzamiento, se decide antes de elegir.
+  7. El botón final -«Iniciar lanzamiento», «Guardar» o «Publicar», según la consola-.
+  8. Opcional: si Play avisa que no hay archivo de desofuscación, se sube el mapping.txt de arriba. Sirve
+     para leer los informes de fallas.
+  9. Después: la prueba cerrada sigue Activa, con los mismos testers. Nunca «Pausar» ni tocar
+     Verificadores.
+
+C. DESPUÉS DE PUBLICADA -Javier-: instalar desde Play en el g86 y hacer la toma larga del punto 5, con
+   voz, gestos, pausa, guardar, visor, subtítulos y filtro. Lo que falle va a la próxima versión.
