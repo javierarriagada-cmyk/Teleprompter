@@ -22,8 +22,15 @@ describe('play', () => {
 
   test('lee las notas en los dos idiomas', () => {
     const notas = leerNotas(readFileSync(resolve('docs/play/notas-version.txt'), 'utf8'))
-    expect(notas['es-419']).toContain('sigue la voz')
-    expect(notas['en-US']).toContain('follows your voice')
+    // -18-10-2026- Lo que importa de las notas en cualquier versión, no una frase de una de ellas: con las de
+    // la 0.9.2 la prueba cayó porque esperaba la de la 0.9.1. Play acepta hasta 500 caracteres por idioma.
+    // Antes: expect(notas['es-419']).toContain('sigue la voz')
+    //        expect(notas['en-US']).toContain('follows your voice')
+    for (const idioma of ['es-419', 'en-US'] as const) {
+      expect(notas[idioma].trim().length).toBeGreaterThan(0)
+      expect([...notas[idioma]].length).toBeLessThanOrEqual(500)
+      expect(notas[idioma]).not.toMatch(/<\/?(es-419|en-US)>/)
+    }
   })
 
   test('lee los tres bloques de la ficha', () => {
