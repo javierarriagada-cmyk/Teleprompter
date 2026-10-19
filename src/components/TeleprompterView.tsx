@@ -85,7 +85,7 @@ export function avanzarTrabado(
 import { AnclajeZona, calcularBanda, calcularBgVelo, calcularTramosVelo } from './banda'
 // -recuadro-arrastre- Antes: import { RecuadroCamara, EsquinaRecuadroH } from './RecuadroCamara'
 import { RecuadroCamara, EsquinaRecuadroH, aceptarPosicionRecuadro } from './RecuadroCamara'
-import { FondoToma } from '../App'
+import type { FondoToma } from '../lib/fondoToma'
 import {
   IconoAtras, IconoEmpezar, IconoEmpezarAPausa
 } from './IconosApp'

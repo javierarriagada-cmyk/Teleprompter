@@ -1,5 +1,6 @@
 import { CameraPreview } from '@capgo/camera-preview'
 import { registerPlugin } from '@capacitor/core'
+import type { FondoToma } from './fondoToma'
 
 export interface CamaraNativaPlugin {
   fijarModoSuperficie(options: { modo: 'sistema' | 'textura' }): Promise<{ encontrado: boolean; modo: string }>
@@ -84,8 +85,6 @@ export const CamaraNativa = registerPlugin<CamaraNativaPlugin>('CamaraNativa')
 
 export type LadoCamara = 'frontal' | 'trasera'
 export type ModoCamara = 'apagada' | 'frontal' | 'trasera'
-export type FondoToma = 'detras' | 'recuadro' | 'oculta'
-
 export interface OpcionesConfigCamara {
   fondoToma?: FondoToma
   recuadroX?: number // fracción 0..1
