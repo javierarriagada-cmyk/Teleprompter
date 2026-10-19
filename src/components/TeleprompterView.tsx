@@ -93,8 +93,8 @@ import { movimientoApagado } from './movimiento'
 // Antes: import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA, MARGEN_RENGLON_LECTURA_PX } from './estiloLectura'
 import { familiaLectura, colorLetraEfectiva, columnaLectura, rellenoLecturaDePie, INTERLINEADO_LECTURA, MARGEN_RENGLON_LECTURA_PX } from './estiloLectura'
 import { actualizarConfigCamara } from '../lib/camara'
-import { App as CapacitorApp } from '@capacitor/app'
-import { aplicarBrillo, leerBrilloSistema, restaurarBrillo } from '../lib/brillo'
+import { useBrilloAlCambiarEstado } from '../hooks/useBrilloAlCambiarEstado'
+import { leerBrilloSistema, restaurarBrillo } from '../lib/brillo'
 import { FichasListo, FichaMas, PanelFicha } from './FichasListo'
 import { DockListo } from './DockListo'
 import type { AjustesLectura } from './FilasAjustesLectura'
@@ -452,28 +452,7 @@ export default function TeleprompterView({
   const [brillo, setBrillo] = useState<number | null>(null)
   const [brilloSistema, setBrilloSistema] = useState<number | null>(null)
 
-  // EL BRILLO SE DEVUELVE AL SISTEMA EN LOS DOS CAMINOS DE SALIDA, NO EN UNO.
-  //
-  // Al desmontar el lienzo, que es salir por la puerta. Y AL IRSE A SEGUNDO
-  // PLANO, que no desmonta nada: si entra una llamada o se cambia de
-  // aplicacion con el brillo en Alto, la pantalla se queda encendida a tope en
-  // otra parte y gastando bateria, sin que nadie entienda por que.
-  //
-  // Al volver se repone el brillo elegido, porque la persona no abandono la toma:
-  // la interrumpieron. Si volviera en automatico, tendria que acordarse de
-  // ajustarlo otra vez justo cuando retoma.
-  useEffect(() => {
-    const sub: any = CapacitorApp.addListener('appStateChange', ({ isActive }) => {
-      if (!isActive) restaurarBrillo()
-      else if (brillo !== null) aplicarBrillo(brillo)
-    })
-    return () => {
-      try {
-        if (sub && typeof sub.then === 'function') sub.then((s: any) => s.remove())
-        else if (sub && typeof sub.remove === 'function') sub.remove()
-      } catch (e) {}
-    }
-  }, [brillo])
+  useBrilloAlCambiarEstado(brillo)
 
   useEffect(() => {
     return () => {
