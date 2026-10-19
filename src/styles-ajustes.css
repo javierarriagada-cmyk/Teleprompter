@@ -444,6 +444,17 @@
   box-shadow: none;
   overflow: visible;
 }
+/* 19-10-2026: las tarjetas sólidas tapaban el vidrio del panel de ajustes. */
+.dock-listo .tarjeta-seccion-ajustes,
+.panel-ajustes-flotante .tarjeta-seccion-ajustes {
+  background-image: linear-gradient(
+    color-mix(in srgb, var(--bg-superficie) 50%, transparent),
+    color-mix(in srgb, var(--bg-superficie) 50%, transparent)
+  ), var(--sup-canto);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border: 1px solid transparent;
+}
 /* Dentro del panel de ajustes, la tarjeta no lleva el margen lateral de 16px de la pantalla vieja. */
 .dock-panel-cuerpo .tarjeta-seccion-ajustes {
   margin: 0 0 10px;
