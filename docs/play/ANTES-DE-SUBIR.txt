@@ -54,6 +54,13 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
    de Android "Sigo prueba", que usa la llave de depuración del PC de Javier y sirve solo para probar las
    APK en el Redmi. El cliente "Sigo Play" se queda.
 
+9. LA CUENTA DE GOOGLE -desde 5ec9768, 20-10-2026-: main ya trae «Continuar con Google» en Ajustes. NO subir a
+   Play una versión con la cuenta hasta tener: la ficha de seguridad de los datos al día en Play Console
+   -correo, nombre, ID de usuario y, con la copia de seguridad, los guiones-, la política de privacidad del
+   sitio al día y la página /borrar-cuenta publicada. Play exige declarar lo que la app recibe. Además,
+   el inicio de sesión de la versión de Play se prueba en la prueba interna o cerrada: entra por el cliente
+   "Sigo Play", con otra huella que la APK de prueba.
+
 Conocido y aceptado: la advertencia de símbolos de depuración por las .so de Vosk, que vienen sin
 símbolos. No bloquea.
 
