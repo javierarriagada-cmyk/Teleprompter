@@ -9,18 +9,24 @@
 export default {
   idioma: 'en',
   locale: 'en_US',
-  rutas: { portada: '/en', privacidad: '/en/privacy', soporte: '/en/support', ayuda: '/en/help' },
+  // -sitio-cuenta, 20-10-2026- Suma la página para borrar la cuenta. Antes:
+  // rutas: { portada: '/en', privacidad: '/en/privacy', soporte: '/en/support', ayuda: '/en/help' },
+  rutas: { portada: '/en', privacidad: '/en/privacy', soporte: '/en/support', ayuda: '/en/help', borrarCuenta: '/en/delete-account' },
 
   meta: {
     titulo: 'Sigo — The teleprompter that follows your voice',
     descripcion: 'Sigo is the teleprompter that follows your voice: read out loud and the text keeps pace with you. Pause, and it waits. Coming soon to Google Play.',
     ogDescripcion: 'The teleprompter that follows your voice. Coming soon to Google Play.',
     privacidadTitulo: 'Privacy — Sigo',
-    privacidadDescripcion: 'How Sigo handles your scripts, your takes and your voice: everything stays on your phone.',
+    // -sitio-cuenta, 20-10-2026- Ya no todo queda en el teléfono: con sesión, los guiones tienen copia en la nube.
+    // Antes: privacidadDescripcion: 'How Sigo handles your scripts, your takes and your voice: everything stays on your phone.',
+    privacidadDescripcion: 'How Sigo handles your scripts, your takes, your voice and your account.',
     soporteTitulo: 'Support — Sigo',
     soporteDescripcion: 'How to report a problem with Sigo, the teleprompter that follows your voice.',
     ayudaTitulo: 'Help — Sigo',
-    ayudaDescripcion: 'How to use Sigo: read, record, pause, captions and more.'
+    ayudaDescripcion: 'How to use Sigo: read, record, pause, captions and more.',
+    borrarCuentaTitulo: 'Delete account — Sigo',
+    borrarCuentaDescripcion: 'How to delete your Sigo account and the backup of your scripts, from the app or without it.'
   },
 
   selector: { etiqueta: 'Language' },
@@ -64,7 +70,9 @@ export default {
 
   cierre: { frase: 'The teleprompter that follows your&nbsp;voice.', disponible: 'Coming soon to Google Play.' },
 
-  pie: { privacidad: 'Privacy', soporte: 'Support', ayuda: 'Help' },
+  // -sitio-cuenta, 20-10-2026- Suma Borrar cuenta. Antes:
+  // pie: { privacidad: 'Privacy', soporte: 'Support', ayuda: 'Help' },
+  pie: { privacidad: 'Privacy', soporte: 'Support', ayuda: 'Help', borrarCuenta: 'Delete account' },
 
   // EL CORREO DE CONTACTO en ingles -Javier, 07-10-2026-: hello@. Antes las paginas en ingles
   // decian hola@, el de espanol. Los dos reciben.
@@ -83,13 +91,21 @@ export default {
   privacidad: {
     titulo: 'Privacy',
     puntos: [
-      'Your scripts live on your phone.',
+      // -sitio-cuenta, 20-10-2026- Con sesión hay copia en la nube. Antes: 'Your scripts live on your phone.',
+      'Your scripts live on your phone.<small>If you sign in, there is also a backup in the cloud: see below.</small>',
       'So do your takes.<small>If you save one to your gallery, that’s where it stays.</small>',
       'Sigo uses the microphone to follow your voice.<small>Speech recognition runs on the phone. Your audio is never sent to any server.</small>',
       'Sigo uses the camera when you turn it on to record yourself.<small>The video is saved on your phone and stays there.</small>',
       'Gestures are recognized on the phone.<small>No image leaves it.</small>',
       'Sigo does not send usage statistics.',
-      'Sigo has no accounts.',
+      // -sitio-cuenta, 20-10-2026- Ya no es cierto: hay cuenta, opcional. Antes: 'Sigo has no accounts.',
+      'Signing in with Google is optional.<small>Sigo works fully without an account.</small>',
+      // -sitio-cuenta, 20-10-2026- El inicio de sesión y la copia de seguridad -órdenes A y B-.
+      'If you sign in with Google, Sigo receives your email, your name and an account identifier.<small>Firebase also stores the link to your Google profile photo, which Sigo doesn’t use or show.</small>',
+      'The backup of your scripts is stored in Firebase, by Google, in the Santiago de Chile region.<small>They travel encrypted and only your account can read them.</small>',
+      'Firebase records the IP address to prevent abuse.',
+      'Videos never leave the phone.',
+      'To delete your account and the backup of your scripts: <a href="/en/delete-account">sigoteleprompter.com/en/delete-account</a>.',
       'This site uses no tracking cookies and no analytics.'
     ],
     contacto: 'Questions? Write to us.'
@@ -116,7 +132,9 @@ export default {
       { titulo: 'Delete and archive a script', parrafos: ['Swipe the row, hold it, or use the editor menu. Deleting shows Undo. Archived scripts are in Archived.'], captura: '[CAPTURA: script list, row menu with Archive and Delete]' },
       { titulo: 'Shortcuts', parrafos: ['Hold the Sigo icon on your phone. New script with what was copied creates a script and pastes whatever is there. Record opens Record directly with the most recent script.'], captura: '[CAPTURA: Android launcher, Sigo icon menu with the two shortcuts]' },
       { titulo: 'Settings', parrafos: ['In Settings you change the letter size, typeface, width, colors, mirror and show time. From the home screen you also change the theme and the app language.'], captura: '[CAPTURA: Settings panel from home, Reading and Appearance sections]' },
-      { titulo: 'Offline', parrafos: ['The voice for your language and the gestures download once. After that they work without internet. If there is no connection the first time, Sigo says so and offers to retry.'] , captura: '[CAPTURA: offline notice when trying to read without the voice downloaded]' }
+      { titulo: 'Offline', parrafos: ['The voice for your language and the gestures download once. After that they work without internet. If there is no connection the first time, Sigo says so and offers to retry.'] , captura: '[CAPTURA: offline notice when trying to read without the voice downloaded]' },
+      // -sitio-cuenta, 20-10-2026- The account and the backup of the scripts -orders A and B-.
+      { titulo: 'Your account and backup', parrafos: ['With your Google account, Sigo backs up your scripts and you have them on all your devices. It’s optional: without an account, Sigo works the same.', 'To sign in, open Settings and tap Continue with Google. To sign out, tap your account at the top of Settings and choose Sign out. Your scripts stay on the phone.', 'To delete it, tap your account and choose Delete account. Your account and the cloud backup are deleted; the scripts on the phone aren’t affected.'], captura: '[CAPTURE: Settings from the home screen, with the account card at the top: signed out, Never lose a script and Continue with Google; signed in, the email and Backup complete]' },
     ]
   },
   soporte: {
@@ -124,6 +142,15 @@ export default {
     queEs: 'Sigo is a teleprompter that follows your voice: you read out loud and the text keeps pace with you. Today it’s for Android phones.',
     avisa: 'If something isn’t working, write to us and tell us:',
     puntos: ['Which phone you’re using.', 'Which version of Android it runs.', 'What you were doing when it happened.']
+  },
+
+  // -sitio-cuenta, 20-10-2026- LA PÁGINA PARA BORRAR LA CUENTA SIN LA APP, que pide Google Play: cómo se hace,
+  // qué se borra, que no se deshace y cuánto demora. sitio/fuente/borrar-cuenta.html, con el molde de soporte.
+  borrarCuenta: {
+    titulo: 'Delete your Sigo account',
+    desdeLaApp: 'From the app: open Sigo, tap your account at the top of Settings, choose Delete account and confirm. Your account and the backup of your scripts in the cloud are deleted right away. This can\'t be undone. The scripts on your phone aren\'t affected.',
+    sinLaApp: 'Without the app: write to us at <a href="mailto:hello@sigoteleprompter.com">hello@sigoteleprompter.com</a> from the email of your Google account, with the subject «Delete my Sigo account». We delete your account and the backup of your scripts as soon as possible, within 7 days at most, and let you know when it\'s done.',
+    queSeBorra: 'What gets deleted: your Sigo account -your email, your name, the link to your profile photo and the account identifier- and the whole backup of your scripts. We don\'t keep copies.'
   },
 
   // THE SCRIPT ON THE PHONE. La misma idea que el de espanol y los mismos formatos. El

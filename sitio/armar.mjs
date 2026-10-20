@@ -90,7 +90,8 @@ const hojas = (o, pre = '') => Object.entries(o).flatMap(([k, v]) => (v && typeo
 }
 
 const DOMINIO = 'https://sigoteleprompter.com'
-const PAGINAS = ['portada', 'privacidad', 'soporte', 'ayuda']
+// -sitio-cuenta, 20-10-2026- Suma borrarCuenta. Antes: const PAGINAS = ['portada', 'privacidad', 'soporte', 'ayuda']
+const PAGINAS = ['portada', 'privacidad', 'soporte', 'ayuda', 'borrarCuenta']
 // La ruta publica -/en/privacy- al archivo que la sirve con cleanUrls -en/privacy.html-. La
 // portada en ingles es en.html y no en/index.html: asi /en se sirve sin redirigir a /en/.
 const archivoDe = (ruta) => (ruta === '/' ? 'index.html' : `${ruta.slice(1)}.html`)
@@ -145,10 +146,12 @@ function selector(t, pagina, lugar) {
 // Antes, en el pie: <a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a>
 // en los dos idiomas. Desde el 07-10-2026 el correo es el de cada idioma -textos, correo-: en
 // ingles, hello@.
+// -sitio-cuenta, 20-10-2026- El pie suma «Borrar cuenta» / «Delete account». Antes, la primera línea era:
+//     <li><span><a href="${t.rutas.privacidad}">${t.pie.privacidad}</a></span><span><a href="${t.rutas.soporte}">${t.pie.soporte}</a></span><span><a href="${t.rutas.ayuda}">${t.pie.ayuda}</a></span></li>
 function pie(t, pagina) {
   return `<footer class="pie">
   <ul>
-    <li><span><a href="${t.rutas.privacidad}">${t.pie.privacidad}</a></span><span><a href="${t.rutas.soporte}">${t.pie.soporte}</a></span><span><a href="${t.rutas.ayuda}">${t.pie.ayuda}</a></span></li>
+    <li><span><a href="${t.rutas.privacidad}">${t.pie.privacidad}</a></span><span><a href="${t.rutas.soporte}">${t.pie.soporte}</a></span><span><a href="${t.rutas.ayuda}">${t.pie.ayuda}</a></span><span><a href="${t.rutas.borrarCuenta}">${t.pie.borrarCuenta}</a></span></li>
     <li><span><a href="mailto:${t.correo}">${t.correo}</a></span><span>© Sigo</span></li>
   </ul>
   ${selector(t, pagina, 'pie')}
@@ -280,6 +283,9 @@ for (const [idioma, t] of Object.entries(IDIOMAS)) {
   // escribía. Faltaba esta línea, y sitio/public quedaba sin ayuda.html ni en/help.html, mientras el
   // botón Ayuda de la app -#135- ya llevaba a /ayuda y daba 404.
   paginas[archivoDe(t.rutas.ayuda)] = llenar(textos(leer('sitio/fuente/ayuda.html'), t, 'ayuda.html'), { ...comunes('ayuda'), '<!--@marca-->': marcaInterior }, `ayuda.html (${idioma})`)
+  // -sitio-cuenta, 20-10-2026- La página para borrar la cuenta sin la app. Sin esta línea no sale -lo que pasó
+  // con Ayuda, #134-.
+  paginas[archivoDe(t.rutas.borrarCuenta)] = llenar(textos(leer('sitio/fuente/borrar-cuenta.html'), t, 'borrar-cuenta.html'), { ...comunes('borrarCuenta'), '<!--@marca-->': marcaInterior }, `borrar-cuenta.html (${idioma})`)
 }
 
 // Lo que arma este script, y nada mas: lo que quede de un armado anterior se borra.
