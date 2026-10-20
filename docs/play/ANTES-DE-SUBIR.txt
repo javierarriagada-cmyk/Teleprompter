@@ -50,6 +50,10 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
 
 7. versionCode mayor que el último subido; notas de la versión en docs/play/notas-version.txt.
 
+8. SOLO AL PASAR A PRODUCCIÓN ABIERTA: Borrar en Google Cloud → Google Auth Platform → Clientes el cliente
+   de Android "Sigo prueba", que usa la llave de depuración del PC de Javier y sirve solo para probar las
+   APK en el Redmi. El cliente "Sigo Play" se queda.
+
 Conocido y aceptado: la advertencia de símbolos de depuración por las .so de Vosk, que vienen sin
 símbolos. No bloquea.
 
