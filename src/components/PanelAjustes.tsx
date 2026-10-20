@@ -174,6 +174,8 @@ export function PanelAjustes({
 
   // La version real, la del paquete -1.0 (457)-. Solo con Acerca de Sigo.
   const conAcerca = con('acerca')
+  // -orden B, segunda corrección del 20-10-2026- Las puertas donde aparece la tarjeta de la cuenta.
+  const conCuenta = conAcerca && configuracionLista()
   const [version, setVersion] = useState<string | null>(null)
   useEffect(() => {
     // Solo en el telefono: en el navegador -y en las pruebas- el plugin no trae getInfo.
@@ -452,10 +454,24 @@ export function PanelAjustes({
             {/* -orden B, corrección del 20-10-2026, visto en el Redmi- La tarjeta de la cuenta va JUSTO debajo
                 del título «Ajustes», arriba del selector y de la muestra, que siguen junto a Lectura. Antes iba
                 al comienzo de dock-panel-cuerpo, debajo de los dos. */}
-            {conAcerca && configuracionLista() && <TarjetaCuenta hostMenus={hostMenus} />}
-            {origen !== 'grabar' && <SelectorModoLectura />}
-            {con('lectura') && <MuestraLectura ajustes={ajustesLectura} />}
+            {/* -orden B, segunda corrección del 20-10-2026, decisión de Javier en el Redmi- Donde está la tarjeta
+                de la cuenta, solo el título con su X queda fijo: la tarjeta, el selector con su línea y la
+                muestra pasan DENTRO de dock-panel-cuerpo y se desplazan junto con las secciones, como una sola
+                lista -y toman el mismo ancho que las tarjetas de sección-. En las demás puertas, igual que hoy.
+                Antes:
+                {conAcerca && configuracionLista() && <TarjetaCuenta hostMenus={hostMenus} />}
+                {origen !== 'grabar' && <SelectorModoLectura />}
+                {con('lectura') && <MuestraLectura ajustes={ajustesLectura} />} */}
+            {!conCuenta && origen !== 'grabar' && <SelectorModoLectura />}
+            {!conCuenta && con('lectura') && <MuestraLectura ajustes={ajustesLectura} />}
             <div className="dock-panel-cuerpo">
+              {conCuenta && (
+                <>
+                  <TarjetaCuenta hostMenus={hostMenus} />
+                  {origen !== 'grabar' && <SelectorModoLectura />}
+                  {con('lectura') && <MuestraLectura ajustes={ajustesLectura} />}
+                </>
+              )}
               {/* -orden B, 20-10-2026- La tarjeta de la cuenta, arriba de todo, en las mismas puertas de la
                   orden A -conAcerca y configuracionLista()- y sin título de sección. */}
               {/* -corrección del 20-10-2026- La tarjeta sube arriba del selector -ver más arriba-.

@@ -1409,13 +1409,14 @@
 /* -orden B, 20-10-2026, decisión de Javier: «ponle mucho ojo a lo estético»- LA TARJETA DE LA CUENTA,
    arriba de todo en Ajustes. Solo variables del panel: los únicos colores escritos son los del botón de
    Google, más arriba. Separada de la primera sección como las secciones entre sí. */
-.tarjeta-cuenta {
-  margin-top: 8px;
-  margin-bottom: 8px;
-}
+/* -segunda corrección del 20-10-2026, Redmi- La tarjeta vive ahora dentro de .dock-panel-cuerpo y toma el
+   margen y el ancho de las tarjetas de sección -.dock-panel-cuerpo .tarjeta-seccion-ajustes: 0 0 10px,
+   relleno 2px 4px-. Antes:
+   .tarjeta-cuenta { margin-top: 8px; margin-bottom: 8px; } */
 /* Sin sesión: la bienvenida. Título, línea y botón, con aire entre las piezas y la jerarquía clara. */
+/* -segunda corrección del 20-10-2026, Redmi- Más compacta: de ~185 px a ~140 px. Antes: padding: 20px 16px 18px; */
 .bienvenida-cuenta {
-  padding: 20px 16px 18px;
+  padding: 14px 16px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -1423,13 +1424,16 @@
 .bienvenida-cuenta-titulo {
   /* El título de las tarjetas del panel -.dock-panel-titulo-. */
   margin: 0;
-  font-size: 18px;
+  /* -segunda corrección del 20-10-2026- Antes: font-size: 18px; */
+  font-size: 16px;
   font-weight: 600;
   color: var(--color-texto);
 }
 .bienvenida-cuenta-linea {
-  margin: 6px 0 16px;
-  font-size: 14px;
+  /* -segunda corrección del 20-10-2026- 4 px bajo el título y 12 px antes del botón.
+     Antes: margin: 6px 0 16px; font-size: 14px; */
+  margin: 4px 0 12px;
+  font-size: 13px;
   line-height: 1.4;
   color: var(--color-apagado);
 }
