@@ -146,7 +146,11 @@ async function paquetesAndroid() {
     // El de googleid es el texto de https://developer.android.com/studio/terms.html -«This is the Android
     // Software Development Kit License Agreement», versión del 28-04-2026-, bajado el 20-10-2026 y pasado a
     // texto plano sin cambiar nada.
-    const textoGuardado = leerLicense(path.join(RAIZ, 'docs', 'licencias', `${c.grupo}.${c.artefacto}`))
+    // -20-10-2026, Claude- El texto guardado vive en el repo, y git en Windows lo deja con \r\n al hacer
+    // checkout: en este PC salía distinto que en Linux y la comprobación de npm run play daba FALLA con el
+    // mismo texto. Se normaliza a \n SOLO lo de docs/licencias: los LICENSE de npm se copian tal como
+    // vienen en el paquete, iguales en los dos sistemas. Antes: const textoGuardado = leerLicense(...) sin replace.
+    const textoGuardado = leerLicense(path.join(RAIZ, 'docs', 'licencias', `${c.grupo}.${c.artefacto}`)).replace(/\r\n/g, '\n')
     // Antes: const sinTexto = declarada !== 'Apache-2.0' && declarada !== 'sin verificar'
     const sinTexto = declarada !== 'Apache-2.0' && declarada !== 'sin verificar' && !textoGuardado
     salida.push({
