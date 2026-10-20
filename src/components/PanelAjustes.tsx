@@ -25,6 +25,8 @@ import { IdiomaApp, idiomaApp, fijarIdioma } from '../lib/idioma'
 // -cuenta-google, orden A- Entrar con Google, salir y borrar la cuenta.
 import { configuracionLista } from '../lib/firebaseConfig'
 import { ErrorCuenta, ResultadoCuenta, borrarCuenta, entrar, estadoCuenta, salir, suscribirCuenta } from '../lib/cuenta'
+// -orden B- El estado de la copia de seguridad, para la línea de la tarjeta de la cuenta.
+import { FaseRespaldo, estadoRespaldo, suscribirRespaldo } from '../lib/respaldo'
 import type { ClaveTexto } from '../textos'
 import { t, useTextos } from '../textos'
 import { CURVA_RESORTE, MS_CHICO, movimientoApagado } from './movimiento'
@@ -172,6 +174,8 @@ export function PanelAjustes({
 
   // La version real, la del paquete -1.0 (457)-. Solo con Acerca de Sigo.
   const conAcerca = con('acerca')
+  // -orden B, segunda corrección del 20-10-2026- Las puertas donde aparece la tarjeta de la cuenta.
+  const conCuenta = conAcerca && configuracionLista()
   const [version, setVersion] = useState<string | null>(null)
   useEffect(() => {
     // Solo en el telefono: en el navegador -y en las pruebas- el plugin no trae getInfo.
@@ -447,9 +451,31 @@ export function PanelAjustes({
             </div>
             {/* -tarea 106, lamina 1- Entre la cabecera y la muestra: Con la voz | Velocidad fija. En Grabar
                 el modo se elige en su ficha, arriba de las fichas. */}
-            {origen !== 'grabar' && <SelectorModoLectura />}
-            {con('lectura') && <MuestraLectura ajustes={ajustesLectura} />}
+            {/* -orden B, corrección del 20-10-2026, visto en el Redmi- La tarjeta de la cuenta va JUSTO debajo
+                del título «Ajustes», arriba del selector y de la muestra, que siguen junto a Lectura. Antes iba
+                al comienzo de dock-panel-cuerpo, debajo de los dos. */}
+            {/* -orden B, segunda corrección del 20-10-2026, decisión de Javier en el Redmi- Donde está la tarjeta
+                de la cuenta, solo el título con su X queda fijo: la tarjeta, el selector con su línea y la
+                muestra pasan DENTRO de dock-panel-cuerpo y se desplazan junto con las secciones, como una sola
+                lista -y toman el mismo ancho que las tarjetas de sección-. En las demás puertas, igual que hoy.
+                Antes:
+                {conAcerca && configuracionLista() && <TarjetaCuenta hostMenus={hostMenus} />}
+                {origen !== 'grabar' && <SelectorModoLectura />}
+                {con('lectura') && <MuestraLectura ajustes={ajustesLectura} />} */}
+            {!conCuenta && origen !== 'grabar' && <SelectorModoLectura />}
+            {!conCuenta && con('lectura') && <MuestraLectura ajustes={ajustesLectura} />}
             <div className="dock-panel-cuerpo">
+              {conCuenta && (
+                <>
+                  <TarjetaCuenta hostMenus={hostMenus} />
+                  {origen !== 'grabar' && <SelectorModoLectura />}
+                  {con('lectura') && <MuestraLectura ajustes={ajustesLectura} />}
+                </>
+              )}
+              {/* -orden B, 20-10-2026- La tarjeta de la cuenta, arriba de todo, en las mismas puertas de la
+                  orden A -conAcerca y configuracionLista()- y sin título de sección. */}
+              {/* -corrección del 20-10-2026- La tarjeta sube arriba del selector -ver más arriba-.
+                  Antes: {conAcerca && configuracionLista() && <TarjetaCuenta hostMenus={hostMenus} />} */}
               {con('lectura') && (
                 <>
                   <h3 className="dock-seccion">{t('seccionLectura')}</h3>
@@ -549,7 +575,9 @@ export function PanelAjustes({
               {/* -cuenta-google, orden A, 20-10-2026- Cuenta, entre Apariencia y Ayuda. Sale en las mismas
                   puertas que Ayuda -conAcerca- y SOLO si los datos de Firebase ya están -configuracionLista()-:
                   mientras digan "PENDIENTE", la sección no existe. */}
-              {conAcerca && configuracionLista() && <SeccionCuenta />}
+              {/* -orden B, 20-10-2026, decisión de Javier: «está oculta»- La cuenta sube arriba de todo, como
+                  una tarjeta sin título, justo debajo de «Ajustes» -TarjetaCuenta, al comienzo del cuerpo-.
+                  Antes: {conAcerca && configuracionLista() && <SeccionCuenta />} */}
               {/* -guia-sigo- Ayuda y comentarios, arriba de Acerca. */}
               {conAcerca && (
                 <>
@@ -696,48 +724,187 @@ const TEXTO_ERROR_CUENTA: Record<ErrorCuenta, ClaveTexto> = {
   otro: 'cuentaErrorOtro'
 }
 
-function SeccionCuenta() {
+// -orden B, 20-10-2026- SeccionCuenta pasa a ser TarjetaCuenta, más abajo: una tarjeta arriba de todo, sin
+// título; sin sesión, la bienvenida; con sesión, una fila de dos líneas con menú. Antes:
+// function SeccionCuenta() {
+//   const estado = useSyncExternalStore(suscribirCuenta, estadoCuenta, estadoCuenta)
+//   // La línea de la sección: un error, o «Tus guiones se quedan en este teléfono.» al cerrar sesión.
+//   const [linea, setLinea] = useState<ClaveTexto | null>(null)
+//   const [confirmarBorrar, setConfirmarBorrar] = useState(false)
+//
+//   function mostrar(r: ResultadoCuenta) {
+//     // Cancelar no muestra nada.
+//     setLinea('error' in r ? TEXTO_ERROR_CUENTA[r.error] : null)
+//   }
+//
+//   return (
+//     <>
+//       <h3 className="dock-seccion">{t('seccionCuenta')}</h3>
+//       <div className="tarjeta-seccion-ajustes" data-testid="seccion-cuenta">
+//         {estado.tipo === 'conSesion' ? (
+//           <>
+//             <div className="fila-ajuste" data-testid="fila-cuenta-correo">
+//               <span className="fila-ajuste-icono" aria-hidden="true"><IconoCorreo tamano={22} /></span>
+//               <div className="fila-ajuste-nombre">{estado.correo}</div>
+//             </div>
+//             {/* Cerrar sesión no pregunta: no se pierde nada. */}
+//             <FilaAjuste
+//               testid="fila-cerrar-sesion"
+//               icono={<span />}
+//               nombre={t('cerrarSesion')}
+//               onClick={() => {
+//                 void salir().then((r) => setLinea('error' in r ? TEXTO_ERROR_CUENTA[r.error] : 'cuentaGuionesSeQuedan'))
+//               }}
+//             />
+//             {/* En el rojo de borrar, como «Borrar» del menú del editor -.peligro, styles-ajustes.css-. */}
+//             <div className="fila-cuenta-borrar peligro">
+//               <FilaAjuste
+//                 testid="fila-borrar-cuenta"
+//                 icono={<IconoTacho tamano={22} strokeWidth={1.6} />}
+//                 nombre={t('borrarCuenta')}
+//                 onClick={() => setConfirmarBorrar(true)}
+//               />
+//             </div>
+//           </>
+//         ) : (
+//           <div className="fila-cuenta-entrar">
+//             <BotonContinuarConGoogle
+//               deshabilitado={estado.tipo === 'entrando'}
+//               onClick={() => {
+//                 setLinea(null)
+//                 void entrar().then(mostrar)
+//               }}
+//             />
+//             <div className="fila-ajuste-explicacion">{t('cuentaRespaldoLinea')}</div>
+//           </div>
+//         )}
+//         {linea && <div className="fila-ajuste-explicacion linea-cuenta" data-testid="linea-cuenta" role="status">{t(linea)}</div>}
+//       </div>
+//       {confirmarBorrar && createPortal(
+//         <div className="capa-dialogo-microfono" onClick={() => setConfirmarBorrar(false)} data-testid="capa-dialogo-borrar-cuenta">
+//           <div
+//             className="dialogo-ajustes"
+//             data-testid="dialogo-borrar-cuenta"
+//             role="dialog"
+//             aria-modal="true"
+//             aria-label={t('borrarCuentaTitulo')}
+//             onClick={(e) => e.stopPropagation()}
+//           >
+//             <h3 className="dialogo-ajustes-titulo">{t('borrarCuentaTitulo')}</h3>
+//             <p className="texto-dialogo">{t('borrarCuentaTexto')}</p>
+//             <div className="botones-dialogo">
+//               <button type="button" className="boton-dialogo" data-testid="btn-borrar-cuenta-cancelar" onClick={() => setConfirmarBorrar(false)}>
+//                 {t('cancelar')}
+//               </button>
+//               <button
+//                 type="button"
+//                 className="boton-dialogo lleno"
+//                 data-testid="btn-borrar-cuenta-confirmar"
+//                 onClick={() => {
+//                   setConfirmarBorrar(false)
+//                   void borrarCuenta().then(mostrar)
+//                 }}
+//               >
+//                 {t('borrarCuenta')}
+//               </button>
+//             </div>
+//           </div>
+//         </div>,
+//         document.body
+//       )}
+//     </>
+//   )
+// }
+
+// LA TARJETA DE LA CUENTA -orden B, 20-10-2026, decisión de Javier: «está oculta», «ponle mucho ojo a lo
+// estético»-. Lo primero que se ve al abrir Ajustes, con las tarjetas, letras y colores del panel
+// -styles-ajustes.css y sus variables-.
+//   Sin sesión: el único lugar donde Sigo invita a crear la cuenta, así que primero el beneficio: título,
+//     línea en el tono secundario y el botón oficial de Google.
+//   Con sesión: el «list item» de dos líneas con avatar de Material 3 -m3.material.io/components/lists-:
+//     un círculo de 40 px con la inicial del correo -NO la foto: no la pedimos y la política de privacidad
+//     no la nombra-, el correo arriba y el estado de la copia de seguridad abajo. Al tocarla se abre el
+//     menú anclado de Ajustes -MenuAdjuntoAjustes- con «Cerrar sesión» y «Borrar cuenta».
+const TEXTO_FASE: Record<FaseRespaldo, ClaveTexto> = {
+  completa: 'respaldoCompleto',
+  subiendo: 'respaldoSubiendo',
+  esperando: 'respaldoEsperando'
+}
+
+function TarjetaCuenta({ hostMenus }: { hostMenus: HTMLElement | null }) {
   const estado = useSyncExternalStore(suscribirCuenta, estadoCuenta, estadoCuenta)
-  // La línea de la sección: un error, o «Tus guiones se quedan en este teléfono.» al cerrar sesión.
+  const respaldo = useSyncExternalStore(suscribirRespaldo, estadoRespaldo, estadoRespaldo)
+  // Debajo de la tarjeta, como en la orden A: un error, o el aviso de que se cerró la sesión.
   const [linea, setLinea] = useState<ClaveTexto | null>(null)
+  const [menuAbierto, setMenuAbierto] = useState(false)
   const [confirmarBorrar, setConfirmarBorrar] = useState(false)
+  const anclaFila = useRef<HTMLDivElement>(null)
 
   function mostrar(r: ResultadoCuenta) {
     // Cancelar no muestra nada.
     setLinea('error' in r ? TEXTO_ERROR_CUENTA[r.error] : null)
   }
 
+  const menu = menuAbierto && (
+    <MenuAdjuntoAjustes anclaRef={anclaFila} onCerrar={() => setMenuAbierto(false)} testid="menu-cuenta">
+      <div className="lista-menu-adjunto">
+        {/* Cerrar sesión no pregunta: no se pierde nada. */}
+        <button
+          type="button"
+          className="fila-menu-adjunto"
+          data-testid="btn-cerrar-sesion"
+          onClick={() => {
+            setMenuAbierto(false)
+            void salir().then((r) => setLinea('error' in r ? TEXTO_ERROR_CUENTA[r.error] : 'cuentaGuionesSeQuedan'))
+          }}
+        >
+          <span className="fila-menu-adjunto-etiqueta">{t('cerrarSesion')}</span>
+        </button>
+        {/* En el rojo de borrar, como «Borrar» del menú del editor -.peligro, styles-ajustes.css-. */}
+        <button
+          type="button"
+          className="fila-menu-adjunto peligro"
+          data-testid="btn-borrar-cuenta"
+          onClick={() => {
+            setMenuAbierto(false)
+            setConfirmarBorrar(true)
+          }}
+        >
+          <span className="fila-menu-adjunto-etiqueta">{t('borrarCuenta')}</span>
+        </button>
+      </div>
+    </MenuAdjuntoAjustes>
+  )
+
   return (
     <>
-      <h3 className="dock-seccion">{t('seccionCuenta')}</h3>
-      <div className="tarjeta-seccion-ajustes" data-testid="seccion-cuenta">
+      <div className="tarjeta-seccion-ajustes tarjeta-cuenta" data-testid="seccion-cuenta">
         {estado.tipo === 'conSesion' ? (
-          <>
-            <div className="fila-ajuste" data-testid="fila-cuenta-correo">
-              <span className="fila-ajuste-icono" aria-hidden="true"><IconoCorreo tamano={22} /></span>
-              <div className="fila-ajuste-nombre">{estado.correo}</div>
-            </div>
-            {/* Cerrar sesión no pregunta: no se pierde nada. */}
-            <FilaAjuste
-              testid="fila-cerrar-sesion"
-              icono={<span />}
-              nombre={t('cerrarSesion')}
-              onClick={() => {
-                void salir().then((r) => setLinea('error' in r ? TEXTO_ERROR_CUENTA[r.error] : 'cuentaGuionesSeQuedan'))
-              }}
-            />
-            {/* En el rojo de borrar, como «Borrar» del menú del editor -.peligro, styles-ajustes.css-. */}
-            <div className="fila-cuenta-borrar peligro">
-              <FilaAjuste
-                testid="fila-borrar-cuenta"
-                icono={<IconoTacho tamano={22} strokeWidth={1.6} />}
-                nombre={t('borrarCuenta')}
-                onClick={() => setConfirmarBorrar(true)}
-              />
-            </div>
-          </>
+          <div className="envoltorio-fila-con-menu" ref={anclaFila}>
+            <button
+              type="button"
+              className="fila-ajuste fila-cuenta"
+              data-testid="fila-cuenta"
+              aria-haspopup="menu"
+              aria-expanded={menuAbierto}
+              onClick={() => setMenuAbierto(!menuAbierto)}
+            >
+              <span className="avatar-cuenta" aria-hidden="true">{(estado.correo.trim()[0] ?? '?').toUpperCase()}</span>
+              <span className="fila-ajuste-textos fila-cuenta-textos">
+                <span className="fila-ajuste-nombre fila-cuenta-correo" data-testid="fila-cuenta-correo">{estado.correo}</span>
+                {/* -corrección del 20-10-2026, visto en el Redmi- Clase propia: .fila-ajuste-explicacion se
+                    esconde dentro de los paneles -.dock-listo y .panel-ajustes-flotante, styles-ajustes.css- y la
+                    línea no se veía. Antes: <span className="fila-ajuste-explicacion" data-testid="estado-respaldo"> */}
+                <span className="linea-secundaria-cuenta" data-testid="estado-respaldo">
+                  {t(respaldo.demasiadoLargo ? 'respaldoDemasiadoLargo' : TEXTO_FASE[respaldo.fase])}
+                </span>
+              </span>
+            </button>
+          </div>
         ) : (
-          <div className="fila-cuenta-entrar">
+          <div className="bienvenida-cuenta">
+            <h3 className="bienvenida-cuenta-titulo">{t('cuentaBienvenidaTitulo')}</h3>
+            <p className="bienvenida-cuenta-linea">{t('cuentaRespaldoLinea')}</p>
             <BotonContinuarConGoogle
               deshabilitado={estado.tipo === 'entrando'}
               onClick={() => {
@@ -745,11 +912,13 @@ function SeccionCuenta() {
                 void entrar().then(mostrar)
               }}
             />
-            <div className="fila-ajuste-explicacion">{t('cuentaRespaldoLinea')}</div>
           </div>
         )}
-        {linea && <div className="fila-ajuste-explicacion linea-cuenta" data-testid="linea-cuenta" role="status">{t(linea)}</div>}
       </div>
+      {/* -corrección del 20-10-2026- La misma causa: .fila-ajuste-explicacion escondida en los paneles; desde la
+          orden A no se veía. Antes: <div className="fila-ajuste-explicacion linea-cuenta" ...> */}
+      {linea && <div className="linea-secundaria-cuenta linea-cuenta" data-testid="linea-cuenta" role="status">{t(linea)}</div>}
+      {menu && (hostMenus ? createPortal(menu, hostMenus) : menu)}
       {confirmarBorrar && createPortal(
         <div className="capa-dialogo-microfono" onClick={() => setConfirmarBorrar(false)} data-testid="capa-dialogo-borrar-cuenta">
           <div
@@ -761,7 +930,10 @@ function SeccionCuenta() {
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="dialogo-ajustes-titulo">{t('borrarCuentaTitulo')}</h3>
+            {/* -orden B, 20-10-2026- Dos párrafos, el patrón de Material 3: qué se pierde y que no se deshace;
+                después, que el teléfono no se toca. Antes: <p className="texto-dialogo">{t('borrarCuentaTexto')}</p> */}
             <p className="texto-dialogo">{t('borrarCuentaTexto')}</p>
+            <p className="texto-dialogo">{t('borrarCuentaTexto2')}</p>
             <div className="botones-dialogo">
               <button type="button" className="boton-dialogo" data-testid="btn-borrar-cuenta-cancelar" onClick={() => setConfirmarBorrar(false)}>
                 {t('cancelar')}
@@ -772,7 +944,9 @@ function SeccionCuenta() {
                 data-testid="btn-borrar-cuenta-confirmar"
                 onClick={() => {
                   setConfirmarBorrar(false)
-                  void borrarCuenta().then(mostrar)
+                  // -orden B- Si falla, «No se pudo borrar la cuenta», no «No se pudo entrar».
+                  // Antes: void borrarCuenta().then(mostrar)
+                  void borrarCuenta().then((r) => setLinea('error' in r ? (r.error === 'otro' ? 'cuentaErrorBorrar' : TEXTO_ERROR_CUENTA[r.error]) : null))
                 }}
               >
                 {t('borrarCuenta')}

@@ -87,6 +87,13 @@ function cargarAuth(): Promise<Auth> {
   return authPromesa
 }
 
+// -orden B, respaldo de los guiones, 20-10-2026- El usuario de Firebase y su app, para que
+// src/lib/respaldo.ts sepa a qué colección de Firestore -usuarios/{uid}/guiones- escribir. null sin sesión.
+export async function sesionActual(): Promise<{ uid: string; app: Auth['app'] } | null> {
+  const auth = await cargarAuth()
+  return auth.currentUser ? { uid: auth.currentUser.uid, app: auth.app } : null
+}
+
 // Firebase marca así la falta de red; el resto de sus errores es «otro».
 function errorDeFirebase(e: unknown): ResultadoCuenta {
   const codigo = (e as { code?: string } | null)?.code
