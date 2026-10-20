@@ -102,7 +102,7 @@ export default {
       'Signing in with Google is optional.<small>Sigo works fully without an account.</small>',
       // -sitio-cuenta, 20-10-2026- El inicio de sesión y la copia de seguridad -órdenes A y B-.
       'If you sign in with Google, Sigo receives your email, your name and an account identifier.<small>Firebase also stores the link to your Google profile photo, which Sigo doesn’t use or show.</small>',
-      'The backup of your scripts is stored in Firebase, by Google, in the Santiago de Chile region.<small>They travel encrypted and only your account can read them.</small>',
+      'The backup of your scripts is stored in Firebase, by Google, in the Santiago de Chile region.<small>Your scripts travel encrypted, and no other account can read them.</small>',
       'Firebase records the IP address to prevent abuse.',
       'Videos never leave the phone.',
       'To delete your account and the backup of your scripts: <a href="/en/delete-account">sigoteleprompter.com/en/delete-account</a>.',
@@ -134,7 +134,7 @@ export default {
       { titulo: 'Settings', parrafos: ['In Settings you change the letter size, typeface, width, colors, mirror and show time. From the home screen you also change the theme and the app language.'], captura: '[CAPTURA: Settings panel from home, Reading and Appearance sections]' },
       { titulo: 'Offline', parrafos: ['The voice for your language and the gestures download once. After that they work without internet. If there is no connection the first time, Sigo says so and offers to retry.'] , captura: '[CAPTURA: offline notice when trying to read without the voice downloaded]' },
       // -sitio-cuenta, 20-10-2026- The account and the backup of the scripts -orders A and B-.
-      { titulo: 'Your account and backup', parrafos: ['With your Google account, Sigo backs up your scripts and you have them on all your devices. It’s optional: without an account, Sigo works the same.', 'To sign in, open Settings and tap Continue with Google. To sign out, tap your account at the top of Settings and choose Sign out. Your scripts stay on the phone.', 'To delete it, tap your account and choose Delete account. Your account and the cloud backup are deleted; the scripts on the phone aren’t affected.'], captura: '[CAPTURE: Settings from the home screen, with the account card at the top: signed out, Never lose a script and Continue with Google; signed in, the email and Backup complete]' },
+      { titulo: 'Your account and backup', parrafos: ['With your Google account, Sigo backs up your scripts and you have them on all your devices. It’s optional: without an account, Sigo works the same.', 'To sign in, open Settings from the home screen and tap Continue with Google. To sign out, tap your account at the top of Settings and choose Sign out. Your scripts stay on the phone.', 'To delete it, tap your account and choose Delete account. Your account and the cloud backup are deleted; the scripts on the phone aren’t affected.'], captura: '[CAPTURE: Settings from the home screen, with the account card at the top: signed out, Never lose a script and Continue with Google; signed in, the email and Backup complete]' },
     ]
   },
   soporte: {
@@ -149,8 +149,8 @@ export default {
   borrarCuenta: {
     titulo: 'Delete your Sigo account',
     desdeLaApp: 'From the app: open Sigo, tap your account at the top of Settings, choose Delete account and confirm. Your account and the backup of your scripts in the cloud are deleted right away. This can\'t be undone. The scripts on your phone aren\'t affected.',
-    sinLaApp: 'Without the app: write to us at <a href="mailto:hello@sigoteleprompter.com">hello@sigoteleprompter.com</a> from the email of your Google account, with the subject «Delete my Sigo account». We delete your account and the backup of your scripts as soon as possible, within 7 days at most, and let you know when it\'s done.',
-    queSeBorra: 'What gets deleted: your Sigo account -your email, your name, the link to your profile photo and the account identifier- and the whole backup of your scripts. We don\'t keep copies.'
+    sinLaApp: 'Without the app: write to us at <a href="mailto:hello@sigoteleprompter.com">hello@sigoteleprompter.com</a> from the email of your Google account, with the subject "Delete my Sigo account". We delete your account and the backup of your scripts as soon as possible, within 7 days at most, and let you know when it\'s done.',
+    queSeBorra: 'What gets deleted: your Sigo account (your email, your name, the link to your profile photo and the account identifier) and the whole backup of your scripts. We don\'t keep copies.'
   },
 
   // THE SCRIPT ON THE PHONE. La misma idea que el de espanol y los mismos formatos. El
