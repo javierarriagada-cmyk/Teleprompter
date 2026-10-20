@@ -131,13 +131,21 @@ async function paquetesAndroid() {
       continue
     }
     const pom = await pomDe(c)
+    // -20-10-2026, cuenta-google- Como en JavaScript: una licencia que no es Apache 2.0 y no trae su texto
+    // queda «sin verificar», con la que declara el POM en la nota. Así llegó googleid: su POM dice
+    // «Android Software Development Kit License» -developer.android.com/studio/terms.html- y no hay texto
+    // que guardar. Antes: licencia: pom ? licenciaDePom(pom.texto) : 'sin verificar', sin nota.
+    const declarada = pom ? licenciaDePom(pom.texto) : 'sin verificar'
+    const urlDeclarada = pom ? (pom.texto.match(/<license>[\s\S]*?<url>([^<]+)<\/url>/) || [])[1] : ''
+    const sinTexto = declarada !== 'Apache-2.0' && declarada !== 'sin verificar'
     salida.push({
       nombre: `${c.grupo}:${c.artefacto}`,
       version: c.version,
-      licencia: pom ? licenciaDePom(pom.texto) : 'sin verificar',
+      licencia: sinTexto ? 'sin verificar' : declarada,
       texto: '',
       origen: 'android',
-      fuente: pom ? pom.url : ''
+      fuente: pom ? pom.url : '',
+      ...(sinTexto ? { nota: `Su POM declara ${declarada}${urlDeclarada ? ` -${urlDeclarada}-` : ''}, sin texto de licencia que guardar. Sin verificar.` } : {})
     })
   }
   return salida

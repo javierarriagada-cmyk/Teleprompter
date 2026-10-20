@@ -1390,6 +1390,11 @@
 .boton-google-logo {
   flex: none;
 }
+/* El logo G en sus cuatro colores, sin cambiarlos en ningún tema. */
+.boton-google-logo .g-rojo { fill: #EA4335; }
+.boton-google-logo .g-azul { fill: #4285F4; }
+.boton-google-logo .g-amarillo { fill: #FBBC05; }
+.boton-google-logo .g-verde { fill: #34A853; }
 .linea-cuenta {
   padding: 0 14px 12px;
 }

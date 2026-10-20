@@ -1714,10 +1714,10 @@
     {
       "nombre": "com.google.android.libraries.identity.googleid:googleid",
       "version": "1.2.1",
-      "licencia": "Android Software Development Kit License",
+      "licencia": "sin verificar",
       "origen": "android",
       "fuente": "https://dl.google.com/dl/android/maven2/com/google/android/libraries/identity/googleid/googleid/1.2.1/googleid-1.2.1.pom",
-      "nota": "",
+      "nota": "Su POM declara Android Software Development Kit License -https://developer.android.com/studio/terms.html-, sin texto de licencia que guardar. Sin verificar.",
       "texto": ""
     },
     {
