@@ -51,6 +51,10 @@ function paquetesJs() {
       // Lo que sobra en node_modules no viaja en la app y cambia de un PC a otro: con eso adentro,
       // --verificar fallaria segun la maquina.
       if (hijo.extraneous || hijo.missing) continue
+      // -20-10-2026, cuenta-google- Lo que no está instalado tampoco viaja: npm ls nombra igual las
+      // dependencias pares opcionales que nadie instaló, sin versión ni ruta y sin marcarlas missing
+      // -@react-native-async-storage/async-storage, de @firebase/auth-. Salían sin versión y «sin verificar».
+      if (!hijo.version && !hijo.path) continue
       const cli = esCli || nombre === '@capacitor/cli'
       const clave = nombre + '@' + (hijo.version || '')
       if (cli) porCli.add(clave)
@@ -172,7 +176,11 @@ function armar(lista, textoApache) {
 const js = paquetesJs()
 const android = await paquetesAndroid()
 const lista = [...js, ...android, ...extras()]
-let textoApache = (lista.find((x) => x.licencia === 'Apache-2.0' && x.texto && x.texto.includes('Apache License')) || {}).texto || ''
+// -20-10-2026, cuenta-google- Solo sirve el texto COMPLETO de Apache 2.0, el que trae sus términos. Con
+// firebase llegó primero un aviso corto de James Coglan -«Copyright 2014-2020», que solo nombra la
+// «Apache License»- y quedó como el texto de Apache de toda la app.
+// Antes: let textoApache = (lista.find((x) => x.licencia === 'Apache-2.0' && x.texto && x.texto.includes('Apache License')) || {}).texto || ''
+let textoApache = (lista.find((x) => x.licencia === 'Apache-2.0' && x.texto && x.texto.includes('TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION')) || {}).texto || ''
 if (!textoApache) {
   const r = await fetch('https://www.apache.org/licenses/LICENSE-2.0.txt')
   textoApache = r.ok ? await r.text() : ''
