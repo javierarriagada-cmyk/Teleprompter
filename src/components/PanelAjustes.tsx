@@ -449,12 +449,17 @@ export function PanelAjustes({
             </div>
             {/* -tarea 106, lamina 1- Entre la cabecera y la muestra: Con la voz | Velocidad fija. En Grabar
                 el modo se elige en su ficha, arriba de las fichas. */}
+            {/* -orden B, corrección del 20-10-2026, visto en el Redmi- La tarjeta de la cuenta va JUSTO debajo
+                del título «Ajustes», arriba del selector y de la muestra, que siguen junto a Lectura. Antes iba
+                al comienzo de dock-panel-cuerpo, debajo de los dos. */}
+            {conAcerca && configuracionLista() && <TarjetaCuenta hostMenus={hostMenus} />}
             {origen !== 'grabar' && <SelectorModoLectura />}
             {con('lectura') && <MuestraLectura ajustes={ajustesLectura} />}
             <div className="dock-panel-cuerpo">
               {/* -orden B, 20-10-2026- La tarjeta de la cuenta, arriba de todo, en las mismas puertas de la
                   orden A -conAcerca y configuracionLista()- y sin título de sección. */}
-              {conAcerca && configuracionLista() && <TarjetaCuenta hostMenus={hostMenus} />}
+              {/* -corrección del 20-10-2026- La tarjeta sube arriba del selector -ver más arriba-.
+                  Antes: {conAcerca && configuracionLista() && <TarjetaCuenta hostMenus={hostMenus} />} */}
               {con('lectura') && (
                 <>
                   <h3 className="dock-seccion">{t('seccionLectura')}</h3>
@@ -871,7 +876,10 @@ function TarjetaCuenta({ hostMenus }: { hostMenus: HTMLElement | null }) {
               <span className="avatar-cuenta" aria-hidden="true">{(estado.correo.trim()[0] ?? '?').toUpperCase()}</span>
               <span className="fila-ajuste-textos fila-cuenta-textos">
                 <span className="fila-ajuste-nombre fila-cuenta-correo" data-testid="fila-cuenta-correo">{estado.correo}</span>
-                <span className="fila-ajuste-explicacion" data-testid="estado-respaldo">
+                {/* -corrección del 20-10-2026, visto en el Redmi- Clase propia: .fila-ajuste-explicacion se
+                    esconde dentro de los paneles -.dock-listo y .panel-ajustes-flotante, styles-ajustes.css- y la
+                    línea no se veía. Antes: <span className="fila-ajuste-explicacion" data-testid="estado-respaldo"> */}
+                <span className="linea-secundaria-cuenta" data-testid="estado-respaldo">
                   {t(respaldo.demasiadoLargo ? 'respaldoDemasiadoLargo' : TEXTO_FASE[respaldo.fase])}
                 </span>
               </span>
@@ -891,7 +899,9 @@ function TarjetaCuenta({ hostMenus }: { hostMenus: HTMLElement | null }) {
           </div>
         )}
       </div>
-      {linea && <div className="fila-ajuste-explicacion linea-cuenta" data-testid="linea-cuenta" role="status">{t(linea)}</div>}
+      {/* -corrección del 20-10-2026- La misma causa: .fila-ajuste-explicacion escondida en los paneles; desde la
+          orden A no se veía. Antes: <div className="fila-ajuste-explicacion linea-cuenta" ...> */}
+      {linea && <div className="linea-secundaria-cuenta linea-cuenta" data-testid="linea-cuenta" role="status">{t(linea)}</div>}
       {menu && (hostMenus ? createPortal(menu, hostMenus) : menu)}
       {confirmarBorrar && createPortal(
         <div className="capa-dialogo-microfono" onClick={() => setConfirmarBorrar(false)} data-testid="capa-dialogo-borrar-cuenta">

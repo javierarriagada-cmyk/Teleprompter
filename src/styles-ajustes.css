@@ -1466,3 +1466,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* -orden B, corrección del 20-10-2026, visto en el Redmi- Las dos líneas de la cuenta -el estado de la copia
+   de seguridad y el aviso debajo de la tarjeta- tienen su clase: usaban .fila-ajuste-explicacion, que dentro
+   de .dock-listo y .panel-ajustes-flotante va con display: none, y no se veían. El mismo aspecto que
+   .fila-ajuste-explicacion; la regla que la esconde en las demás filas no se toca. */
+.linea-secundaria-cuenta {
+  font-size: 13px;
+  color: var(--color-apagado);
+  margin-top: 2px;
+}

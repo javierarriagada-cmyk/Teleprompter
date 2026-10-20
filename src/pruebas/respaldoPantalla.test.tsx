@@ -41,3 +41,14 @@ describe('la tarjeta de la cuenta', () => {
     expect(screen.getByTestId('btn-borrar-cuenta').textContent).toBe(es.borrarCuenta)
   })
 })
+
+describe('la tarjeta de la cuenta va arriba de todo -corrección del 20-10-2026-', () => {
+  it('en el orden del documento: la tarjeta antes del selector Con la voz / Velocidad fija, y su línea de estado con clase propia', () => {
+    sim.estado = { tipo: 'conSesion', correo: 'javier@ejemplo.cl' }
+    panel()
+    const tarjeta = screen.getByTestId('seccion-cuenta')
+    const selector = screen.getByText(es.modoConLaVoz)
+    expect(tarjeta.compareDocumentPosition(selector) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(screen.getByTestId('estado-respaldo').className).not.toContain('fila-ajuste-explicacion')
+  })
+})
