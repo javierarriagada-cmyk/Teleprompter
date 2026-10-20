@@ -152,3 +152,14 @@
 -dontwarn com.google.auto.value.**
 -dontwarn javax.annotation.**
 -dontwarn com.google.errorprone.annotations.**
+# CREDENTIAL MANAGER -orden A «Entrar con Google», 20-10-2026, CuentaGooglePlugin.java-. Credential
+# Manager busca su parte de Play Services POR NOMBRE -androidx.credentials.playservices.
+# CredentialProviderPlayServicesImpl-: si R8 la renombra, entrar falla en la versión de Play aunque en la
+# APK de prueba funcione, como los gestos de la 0.9.1. La documentación oficial de hoy NO trae ninguna
+# regla para R8 o ProGuard -buscado en developer.android.com/identity/sign-in/credential-manager,
+# .../credential-manager-siwg-implementation y .../credential-manager/prerequisites, 20-10-2026-, así
+# que no se escribe ninguna aquí. La biblioteca trae la suya de consumidor -proguard.txt de
+# credentials-play-services-auth-1.6.0.aar-:
+#   -if class androidx.credentials.CredentialManager
+#   -keep class androidx.credentials.playservices.CredentialProviderPlayServicesImpl { *; }
+# scripts/revisarR8.mjs comprueba en el mapping que la clase quede con su nombre.

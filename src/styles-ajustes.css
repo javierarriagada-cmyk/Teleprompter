@@ -830,11 +830,15 @@
   gap: 12px;
   cursor: pointer;
 }
-.fila-menu-adjunto-guion.peligro {
+/* -cuenta-google, 20-10-2026- «Borrar cuenta» de Ajustes va en el mismo rojo. Antes: .fila-menu-adjunto-guion.peligro { */
+.fila-menu-adjunto-guion.peligro,
+.fila-cuenta-borrar.peligro .fila-ajuste {
   color: var(--color-grabando-texto);
 }
 /* -pulido-1- En tema claro el rojo de letra es más oscuro, para que se lea sobre blanco. Oscuro igual. */
-[data-tema="claro"] .fila-menu-adjunto-guion.peligro {
+/* Antes -hasta 2026-10-20, cuenta-google-: [data-tema="claro"] .fila-menu-adjunto-guion.peligro { */
+[data-tema="claro"] .fila-menu-adjunto-guion.peligro,
+[data-tema="claro"] .fila-cuenta-borrar.peligro .fila-ajuste {
   color: #C62828;
 }
 
@@ -1345,3 +1349,47 @@
 /* -tarea 106, opción (a)- Tableta de pie: el control parado se apoya arriba del dock -var(--tab-dock),
    styles-tableta.css-, contra el borde derecho. */
 .sobre-tab-dock .control-velocidad-lectura.de-pie { bottom: calc(var(--tab-dock, 172px) + env(safe-area-inset-bottom, 0px) + 12px); z-index: 100; }
+
+/* -cuenta-google, orden A, 20-10-2026- EL BOTÓN OFICIAL «CONTINUAR CON GOOGLE», con las medidas y los
+   colores de las reglas de marca de Google -https://developers.google.com/identity/branding-guidelines-:
+   40 px de alto, 12 px a los lados, 10 px entre el logo de 20 px y el texto, Roboto Medium 14 px. Tema
+   oscuro: fondo #131314, borde #8E918F, letra #E3E3E3. Tema claro: fondo #FFFFFF, borde #747775, letra
+   #1F1F1F. Son colores de Google, no de Sigo: por eso van escritos aquí y no como variables del tema. */
+.fila-cuenta-entrar {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+.boton-google {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 20px;
+  border: 1px solid #8E918F;
+  background: #131314;
+  color: #E3E3E3;
+  font-family: Roboto, 'Source Sans 3', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+}
+[data-tema="claro"] .boton-google {
+  border-color: #747775;
+  background: #FFFFFF;
+  color: #1F1F1F;
+}
+.boton-google:disabled {
+  opacity: 0.38;
+  cursor: default;
+}
+.boton-google-logo {
+  flex: none;
+}
+.linea-cuenta {
+  padding: 0 14px 12px;
+}
