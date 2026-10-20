@@ -86,7 +86,8 @@
      -el punto rojo de «Sig●»- y tres alturas: FONDO con luz, SUPERFICIES -filas de guiones y videos- y
      PROTAGONISTA -la tarjeta del ultimo guion-. Solo las usa la portada -.portada, BibliotecaView-; el
      resto de la app sigue con --borde-tarjeta y --sombra-tarjeta hasta la tanda 2. */
-  --luz-marca: radial-gradient(circle 330px at 86px 50px, rgba(225, 29, 46, 0.20), transparent);
+  /* 20-10-2026: 86px a 72px, la portada perdio 14 de relleno lateral y el punto de «Sig●» se corrio igual. Antes: at 86px 50px. */
+  --luz-marca: radial-gradient(circle 330px at 72px 50px, rgba(225, 29, 46, 0.20), transparent);
   /* El color del eco; la forma -radial de 320px a 12px del borde derecho y 15px del de abajo- va en .portada-eco-calido. */
   --eco-calido: rgba(194, 65, 12, 0.12);
   /* 160deg y no 180 -agregado aprobado-: el canto de la protagonista. Las superficies siguen en 180. */
@@ -150,7 +151,8 @@
   --empezar-icono-sobre-blanco: #F3F1ED;
   /* LA PORTADA CON LUZ EN TEMA CLARO -tanda 1 de 2, 15-10-2026-. --sup-fondo y --sup-fondo-video van en
      #FFFDFB y no en #FFFFFF -agregado aprobado-: el blanco puro se despegaba del suelo calido. */
-  --luz-marca: radial-gradient(circle 330px at 86px 50px, rgba(255, 154, 107, 0.22), transparent);
+  /* 20-10-2026: 86px a 72px, la portada perdio 14 de relleno lateral y el punto de «Sig●» se corrio igual. Antes: at 86px 50px. */
+  --luz-marca: radial-gradient(circle 330px at 72px 50px, rgba(255, 154, 107, 0.22), transparent);
   --eco-calido: rgba(244, 184, 140, 0.22);
   --prot-fondo: linear-gradient(180deg, #FFFFFF, #FBF7F3);
   --prot-canto: linear-gradient(160deg, rgba(232, 135, 90, 0.45), rgba(232, 135, 90, 0.12));
@@ -205,7 +207,8 @@
   --empezar-fondo-sobre-blanco: #1A1815;
   --empezar-icono-sobre-blanco: #F3F1ED;
   /* La portada con luz, los mismos valores de :root -el oscuro-. */
-  --luz-marca: radial-gradient(circle 330px at 86px 50px, rgba(225, 29, 46, 0.20), transparent);
+  /* 20-10-2026: 86px a 72px, la portada perdio 14 de relleno lateral y el punto de «Sig●» se corrio igual. Antes: at 86px 50px. */
+  --luz-marca: radial-gradient(circle 330px at 72px 50px, rgba(225, 29, 46, 0.20), transparent);
   /* El color del eco; la forma -radial de 320px a 12px del borde derecho y 15px del de abajo- va en .portada-eco-calido. */
   --eco-calido: rgba(194, 65, 12, 0.12);
   /* 160deg y no 180 -agregado aprobado-: el canto de la protagonista. Las superficies siguen en 180. */
@@ -2675,10 +2678,13 @@ button.btn-deformable.miniatura-banda:not(:active) {
   isolation: isolate;
 }
 /* FONDO 1: la luz de la marca. Absoluta dentro de .portada, asi se desplaza con ella: nace del punto
-   de «Sig●» -86px, 50px- y si la marca sube al desplazar, la luz sube con ella.
+   de «Sig●» -72px, 50px; antes 86px, 50px, hasta el 20-10-2026- y si la marca sube al desplazar, la luz sube con ella.
    Sale 16px arriba y a los lados: es la parte fija del marco de App.tsx -bordeMarco, 16px mas el area
    segura-. Asi la capa llega al borde de la pantalla -sin el canto recto de la caja de .portada- y los
-   86px, 50px del boceto -medidos desde el borde de la pantalla de 412- caen sobre el punto de la marca.
+   72px, 50px caen sobre el punto de la marca.
+   20-10-2026: de 86px a 72px porque el relleno lateral de .portada bajo de 20 a 6 -14 menos- y el punto de
+   «Sig●» se corrio igual. Antes: los 86px, 50px del boceto -medidos desde el borde de la pantalla de 412- caen
+   sobre el punto de la marca.
    Probado y descartado el 15-10-2026: inset: 0 -la luz se cortaba en recto a 16px del borde y su centro
    quedaba 16px a la derecha y abajo del punto-. */
 .portada-luz-marca {
@@ -2687,7 +2693,8 @@ button.btn-deformable.miniatura-banda:not(:active) {
   z-index: -1;
   pointer-events: none;
   background: var(--luz-marca);
-  transform-origin: 86px 50px;
+  /* 20-10-2026: sigue al punto de «Sig●», que se corrio 14px. Antes: transform-origin: 86px 50px; */
+  transform-origin: 72px 50px;
   /* Se enciende UNA vez, al abrir la app, cuando la marca termina su viaje -Entrada.tsx quita
      marca-viajando al cabo de MS_VIAJE_MARCA-. Al volver de otra pantalla la capa nace ya
      encendida: no hay cambio de estado y no se repite. */

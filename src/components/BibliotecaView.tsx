@@ -772,7 +772,10 @@ export default function BibliotecaView({
       onAnimationEnd={onAnimationEnd}
       // -portada con luz, 15-10-2026- .portada: el contenedor al que se acotan las tres alturas -styles.css-.
       className="portada"
-      style={{ padding: 'var(--aire-4)', maxWidth: 800, margin: '0 auto', position: 'relative', minHeight: '80vh', ...style }}
+      // 20-10-2026: relleno lateral de 20 a 6 -arriba y abajo siguen en --aire-4, 20-. Medido en un Redmi de
+      // 392 de ancho: las tarjetas quedaban a 36 del borde -16 del marco de App.tsx mas 20 de aqui-; ahora a 22.
+      // Antes: padding: 'var(--aire-4)' -20 en los cuatro lados-.
+      style={{ padding: 'var(--aire-4) 6px', maxWidth: 800, margin: '0 auto', position: 'relative', minHeight: '80vh', ...style }}
     >
       {/* EL FONDO CON LUZ: la luz de la marca -se desplaza con la portada- y el eco calido -fijo abajo a la
           derecha-. Detras de todo, sin tocar nada -pointer-events none, .portada-luz-marca y .portada-eco-calido-. */}
