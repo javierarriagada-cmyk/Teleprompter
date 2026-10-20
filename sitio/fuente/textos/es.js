@@ -14,18 +14,24 @@ export default {
   locale: 'es_ES',
   // Donde vive cada pagina en este idioma. armar.mjs las escribe con cleanUrls: /privacidad
   // se sirve de privacidad.html.
-  rutas: { portada: '/', privacidad: '/privacidad', soporte: '/soporte', ayuda: '/ayuda' },
+  // -sitio-cuenta, 20-10-2026- Suma la página para borrar la cuenta. Antes:
+  // rutas: { portada: '/', privacidad: '/privacidad', soporte: '/soporte', ayuda: '/ayuda' },
+  rutas: { portada: '/', privacidad: '/privacidad', soporte: '/soporte', ayuda: '/ayuda', borrarCuenta: '/borrar-cuenta' },
 
   meta: {
     titulo: 'Sigo — Teleprompter de voz',
     descripcion: 'Sigo es el teleprompter que sigue tu voz: lees en voz alta y el texto avanza contigo. Si te detienes, te espera. Pronto en Google Play.',
     ogDescripcion: 'El teleprompter que sigue tu voz. Pronto en Google Play.',
     privacidadTitulo: 'Privacidad — Sigo',
-    privacidadDescripcion: 'Cómo trata Sigo tus guiones, tus tomas y tu voz: todo queda en tu teléfono.',
+    // -sitio-cuenta, 20-10-2026- Ya no todo queda en el teléfono: con sesión, los guiones tienen copia en la nube.
+    // Antes: privacidadDescripcion: 'Cómo trata Sigo tus guiones, tus tomas y tu voz: todo queda en tu teléfono.',
+    privacidadDescripcion: 'Cómo trata Sigo tus guiones, tus tomas, tu voz y tu cuenta.',
     soporteTitulo: 'Soporte — Sigo',
     soporteDescripcion: 'Cómo avisar un problema con Sigo, el teleprompter que sigue tu voz.',
     ayudaTitulo: 'Ayuda — Sigo',
-    ayudaDescripcion: 'Cómo se usa Sigo: leer, grabar, pausar, subtítulos y más.'
+    ayudaDescripcion: 'Cómo se usa Sigo: leer, grabar, pausar, subtítulos y más.',
+    borrarCuentaTitulo: 'Borrar cuenta — Sigo',
+    borrarCuentaDescripcion: 'Cómo borrar tu cuenta de Sigo y la copia de seguridad de tus guiones, desde la app o sin ella.'
   },
 
   selector: { etiqueta: 'Idioma' },
@@ -72,7 +78,9 @@ export default {
 
   cierre: { frase: 'El teleprompter que sigue tu&nbsp;voz.', disponible: 'Pronto en Google Play.' },
 
-  pie: { privacidad: 'Privacidad', soporte: 'Soporte', ayuda: 'Ayuda' },
+  // -sitio-cuenta, 20-10-2026- Suma Borrar cuenta. Antes:
+  // pie: { privacidad: 'Privacidad', soporte: 'Soporte', ayuda: 'Ayuda' },
+  pie: { privacidad: 'Privacidad', soporte: 'Soporte', ayuda: 'Ayuda', borrarCuenta: 'Borrar cuenta' },
 
   // EL CORREO DE CONTACTO de cada idioma -Javier, 07-10-2026-: en espanol hola@, en ingles
   // hello@. Los dos reciben. Lo usan el pie, privacidad, soporte y la invitacion a probar.
@@ -94,13 +102,21 @@ export default {
   privacidad: {
     titulo: 'Privacidad',
     puntos: [
-      'Tus guiones viven en tu teléfono.',
+      // -sitio-cuenta, 20-10-2026- Con sesión hay copia en la nube. Antes: 'Tus guiones viven en tu teléfono.',
+      'Tus guiones viven en tu teléfono.<small>Si inicias sesión, también hay una copia de seguridad en la nube: ver más abajo.</small>',
       'Tus tomas también.<small>Si guardas una en la galería, queda ahí.</small>',
       'Sigo usa el micrófono para seguir tu voz.<small>El reconocimiento de voz corre en el teléfono. El audio no se manda a ningún servidor.</small>',
       'Sigo usa la cámara cuando la enciendes para grabarte.<small>El video se guarda en tu teléfono y no sale de ahí.</small>',
       'Los gestos se reconocen en el teléfono.<small>Ninguna imagen sale de él.</small>',
       'Sigo no envía estadísticas de uso.',
-      'Sigo no tiene cuentas.',
+      // -sitio-cuenta, 20-10-2026- Ya no es cierto: hay cuenta, opcional. Antes: 'Sigo no tiene cuentas.',
+      'Iniciar sesión con Google es opcional.<small>Sigo funciona completo sin cuenta.</small>',
+      // -sitio-cuenta, 20-10-2026- El inicio de sesión y la copia de seguridad -órdenes A y B-.
+      'Si inicias sesión con Google, Sigo recibe tu correo, tu nombre y un identificador de cuenta.<small>Firebase guarda también el enlace a tu foto de perfil de Google, que Sigo no usa ni muestra.</small>',
+      'La copia de seguridad de tus guiones se guarda en Firebase, de Google, en la región de Santiago de Chile.<small>Tus guiones viajan cifrados, y ninguna otra cuenta puede leerlos.</small>',
+      'Firebase registra la dirección IP para frenar abusos.',
+      'Los videos nunca salen del teléfono.',
+      'Para borrar tu cuenta y la copia de seguridad de tus guiones: <a href="/borrar-cuenta">sigoteleprompter.com/borrar-cuenta</a>.',
       'Este sitio no usa cookies de seguimiento ni analítica.'
     ],
     contacto: 'Si tienes una pregunta, escríbenos.'
@@ -127,7 +143,9 @@ export default {
       { titulo: 'Borrar y archivar un guion', parrafos: ['Desliza la fila, mantenla apretada, o usa el menú del editor. Al borrar sale Deshacer. Los archivados se ven en Archivados.'], captura: '[CAPTURA: lista de guiones, menú de una fila con Archivar y Borrar]', imagen: 'borrar-y-archivar.webp', alt: 'El menú de un guion, con Archivar y Borrar' },
       { titulo: 'Accesos directos', parrafos: ['Mantén apretado el ícono de Sigo en el teléfono. Nuevo guion con lo copiado crea un guion y pega lo que haya. Grabar abre directo en Grabar el guion más reciente.'], captura: '[CAPTURA: lanzador de Android, menú del ícono de Sigo con los dos accesos]' },
       { titulo: 'Ajustes', parrafos: ['En Ajustes cambias la letra, la tipografía, el ancho, los colores, el espejo y mostrar tiempo. Desde la portada también cambias el tema y el idioma de la app.'], captura: '[CAPTURA: panel de Ajustes desde la portada, secciones Lectura y Apariencia]', imagen: 'ajustes.webp', alt: 'Ajustes desde la portada: lectura, pantalla y apariencia' },
-      { titulo: 'Sin conexión', parrafos: ['La voz de tu idioma y los gestos se bajan una vez. Después funcionan sin internet. Si no hay conexión la primera vez, Sigo lo avisa y ofrece reintentar.'] , captura: '[CAPTURA: aviso de sin conexión al intentar leer sin la voz bajada]' }
+      { titulo: 'Sin conexión', parrafos: ['La voz de tu idioma y los gestos se bajan una vez. Después funcionan sin internet. Si no hay conexión la primera vez, Sigo lo avisa y ofrece reintentar.'] , captura: '[CAPTURA: aviso de sin conexión al intentar leer sin la voz bajada]' },
+      // -sitio-cuenta, 20-10-2026- La cuenta y la copia de seguridad de los guiones -órdenes A y B-.
+      { titulo: 'Tu cuenta y la copia de seguridad', parrafos: ['Con tu cuenta de Google, Sigo hace una copia de seguridad de tus guiones y los tienes en todos tus dispositivos. Es opcional: sin cuenta, Sigo funciona igual.', 'Para entrar, abre Ajustes desde la portada y toca Continuar con Google. Para salir, toca tu cuenta arriba de Ajustes y elige Cerrar sesión. Tus guiones siguen en el teléfono.', 'Para borrarla, toca tu cuenta y elige Borrar cuenta. Se borran tu cuenta y la copia de seguridad en la nube; los guiones del teléfono no se tocan.'], captura: '[CAPTURA: Ajustes desde la portada, con la tarjeta de la cuenta arriba: sin sesión, Nunca pierdas un guion y Continuar con Google; con sesión, el correo y Copia de seguridad completa]' },
     ]
   },
   soporte: {
@@ -135,6 +153,15 @@ export default {
     queEs: 'Sigo es un teleprompter que sigue tu voz: lees en voz alta y el texto avanza contigo. Hoy es para teléfonos Android.',
     avisa: 'Si algo no funciona, escríbenos y cuéntanos:',
     puntos: ['Qué teléfono usas.', 'Qué versión de Android tiene.', 'Qué estabas haciendo cuando pasó.']
+  },
+
+  // -sitio-cuenta, 20-10-2026- LA PÁGINA PARA BORRAR LA CUENTA SIN LA APP, que pide Google Play: cómo se hace,
+  // qué se borra, que no se deshace y cuánto demora. sitio/fuente/borrar-cuenta.html, con el molde de soporte.
+  borrarCuenta: {
+    titulo: 'Borrar tu cuenta de Sigo',
+    desdeLaApp: 'Desde la app: abre Sigo, toca tu cuenta arriba de Ajustes, elige Borrar cuenta y confirma. Se borran al instante tu cuenta y la copia de seguridad de tus guiones en la nube. No se puede deshacer. Los guiones de tu teléfono no se tocan.',
+    sinLaApp: 'Sin la app: escríbenos a <a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a> desde el correo de tu cuenta de Google, con el asunto «Borrar mi cuenta de Sigo». Borramos tu cuenta y la copia de seguridad de tus guiones lo antes posible, y como máximo en 7 días, y te avisamos cuando esté hecho.',
+    queSeBorra: 'Qué se borra: tu cuenta de Sigo (tu correo, tu nombre, el enlace a tu foto de perfil y el identificador de la cuenta) y toda la copia de seguridad de tus guiones. No guardamos copias.'
   },
 
   // EL GUION DEL TELEFONO -sitio/fuente/lectura.js-. Con los formatos del editor: **negrita**,
