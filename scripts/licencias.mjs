@@ -51,6 +51,10 @@ function paquetesJs() {
       // Lo que sobra en node_modules no viaja en la app y cambia de un PC a otro: con eso adentro,
       // --verificar fallaria segun la maquina.
       if (hijo.extraneous || hijo.missing) continue
+      // -20-10-2026, cuenta-google- Lo que no está instalado tampoco viaja: npm ls nombra igual las
+      // dependencias pares opcionales que nadie instaló, sin versión ni ruta y sin marcarlas missing
+      // -@react-native-async-storage/async-storage, de @firebase/auth-. Salían sin versión y «sin verificar».
+      if (!hijo.version && !hijo.path) continue
       const cli = esCli || nombre === '@capacitor/cli'
       const clave = nombre + '@' + (hijo.version || '')
       if (cli) porCli.add(clave)
@@ -131,13 +135,32 @@ async function paquetesAndroid() {
       continue
     }
     const pom = await pomDe(c)
+    // -20-10-2026, cuenta-google- Como en JavaScript: una licencia que no es Apache 2.0 y no trae su texto
+    // queda «sin verificar», con la que declara el POM en la nota. Así llegó googleid: su POM dice
+    // «Android Software Development Kit License» -developer.android.com/studio/terms.html- y no hay texto
+    // que guardar. Antes: licencia: pom ? licenciaDePom(pom.texto) : 'sin verificar', sin nota.
+    const declarada = pom ? licenciaDePom(pom.texto) : 'sin verificar'
+    const urlDeclarada = pom ? (pom.texto.match(/<license>[\s\S]*?<url>([^<]+)<\/url>/) || [])[1] : ''
+    // -20-10-2026, cuenta-google, aprobado por Javier- Si el POM no trae el texto, se busca guardado en
+    // docs/licencias/<grupo>.<artefacto>/ y se lee con leerLicense, igual que el LICENSE de un paquete npm.
+    // El de googleid es el texto de https://developer.android.com/studio/terms.html -«This is the Android
+    // Software Development Kit License Agreement», versión del 28-04-2026-, bajado el 20-10-2026 y pasado a
+    // texto plano sin cambiar nada.
+    const textoGuardado = leerLicense(path.join(RAIZ, 'docs', 'licencias', `${c.grupo}.${c.artefacto}`))
+    // Antes: const sinTexto = declarada !== 'Apache-2.0' && declarada !== 'sin verificar'
+    const sinTexto = declarada !== 'Apache-2.0' && declarada !== 'sin verificar' && !textoGuardado
     salida.push({
       nombre: `${c.grupo}:${c.artefacto}`,
       version: c.version,
-      licencia: pom ? licenciaDePom(pom.texto) : 'sin verificar',
-      texto: '',
+      licencia: sinTexto ? 'sin verificar' : declarada,
+      // Antes: texto: '',
+      texto: sinTexto ? '' : textoGuardado,
       origen: 'android',
-      fuente: pom ? pom.url : ''
+      // Con el texto guardado, la fuente es la página de la licencia y el POM queda en la nota.
+      // Antes: fuente: pom ? pom.url : '',
+      fuente: textoGuardado && urlDeclarada ? urlDeclarada : pom ? pom.url : '',
+      ...(textoGuardado && urlDeclarada ? { nota: `Texto de ${urlDeclarada}, guardado en docs/licencias/${c.grupo}.${c.artefacto}/. La licencia la declara su POM: ${pom.url}` } : {}),
+      ...(sinTexto ? { nota: `Su POM declara ${declarada}${urlDeclarada ? ` -${urlDeclarada}-` : ''}, sin texto de licencia que guardar. Sin verificar.` } : {})
     })
   }
   return salida
@@ -164,7 +187,11 @@ function armar(lista, textoApache) {
 const js = paquetesJs()
 const android = await paquetesAndroid()
 const lista = [...js, ...android, ...extras()]
-let textoApache = (lista.find((x) => x.licencia === 'Apache-2.0' && x.texto && x.texto.includes('Apache License')) || {}).texto || ''
+// -20-10-2026, cuenta-google- Solo sirve el texto COMPLETO de Apache 2.0, el que trae sus términos. Con
+// firebase llegó primero un aviso corto de James Coglan -«Copyright 2014-2020», que solo nombra la
+// «Apache License»- y quedó como el texto de Apache de toda la app.
+// Antes: let textoApache = (lista.find((x) => x.licencia === 'Apache-2.0' && x.texto && x.texto.includes('Apache License')) || {}).texto || ''
+let textoApache = (lista.find((x) => x.licencia === 'Apache-2.0' && x.texto && x.texto.includes('TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION')) || {}).texto || ''
 if (!textoApache) {
   const r = await fetch('https://www.apache.org/licenses/LICENSE-2.0.txt')
   textoApache = r.ok ? await r.text() : ''

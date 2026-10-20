@@ -1,12 +1,15 @@
 // Antes -hasta 2026-10-11-: import React, { useEffect, useId, useRef, useState } from 'react'
-import React, { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
+// Antes -hasta 2026-10-20, cuenta-google-: import React, { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
+// useSyncExternalStore: el estado de la cuenta -src/lib/cuenta.ts-, como useTextos con el idioma.
+import React, { useEffect, useId, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { createPortal } from 'react-dom'
 import { App as CapacitorApp } from '@capacitor/app'
 import {
   // -tomas-largas- Sin la ficha/fila de Subtítulos, IconoSubtitulos ya no se usa aquí. Antes:
   // IconoAtras, IconoCerrar, IconoSubtitulos, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda, IconoCorreo,
+  // Antes -hasta 2026-10-20, cuenta-google-: IconoDocumento solo, sin IconoTacho -lo usa «Borrar cuenta»-.
   IconoAtras, IconoCerrar, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda, IconoCorreo,
-  IconoDocumento
+  IconoDocumento, IconoTacho
 } from './IconosApp'
 import {
   AjustesLectura, FilaAjuste, MenuAdjuntoAjustes, CheckMenu, MuestraLectura, FilasLectura, FilasPantalla,
@@ -19,6 +22,9 @@ import { SelectorModoLectura } from './ControlesVelocidad'
 import { PantallaLicencias } from './PantallaLicencias'
 // -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor; Ajustes ya no los ofrece. Antes: import { ESTILOS_SUBTITULO, EstiloSubtitulo, estiloSubtituloGuardado, guardarEstiloSubtitulo } from '../lib/subtitulos'
 import { IdiomaApp, idiomaApp, fijarIdioma } from '../lib/idioma'
+// -cuenta-google, orden A- Entrar con Google, salir y borrar la cuenta.
+import { configuracionLista } from '../lib/firebaseConfig'
+import { ErrorCuenta, ResultadoCuenta, borrarCuenta, entrar, estadoCuenta, salir, suscribirCuenta } from '../lib/cuenta'
 import type { ClaveTexto } from '../textos'
 import { t, useTextos } from '../textos'
 import { CURVA_RESORTE, MS_CHICO, movimientoApagado } from './movimiento'
@@ -540,6 +546,10 @@ export function PanelAjustes({
                   </div>
                 </>
               )}
+              {/* -cuenta-google, orden A, 20-10-2026- Cuenta, entre Apariencia y Ayuda. Sale en las mismas
+                  puertas que Ayuda -conAcerca- y SOLO si los datos de Firebase ya están -configuracionLista()-:
+                  mientras digan "PENDIENTE", la sección no existe. */}
+              {conAcerca && configuracionLista() && <SeccionCuenta />}
               {/* -guia-sigo- Ayuda y comentarios, arriba de Acerca. */}
               {conAcerca && (
                 <>
@@ -673,5 +683,125 @@ export function PanelAjustesFlotante({
       </div>
       <div data-tema="oscuro" className="menus-dock" ref={setHostMenus} />
     </>
+  )
+}
+
+// LA SECCIÓN CUENTA -orden A «Entrar con Google», 20-10-2026-. Con las mismas filas y tarjetas que las
+// demás secciones: FilaAjuste, .tarjeta-seccion-ajustes y la fila sin botón de Versión. El diálogo de
+// borrar usa las clases del diálogo de permiso -DialogoPermiso: .capa-dialogo-microfono, .dialogo-ajustes,
+// .botones-dialogo, .boton-dialogo-. Todavía no se respalda nada: eso es la orden B.
+const TEXTO_ERROR_CUENTA: Record<ErrorCuenta, ClaveTexto> = {
+  sinCuenta: 'cuentaErrorSinCuenta',
+  sinRed: 'cuentaErrorSinRed',
+  otro: 'cuentaErrorOtro'
+}
+
+function SeccionCuenta() {
+  const estado = useSyncExternalStore(suscribirCuenta, estadoCuenta, estadoCuenta)
+  // La línea de la sección: un error, o «Tus guiones se quedan en este teléfono.» al cerrar sesión.
+  const [linea, setLinea] = useState<ClaveTexto | null>(null)
+  const [confirmarBorrar, setConfirmarBorrar] = useState(false)
+
+  function mostrar(r: ResultadoCuenta) {
+    // Cancelar no muestra nada.
+    setLinea('error' in r ? TEXTO_ERROR_CUENTA[r.error] : null)
+  }
+
+  return (
+    <>
+      <h3 className="dock-seccion">{t('seccionCuenta')}</h3>
+      <div className="tarjeta-seccion-ajustes" data-testid="seccion-cuenta">
+        {estado.tipo === 'conSesion' ? (
+          <>
+            <div className="fila-ajuste" data-testid="fila-cuenta-correo">
+              <span className="fila-ajuste-icono" aria-hidden="true"><IconoCorreo tamano={22} /></span>
+              <div className="fila-ajuste-nombre">{estado.correo}</div>
+            </div>
+            {/* Cerrar sesión no pregunta: no se pierde nada. */}
+            <FilaAjuste
+              testid="fila-cerrar-sesion"
+              icono={<span />}
+              nombre={t('cerrarSesion')}
+              onClick={() => {
+                void salir().then((r) => setLinea('error' in r ? TEXTO_ERROR_CUENTA[r.error] : 'cuentaGuionesSeQuedan'))
+              }}
+            />
+            {/* En el rojo de borrar, como «Borrar» del menú del editor -.peligro, styles-ajustes.css-. */}
+            <div className="fila-cuenta-borrar peligro">
+              <FilaAjuste
+                testid="fila-borrar-cuenta"
+                icono={<IconoTacho tamano={22} strokeWidth={1.6} />}
+                nombre={t('borrarCuenta')}
+                onClick={() => setConfirmarBorrar(true)}
+              />
+            </div>
+          </>
+        ) : (
+          <div className="fila-cuenta-entrar">
+            <BotonContinuarConGoogle
+              deshabilitado={estado.tipo === 'entrando'}
+              onClick={() => {
+                setLinea(null)
+                void entrar().then(mostrar)
+              }}
+            />
+            <div className="fila-ajuste-explicacion">{t('cuentaRespaldoLinea')}</div>
+          </div>
+        )}
+        {linea && <div className="fila-ajuste-explicacion linea-cuenta" data-testid="linea-cuenta" role="status">{t(linea)}</div>}
+      </div>
+      {confirmarBorrar && createPortal(
+        <div className="capa-dialogo-microfono" onClick={() => setConfirmarBorrar(false)} data-testid="capa-dialogo-borrar-cuenta">
+          <div
+            className="dialogo-ajustes"
+            data-testid="dialogo-borrar-cuenta"
+            role="dialog"
+            aria-modal="true"
+            aria-label={t('borrarCuentaTitulo')}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="dialogo-ajustes-titulo">{t('borrarCuentaTitulo')}</h3>
+            <p className="texto-dialogo">{t('borrarCuentaTexto')}</p>
+            <div className="botones-dialogo">
+              <button type="button" className="boton-dialogo" data-testid="btn-borrar-cuenta-cancelar" onClick={() => setConfirmarBorrar(false)}>
+                {t('cancelar')}
+              </button>
+              <button
+                type="button"
+                className="boton-dialogo lleno"
+                data-testid="btn-borrar-cuenta-confirmar"
+                onClick={() => {
+                  setConfirmarBorrar(false)
+                  void borrarCuenta().then(mostrar)
+                }}
+              >
+                {t('borrarCuenta')}
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+    </>
+  )
+}
+
+// EL BOTÓN OFICIAL «CONTINUAR CON GOOGLE». Sigue las reglas de marca de Google: el logo G en sus cuatro
+// colores, sin cambiarlos, a la izquierda; el texto permitido «Continuar con Google»; la letra Roboto
+// Medium de 14 px, 40 px de alto, 12 px a los lados y 10 px entre el logo -20 px- y el texto; el fondo
+// claro u oscuro de Google según el tema. Los colores -también los del logo- van en styles-ajustes.css,
+// .boton-google: los componentes no escriben colores a mano -T209, tarea46-.
+// https://developers.google.com/identity/branding-guidelines
+function BotonContinuarConGoogle({ onClick, deshabilitado }: { onClick: () => void; deshabilitado?: boolean }) {
+  return (
+    <button type="button" className="boton-google" data-testid="btn-continuar-con-google" onClick={onClick} disabled={deshabilitado}>
+      <svg className="boton-google-logo" width="20" height="20" viewBox="0 0 48 48" aria-hidden="true">
+        <path className="g-rojo" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+        <path className="g-azul" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+        <path className="g-amarillo" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+        <path className="g-verde" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+      </svg>
+      <span className="boton-google-texto">{t('continuarConGoogle')}</span>
+    </button>
   )
 }

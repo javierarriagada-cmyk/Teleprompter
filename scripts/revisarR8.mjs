@@ -28,7 +28,10 @@ const CLASES_CON_SU_NOMBRE = [
   'org.vosk.LibVosk',
   // -18-10-2026- Flogger la busca por su nombre en texto. En la 0.9.1 quedó como v7.b y MediaPipe no
   // arrancaba: los gestos rotos en Play -proguard-rules.pro, FLOGGER-.
-  'com.google.common.flogger.backend.system.DefaultPlatform'
+  'com.google.common.flogger.backend.system.DefaultPlatform',
+  // -20-10-2026, cuenta-google- Credential Manager busca su parte de Play Services por su nombre: si R8
+  // la renombra, Entrar con Google falla solo en la versión de Play -proguard-rules.pro, CREDENTIAL MANAGER-.
+  'androidx.credentials.playservices.CredentialProviderPlayServicesImpl'
 ]
 
 // Los miembros que la caída de Grabar necesitaba, cada uno en su clase. El mapping solo nombra un

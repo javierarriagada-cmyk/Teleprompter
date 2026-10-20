@@ -341,6 +341,18 @@ dependencies {
     // TransportBackendDiscovery-. Aquí no hay exclusión y las versiones de transport-* quedan como estaban.
     implementation 'com.google.mediapipe:tasks-vision:1.0.0'
 
+    // ENTRAR CON GOOGLE -orden A «Entrar con Google», 20-10-2026-. Credential Manager y el botón
+    // «Continuar con Google» -CuentaGooglePlugin.java-, la forma que recomienda Google:
+    // https://developer.android.com/identity/sign-in/credential-manager-siwg-implementation
+    // Esa página muestra 1.7.0-alpha03 de credentials y "<latest version>" de googleid; la última
+    // ESTABLE es 1.6.0 -developer.android.com/jetpack/androidx/releases/credentials, 08-04-2026- y la de
+    // googleid, 1.2.1 -maven.google.com-. credentials-play-services-auth es la parte que usa Play
+    // Services en Android 13 o anterior, y googleid trae GetSignInWithGoogleOption y el token. Sin SDK
+    // nativo de Firebase: la sesión la abre la parte web -firebase/auth, src/lib/cuenta.ts-.
+    implementation 'androidx.credentials:credentials:1.6.0'
+    implementation 'androidx.credentials:credentials-play-services-auth:1.6.0'
+    implementation 'com.google.android.libraries.identity.googleid:googleid:1.2.1'
+
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"

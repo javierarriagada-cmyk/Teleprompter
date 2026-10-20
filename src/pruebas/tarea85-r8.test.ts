@@ -35,7 +35,9 @@ const CLASES = [
   'com.getcapacitor.Bridge', 'app.capgo.capacitor.camera.preview.CameraPreview',
   'com.sigoteleprompter.app.VoskNativoPlugin', 'com.sigoteleprompter.app.CamaraNativaPlugin', 'org.vosk.LibVosk',
   // -18-10-2026- La plataforma de Flogger, que se busca por su nombre: sin ella MediaPipe no arranca.
-  'com.google.common.flogger.backend.system.DefaultPlatform'
+  'com.google.common.flogger.backend.system.DefaultPlatform',
+  // -20-10-2026, cuenta-google- La parte de Play Services de Credential Manager, que se busca por su nombre.
+  'androidx.credentials.playservices.CredentialProviderPlayServicesImpl'
 ]
 const MIEMBROS_BIEN: Record<string, string[]> = {
   'com.getcapacitor.Plugin': [

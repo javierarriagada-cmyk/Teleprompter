@@ -325,6 +325,8 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(AtrasPredictivoPlugin.class);
         // -accesos directos- El puente de los accesos directos del ícono -AccesosDirectosPlugin.java-.
         registerPlugin(AccesosDirectosPlugin.class);
+        // -cuenta-google- Entrar con Google con Credential Manager -CuentaGooglePlugin.java-.
+        registerPlugin(CuentaGooglePlugin.class);
         super.onCreate(savedInstanceState);
         // Antes: -tomas-largas, 15-10-2026- El cliente de Capacitor con los rangos de video bien contestados: el
         // visor abre tomas de cualquier tamaño -ClienteWebDeTomas, RangoHttp-. Lo demás pasa igual.
