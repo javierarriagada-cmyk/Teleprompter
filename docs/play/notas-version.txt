@@ -1,7 +1,13 @@
-Prueba cerrada de Sigo, 0.9.2.
+Prueba cerrada de Sigo, 0.10.0.
 <es-419>
-Control por gestos vuelve a funcionar. Al tocar Parar, un aviso claro mientras se guarda la toma, también en tomas largas. El visor abre tomas de cualquier tamaño y los subtítulos ya no se cortan. El texto sigue mejor tu voz: no se detiene en los paréntesis ni salta hacia atrás. Videos más livianos. El recuadro de la cámara se mueve bien. Nuevo menú del guion con Archivar y Borrar, y Ayuda en Ajustes.
+• Nuevo: inicia sesión con Google, si quieres, y Sigo hace una copia de seguridad de tus guiones. Los tienes en todos tus dispositivos y no los pierdes si cambias de teléfono.
+• Tu cuenta aparece arriba de Ajustes; desde ahí cierras sesión o la borras.
+• La portada aprovecha mejor el ancho de la pantalla.
+• El panel de Ajustes deja ver más el fondo.
 </es-419>
 <en-US>
-Gesture control works again. When you tap Stop, a clear notice while your take is saved, long takes included. The viewer opens takes of any size, and captions no longer cut off. The text follows your voice better: it doesn't stop at parentheses or jump back. Lighter videos. The camera box moves properly. New script menu with Archive and Delete, and Help in Settings.
+• New: sign in with Google, if you want, and Sigo backs up your scripts. You have them on all your devices and don't lose them if you change phones.
+• Your account appears at the top of Settings; from there you can sign out or delete it.
+• The home screen makes better use of the screen width.
+• The Settings panel lets more of the background show through.
 </en-US>
