@@ -373,7 +373,10 @@ describe('Ajustes de pantallas, cuarta vuelta: un solo panel de Ajustes', () => 
     // -guia-sigo, 18-10-2026- Entra la sección Ayuda, arriba de Acerca de: decisión D8 del estudio de cómo
     // enseña Sigo, aprobada por Javier. Antes:
     // expect(secciones()).toEqual([es.seccionLectura, es.seccionPantalla, es.seccionApariencia, es.seccionAcerca])
-    expect(secciones()).toEqual([es.seccionLectura, es.seccionPantalla, es.seccionApariencia, es.seccionAyuda, es.seccionAcerca])
+    // -cuenta-google, 20-10-2026- Entra la sección Cuenta, entre Apariencia y Ayuda: orden A «Entrar con
+    // Google», visible desde que firebaseConfig.ts tiene los datos de la consola. Antes:
+    // expect(secciones()).toEqual([es.seccionLectura, es.seccionPantalla, es.seccionApariencia, es.seccionAyuda, es.seccionAcerca])
+    expect(secciones()).toEqual([es.seccionLectura, es.seccionPantalla, es.seccionApariencia, es.seccionCuenta, es.seccionAyuda, es.seccionAcerca])
     expect(screen.getByTestId('fila-tema')).toBeTruthy()
     expect(screen.getByTestId('fila-idioma')).toBeTruthy()
     expect(screen.getByTestId('fila-acerca-de-sigo')).toBeTruthy()
