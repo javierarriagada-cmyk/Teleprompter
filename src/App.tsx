@@ -50,6 +50,9 @@ import { Guion, Bloque, ResumenGuion, ResumenGrabacion, guionNuevo, generarUuid,
 import { RepositorioGuiones } from './datos/RepositorioGuiones'
 import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
 import { RepositorioMemoria } from './datos/RepositorioMemoria'
+// -orden B- El respaldo de los guiones con la cuenta.
+import { vigilarRespaldo } from './lib/respaldo'
+import { configuracionLista } from './lib/firebaseConfig'
 import { RepositorioGrabaciones } from './datos/RepositorioGrabaciones'
 import { RepositorioGrabacionesIndexedDB } from './datos/RepositorioGrabacionesIndexedDB'
 import { RepositorioGrabacionesMemoria } from './datos/RepositorioGrabacionesMemoria'
@@ -557,6 +560,15 @@ export default function App({ motor, repoOverride }: AppProps) {
       }
     }
   }, [])
+
+  // -orden B, respaldo de los guiones, 20-10-2026- Con sesión, repoRef.current pasa a ser el repositorio
+  // sincronizado, que envuelve al del teléfono; sin sesión, vuelve el del teléfono -src/lib/respaldo.ts-.
+  // Las llamadas a repoRef.current no cambian. Lo que baja de la nube vuelve a leer la biblioteca. Con
+  // repoOverride -las pruebas- no se enciende.
+  useEffect(() => {
+    if (repoOverride || !configuracionLista()) return
+    return vigilarRespaldo(() => repoRef.current, (r) => { repoRef.current = r }, () => { void cargarBiblioteca() })
+  }, [repoOverride, cargarBiblioteca])
 
   // Cargar/Migrar al arrancar
   useEffect(() => {

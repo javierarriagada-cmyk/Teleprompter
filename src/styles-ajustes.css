@@ -831,14 +831,19 @@
   cursor: pointer;
 }
 /* -cuenta-google, 20-10-2026- «Borrar cuenta» de Ajustes va en el mismo rojo. Antes: .fila-menu-adjunto-guion.peligro { */
+/* -orden B, 20-10-2026- «Borrar cuenta» pasa al menú de la fila de la cuenta: .fila-menu-adjunto.peligro.
+   Antes: .fila-menu-adjunto-guion.peligro, .fila-cuenta-borrar.peligro .fila-ajuste { */
 .fila-menu-adjunto-guion.peligro,
-.fila-cuenta-borrar.peligro .fila-ajuste {
+.fila-cuenta-borrar.peligro .fila-ajuste,
+.fila-menu-adjunto.peligro {
   color: var(--color-grabando-texto);
 }
 /* -pulido-1- En tema claro el rojo de letra es más oscuro, para que se lea sobre blanco. Oscuro igual. */
 /* Antes -hasta 2026-10-20, cuenta-google-: [data-tema="claro"] .fila-menu-adjunto-guion.peligro { */
+/* Antes -hasta el 20-10-2026, orden B-: sin [data-tema="claro"] .fila-menu-adjunto.peligro. */
 [data-tema="claro"] .fila-menu-adjunto-guion.peligro,
-[data-tema="claro"] .fila-cuenta-borrar.peligro .fila-ajuste {
+[data-tema="claro"] .fila-cuenta-borrar.peligro .fila-ajuste,
+[data-tema="claro"] .fila-menu-adjunto.peligro {
   color: #C62828;
 }
 
@@ -1395,6 +1400,69 @@
 .boton-google-logo .g-azul { fill: #4285F4; }
 .boton-google-logo .g-amarillo { fill: #FBBC05; }
 .boton-google-logo .g-verde { fill: #34A853; }
+/* -orden B, 20-10-2026- La línea sale debajo de la tarjeta, ya no dentro: alineada con el texto de la
+   tarjeta. Antes: padding: 0 14px 12px; */
 .linea-cuenta {
-  padding: 0 14px 12px;
+  padding: 0 32px 8px;
+}
+
+/* -orden B, 20-10-2026, decisión de Javier: «ponle mucho ojo a lo estético»- LA TARJETA DE LA CUENTA,
+   arriba de todo en Ajustes. Solo variables del panel: los únicos colores escritos son los del botón de
+   Google, más arriba. Separada de la primera sección como las secciones entre sí. */
+.tarjeta-cuenta {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+/* Sin sesión: la bienvenida. Título, línea y botón, con aire entre las piezas y la jerarquía clara. */
+.bienvenida-cuenta {
+  padding: 20px 16px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.bienvenida-cuenta-titulo {
+  /* El título de las tarjetas del panel -.dock-panel-titulo-. */
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-texto);
+}
+.bienvenida-cuenta-linea {
+  margin: 6px 0 16px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-apagado);
+}
+/* Con sesión: el «list item» de dos líneas con avatar de Material 3 -72 px de alto, avatar de 40 px-. */
+.fila-ajuste.fila-cuenta {
+  min-height: 72px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-align: left;
+}
+.avatar-cuenta {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-acento);
+  color: var(--color-texto-acento);
+  font-size: 18px;
+  font-weight: 600;
+}
+/* El correo largo se corta con «…»: nunca en dos renglones ni fuera de la tarjeta. min-width: 0 deja que
+   el texto se encoja dentro de la fila flexible. */
+.fila-cuenta-textos {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+.fila-cuenta-correo {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

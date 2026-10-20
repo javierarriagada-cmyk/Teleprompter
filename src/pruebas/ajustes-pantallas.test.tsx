@@ -376,7 +376,9 @@ describe('Ajustes de pantallas, cuarta vuelta: un solo panel de Ajustes', () => 
     // -cuenta-google, 20-10-2026- Entra la sección Cuenta, entre Apariencia y Ayuda: orden A «Entrar con
     // Google», visible desde que firebaseConfig.ts tiene los datos de la consola. Antes:
     // expect(secciones()).toEqual([es.seccionLectura, es.seccionPantalla, es.seccionApariencia, es.seccionAyuda, es.seccionAcerca])
-    expect(secciones()).toEqual([es.seccionLectura, es.seccionPantalla, es.seccionApariencia, es.seccionCuenta, es.seccionAyuda, es.seccionAcerca])
+    // -orden B, 20-10-2026- La cuenta sube arriba de todo como una tarjeta sin título: ya no es una sección.
+    // Antes: expect(secciones()).toEqual([es.seccionLectura, es.seccionPantalla, es.seccionApariencia, es.seccionCuenta, es.seccionAyuda, es.seccionAcerca])
+    expect(secciones()).toEqual([es.seccionLectura, es.seccionPantalla, es.seccionApariencia, es.seccionAyuda, es.seccionAcerca])
     expect(screen.getByTestId('fila-tema')).toBeTruthy()
     expect(screen.getByTestId('fila-idioma')).toBeTruthy()
     expect(screen.getByTestId('fila-acerca-de-sigo')).toBeTruthy()

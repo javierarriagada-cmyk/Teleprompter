@@ -90,6 +90,23 @@ export class RepositorioIndexedDB implements RepositorioGuiones {
     }
   }
 
+  // GUARDAR TAL CUAL -orden B, respaldo de los guiones, 20-10-2026-. Como guardar, pero SIN tocar
+  // modificado: lo usa RepositorioSincronizado para escribir aquí un guion que bajó de la nube con el
+  // modificado que trae. Si se usara guardar, el modificado cambiaría, el guion parecería más nuevo que el
+  // de la nube y volvería a subir: los guiones irían y vendrían para siempre.
+  async guardarTal(g: Guion): Promise<void> {
+    const db = await this.obtenerDb()
+    const copia: Guion = { ...g, archivado: Boolean(g.archivado) }
+    // El reloj de guardar no debe quedar detrás de un modificado que llegó de otro aparato.
+    if (copia.modificado > this.ultimoModificado) this.ultimoModificado = copia.modificado
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE_GUIONES, 'readwrite')
+      const request = tx.objectStore(STORE_GUIONES).put(copia)
+      request.onerror = () => reject(request.error)
+      request.onsuccess = () => resolve()
+    })
+  }
+
   async borrar(id: string): Promise<void> {
     try {
       const db = await this.obtenerDb()

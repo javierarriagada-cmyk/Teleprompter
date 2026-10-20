@@ -44,6 +44,14 @@ export class RepositorioMemoria implements RepositorioGuiones {
     this.guionesMap.set(copia.id, copia)
   }
 
+  // GUARDAR TAL CUAL -orden B, 20-10-2026-: como guardar, sin tocar modificado. Ver RepositorioIndexedDB.
+  async guardarTal(g: Guion): Promise<void> {
+    const copia: Guion = JSON.parse(JSON.stringify(g))
+    copia.archivado = Boolean(copia.archivado)
+    if (copia.modificado > this.ultimoModificado) this.ultimoModificado = copia.modificado
+    this.guionesMap.set(copia.id, copia)
+  }
+
   async borrar(id: string): Promise<void> {
     this.guionesMap.delete(id)
   }
