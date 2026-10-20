@@ -141,14 +141,25 @@ async function paquetesAndroid() {
     // que guardar. Antes: licencia: pom ? licenciaDePom(pom.texto) : 'sin verificar', sin nota.
     const declarada = pom ? licenciaDePom(pom.texto) : 'sin verificar'
     const urlDeclarada = pom ? (pom.texto.match(/<license>[\s\S]*?<url>([^<]+)<\/url>/) || [])[1] : ''
-    const sinTexto = declarada !== 'Apache-2.0' && declarada !== 'sin verificar'
+    // -20-10-2026, cuenta-google, aprobado por Javier- Si el POM no trae el texto, se busca guardado en
+    // docs/licencias/<grupo>.<artefacto>/ y se lee con leerLicense, igual que el LICENSE de un paquete npm.
+    // El de googleid es el texto de https://developer.android.com/studio/terms.html -«This is the Android
+    // Software Development Kit License Agreement», versión del 28-04-2026-, bajado el 20-10-2026 y pasado a
+    // texto plano sin cambiar nada.
+    const textoGuardado = leerLicense(path.join(RAIZ, 'docs', 'licencias', `${c.grupo}.${c.artefacto}`))
+    // Antes: const sinTexto = declarada !== 'Apache-2.0' && declarada !== 'sin verificar'
+    const sinTexto = declarada !== 'Apache-2.0' && declarada !== 'sin verificar' && !textoGuardado
     salida.push({
       nombre: `${c.grupo}:${c.artefacto}`,
       version: c.version,
       licencia: sinTexto ? 'sin verificar' : declarada,
-      texto: '',
+      // Antes: texto: '',
+      texto: sinTexto ? '' : textoGuardado,
       origen: 'android',
-      fuente: pom ? pom.url : '',
+      // Con el texto guardado, la fuente es la página de la licencia y el POM queda en la nota.
+      // Antes: fuente: pom ? pom.url : '',
+      fuente: textoGuardado && urlDeclarada ? urlDeclarada : pom ? pom.url : '',
+      ...(textoGuardado && urlDeclarada ? { nota: `Texto de ${urlDeclarada}, guardado en docs/licencias/${c.grupo}.${c.artefacto}/. La licencia la declara su POM: ${pom.url}` } : {}),
       ...(sinTexto ? { nota: `Su POM declara ${declarada}${urlDeclarada ? ` -${urlDeclarada}-` : ''}, sin texto de licencia que guardar. Sin verificar.` } : {})
     })
   }
