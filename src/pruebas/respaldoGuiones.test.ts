@@ -82,7 +82,7 @@ describe('RepositorioSincronizado', () => {
     expect(subidos[0]).toMatchObject({ id: 'a', modificado: g.modificado })
     // Sin campos undefined: Firestore no los acepta.
     expect(JSON.stringify(subidos[0])).not.toContain('undefined')
-    expect(Object.values(subidos[0]).includes(undefined)).toBe(false)
+    expect((Object.values(subidos[0]) as unknown[]).includes(undefined)).toBe(false)
     await repo.borrar('a')
     expect(await local.abrir('a')).toBeNull()
     expect(subidos[1]).toMatchObject({ id: 'a', borrado: true })
