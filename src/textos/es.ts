@@ -56,6 +56,11 @@ export const es = {
   haceUnaSemana: 'hace 1 semana',
   haceSemanas: 'hace {n} semanas',
   vacio: 'vacío',
+  // -mejoras-claridad, 21-10-2026- La duración que es una estimación: «≈18 min», minutos redondeados.
+  duracionAproximada: '≈{minutos} min',
+  // -mejoras-claridad- La etiqueta chica arriba del título de la tarjeta grande y la palabra del «+».
+  continuarConEsteGuion: 'Continuar con este guion',
+  nuevoGuion: 'Nuevo guion',
   videos: 'Videos',
   videosVacio: 'Tus videos aparecerán aquí.',
   // Sin videos, con dibujo -tarea 76, 28-09-2026-. videosVacio se queda: es la línea del
@@ -271,6 +276,8 @@ export const es = {
   licenciaSinTexto: 'Sin texto de licencia.',
   espejoExplicacion: 'Para usar con un vidrio de teleprompter',
   lineaMuestraLectura: 'Lee esto en voz alta, sin apuro.',
+  // -mejoras-claridad, 21-10-2026- La etiqueta arriba de la línea de muestra.
+  vistaPrevia: 'Vista previa',
   // Dialogo de permiso de microfono -28-09-2026-.
   microfonoTitulo: 'Sigo necesita el micrófono',
   microfonoExplicacion: 'Escucha tu voz para avanzar el texto al ritmo en que lees. La voz se reconoce en el teléfono, sin internet.',

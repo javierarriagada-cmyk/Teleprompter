@@ -1,7 +1,8 @@
 import React, { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
-import { Guion, ResumenGuion, ResumenGrabacion, duracionDeLectura } from '../datos/modelo'
+// -mejoras-claridad, 21-10-2026- Antes: import { Guion, ResumenGuion, ResumenGrabacion, duracionDeLectura } from '../datos/modelo'
+import { Guion, ResumenGuion, ResumenGrabacion, duracionAproximada } from '../datos/modelo'
 import TiraGrabaciones from './TiraGrabaciones'
 import { PanelCorpus } from './PanelCorpus'
 import { HERRAMIENTAS } from '../lib/herramientas'
@@ -279,7 +280,8 @@ function FilaGuion({
   const tituloMostrar = tituloOInicio(g.titulo, g.inicio)
   // La duracion sale de duracionDeLectura -modelo.ts-, la misma de la tarjeta.
   const fechaNat = formatearFechaNatural(g.modificado)
-  const metaTexto = `${duracionDeLectura(g.palabras || 0)} · ${fechaNat}`
+  // -mejoras-claridad, 21-10-2026- «≈18 min · hoy». Antes: const metaTexto = `${duracionDeLectura(g.palabras || 0)} · ${fechaNat}`
+  const metaTexto = `${duracionAproximada(g.palabras || 0)} · ${fechaNat}`
 
   const menuAbierto = menuId === g.id
 
@@ -916,7 +918,8 @@ export default function BibliotecaView({
         {mostrarBotonCrear && !mostrarArchivados && (
           <button
             type="button"
-            className="boton-crear-guion btn-deformable"
+            // -mejoras-claridad, 21-10-2026- Antes: className="boton-crear-guion btn-deformable"
+            className="boton-crear-guion boton-crear-guion-con-palabra btn-deformable"
             onClick={() => {
               hapticaToqueSuave()
               onCrearNuevo()
@@ -925,7 +928,9 @@ export default function BibliotecaView({
             title={t('crearGuion')}
             aria-label={t('crearGuion')}
           >
-            <span><IconoMas tamano={20} /></span>
+            {/* -mejoras-claridad, 21-10-2026- «+ Nuevo guion»: el ícono y la palabra en la misma píldora, en el mismo lugar
+                y con el mismo alto de toque -48-. Antes: <span><IconoMas tamano={20} /></span> */}
+            <span><IconoMas tamano={18} /><span className="boton-crear-guion-texto">{t('nuevoGuion')}</span></span>
           </button>
         )}
       </div>

@@ -140,6 +140,11 @@ function leerEsquina(clave: string): EsquinaRecuadroH {
   return 'der-abajo'
 }
 
+// EL TIEMPO PARA DESHACER UN GUION BORRADO -mejoras de claridad, 21-10-2026-: el aviso «Guion borrado» con
+// Deshacer dura 6 s -antes 5- y el guion se borra de verdad recién al terminar. Javier: «a veces uno se
+// demora más en encontrarlo que en apretarlo».
+const MS_DESHACER_GUION = 6000
+
 export default function App({ motor, repoOverride }: AppProps) {
   // El idioma de la app: al cambiarlo en el cajon de la portada, App y todo lo que cuelga de
   // ella se redibuja con los textos nuevos -textos/index.ts-.
@@ -937,11 +942,14 @@ export default function App({ motor, repoOverride }: AppProps) {
       } finally {
         setIdsPendientesBorrado((prev) => prev.filter((i) => i !== id))
       }
-    }, 5000)
+      // -mejoras-claridad, 21-10-2026- 6 s y no 5, igual que el aviso: el guion se borra recién cuando el
+      // aviso con Deshacer se va. Antes: }, 5000)
+    }, MS_DESHACER_GUION)
 
     mostrarAviso(t('guionBorrado'), {
       accionTexto: t('deshacer'),
-      duracionMs: 5000,
+      // -mejoras-claridad, 21-10-2026- Antes: duracionMs: 5000,
+      duracionMs: MS_DESHACER_GUION,
       alEjecutarAccion: () => {
         if (timerBorradoRef.current[id]) {
           clearTimeout(timerBorradoRef.current[id])

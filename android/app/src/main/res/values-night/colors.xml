@@ -4,4 +4,7 @@
     <color name="marca_trazo">#E7E1DE</color>
     <color name="marca_trazo_apagado">#8A837C</color>
     <color name="marca_punto">#E11D2E</color>
+    <!-- -mejoras-claridad, 21-10-2026- TELEPROMPTER, algo más claro que marca_trazo_apagado -que sigue siendo
+         el de la línea del círculo-. El mismo de COLOR_MARCA_LEMA, Entrada.tsx. -->
+    <color name="marca_lema">#B3ABA4</color>
 </resources>

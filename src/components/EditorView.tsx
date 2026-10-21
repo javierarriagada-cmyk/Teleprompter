@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Guion, Bloque, TramoFormato, ResumenGrabacion, contarPalabras, duracionDeLectura, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
+// -mejoras-claridad, 21-10-2026- Suma duracionAproximada. Antes: import { Guion, Bloque, TramoFormato, ResumenGrabacion, contarPalabras, duracionDeLectura, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
+import { Guion, Bloque, TramoFormato, ResumenGrabacion, contarPalabras, duracionDeLectura, duracionAproximada, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
 import { consolidarGuion } from '../datos/consolidar'
 import { importarArchivo } from '../datos/importarArchivo'
 import { hapticaSeleccion } from '../haptica'
@@ -445,7 +446,9 @@ export default function EditorView({
   // pruebas de Firebase. Ahora sale de duracionDeLectura, la misma de la portada y de la tarjeta.
   const idiomaGuion = guion.idioma || 'es'
   const nombreIdioma = NOMBRE_IDIOMA[idiomaGuion] ? t(NOMBRE_IDIOMA[idiomaGuion]) : idiomaGuion
-  const resumenMeta = t('metaEditor', { palabras: numeroLocal(numPalabras), duracion: duracionDeLectura(numPalabras) })
+  // -mejoras-claridad, 21-10-2026- «2631 palabras · ≈18 min». Antes:
+  // const resumenMeta = t('metaEditor', { palabras: numeroLocal(numPalabras), duracion: duracionDeLectura(numPalabras) })
+  const resumenMeta = t('metaEditor', { palabras: numeroLocal(numPalabras), duracion: duracionAproximada(numPalabras) })
 
 
   const btnLeerRef = useRef<HTMLButtonElement>(null)

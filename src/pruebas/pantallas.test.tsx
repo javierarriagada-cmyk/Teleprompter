@@ -632,7 +632,9 @@ describe('Pruebas TAREA 39: Tres arreglos del editor y la biblioteca (T180-T182)
     )
 
     const btnMenu = screen.getByTestId('btn-menu-opciones-editor')
-    expect(btnMenu.textContent?.trim()).toBe('Aa')
+    // -mejoras-claridad, 21-10-2026- El botón lleva el engranaje -IconoEngranaje, un svg- en lugar de «Aa»: cambio aprobado
+    // por Javier y anotado en el PR #148. Sigue sin el carácter ⚙. Antes: expect(btnMenu.textContent?.trim()).toBe('Aa')
+    expect(btnMenu.querySelector('svg')).not.toBeNull()
     expect(container.textContent).not.toContain('⚙')
   })
 })

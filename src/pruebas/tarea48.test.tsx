@@ -92,7 +92,9 @@ describe('Pruebas TAREA 48 (T219-T225)', () => {
     expect(screen.queryByText(/cargando/i)).toBeNull()
     expect(within(tarjeta).getByText('Guión Más Reciente')).not.toBeNull()
     // El mismo formato que la fila del guion -duracionDeLectura, 24-09-2026-.
-    expect(screen.getByTestId('time-code-tarjeta').textContent).toBe('2 min')
+    // -mejoras-claridad, 21-10-2026- La tarjeta dice ahora «≈2 min» -duracionAproximada-, cambio aprobado por Javier y
+    // anotado en el PR #148. Antes: expect(screen.getByTestId('time-code-tarjeta').textContent).toBe('2 min')
+    expect(screen.getByTestId('time-code-tarjeta').textContent).toBe('≈2 min')
 
     // Resolver la promesa del guión completo
     resolverGuionCompleto({

@@ -252,6 +252,15 @@ export function duracionDeLectura(palabras: number): string {
   return s === 0 ? `${m} min` : `${m}:${String(s).padStart(2, '0')} min`
 }
 
+// LA DURACIÓN APROXIMADA -mejoras de claridad, 21-10-2026-: la misma estimación de duracionDeLectura, en
+// minutos redondeados y con «≈» delante -«≈18 min»-, para el editor, la tarjeta grande y las filas, que
+// no decían que el tiempo es aproximado. Menos de un minuto es «≈1 min», no «48 s». Leer no la usa.
+export function duracionAproximada(palabras: number): string {
+  const segundos = segundosDeLectura(palabras)
+  if (segundos <= 0) return t('vacio')
+  return t('duracionAproximada', { minutos: Math.max(1, Math.round(segundos / 60)) })
+}
+
 // LA ESTIMACIÓN DEL EDITOR, EN SEGUNDOS -ajustes de pantallas, 10-10-2026-. La misma cuenta de
 // duracionDeLectura -150 palabras por minuto, nunca 0 con palabras-; 0 si no hay palabras.
 // UNA SOLA ESTIMACIÓN -ajustes de pantallas, segunda vuelta, 10-10-2026-. Es la ÚNICA cuenta de lo que

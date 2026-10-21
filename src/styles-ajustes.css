@@ -1274,9 +1274,10 @@
   display: none;
 }
 /* -cuarta vuelta- También en el panel flotante. Antes: .dock-listo .fila-ajuste-nombre solo. */
+/* -mejoras-claridad, 21-10-2026- De 15 a 16: se leía chico. El alto de las filas sigue en 48. Antes: font-size: 15px; */
 .dock-listo .fila-ajuste-nombre,
 .panel-ajustes-flotante .fila-ajuste-nombre {
-  font-size: 15px;
+  font-size: 16px;
 }
 /* -cuarta vuelta- También en el panel flotante. Antes: .dock-listo .fila-ajuste-valor solo. */
 .dock-listo .fila-ajuste-valor,
@@ -1479,4 +1480,11 @@
   font-size: 13px;
   color: var(--color-apagado);
   margin-top: 2px;
+}
+
+
+/* -mejoras-claridad, 21-10-2026- «VISTA PREVIA» arriba de la muestra -PanelAjustes.tsx-: .dock-seccion, sin el
+   margen de los lados, pegada al recuadro. */
+.etiqueta-vista-previa {
+  margin: 4px 0 6px;
 }
