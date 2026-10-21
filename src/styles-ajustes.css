@@ -1248,7 +1248,10 @@
   overflow-y: auto;
   overscroll-behavior: contain;
 }
-.dock-seccion {
+/* -mejoras-claridad, 21-10-2026- La misma letra para «VISTA PREVIA» -.etiqueta-vista-previa, PanelAjustes.tsx-,
+   con su margen abajo. Antes: .dock-seccion { solo. */
+.dock-seccion,
+.etiqueta-vista-previa {
   margin: 12px 8px 2px;
   font-size: 11px;
   font-weight: 700;
@@ -1483,8 +1486,8 @@
 }
 
 
-/* -mejoras-claridad, 21-10-2026- «VISTA PREVIA» arriba de la muestra -PanelAjustes.tsx-: .dock-seccion, sin el
-   margen de los lados, pegada al recuadro. */
+/* -mejoras-claridad, 21-10-2026- «VISTA PREVIA» arriba de la muestra -PanelAjustes.tsx-: la letra de .dock-seccion,
+   sin el margen de los lados, pegada al recuadro. */
 .etiqueta-vista-previa {
   margin: 4px 0 6px;
 }

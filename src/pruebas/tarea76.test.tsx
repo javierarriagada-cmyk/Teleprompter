@@ -254,7 +254,10 @@ describe('Tarea 76 - la portada plegada', () => {
       medirEn(-40)
       fireEvent.click(boton)
       expect(volver).toHaveBeenCalledTimes(1)
-      expect(volver.mock.instances[0].textContent).toBe('Guiones')
+      // -mejoras-claridad, 21-10-2026- La fila del título lleva ahora el botón «+ Nuevo guion» con su palabra -cambio aprobado
+      // por Javier y anotado en el PR #148-: su texto es «Guiones» más «Nuevo guion». Sigue siendo la fila del
+      // título la que vuelve. Antes: expect(volver.mock.instances[0].textContent).toBe('Guiones')
+      expect(volver.mock.instances[0].querySelector('[role="heading"]')?.textContent).toBe('Guiones')
       expect(volver).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
     } finally {
       ;(Element.prototype as any).scrollIntoView = original

@@ -366,7 +366,9 @@ export function PanelAjustes({
   // de los títulos de sección -.dock-seccion-. Solo en este panel: el dock de LISTO no cambia.
   const muestraConEtiqueta = con('lectura') && (
     <>
-      <div className="dock-seccion etiqueta-vista-previa">{t('vistaPrevia')}</div>
+      {/* La letra de .dock-seccion -styles-ajustes.css comparte la regla- pero no la clase: no es una sección
+          del panel, es el nombre de la muestra. */}
+      <div className="etiqueta-vista-previa">{t('vistaPrevia')}</div>
       <MuestraLectura ajustes={ajustesLectura} />
     </>
   )

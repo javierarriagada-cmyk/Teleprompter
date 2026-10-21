@@ -92,7 +92,7 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
               style={{
                 background: 'transparent',
                 border: 'none',
-                // -mejoras-claridad, 21-10-2026- --aviso-accion: en claro, var(--color-acento) -#E7E1DE- sobre el aviso blanco daba
+                // -mejoras-claridad, 21-10-2026- --aviso-accion: en claro, var(--color-acento) -el crema de los botones claros- sobre el aviso blanco daba
                 // 1,3 a 1 y no se leía; ahora 6,0 a 1. En oscuro sigue siendo --color-acento. Antes: color: 'var(--color-acento)',
                 color: 'var(--aviso-accion)',
                 fontWeight: 'bold',

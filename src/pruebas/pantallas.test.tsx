@@ -587,7 +587,9 @@ describe('Pruebas TAREA 39: Tres arreglos del editor y la biblioteca (T180-T182)
     // 28-09-2026: la duracion es la de duracionDeLectura, la misma de la portada -12 palabras a
     // 150 por minuto son 5 s-. Antes decia "1 min" redondeando hacia arriba, y la misma pantalla
     // mostraba "5 s" mas abajo.
-    expect(screen.getByText(/12 palabras · 5 s/i)).not.toBeNull()
+    // -mejoras-claridad, 21-10-2026- Arriba dice ahora «≈1 min» -duracionAproximada, bajo un minuto-: cambio aprobado por
+    // Javier y anotado en el PR #148. Antes: expect(screen.getByText(/12 palabras · 5 s/i)).not.toBeNull()
+    expect(screen.getByText(/12 palabras · ≈1 min/i)).not.toBeNull()
     expect(screen.queryByText(/12 palabras · 1 min/i)).toBeNull()
   })
 

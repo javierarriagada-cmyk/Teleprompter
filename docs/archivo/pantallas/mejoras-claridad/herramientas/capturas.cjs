@@ -4,6 +4,8 @@
 // Por cada mejora, tema y versión -antes, la app de hoy; después, la misma app con boceto-despues- abre
 // app-real.html en un teléfono de 392 de ancho, siembra tres guiones y tres videos en IndexedDB, llega a
 // la pantalla de la mejora tocando como una persona, y guarda capturas/<mejora>-<pantalla>-<tema>-<versión>.png.
+// -paso 2- Con «codigo» como segundo argumento -node capturas.cjs 3 codigo- saca la app de la rama, ya con
+// las mejoras en src/ y sin boceto, en los dos temas: capturas/<mejora>-<pantalla>-<tema>-codigo.png.
 const puppeteer = require('/workspace/tp-shot/node_modules/puppeteer-core')
 const fs = require('fs')
 const path = require('path')
@@ -61,7 +63,7 @@ async function mantener(p, sel, ms) {
   await p.mouse.up()
 }
 
-async function captura(br, mejora, pantalla, tema, version) {
+async function captura(br, mejora, pantalla, tema, version, codigo = false) {
   const p = await br.newPage()
   p.on('pageerror', (e) => console.log('PAGEERROR', mejora, pantalla, e.message.slice(0, 200)))
   await p.setViewport({ width: ANCHO, height: ALTO, deviceScaleFactor: 2, isMobile: true, hasTouch: false })
@@ -93,16 +95,23 @@ async function captura(br, mejora, pantalla, tema, version) {
     await p.click('[data-testid="menu-opciones-g-saludo"] .peligro')
     await dormir(900)
   }
-  const salida = path.join(D, `${mejora}-${pantalla}-${tema}-${version}.png`)
+  // -paso 2- En la portada del código, la página baja hasta el final: se ven los títulos de video y su fecha.
+  if (codigo && pantalla === 'portada') { await p.evaluate(() => window.scrollTo(0, document.body.scrollHeight)); await dormir(600) }
+  const salida = path.join(D, `${mejora}-${pantalla}-${tema}-${codigo ? 'codigo' : version}.png`)
   await p.screenshot({ path: salida })
   console.log('ok', path.basename(salida))
   await p.close()
 }
 ;(async () => {
   const solo = process.argv[2]
+  const codigo = process.argv[3] === 'codigo'
   const br = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome', args: ['--no-sandbox', '--lang=es-CL'] })
   for (const [mejora, m] of Object.entries(MEJORAS)) {
     if (solo && solo !== mejora) continue
+    if (codigo) {
+      for (const pantalla of m.pantallas) for (const tema of ['oscuro', 'claro']) await captura(br, mejora, pantalla, tema, 'antes', true)
+      continue
+    }
     for (const pantalla of m.pantallas) for (const tema of m.temas) for (const version of ['antes', 'despues']) {
       await captura(br, mejora, pantalla, tema, version)
     }
