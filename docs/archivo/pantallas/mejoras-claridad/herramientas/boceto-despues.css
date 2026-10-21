@@ -3,16 +3,17 @@
    las variables de styles.css y styles-ajustes.css. */
 
 /* 1. ARRANQUE. TELEPROMPTER un 10 % más grande -el tope del splash nativo: ver el PR- y más claro, y una
-   línea roja corta entre «Sig●» y la palabra. El sitio de la palabra es el de hoy, 4 px más abajo. */
+   línea roja corta entre «Sig●» y la palabra. La palabra crece desde su centro, en su sitio de hoy: más
+   abajo, el círculo del splash nativo le cortaría las puntas. */
 .boceto-m1 [data-testid="lema-entrada"] {
-  transform: translate(-64.17px, 58px) scale(1.1) !important;
+  transform: translate(-64.17px, 54.07px) scale(1.1) !important;
   transform-origin: 50% 50%;
 }
 .boceto-m1 [data-testid="lema-entrada"] path { fill: #B3ABA4; }
 .boceto-linea-roja {
   position: absolute;
   left: calc(50% - 12px);
-  top: calc(50% + 47px);
+  top: calc(50% + 46px);
   width: 24px;
   height: 2px;
   border-radius: 1px;
