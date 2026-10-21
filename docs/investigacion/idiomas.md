@@ -22,7 +22,8 @@ final, en la sección 9.
 - **Tres cosas del código que hay que cambiar para cualquier idioma nuevo** (sección 1.4): el
   seguidor borra las letras que no están en `a-z0-9áéíóúñü`, el detector de idioma solo conoce
   español e inglés (hoy un guion en portugués se detecta como español), y los tipos `'es' | 'en'`
-  están cableados en el motor nativo y en el plugin de Java.
+  están cableados en el motor nativo y en el plugin de Java. La lista completa de cambios, archivo por
+  archivo, está en la **sección 11**, y lo de la ficha de Play y el sitio en la **sección 12**.
 - **Restringir Vosk a las palabras del guion -gramática- no sirve**: ya se había descartado en
   español e inglés, y en esta medición también empeora el portugués (27,2 % → 48,0 % de error).
 
@@ -446,7 +447,7 @@ inglés **[sin verificar]**.
 
 ### 7.2 Qué habría que ajustar en el seguidor
 
-- Letras: sumar `ãõçâêôà` a `normalizar` y a `subtitulos.ts` (hoy "ação" y "ao" chocan).
+- Letras: sumar `ãõçâêôà` a `normalizar` (`subtitulos.ts` ya las conserva por NFD, ver 11.6) (hoy "ação" y "ao" chocan).
 - Contracciones: "do", "da", "no", "na", "à", "pelo", "num" son palabras separadas por espacios; el
   seguidor no las trata distinto, y Vosk las escribe igual que el guion, así que no deberían
   molestar. Se comprueba con las lecturas.
@@ -550,7 +551,7 @@ y la pausa).
 | --- | --- | --- |
 | Textos de la app | 175 claves (conteo de líneas `clave:` en un archivo de 208 líneas) | `src/textos/es.ts` — el tipo obliga a traducirlas todas: si falta una, no compila |
 | Sitio | un archivo de 111 líneas | `sitio/fuente/textos/es.js` |
-| Ficha de Play | **no existe todavía en `main`**: `docs/play/ficha/` es la entrega de la tarea 86 | `docs/tarea86.txt` |
+| Ficha de Play | ya está en `main` (`docs/play/ficha/`, actualizado el 21-10-2026); detalle en la sección 12 | `docs/play/ficha/LEEME.md` |
 | Guion de bienvenida "Hola" | un texto largo aparte | `App.tsx`, `bloqueDeBienvenida` (según `src/textos/es.ts`, comentario inicial) |
 | Glosario | la tabla de `docs/ingles.txt`, sección 4 | se agrega una columna |
 | Revisión | un hablante nativo por idioma: para el portugués, el papá de Javier; para los demás **no hay nadie identificado** | — |
@@ -617,3 +618,456 @@ La regla del inglés vale igual: "el texto se escribe, no se traduce" (`docs/ing
 - Detector de idioma y pérdida de letras: `detectarIdioma` y `normalizar` copiados tal cual a Python,
   pasados por las transcripciones de FLEURS dev de cada idioma.
 - Los scripts quedaron fuera del repositorio (en el computador de trabajo del agente, `/workspace/medir-idiomas/`).
+
+## 11. Cambios de código necesarios para portugués
+
+Estudio hecho leyendo `main` en el commit `9b5cf53` (21-10-2026). Cada fila dice qué hace hoy el
+código, qué habría que cambiar, si es **obligatorio** (sin eso el portugués no funciona o funciona
+mal sin avisar) u **opcional**, y el riesgo y el esfuerzo **relativos** (bajo, medio, alto) comparados
+entre sí. No se estiman horas. Los fragmentos de código son **propuesta no probada**: ilustran la
+idea, no se compilaron ni se corrieron dentro de la app. Este documento no cambia la app.
+
+### 11.1 Cómo decide hoy la app el idioma (el recorrido completo)
+
+1. **El guion guarda su idioma** como texto libre: `src/datos/modelo.ts:102`
+   (`idioma: string // 'es', 'en', 'pt'... NUNCA cablear 'es'`). El modelo de datos ya admite `'pt'`;
+   `RepositorioIndexedDB.ts:26` lo guarda tal cual. **No hay que migrar datos.**
+2. **El editor lo detecta o lo alterna**: `EditorView.tsx:348-360` (`idiomaSegunTexto`, llama a
+   `detectarIdioma`) y `EditorView.tsx:414-427` (`handleAlternarIdioma`: `guion.idioma === 'en' ? 'es' : 'en'`,
+   un interruptor de dos estados). El botón muestra `idiomaGuion.toUpperCase()`
+   (`EditorCabecera.tsx:115`).
+3. **App arma el código del motor**: `App.tsx:1252-1253`
+   (`idiomaGuion === 'en' ? 'en-US' : idiomaGuion === 'es' ? 'es-ES' : idiomaGuion`). Un `'pt'` pasaría
+   como `'pt'` sin cambiar.
+4. **useASR lo pasa al motor**: `useASR.ts:15` (por omisión `'es-ES'`) y `:121` (`iniciar({ lang })`).
+5. **MotorNativo lo reduce a dos**: `MotorNativo.ts:163`, `:207` y `:238`, las tres con
+   `startsWith('en') ? 'en' : 'es'`. **Aquí `'pt'` se convierte en `'es'` sin aviso.**
+6. **El plugin de Java lo vuelve a reducir**: `VoskNativoPlugin.java:83` (`carpetaModelo`),
+   `:187` (`iniciar`) y `:269` (`asegurarVoz`): todo lo que no sea `"en"` es `"es"`.
+7. **La descarga en silencio** usa su propia reducción: `vozAPedido.ts:18` (`IdiomaVoz = 'es' | 'en'`)
+   y `:23-25` (`idiomaDeVoz`), y `App.tsx:1316` vuelve a armar `'en-US' : 'es-ES'`.
+8. **El seguidor** recibe el idioma del guion (`useSeguidor.ts:64`) y solo lo usa para activar la
+   fonética si es `'en'` (`seguidor.ts:213-216`).
+
+Conclusión: hoy un guion marcado `'pt'` **se leería con el modelo español, sin ningún error
+visible**. El portugués exige tocar los puntos 2, 5, 6 y 7 a la vez; si se cambia solo uno, el
+comportamiento se vuelve incoherente (por ejemplo, el plugin carga `model-pt` pero la descarga en
+silencio pide `model-es`).
+
+### 11.2 Todos los `'es' | 'en'` cableados (grep en `src/`, `android/`, `scripts/`, `sitio/`)
+
+Comando: `grep -rnE "'es' \| 'en'|\"en\"\.equals|startsWith\('en'\)|=== 'en'|=== 'es'|model-es|model-en|model_es|model_en"`,
+sin las pruebas. Se agrupan por lo que deciden.
+
+| Archivo:línea | Qué decide | ¿Toca el portugués? |
+|---|---|---|
+| `src/motor/MotorNativo.ts:50`, `:73`, `:136`, `:163`, `:207`, `:238` | qué modelo carga y pide | **sí, obligatorio** |
+| `android/.../VoskNativoPlugin.java:83`, `:187`, `:269` | carpeta del modelo | **sí, obligatorio** |
+| `src/lib/vozAPedido.ts:18`, `:23-25` | qué voz se baja en silencio | **sí, obligatorio** |
+| `src/App.tsx:1253`, `:1316`, `:1353` | código del motor; voz a bajar; nombre del idioma en el aviso | **sí, obligatorio** |
+| `src/lib/detectarIdioma.ts:34` | idioma detectado del guion | **sí, obligatorio** |
+| `src/components/EditorView.tsx:423`, `:446`, `:832` | botón ES/EN; nombre en la marca guía | **sí, obligatorio** |
+| `src/lib/seguidor.ts:214` | fonética solo en inglés | opcional (11.6) |
+| `src/lib/subtitulos.ts:111-115` (`ATADAS`) | palabras que no cierran un subtítulo | opcional, recomendado |
+| `src/lib/idioma.ts:10`, `:25-26`, `:54` | idioma de la **app** (no del guion) | solo si la app se traduce (11.8) |
+| `android/.../IdiomaAppPlugin.java:59` | idiomas de app aceptados | solo si la app se traduce |
+| `android/app/src/main/res/xml/locales_config.xml` | idiomas que Android ofrece para la app | solo si la app se traduce |
+| `src/app/bienvenida.ts:15`, `:19` | guion Hola en es o en | solo si la app se traduce |
+| `src/components/PanelAjustes.tsx:236-241`, `:340-341`, `:568`, `:590`, `:596` | selector de idioma de la app, enlaces de ayuda y correo | solo si la app se traduce |
+| `src/components/IndicadorPrecarga.tsx:50` | nombre del idioma en "sin conexión" (usa el de la **app**) | **sí**: debería usar el del guion |
+| `src/textos/index.ts:54-57`, `:71` | formato de fecha y número | solo si la app se traduce |
+| `android/settings.gradle:12-13`, `android/app/build.gradle:154`, `:200` | paquetes de Play y `genUUID` | **sí, obligatorio** |
+| `scripts/bajar-modelo.mjs:32-33`, `:39` | modelos a bajar y carpetas exigidas | **sí, obligatorio** |
+| `scripts/play.mjs:76`, `:237` | comprueba modelos y mide tamaños | **sí, obligatorio** |
+| `scripts/apk.mjs:75` | solo comprueba el español | no |
+| `CopiaViejaDelModelo.java:34` | borra solo la copia vieja `model-es` | no (no debe tocar `model-pt`) |
+| `scripts/ficha.mjs:35`, `:47`, `:81`, `:107`; `scripts/playApi.mjs:58-60` | idiomas de la ficha de Play | **sí, para lanzar** (sección 12) |
+| `sitio/armar.mjs:78`, `:102`, `:108-110`, `:141` | idiomas del sitio | **sí, para lanzar** (sección 12) |
+
+`MotorVosk.ts:74` (Vosk en el navegador) y `MotorFake.ts:21` reciben `lang` y no lo reducen; el
+motor web no va dentro del APK (AGENTS.md, tabla de archivos), así que no se toca.
+
+### 11.3 Motor y plugin (obligatorio)
+
+**C1. Un tipo único de idioma de voz.** Hoy hay cuatro reducciones distintas (MotorNativo ×3,
+`vozAPedido.idiomaDeVoz`, Java ×2). Propuesta: una sola función en `vozAPedido.ts` que usen todos.
+Riesgo **medio** (toca la carga del modelo), esfuerzo **bajo**.
+
+```ts
+// propuesta no probada — src/lib/vozAPedido.ts
+export type IdiomaVoz = 'es' | 'en' | 'pt'
+export const IDIOMAS_DE_VOZ: readonly IdiomaVoz[] = ['es', 'en', 'pt']
+export function idiomaDeVoz(lang: string | null | undefined): IdiomaVoz {
+  const l = (lang || '').toLowerCase()
+  if (l.startsWith('en')) return 'en'
+  if (l.startsWith('pt')) return 'pt'
+  return 'es' // la regla de hoy: lo desconocido cae en español
+}
+```
+
+Y en `MotorNativo.ts:163`, `:207`, `:238` reemplazar la expresión por `idiomaDeVoz(lang)`;
+`App.tsx:1253` por `const langMotor = idiomaGuion` (o un mapa a `'pt-BR'`) y `App.tsx:1316` por pasar
+`idioma` directo, porque `idiomaDeVoz` ya lo entiende.
+
+**C2. `VoskNativoPlugin.java:83`, `:187`, `:269`.** Propuesta no probada:
+
+```java
+// propuesta no probada
+private static String idiomaValido(String pedido) {
+    if ("en".equals(pedido) || "pt".equals(pedido)) return pedido;
+    return "es";
+}
+private static String carpetaModelo(String idioma) {
+    return "model-" + idiomaValido(idioma); // model-es, model-en, model-pt
+}
+// en iniciar y asegurarVoz: String idioma = idiomaValido(call.getString("idioma", "es"));
+```
+
+Riesgo **bajo**, esfuerzo **bajo**. `PaqueteDeVoz.nombreDelPaquete` (release, línea ~99) ya
+convierte `model-pt` en `model_pt` sin cambios; `rutaSiEsta` (~:105-110) exige la carpeta `am`, por
+eso la reorganización de 11.4 es obligatoria. El evento `progresoVoz` ya lleva `idioma`
+(`VoskNativoPlugin.java:~283`) y `MotorNativo.ts:209` lo filtra: sirve igual para `pt`.
+
+**C3. Rendimiento del modelo pt en el teléfono (riesgo alto).** El comentario de
+`VoskNativoPlugin.java:112` explica los trozos de 20 ms y `--frames-per-chunk=3`. En el PC el
+portugués gastó 2,3 veces más procesador (sección 4) **[sin verificar en teléfono]**. No es un
+cambio de código, pero puede obligar a ajustar `max-active` o `beam` en el `model.conf` de pt.
+
+### 11.4 El modelo pt-0.3 tiene el formato viejo (obligatorio)
+
+Lo que trae el zip `vosk-model-small-pt-0.3` (comprobado al descomprimirlo):
+`final.mdl`, `HCLr.fst`, `Gr.fst`, `disambig_tid.int`, `phones.txt`, `word_boundary.int`,
+`mfcc.conf` y `ivector/`, **todo suelto en la raíz, sin `am/`, `conf/` ni `graph/` y sin
+`model.conf`**. Hoy eso rompe dos cosas:
+
+- `scripts/bajar-modelo.mjs:39` exige `['am','conf','graph','ivector']` y se para con
+  "El modelo quedó incompleto".
+- `scripts/bajar-modelo.mjs:~98-101` lee `conf/model.conf` para agregar `--frames-per-chunk=3`; ese
+  archivo no existe en pt-0.3 y el script fallaría.
+- `PaqueteDeVoz.rutaSiEsta` busca `am/` y respondería "no está bajado" para siempre.
+
+Propuesta no probada para `scripts/bajar-modelo.mjs` (riesgo **bajo**, esfuerzo **bajo**):
+
+```js
+// propuesta no probada
+const MODELOS = [
+  /* es y en como hoy */
+  { idioma: 'portugues', url: 'https://alphacephei.com/vosk/models/vosk-model-small-pt-0.3.zip',
+    carpeta: 'model-pt', mb: 31, formatoViejo: true }
+]
+function reordenarFormatoViejo(dir) {
+  const mover = { 'final.mdl': 'am', 'mfcc.conf': 'conf', 'HCLr.fst': 'graph', 'Gr.fst': 'graph',
+    'phones.txt': 'graph', 'disambig_tid.int': 'graph', 'word_boundary.int': 'graph/phones' }
+  for (const [archivo, sub] of Object.entries(mover)) {
+    fs.mkdirSync(path.join(dir, sub), { recursive: true })
+    fs.renameSync(path.join(dir, archivo), path.join(dir, sub, archivo))
+  }
+  // model.conf con los valores que Vosk usaba para este modelo -leídos en su registro al cargarlo-
+  fs.writeFileSync(path.join(dir, 'conf', 'model.conf'), [
+    '--min-active=200', '--max-active=7000', '--beam=13.0', '--lattice-beam=6.0',
+    '--acoustic-scale=1.0', '--frame-subsampling-factor=3',
+    '--endpoint.silence-phones=1:2:3:4:5:6:7:8:9:10',
+    '--endpoint.rule2.min-trailing-silence=0.5', '--endpoint.rule3.min-trailing-silence=1.0',
+    '--endpoint.rule4.min-trailing-silence=2.0', ''].join('\n'))
+}
+```
+
+Esta misma reorganización es la que se usó para medir en el PC (`/workspace/medir-idiomas/pt-fpc3`,
+sección 10) y Vosk 0.3.45 de Python la cargó y transcribió. **[sin verificar]** que vosk-android
+0.3.75 la cargue igual; los valores `beam 13`, `max-active 7000` y `lattice-beam 6` salen del registro
+de Vosk al cargar el modelo original, no de una documentación.
+
+### 11.5 Paquetes de Play y Gradle (obligatorio)
+
+| Cambio | Archivo:línea | Riesgo / esfuerzo |
+|---|---|---|
+| Crear `android/model-pt/build.gradle` copiando `android/model-en/build.gradle` con `packName = 'model_pt'` y `deliveryType = 'on-demand'` | nuevo | bajo / bajo |
+| `include ':model-pt'` dentro del `if (paraPlay)` | `android/settings.gradle:12-13` | bajo / bajo |
+| `assetPacks = [':model-es', ':model-en', ':model-pt', ':gestos']` | `android/app/build.gradle:154` | bajo / bajo |
+| `genUUID`: `carpetas = ['model-es', 'model-en', 'model-pt']` | `android/app/build.gradle:200` | bajo / bajo |
+| Comprobar `model-pt` y medir `model_pt` | `scripts/play.mjs:76`, `:237` | bajo / bajo |
+| La APK de prueba lleva los modelos en assets: con pt suma unos 52 MB desempaquetados | `android/app/src/main/assets/` (no está en git) | bajo / bajo |
+
+`CopiaViejaDelModelo.java:34` no se toca: solo borra la copia vieja del español.
+
+### 11.6 Seguidor, normalización y fonética
+
+**C4. `normalizar` borra letras portuguesas (obligatorio).** `seguidor.ts:73-79`:
+`.replace(/[^a-z0-9áéíóúñü\s]/gi, '')`. Borra `ã õ ç â ê ô à`. Medido en FLEURS pt_br (sección 1.4):
+7,1 % de las palabras pierden letras y aparecen choques como "ação" → "ao", que es una palabra
+frecuente ("ao" = "a o"). Propuesta: quitar los diacríticos con NFD, como ya hace `subtitulos.ts`
+(`norm`, líneas ~117-119), pero conservando la `ñ` para no cambiar el español:
+
+```ts
+// propuesta no probada — src/lib/seguidor.ts
+export function normalizar(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/ñ/g, '\u0000')              // guarda la ñ
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/\u0000/g, 'ñ')
+    .replace(/[^a-z0-9ñ\s]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+```
+
+Ojo: esto **cambia el español** (hoy "más" y "mas" son distintas y pasarían a ser iguales). AGENTS.md
+y `seguidor.ts:211-212` exigen que las 28 tomas de Javier den lo mismo byte a byte. Alternativa
+más segura: aplicar la versión nueva solo si `idioma === 'pt'`, igual que hoy la fonética solo en
+inglés. Riesgo **medio** (el seguidor es el corazón de la app), esfuerzo **bajo** de escribir y
+**medio** de comprobar con `npm run banco`.
+
+**Lo que ya funciona sin cambios:** `subtitulos.ts` `norm` pasa por NFD y borra las marcas, así que
+"ação" queda "acao" y no se pierden letras. **Corrige lo dicho en la sección 7** ("sumar ãõçâêôà a
+`subtitulos.ts`"): no hace falta para las letras, solo para la lista `ATADAS` (C6).
+
+**C5. Contracciones `do, da, no, na, pelo, pela, num, ao, à` (obligatorio comprobar, quizá sin
+código).** `tokenizarGuion` corta por espacios (`seguidor.ts:~110-117`), y en portugués las
+contracciones se escriben como una palabra separada, igual que "del" y "al" en español. Vosk pt
+también las entrega como palabras separadas **[sin verificar en todas]**: en la transcripción de
+FLEURS medida en la sección 4 aparecen "do", "da", "no", "na" sueltas. El riesgo real es otro: con
+la `normalizar` de hoy "à" desaparece (queda vacía) y con la propuesta C4 "à" y "a" se vuelven la
+misma palabra, lo que conviene, porque Vosk no distingue la crasis al oído. "pelo" (contracción) y
+"pelo" (cabello) se escriben igual: no afecta, el seguidor compara letras. Ninguna palabra de una
+o dos letras debería tener peso alto: hoy `pesoDe` (`seguidor.ts:222`) baja el peso de las
+palabras frecuentes, lo que ya cubre esto. **[sin verificar]** con lecturas reales.
+
+**C6. `ATADAS` de los subtítulos (opcional, recomendado).** `subtitulos.ts:111-115` tiene una sola
+lista para es y en. Sumar las de portugués sin que choquen:
+`o os as e do da dos das no na nos nas num numa pelo pela pelos pelas ao aos um uma meu minha seu sua que se mas`.
+"o" en español es "o" (disyunción) y también ata: no choca. Riesgo **bajo**, esfuerzo **bajo**.
+
+**C7. Fonética para portugués (opcional).** `seguidor.ts:214` solo activa `suenanParecido`
+(`fonetica.ts:104`, Metaphone, reglas del inglés) en inglés. No hay que activarla en portugués:
+Metaphone del inglés aplicado al portugués no tiene sustento. Si las lecturas del padre de Javier
+muestran palabras perdidas por la pronunciación, una propuesta medible es una regla pequeña propia
+(equivalencias `ç/ss/s`, `lh/li`, `nh/ni`, `x/ch`, final `-ão/-am`):
+
+```ts
+// propuesta no probada — src/lib/fonetica.ts
+export function clavePt(p: string): string {
+  return p.replace(/ç/g, 's').replace(/ss/g, 's').replace(/lh/g, 'li').replace(/nh/g, 'ni')
+          .replace(/ch/g, 'x').replace(/(ão|am)$/g, 'aum')
+}
+```
+
+Riesgo **medio** (calces falsos), esfuerzo **medio**. Solo con datos que lo pidan.
+
+### 11.7 Detector de idioma: propuesta medida (obligatorio)
+
+Hoy (`detectarIdioma.ts:13-28`, `:34-50`): dos listas, `FRECUENTES_ES` y `FRECUENTES_EN`; mínimo 12
+palabras, ganador con el doble y al menos 3. Como `de, que, se, por, para, como, com…` son comunes a
+portugués y español, **el portugués sale español en 86 de 96 muestras** de 4 frases de FLEURS
+(reproducido el 21-10-2026 con el mismo puerto a Python; en frases sueltas: 170 de 386 como español
+y 216 sin decidir).
+
+Propuesta: mantener la decisión inglés de hoy y, si no es inglés, desempatar portugués contra
+español con **palabras que solo existen en uno de los dos** más letras exclusivas:
+
+- español: `el los las la en con lo su sus le al es ya sin porque y del una pero muy hay donde eso esto
+  cuando hasta él ella usted ustedes nosotros hacer puede tiene están fue estos estas`, más cada palabra
+  con `ñ`;
+- portugués: `o os as e do da dos das um não mas muito há onde isso isto até ele ela você vocês nós
+  fazer pode tem estão foi é são no na nos nas pelo pela ao à`, más cada palabra con `ã`, `õ`, `ç` o
+  que termina en `-ção`/`-ções`;
+- gana el que tenga al menos 3 y el doble que el otro; si no, `null` (se queda el idioma guardado),
+  la misma regla de hoy.
+
+```ts
+// propuesta no probada — src/lib/detectarIdioma.ts
+export function detectarIdioma(texto: string): 'es' | 'en' | 'pt' | null {
+  const base = detectarEsEn(texto)            // la función de hoy, renombrada
+  if (base === 'en') return 'en'
+  const palabras = (texto.toLowerCase().match(/[\p{L}’']+/gu) || [])
+  if (palabras.length < PALABRAS_MINIMAS_PARA_DETECTAR) return null
+  let es = 0, pt = 0
+  for (const p of palabras) {
+    if (SOLO_ES.has(p) || p.includes('ñ')) es++
+    if (SOLO_PT.has(p) || /[ãõç]|ções?$/.test(p)) pt++
+  }
+  if (pt >= 3 && pt >= 2 * es) return 'pt'
+  if (es >= 3 && es >= 2 * pt) return base ?? 'es'
+  return null
+}
+```
+
+Medido con FLEURS dev (en el PC, puerto a Python, 21-10-2026):
+
+| Texto | Muestras | Hoy | Propuesta |
+|---|---|---|---|
+| portugués, 4 frases | 96 | 86 es, 1 en, 9 sin decidir | **94 pt**, 1 en, 1 sin decidir |
+| español, 4 frases | 102 | 102 es | **102 es** |
+| portugués, frase suelta | 386 | 170 es, 216 sin decidir | 325 pt, 61 sin decidir, **0 es** |
+| español, frase suelta | 408 | 390 es, 18 sin decidir | 367 es, 41 sin decidir, **0 pt** |
+| italiano, 4 frases | 97 | 65 es | 56 es, 6 pt |
+| francés, 4 frases | 72 | 72 es | 54 es, 4 pt |
+| catalán, 4 frases | 101 | 101 es | 89 es, 2 pt |
+
+Lectura: con guiones de un párrafo o más acierta casi siempre y nunca confunde portugués con
+español; con frases sueltas el español decide un poco menos que hoy (367 contra 390 de 408), lo que
+deja el idioma guardado, no uno equivocado. Italiano, francés y catalán siguen saliendo como
+español, igual que hoy: se resolverá cuando se sumen esos idiomas. El criterio de aceptación
+propuesto para la prueba: en FLEURS pt_br de 4 frases, ≥ 90 de 96 como `pt` y 0 como `es`; en
+es_419, 102 de 102 como `es`. Riesgo **bajo** (si duda, no cambia nada), esfuerzo **bajo**.
+**[sin verificar]** con guiones reales de creadores, que no son frases de Wikipedia.
+
+### 11.8 Interfaz, textos y preferencias
+
+**Obligatorio aunque la app NO se traduzca al portugués** (leer un guion en portugués con la app
+en español o inglés, como hoy se lee uno en inglés con la app en español):
+
+- **C8. El botón de idioma del guion** (`EditorView.tsx:414-427`, `EditorCabecera.tsx:115`) es un
+  interruptor ES↔EN. Con tres idiomas tiene que rotar `es → en → pt → es` o abrir una lista corta.
+  Propuesta no probada: `const ORDEN = ['es','en','pt']; idioma: ORDEN[(ORDEN.indexOf(guion.idioma)+1) % ORDEN.length]`.
+  Riesgo **bajo**, esfuerzo **bajo** con rotación; **medio** con lista. Decide Javier.
+- **C9. El nombre del idioma**: `NOMBRE_IDIOMA` (`EditorView.tsx:447`) y los ternarios
+  `App.tsx:1353`, `EditorView.tsx:832`, `IndicadorPrecarga.tsx:50` eligen `idiomaEn`/`idiomaEs`.
+  Sumar la clave `idiomaPt` en `src/textos/es.ts` (cerca de `:290-291`: `idiomaPt: 'portugués'`) y en
+  `en.ts` (`'Portuguese'`), y reemplazar los ternarios por un mapa. Además, `IndicadorPrecarga.tsx:50`
+  usa el idioma **de la app** donde debería usar el de la voz que falta. Riesgo **bajo**, esfuerzo **bajo**.
+- **C10. Textos que dicen "dos idiomas"**: `es.ts:307` (`marcaGuiaIdioma`) y `:309` funcionan con
+  `{idioma}`; revisar cualquier texto que diga "ES/EN" (en el sitio, `sitio/fuente/textos/es.js:142`).
+- **Preferencias**: el idioma del guion vive en el guion (IndexedDB y la copia de seguridad en la
+  nube, que guarda el guion entero) y `idiomaElegido` ya marca la elección manual. El idioma de la
+  app vive en `localStorage` (`idioma.ts:53`, `:121`) y en Android (`IdiomaAppPlugin.java`).
+  **No hace falta guardar nada nuevo.** **[sin verificar]** que la copia de seguridad en la nube no
+  valide el campo `idioma` contra `'es' | 'en'`: no se leyó su código de servidor.
+- **Precarga**: `App.tsx:1328-1332` baja en silencio la voz del idioma de la **app**; con la app en
+  español nunca se pediría el portugués hasta abrir un guion en portugués (`App.tsx:1335-1338`), que
+  es lo correcto: 31 MB solo para quien lo usa.
+
+**Opcional: traducir la app al portugués** (es otra decisión, como la I1 b de
+`docs/decisiones-de-diseno.txt:1388-1425` para el inglés):
+
+| Cambio | Archivo:línea |
+|---|---|
+| `IdiomaApp = 'es' \| 'en' \| 'pt'` y `normalizarIdioma` que reconozca `pt` | `src/lib/idioma.ts:10`, `:25-26`, `:54` |
+| Aceptar `"pt"` | `IdiomaAppPlugin.java:59` |
+| `<locale android:name="pt-BR" />` | `res/xml/locales_config.xml` |
+| `src/textos/pt.ts` con las mismas claves que `es.ts` (unas 175) | nuevo, `src/textos/index.ts` |
+| Guion de bienvenida escrito en portugués, no traducido | `src/app/bienvenida.ts:15`, `:19` |
+| Opción "Português" en Ajustes; enlaces de ayuda y correo | `PanelAjustes.tsx:236-241`, `:340-341`, `:568`, `:590`, `:596` |
+| Fechas y números `pt-BR` | `src/textos/index.ts:54-57`, `:71` |
+| `res/values-pt-rBR/strings.xml` para el nombre y los textos nativos | junto a `res/values-en/` |
+
+Riesgo **bajo** (no cambia lógica), esfuerzo **medio** (texto). Las fuentes que carga
+`src/main.tsx` (latin y latin-ext) ya cubren `ã õ ç` **[sin verificar visualmente]**.
+
+### 11.9 Números
+
+Vosk pt entrega los números como palabras ("vinte e três"), igual que Vosk es. Si el guion dice
+"23", el seguidor no calza (`normalizar` deja "23"). **Esto ya pasa hoy en español**: no se encontró
+en `src/lib/` ninguna conversión de cifras a palabras para el seguidor (búsqueda de "número",
+"cifra", "veinti" en `src/lib`). Por eso es **opcional** y aplica a todos los idiomas: el seguidor
+salta la cifra y recupera en la palabra siguiente (`SALTO_PARCIAL_SIN_EXACTAS`, `seguidor.ts:70-71`).
+Si se quisiera, sería una función `cifraAPalabras(n, idioma)` en `tokenizarGuion` que genere los
+tokens hablados ("vinte", "e", "três") para la comparación pero muestre "23". Riesgo **medio**
+(cambia la cuenta de tokens, que afecta el avance), esfuerzo **medio**. No se midió cuánto pesa en
+guiones reales.
+
+### 11.10 Pruebas nuevas
+
+`docs/decisiones-de-diseno.txt` R1 permite solo pruebas de lógica que no se ve. Propuestas:
+
+| Prueba | Archivo | Qué comprueba |
+|---|---|---|
+| `detectarIdioma` con párrafos pt reales, mezclados y cortos; el criterio de 11.7 | `src/pruebas/detectarIdioma.test.ts` (hoy 7 pruebas) | pt sale `pt`; es y en siguen como hoy |
+| `idiomaDeVoz('pt')`, `('pt-BR')` → `'pt'`; desconocido → `'es'` | prueba de `vozAPedido` | la regla única |
+| `normalizar('ação')` ≠ `normalizar('ao')`; `'à'` no queda vacío; el español byte a byte igual | prueba del seguidor | C4 sin romper el español |
+| Seguidor con un guion pt y lo oído por `MotorFake` (con contracciones y "não") | prueba de seguidor | avanza sin retrocesos (`metricas.ts`) |
+| `ATADAS` con pt | `src/pruebas/subtitulos.test.ts` (hoy 11) | un subtítulo no termina en "do" o "pelo" |
+| `carpetaModelo("pt") == "model-pt"`; `"fr"` → `"model-es"` | `android/app/src/test/...` (JUnit, como `CopiaViejaDelModeloTest.java`) | el plugin |
+| Banco con tomas pt reales | `docs/registros/` (hoy `ingles-27-sep`, `motor-24-sep`…) y `npm run banco` | las lecturas del padre de Javier (sección 7.3); `repetidor.ts:213` ya usa `detectarIdioma` |
+
+### 11.11 Orden de implementación
+
+1. **Modelo**: `bajar-modelo.mjs` con pt y la reorganización (11.4). Comprobar en el teléfono que
+   vosk-android carga `model-pt` desde assets (APK de prueba). Si no carga, se para aquí.
+2. **Motor y plugin** (C1, C2): el idioma `pt` llega hasta Java. Grabar las lecturas del padre de
+   Javier y medir latencia y procesador en el moto g86 (C3).
+3. **Detector** (11.7) y **botón del guion** (C8, C9), con sus pruebas.
+4. **Normalización** (C4) solo para `pt`, con `npm run banco` en español idéntico; **ATADAS** (C6).
+5. **Paquetes de Play** (11.5) y `play.mjs`; medir el tamaño con bundletool.
+6. **Ficha y sitio** (sección 12).
+7. Opcional, después y con datos: fonética pt (C7), números (11.9), traducir la app (11.8).
+
+### 11.12 Lo que no se pudo comprobar en esta parte
+
+- Que vosk-android 0.3.75 cargue pt-0.3 reorganizado: solo se probó con Vosk 0.3.45 en el PC.
+- Procesador, memoria y latencia de pt en el moto g86 grabando video.
+- Que Vosk pt entregue siempre las contracciones separadas.
+- Si la copia de seguridad en la nube acepta `idioma: 'pt'` (no se leyó el servidor).
+- El efecto real de C4 en las 28 tomas de Javier: no se corrió `npm run banco`.
+- El detector se midió con un puerto a Python sobre FLEURS, no con el TypeScript dentro de la app.
+- Los números de línea son los de `main` `9b5cf53`; los marcados con `~` son aproximados.
+
+## 12. Lo que hay que actualizar en la ficha de Google Play y en el sitio para lanzar portugués
+
+Fuente oficial de Play: "Traduce y localiza tu app", Ayuda de Play Console
+(<https://support.google.com/googleplay/android-developer/answer/9844778?hl=es-419>, leída el
+21-10-2026). Dice que la ficha se traduce en *Fichas de Play Store → Administrar traducciones*, que
+`pt-BR` está en la lista de idiomas, que sin recursos gráficos traducidos se muestran los del idioma
+predeterminado, y que si no hay traducción Play puede ofrecer una traducción automática de la
+ficha. También ofrece traducción automática gratuita a `pt-BR`, marcada como "no revisada por
+personas".
+
+### 12.1 Dónde está hoy cada cosa en el repositorio
+
+| Qué | Dónde | Nota |
+|---|---|---|
+| Textos de la ficha (título, breve, completa) | `docs/play/ficha/textos-es-419.txt`, `textos-en-US.txt` | **corrige la sección 8**: la ficha ya está en `main` |
+| Capturas, gráfico de funciones, tabletas | `docs/play/ficha/capturas/{es-419,en-US}/`, `grafico-1024x500-{es,en}.png` (`docs/play/ficha/LEEME.md:5-12`) | |
+| Armado de la ficha | `scripts/ficha.mjs:35`, `:47`, `:61`, `:81`, `:107` (recorre `['es-419','en-US']`) | |
+| Notas de la versión | `docs/play/notas-version.txt` (bloques `<es-419>` y `<en-US>`), leído por `scripts/playApi.mjs:58-60` | |
+| Lista para antes de subir | `docs/play/ANTES-DE-SUBIR.txt` (seguridad de los datos en `:58-59`) | |
+| Tamaños por paquete | `scripts/play.mjs:220-221` (perfiles con `supportedLocales: ['es-419']`), `:237` | |
+| Sitio web | `sitio/`: plantillas `sitio/fuente/*.html`, textos `sitio/fuente/textos/{es,en}.js`, armado `sitio/armar.mjs`, hospedaje `sitio/firebase.json` | no hay `fastlane/metadata` ni `store-listing` en el repo |
+
+### 12.2 Ficha de Play
+
+| Cambio | Obligatorio | Detalle y archivo |
+|---|---|---|
+| Agregar el idioma `pt-BR` a la ficha | sí | en Play Console (fuente arriba) y `docs/play/ficha/textos-pt-BR.txt` nuevo, con el mismo formato |
+| Título, descripción breve y completa en portugués | sí | escritas, no traducidas palabra por palabra (misma regla que el inglés, I1 b) |
+| Decir qué idiomas sigue la voz | sí | `textos-es-419.txt:53` y `textos-en-US.txt:53` dicen "en español y en inglés, y sigue tu voz en los dos": hay que cambiarlo en las tres fichas. `:62` ("la voz de tu idioma se descarga sola") sigue valiendo |
+| Capturas con la interfaz y un guion en portugués | sí si la app se traduce; si no, un guion en portugués con la app en inglés | `docs/play/ficha/capturas/pt-BR/` nuevo; sin ellas Play muestra las del idioma predeterminado (fuente arriba) |
+| Gráfico de funciones en portugués | recomendado | `grafico-1024x500-pt.png`, y `scripts/ficha.mjs:61` hoy elige es o en con un ternario |
+| Video | opcional | **no determinado**: no se encontró en el repo si la ficha publicada tiene video |
+| `scripts/ficha.mjs` y `scripts/playApi.mjs` con `pt-BR` | sí si se usan para subir | `ficha.mjs:35`, `:47`, `:81`, `:107`; `playApi.mjs:58-60` solo lee `<es-419>` y `<en-US>`: hay que sumar `<pt-BR>` para que suba las notas en portugués |
+| Notas de la versión en portugués | sí | `docs/play/notas-version.txt`, bloque `<pt-BR>` |
+| Lista de idiomas de la app que muestra Play | si la app se traduce | Play la toma de los recursos del paquete (`res/values-*`), no se escribe a mano **[sin verificar en la documentación]** |
+| Seguridad de los datos | probablemente no cambia | el modelo pt corre en el teléfono como el español: el audio no sale del teléfono (`docs/lo-que-hay-que-saber.txt:~48`). La descarga la hace Play. **No determinado** qué está declarado hoy en Play Console |
+| Países de distribución | decisión | Brasil tiene que estar en la lista de países; **no determinado** si ya está: se configura en Play Console y no está en el repo |
+| Tamaño | informar | `model_pt` es on-demand: no suma a la instalación; quien lea en portugués baja unos 31 MB comprimidos (52 MB desempaquetado). Medir con `scripts/play.mjs` sumando un perfil `supportedLocales: ['pt-BR']` en `:220-221` |
+| Política de privacidad enlazada en la ficha | sí si hay página pt | la URL por idioma (12.3) |
+
+### 12.3 Sitio web
+
+El sitio sí está en el repositorio (`sitio/`). Hoy arma dos idiomas:
+
+| Cambio | Archivo:línea | Obligatorio |
+|---|---|---|
+| `sitio/fuente/textos/pt.js` con las mismas claves (el armado se para si falta una, `es.js:3-6`), `idioma: 'pt'`, `locale: 'pt_BR'` y rutas `/pt`, `/pt/privacidade`, `/pt/suporte`, `/pt/ajuda`, `/pt/excluir-conta` | nuevo | sí |
+| `for (const idioma of ['es', 'en'])` → con `'pt'` | `sitio/armar.mjs:78` | sí |
+| Comprobación de claves solo entre es y en | `sitio/armar.mjs:86-87` | sí |
+| "El otro idioma": `IDIOMAS[t.idioma === 'es' ? 'en' : 'es']` solo admite dos | `sitio/armar.mjs:102`, `:107` | sí |
+| `hreflang`: sumar `<link rel="alternate" hreflang="pt-BR" …>` (x-default sigue en español) | `sitio/armar.mjs:108-110` | sí |
+| Selector ES · EN → ES · EN · PT | `sitio/armar.mjs:141`, `sitio/fuente/franja.js:7` | sí |
+| Elección automática por idioma del navegador | **no determinado**: no se encontró dónde se decide (no aparece `navigator.language` en `sitio/fuente/*.js`); revisar `armar.mjs` y `firebase.json` | sí |
+| Textos que nombran idiomas | `sitio/fuente/textos/es.js:51`, `:142` ("ES/EN es el idioma en que Sigo escucha"), `:146`, y sus pares en `en.js` | sí |
+| Política de privacidad y página para borrar la cuenta en portugués | plantillas `sitio/fuente/privacidad.html`, `borrar-cuenta.html` y sus claves en `textos/*.js` | sí si la ficha pt enlaza a ellas |
+| Términos | **no determinado**: no hay página de términos en `sitio/fuente/` | — |
+| Correo de contacto en portugués | `sitio/fuente/textos/es.js:85` (es `hola@`, en `hello@`); `PanelAjustes.tsx:596` | decisión |
+| Capturas del sitio en portugués | `sitio/fuente/capturas/` | opcional |
+| Sitemap | **no determinado**: no se encontró sitemap en `sitio/armar.mjs` | — |
+
+### 12.4 Lo que no se pudo determinar
+
+- **Qué hay publicado hoy en Play Console** (idiomas de la ficha, países, video, seguridad de los
+  datos): no está en el repo y no hay acceso a la consola desde aquí.
+- **Qué sirve hoy `sigoteleprompter.com`**: solo se leyó la fuente; no se comparó con lo publicado.
+- Si Play arma la lista "idiomas" de la ficha a partir de `res/values-*`: no lo dice la página
+  citada.
+- Las traducciones mismas: no se escribió texto en portugués; el padre de Javier o alguien nativo
+  debería revisarlo.
