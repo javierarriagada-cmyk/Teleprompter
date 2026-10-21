@@ -1,0 +1,86 @@
+/* EL BOCETO -mejoras de claridad, 21-10-2026-. NO es código de la app: se carga solo con version=despues,
+   encima de las hojas de verdad. Cada mejora va bajo su clase en <html> -boceto-m1 a boceto-m5-. Solo usa
+   las variables de styles.css y styles-ajustes.css. */
+
+/* 1. ARRANQUE. TELEPROMPTER un 10 % más grande -el tope del splash nativo: ver el PR- y más claro, y una
+   línea roja corta entre «Sig●» y la palabra. El sitio de la palabra es el de hoy, 4 px más abajo. */
+.boceto-m1 [data-testid="lema-entrada"] {
+  transform: translate(-64.17px, 58px) scale(1.1) !important;
+  transform-origin: 50% 50%;
+}
+.boceto-m1 [data-testid="lema-entrada"] path { fill: #B3ABA4; }
+.boceto-linea-roja {
+  position: absolute;
+  left: calc(50% - 12px);
+  top: calc(50% + 47px);
+  width: 24px;
+  height: 2px;
+  border-radius: 1px;
+  background: #E11D2E;
+}
+
+/* 3a. «Continuar con este guion»: la letra de la etiqueta de la duración -.portada .duracion-tarjeta-, sin
+   la píldora, arriba del título. */
+.boceto-continuar {
+  font-size: var(--texto-meta);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--dato-texto);
+  margin-bottom: calc(-1 * var(--aire-2));
+}
+/* 3b. «+ Nuevo guion»: el mismo botón y su misma píldora -.boton-crear-guion > span-, ahora con palabra.
+   El área de toque sigue en 48 de alto y crece a lo ancho. */
+.boceto-m3 .boton-crear-guion.boceto-nuevo-guion { width: auto; margin-right: 0; }
+.boceto-m3 .boton-crear-guion.boceto-nuevo-guion > span {
+  width: auto;
+  height: 36px;
+  padding: 0 var(--aire-3) 0 10px;
+  gap: 6px;
+}
+.boceto-nuevo-guion-texto {
+  font-size: var(--texto-meta);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+/* 3c. El título de cada video, en dos renglones; «…» recién al final del segundo. */
+.boceto-m3 .tarjeta-video > div:last-child > div:first-child {
+  white-space: normal !important;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.3;
+}
+
+/* 4. EL AVISO «Guion borrado»: más arriba -sobre los botones y barras de abajo, como pide Material 3-,
+   un poco más grande, y Deshacer con 48 de alto. */
+.boceto-m4 .aviso-breve {
+  bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
+  padding: var(--aire-2) var(--aire-2) var(--aire-2) var(--aire-4) !important;
+  font-size: 16px !important;
+  min-height: 56px;
+  box-sizing: border-box;
+}
+.boceto-m4 .aviso-breve button {
+  min-height: 48px !important;
+  min-width: 48px;
+  padding: 0 var(--aire-3) !important;
+  font-size: 16px !important;
+}
+
+/* 5b. El nombre de cada fila, de 15 a 16 dentro de los paneles. El alto sigue en 48. */
+.boceto-m5 .dock-listo .fila-ajuste-nombre,
+.boceto-m5 .panel-ajustes-flotante .fila-ajuste-nombre { font-size: 16px; }
+/* 5a. VISTA PREVIA: .dock-seccion, sin el margen de los lados -va pegada al recuadro-. */
+.boceto-vista-previa { margin: 4px 0 6px; }
+/* 5c. El engranaje en lugar del Aa: el mismo del botón de la portada. */
+.boceto-m5 .boton-aa.boceto-engranaje {
+  padding: 0;
+  margin: 0;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
