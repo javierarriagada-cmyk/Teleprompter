@@ -96,7 +96,17 @@ async function captura(br, mejora, pantalla, tema, version, codigo = false) {
     await dormir(900)
   }
   // -paso 2- En la portada del código, la página baja hasta el final: se ven los títulos de video y su fecha.
-  if (codigo && pantalla === 'portada') { await p.evaluate(() => window.scrollTo(0, document.body.scrollHeight)); await dormir(600) }
+  // -2026-10-21- Antes era la ÚNICA captura de la portada del código, y bajada la cabecera -con «Sig●»- queda
+  // fuera de la pantalla: en la lámina parecía que la marca se había ido. Ahora primero la portada arriba,
+  // con la marca, y después la bajada, en <mejora>-portada-abajo-<tema>-codigo.png. Antes:
+  // if (codigo && pantalla === 'portada') { await p.evaluate(() => window.scrollTo(0, document.body.scrollHeight)); await dormir(600) }
+  if (codigo && pantalla === 'portada') {
+    await p.screenshot({ path: path.join(D, `${mejora}-portada-${tema}-codigo.png`) })
+    console.log('ok', `${mejora}-portada-${tema}-codigo.png`)
+    await p.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
+    await dormir(600)
+    pantalla = 'portada-abajo'
+  }
   const salida = path.join(D, `${mejora}-${pantalla}-${tema}-${codigo ? 'codigo' : version}.png`)
   await p.screenshot({ path: salida })
   console.log('ok', path.basename(salida))

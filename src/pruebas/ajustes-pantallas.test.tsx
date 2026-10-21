@@ -75,7 +75,8 @@ vi.mock('../lib/tomaVideo', async () => {
 import App from '../App'
 import { RepositorioMemoria } from '../datos/RepositorioMemoria'
 import { MotorFake } from '../motor/MotorFake'
-import { Guion, contarPalabras, duracionDeLectura, duracionDeLecturaReloj } from '../datos/modelo'
+// -mejoras-claridad, 2026-10-21- Suma duracionAproximada. Antes: import { Guion, contarPalabras, duracionDeLectura, duracionDeLecturaReloj } from '../datos/modelo'
+import { Guion, contarPalabras, duracionDeLectura, duracionDeLecturaReloj, duracionAproximada } from '../datos/modelo'
 import { hayCalidad } from '../components/FichasListo'
 import { es } from '../textos/es'
 import { fijarIdioma } from '../lib/idioma'
@@ -257,7 +258,9 @@ describe('Ajustes de pantallas: el dock de LISTO en Grabar', () => {
     // El editor.
     render(<App repoOverride={repo} motor={new MotorFake()} />)
     fireEvent.click(await screen.findByTestId('fila-guion-g-nota'))
-    expect((await screen.findByTestId('duracion-editor')).textContent).toBe(duracionDeLectura(palabras))
+    // -mejoras-claridad, 2026-10-21- La línea de abajo del editor pasa a «≈3 min» -duracionAproximada-, pedido de
+    // Javier y anotado en el PR #148. Antes: expect((await screen.findByTestId('duracion-editor')).textContent).toBe(duracionDeLectura(palabras))
+    expect((await screen.findByTestId('duracion-editor')).textContent).toBe(duracionAproximada(palabras))
     expect(duracionDeLectura(palabras)).toBe('2:50 min')
     // El dock de LISTO.
     fireEvent.click(await screen.findByTestId('btn-grabar-guion-fijo'))

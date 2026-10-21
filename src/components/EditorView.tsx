@@ -1,7 +1,9 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 // -mejoras-claridad, 21-10-2026- Suma duracionAproximada. Antes: import { Guion, Bloque, TramoFormato, ResumenGrabacion, contarPalabras, duracionDeLectura, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
-import { Guion, Bloque, TramoFormato, ResumenGrabacion, contarPalabras, duracionDeLectura, duracionAproximada, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
+// -mejoras-claridad, 2026-10-21- duracionDeLectura ya no se usa aquí: las dos duraciones del editor son aproximadas.
+// Antes: import { Guion, Bloque, TramoFormato, ResumenGrabacion, contarPalabras, duracionDeLectura, duracionAproximada, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
+import { Guion, Bloque, TramoFormato, ResumenGrabacion, contarPalabras, duracionAproximada, PAREJAS_COLOR, COLORES_TRAMO } from '../datos/modelo'
 import { consolidarGuion } from '../datos/consolidar'
 import { importarArchivo } from '../datos/importarArchivo'
 import { hapticaSeleccion } from '../haptica'
@@ -792,7 +794,9 @@ export default function EditorView({
             si. Mismo formato que la portada -duracionDeLectura-. Vacio no dice nada. */}
         {numPalabras > 0 && (
           <div data-testid="duracion-editor" className="texto-meta" style={{ color: 'var(--color-apagado)', marginTop: 'var(--aire-3)' }}>
-            {duracionDeLectura(numPalabras)}
+            {/* -mejoras-claridad, 2026-10-21- La misma «≈18 min» de la línea de arriba, pedido de Javier: dos
+                formatos en la misma pantalla confundían. Antes: {duracionDeLectura(numPalabras)} */}
+            {duracionAproximada(numPalabras)}
           </div>
         )}
       </div>

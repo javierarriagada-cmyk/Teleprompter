@@ -24,7 +24,7 @@ const LAMINAS = [
   { n: 3, nombre: 'portada', titulo: 'La portada', pantallas: ['portada'], temas: ['oscuro', 'claro'],
     antes: 'La tarjeta grande sin decir qué es, un «+» solo, y los videos con el título cortado en un renglón.',
     despues: '«Continuar con este guion» arriba del título, en la letra de la etiqueta de la duración; «+ Nuevo guion» en el mismo lugar, 48 de alto; títulos de video en dos renglones. La tarjeta y «Sig●» no cambian.',
-    codigo: '«Continuar con este guion» entre la duración y el título; «+ Nuevo guion», 48 de alto; títulos de video en dos renglones y la fecha debajo, en todas. La página bajada hasta los videos.' },
+    codigo: '«Continuar con este guion» entre la duración y el título; «+ Nuevo guion», 48 de alto; títulos de video en dos renglones y la fecha debajo, en todas. A la derecha, la portada arriba -con «Sig●»- y bajada hasta los videos.' },
   { n: 4, nombre: 'aviso-borrar', titulo: 'Borrar un guion: el aviso', pantallas: ['aviso'], temas: ['oscuro', 'claro'],
     antes: '«Guion borrado · Deshacer» chico, pegado abajo, 5 s.',
     despues: 'Más arriba -sobre los botones y barras de abajo-, un poco más grande, Deshacer con 48 de alto, y dura 6 s. Sin cartel de confirmación. Archivar no cambia.',
@@ -49,7 +49,11 @@ h1 .n{display:inline-block;width:10px;height:10px;border-radius:50%;background:#
   if (process.argv[2] === 'codigo') {
     for (const l of LAMINAS.filter((x) => [1, 3, 4].includes(x.n))) for (const tema of ['oscuro', 'claro']) {
       const antes = (pa) => { const f = path.join(C, `${l.n}-${pa}-${tema}-antes.png`); return fs.existsSync(f) ? f : path.join(C, `${l.n}-${pa}-oscuro-antes.png`) }
-      const tels = (v) => l.pantallas.map((pa) => `<div class="tel"><img src="${b64(v === 'antes' ? antes(pa) : path.join(C, `${l.n}-${pa}-${tema}-codigo.png`))}"></div>`).join('')
+      // -2026-10-21- En la 3, el después lleva dos teléfonos: la portada arriba -con «Sig●»- y bajada hasta los
+      // videos. Antes, uno solo, el bajado, y la marca no se veía. Antes:
+      // const tels = (v) => l.pantallas.map((pa) => `<div class="tel"><img src="${b64(v === 'antes' ? antes(pa) : path.join(C, `${l.n}-${pa}-${tema}-codigo.png`))}"></div>`).join('')
+      const pantallasCodigo = (pa) => (l.n === 3 && pa === 'portada' ? ['portada', 'portada-abajo'] : [pa])
+      const tels = (v) => l.pantallas.flatMap((pa) => (v === 'antes' ? [pa] : pantallasCodigo(pa))).map((pa) => `<div class="tel"><img src="${b64(v === 'antes' ? antes(pa) : path.join(C, `${l.n}-${pa}-${tema}-codigo.png`))}"></div>`).join('')
       const html = `<html><head><meta charset="utf-8"><style>${CSS}</style></head><body>
 <h1><span class="n"></span>${l.n}. ${l.titulo}</h1>
 <div class="sub">Sigo · mejoras de claridad · paso 2, el código · tema ${tema} · teléfono de 392</div>
