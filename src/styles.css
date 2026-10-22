@@ -53,6 +53,10 @@
   --aire-3: 12px;
   --aire-4: 20px;
   --aire-5: 32px;
+  /* -mejoras-claridad, 21-10-2026- El aviso con acción, de pie y fuera de la lectura, a 96 del borde de abajo:
+     encima de los botones y barras de abajo, como pone Material 3 sus avisos. AvisoBreve.tsx.
+     22-10-2026: a 180. Javier lo vio en el Redmi a 96 -«aún sale muy bajo»- y lo aprobó a 180 en vivo. Antes: 96px. */
+  --aviso-accion-abajo: 180px;
   --redondeo: 10px;
   --redondeo-grande: 24px;
   --redondeo-pildora: 999px;
@@ -100,6 +104,11 @@
   --sup-sombra: 0 6px 16px -4px rgba(0, 0, 0, 0.45);
   --dato-fondo: rgba(255, 154, 107, 0.12);
   --dato-texto: #F3C2A4;
+  /* -mejoras-claridad, 21-10-2026- La acción del aviso -Deshacer-: --color-acento, como antes. #E7E1DE
+     sobre --bg-superficie #221F1D da 12,7 a 1.
+     22-10-2026: en rojo, pedido de Javier -«antes aparecía con rojo, una forma de destacar en un fondo negro»-:
+     --color-grabando-texto #FF5A5A sobre #221F1D da 5,4 a 1. Antes: var(--color-acento). */
+  --aviso-accion: var(--color-grabando-texto);
   --leer-fondo: linear-gradient(180deg, #F4ECE7, #E2D6CF);
   --leer-texto: #151312;
   --crear-fondo: #E7E1DE;
@@ -163,6 +172,11 @@
   --sup-sombra: 0 6px 16px -6px rgba(26, 24, 21, 0.12);
   --dato-fondo: rgba(255, 154, 107, 0.18);
   --dato-texto: #A4471E;
+  /* -mejoras-claridad, 21-10-2026- La acción del aviso -Deshacer-. En claro, el --color-acento de antes
+     -#E7E1DE- sobre el aviso blanco daba 1,3 a 1; --dato-texto -#A4471E- sobre #FFFFFF da 6,0 a 1.
+     22-10-2026: en rojo, pedido de Javier -«antes aparecía con rojo, una forma de destacar»-. El rojo de borrar del
+     tema claro -#C62828, el de .peligro- sobre #FFFFFF da 5,6 a 1. Antes: var(--dato-texto). */
+  --aviso-accion: #C62828;
   --leer-fondo: linear-gradient(180deg, #2A2622, #1A1815);
   --leer-texto: #F3F1ED;
   --crear-fondo: #1A1815;
@@ -221,6 +235,11 @@
   --sup-sombra: 0 6px 16px -4px rgba(0, 0, 0, 0.45);
   --dato-fondo: rgba(255, 154, 107, 0.12);
   --dato-texto: #F3C2A4;
+  /* -mejoras-claridad, 21-10-2026- La acción del aviso -Deshacer-: --color-acento, como antes. #E7E1DE
+     sobre --bg-superficie #221F1D da 12,7 a 1.
+     22-10-2026: en rojo, pedido de Javier -«antes aparecía con rojo, una forma de destacar en un fondo negro»-:
+     --color-grabando-texto #FF5A5A sobre #221F1D da 5,4 a 1. Antes: var(--color-acento). */
+  --aviso-accion: var(--color-grabando-texto);
   --leer-fondo: linear-gradient(180deg, #F4ECE7, #E2D6CF);
   --leer-texto: #151312;
   --crear-fondo: #E7E1DE;
@@ -2889,4 +2908,63 @@ button.btn-deformable.miniatura-banda:not(:active) {
   .controles-lectura .btn-flotante-40::before {
     transition: none;
   }
+}
+
+
+/* -mejoras-claridad, 21-10-2026- «CONTINUAR CON ESTE GUION»: la etiqueta chica entre la duración y el título de
+   la tarjeta grande, en la letra de la etiqueta de la duración -.duracion-tarjeta y .portada .duracion-tarjeta-,
+   sin la píldora. El margen negativo la junta con el título: el gap de la columna es --aire-3. */
+.etiqueta-continuar {
+  font-size: var(--texto-meta);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--dato-texto);
+  margin-bottom: calc(-1 * var(--aire-2));
+}
+
+/* -mejoras-claridad- «+ NUEVO GUION»: el mismo botón y la misma píldora -.boton-crear-guion > span-, con
+   palabra. El área de toque sigue en 48 de alto y crece a lo ancho; sin el margen derecho negativo, la
+   píldora termina donde terminan las tarjetas. */
+.boton-crear-guion.boton-crear-guion-con-palabra {
+  width: auto;
+  margin-right: 0;
+}
+.boton-crear-guion.boton-crear-guion-con-palabra > span {
+  width: auto;
+  height: 36px;
+  padding: 0 var(--aire-3) 0 10px;
+  gap: 6px;
+}
+.boton-crear-guion-texto {
+  font-size: var(--texto-meta);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+/* -mejoras-claridad- EL TÍTULO DE CADA VIDEO EN DOS RENGLONES, con «…» al final del segundo. Siempre ocupa los
+   dos: las tarjetas de la tira quedan parejas y la fecha de abajo se ve en todas. Antes, en línea en
+   TiraGrabaciones.tsx: fontWeight 600, overflow hidden, textOverflow ellipsis, whiteSpace nowrap. */
+.titulo-tarjeta-video {
+  font-weight: 600;
+  line-height: 1.3;
+  min-height: 2.6em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow-wrap: anywhere;
+}
+
+/* -mejoras-claridad- EL ENGRANAJE EN LUGAR DEL «Aa» en el editor: el mismo vidrio de .boton-aa, en un botón
+   redondo de 48 como el de la portada. */
+.boton-aa.boton-aa-engranaje {
+  padding: 0;
+  margin: 0;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }

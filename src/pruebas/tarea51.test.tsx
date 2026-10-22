@@ -417,8 +417,10 @@ describe('Pruebas TAREA 51: El Nombre Aparece (T254-T259)', () => {
         fireEvent(filaDeNuevo, new MouseEvent('pointerup', { clientX: 100, clientY: 100, bubbles: true }))
       })
 
+      // -mejoras-claridad, 21-10-2026- El aviso y la espera son de 6 s -MS_DESHACER_GUION, App.tsx-, cambio aprobado por
+      // Javier y anotado en el PR #148. Antes: await vi.advanceTimersByTimeAsync(5100)
       await act(async () => {
-        await vi.advanceTimersByTimeAsync(5100)
+        await vi.advanceTimersByTimeAsync(6100)
       })
 
       guardados = await repo.listar()

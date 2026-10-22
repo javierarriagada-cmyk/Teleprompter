@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- -mejoras-claridad, 21-10-2026- Sube 3 y no 8: TELEPROMPTER es un 10 % más grande y con 8 de bajada
+     el círculo del splash le cortaba las puntas al arrancar -ver marca_arranque.xml-. Mismo tiempo y curva.
+     Antes: android:valueFrom="8" -->
 <objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
     android:propertyName="translateY"
-    android:valueFrom="8"
+    android:valueFrom="3"
     android:valueTo="0"
     android:startOffset="650"
     android:duration="500"
