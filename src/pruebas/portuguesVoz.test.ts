@@ -95,6 +95,21 @@ describe('Portugués 3 - detectarIdioma reconoce el portugués', () => {
     }
   })
 
+  // -portugues-voz, 2026-10-22, revisión de Javier- Español sin artículos, con palabras que también son portuguesas: salían 'pt'.
+  test('el español con «no», «nos», «dos», «o», «mas» no sale portugués', () => {
+    for (const texto of [
+      'No sé. No quiero. No puedo. No voy a ir. Dos o tres veces dije que no, y no.',
+      'Nos vamos, nos quedamos, no importa. Dos caminos o ninguno, mas nadie sabe qué es mejor.',
+      'No sé si ir a São Paulo o no. Dos amigos me dijeron que no, nos conviene esperar un poco más.'
+    ]) expect(detectarIdioma(texto), texto).not.toBe('pt')
+  })
+
+  test('el portugués escrito sin tildes sale pt', () => {
+    expect(detectarIdioma(
+      'Hoje eu quero falar com voce sobre o que aprendi no trabalho, e por que isso mudou a minha forma de pensar o dia a dia.'
+    )).toBe('pt')
+  })
+
   test('un texto corto no decide', () => {
     expect(detectarIdioma('Bom dia, meu nome é Roberto.')).toBeNull()
   })

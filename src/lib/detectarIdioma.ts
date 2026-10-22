@@ -47,6 +47,22 @@ const SOLO_PT = new Set([
   'são', 'no', 'na', 'nos', 'nas', 'pelo', 'pela', 'ao', 'à'
 ])
 
+// -portugues-voz, 2026-10-22, revisión de Javier- LAS SEÑALES QUE EL ESPAÑOL NO TIENE. SOLO_PT trae palabras que también son españolas -o, e,
+// os, as, no, nos, dos, das, da, mas, pelo, pela-, y un texto español sin artículos contaba cero en
+// español: «No sé. No quiero. No puedo...» salía portugués. Ahora el portugués necesita además al
+// menos 2 de estas: una palabra de FUERTES_PT, una con ã, õ o ç, o una terminada en -ção/-ções.
+// El detector no quita tildes: un texto escrito sin ellas trae «voce», «nao»; por eso van también
+// esas formas, solo las que no existen en español -no «e», «a», «ha» ni «nos»-.
+const FUERTES_PT = new Set([
+  'do', 'um', 'não', 'muito', 'há', 'onde', 'isso', 'isto', 'até', 'ele', 'ela', 'você', 'vocês',
+  'nós', 'fazer', 'pode', 'tem', 'estão', 'foi', 'é', 'são', 'na', 'nas', 'ao', 'à', 'eu', 'com',
+  'uma', 'meu', 'minha', 'seu', 'sua', 'mais', 'também', 'então', 'hoje', 'agora',
+  'nao', 'voce', 'voces', 'estao', 'sao', 'tambem', 'entao'
+])
+// Las de FUERTES_PT que no estaban en SOLO_PT se suman también ahí.
+for (const p of FUERTES_PT) SOLO_PT.add(p)
+const SENALES_PT_MINIMAS = 2
+
 // -portugues-voz, 2026-10-22- Suma 'pt'. La propuesta de 11.7 devolvía null -o 'es'- en casos donde hoy sale otra
 // cosa; la orden pide que español e inglés no cambien NADA. Por eso la decisión de siempre queda
 // entera -detectarEsEn- y el portugués solo puede ganarle cuando se cumple su regla.
@@ -58,12 +74,16 @@ export function detectarIdioma(texto: string): 'es' | 'en' | 'pt' | null {
   if (palabras.length < PALABRAS_MINIMAS_PARA_DETECTAR) return base
   let es = 0
   let pt = 0
+  let senales = 0
   for (const bruta of palabras) {
     const p = bruta.replace(/^['’]+|['’]+$/g, '')
     if (SOLO_ES.has(p) || p.includes('ñ')) es++
     if (SOLO_PT.has(p) || /[ãõç]|ções?$/.test(p)) pt++
+    if (FUERTES_PT.has(p) || /[ãõç]|ções?$/.test(p)) senales++
   }
-  if (pt >= FRECUENTES_MINIMAS && pt >= es * VENTAJA_MINIMA) return 'pt'
+  // -portugues-voz, 2026-10-22, revisión de Javier- Además, al menos 2 señales que el español no tiene. Antes:
+  //   if (pt >= FRECUENTES_MINIMAS && pt >= es * VENTAJA_MINIMA) return 'pt'
+  if (pt >= FRECUENTES_MINIMAS && pt >= es * VENTAJA_MINIMA && senales >= SENALES_PT_MINIMAS) return 'pt'
   return base
 }
 
