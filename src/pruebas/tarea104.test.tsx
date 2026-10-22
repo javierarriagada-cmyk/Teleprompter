@@ -28,7 +28,9 @@ describe('Tarea 104 - La voz y los gestos a pedido', () => {
     expect(idiomaDeVoz('en-US')).toBe('en')
     expect(idiomaDeVoz('es-ES')).toBe('es')
     // Un idioma que no conocemos no deja a la app sin voz.
-    expect(idiomaDeVoz('pt')).toBe('es')
+    // -portugues-voz, 2026-10-22- El portugués ya se conoce: tiene su modelo, model-pt. Lo desconocido -'fr'- sigue en
+    // español, en portuguesVoz.test.ts. Antes: expect(idiomaDeVoz('pt')).toBe('es')
+    expect(idiomaDeVoz('pt')).toBe('pt')
     const pedidos: IdiomaVoz[] = []
     const voz = crearVozEnSilencio({
       asegurar: async (idioma) => {
