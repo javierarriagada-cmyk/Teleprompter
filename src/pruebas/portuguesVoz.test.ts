@@ -177,6 +177,9 @@ describe('Portugués 4 - Las letras y los subtítulos', () => {
 // Solo lógica: ni posiciones, ni tamaños, ni orden en pantalla.
 import { NOMBRE_IDIOMA, IDIOMA_EN_FRASE, ENDONIMO_IDIOMA, avisoIdiomaGuion } from '../textos'
 import { colorAccionAviso } from '../hooks/useAviso'
+import { createElement } from 'react'
+import { render } from '@testing-library/react'
+import { AvisoBreve } from '../components/AvisoBreve'
 import {
   avisoIdiomaGuionYaVisto,
   marcarAvisoIdiomaGuionVisto,
@@ -217,6 +220,25 @@ describe('portugues-voz punto 7 - aviso del idioma del guion', () => {
     expect(colorAccionAviso(idioma)).toBe('var(--color-texto)')
     const borrar = { texto: 'Guion borrado', accionTexto: 'Deshacer' }
     expect(colorAccionAviso(borrar)).toBe('var(--aviso-accion)')
+  })
+
+  // -portugues-voz, 2026-10-22- El aviso escrito en el idioma del guion lleva su lang, para que TalkBack lo lea
+  // con esa voz; el de borrar, que va en el idioma de la app, no lleva.
+  test('el aviso dice en qué idioma está', () => {
+    const conIdioma = render(createElement(AvisoBreve, {
+      avisoInfo: { ...avisoIdiomaGuion('en', 'es')!, alEjecutarAccion: () => {} },
+      enLectura: false,
+      cerrarAviso: () => {}
+    }))
+    expect(conIdioma.getByTestId('aviso-flotante').getAttribute('lang')).toBe('en')
+    conIdioma.unmount()
+    const borrar = render(createElement(AvisoBreve, {
+      avisoInfo: { texto: 'Guion borrado', accionTexto: 'Deshacer' },
+      enLectura: false,
+      cerrarAviso: () => {}
+    }))
+    expect(borrar.getByTestId('aviso-flotante').getAttribute('lang')).toBeNull()
+    borrar.unmount()
   })
 
   test('queda visto una vez por idioma del guion', () => {

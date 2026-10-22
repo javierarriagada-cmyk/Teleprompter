@@ -38,6 +38,9 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
         <div
           data-testid="aviso-flotante"
           className="aviso-breve"
+          // -portugues-voz, 2026-10-22- El idioma del aviso si no es el de la app -useAviso, idioma-: TalkBack lo lee
+          // con la voz de ese idioma. Sin idioma no lleva lang y vale el de la página, como antes.
+          lang={avisoInfo.idioma}
           style={{
             position: 'fixed',
             // SOBRE LA BARRA DE ANDROID Y CENTRADO -28-09-2026-. En el moto g86 el aviso quedaba

@@ -79,7 +79,8 @@ interface EditorViewProps {
   editorRef?: React.MutableRefObject<Editor | null>
   // -portugues-voz, punto 7, 2026-10-22- Con accionNeutra. Antes:
   // mostrarAviso?: (msg: string, opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number }) => void
-  mostrarAviso?: (msg: string, opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number; accionNeutra?: boolean }) => void
+  // -portugues-voz, 2026-10-22- Suma idioma -el del texto del aviso-. Antes: opciones?: { ...; accionNeutra?: boolean }
+  mostrarAviso?: (msg: string, opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number; accionNeutra?: boolean; idioma?: string }) => void
   // -guia-sigo- Borrar y archivar desde el menú del editor.
   onBorrar?: (id: string) => void
   onArchivar?: (id: string, archivado: boolean) => void
@@ -215,6 +216,8 @@ export default function EditorView({
       mostrarAviso(aviso.texto, {
         accionTexto: aviso.accionTexto,
         accionNeutra: aviso.accionNeutra,
+        // -portugues-voz, 2026-10-22- El aviso va en el idioma del guion: que TalkBack lo lea con esa voz.
+        idioma: aviso.idioma,
         duracionMs: 6000,
         alEjecutarAccion: () => fijarIdioma(aviso.idioma)
       })
