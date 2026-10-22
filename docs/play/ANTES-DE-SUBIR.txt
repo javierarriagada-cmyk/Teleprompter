@@ -61,6 +61,14 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
    el inicio de sesión de la versión de Play se prueba en la prueba interna o cerrada: entra por el cliente
    "Sigo Play", con otra huella que la APK de prueba.
 
+10. EL PORTUGUÉS -desde 2ddb1f5, 22-10-2026-: main ya trae la voz en portugués -el paquete model_pt- y
+   «Português» en el menú de idioma del guion. NO subir a Play una versión con eso hasta que el papá de
+   Javier haya leído en voz alta con la APK de prueba en el Redmi y los números den -teleprom/00-arquitectura/
+   portugues-plan.txt, decisión 3; el protocolo está en docs/investigacion/idiomas.md, sección 7.3, de la
+   rama investigacion-idiomas-. El modelo de portugués se equivoca el doble que el de español en el PC:
+   cargar bien ya está comprobado en el teléfono, seguir una lectura todavía no. Si antes hay que subir otra
+   cosa a Play, se decide con Javier.
+
 Conocido y aceptado: la advertencia de símbolos de depuración por las .so de Vosk, que vienen sin
 símbolos. No bloquea.
 
