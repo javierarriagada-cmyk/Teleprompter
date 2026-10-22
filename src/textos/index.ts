@@ -101,3 +101,17 @@ export const ENDONIMO_IDIOMA: Record<'es' | 'en' | 'pt', string> = {
   en: 'English',
   pt: 'Português'
 }
+
+// -portugues-voz, punto 7, 2026-10-22- El aviso de que el guion está en otro idioma que la app, escrito en
+// el idioma del GUION -quien escribe en inglés lee inglés-. Recibe el idioma y lee el diccionario de ese
+// idioma; t() no cambia. Sin aviso si los idiomas coinciden o si el guion está en portugués: la app no
+// tiene textos en portugués. La acción va en el color del texto del aviso -accionNeutra-.
+export function avisoIdiomaGuion(
+  idiomaGuion: string | null | undefined,
+  idiomaDeApp: IdiomaApp
+): { texto: string; accionTexto: string; idioma: IdiomaApp; accionNeutra: true } | null {
+  if (idiomaGuion !== 'es' && idiomaGuion !== 'en') return null
+  if (idiomaGuion === idiomaDeApp) return null
+  const dic = TEXTOS[idiomaGuion]
+  return { texto: dic.avisoIdiomaGuion, accionTexto: dic.avisoIdiomaGuionAccion, idioma: idiomaGuion, accionNeutra: true }
+}

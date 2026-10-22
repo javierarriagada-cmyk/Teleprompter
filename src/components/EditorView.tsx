@@ -14,7 +14,7 @@ import { BarraEditorVacio, pegarTextoEnEditor } from './BarraEditorVacio'
 import { BarraLeerGrabar } from './BarraLeerGrabar'
 import { EditorGuion } from './EditorGuion'
 import type { Editor } from '@tiptap/react'
-import { t, useTextos, numeroLocal, TITULO_SIN_NOMBRE, ClaveTexto, NOMBRE_IDIOMA, ENDONIMO_IDIOMA, idiomaEnFrase } from '../textos'
+import { t, useTextos, numeroLocal, TITULO_SIN_NOMBRE, ClaveTexto, NOMBRE_IDIOMA, ENDONIMO_IDIOMA, idiomaEnFrase, avisoIdiomaGuion } from '../textos'
 import { MenuAdjuntoAjustes, CheckMenu } from './FilasAjustesLectura'
 import { detectarIdioma, PALABRAS_MINIMAS_PARA_DETECTAR } from '../lib/detectarIdioma'
 import {
@@ -22,8 +22,12 @@ import {
   debeMostrarMarcaIdioma,
   liberarMarcaEnSesion,
   marcarComoVista,
-  marcaYaVista
+  marcaYaVista,
+  hayMarcaALaVista,
+  avisoIdiomaGuionYaVisto,
+  marcarAvisoIdiomaGuionVisto
 } from '../lib/marcasGuia'
+import { fijarIdioma } from '../lib/idioma'
 import { MarcaGuia } from './MarcaGuia'
 
 // reubicarTramos vivia aca: con el <textarea>, cada tecla llegaba como un
@@ -73,7 +77,9 @@ interface EditorViewProps {
   style?: React.CSSProperties
   onAnimationEnd?: (e: React.AnimationEvent) => void
   editorRef?: React.MutableRefObject<Editor | null>
-  mostrarAviso?: (msg: string, opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number }) => void
+  // -portugues-voz, punto 7, 2026-10-22- Con accionNeutra. Antes:
+  // mostrarAviso?: (msg: string, opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number }) => void
+  mostrarAviso?: (msg: string, opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number; accionNeutra?: boolean }) => void
   // -guia-sigo- Borrar y archivar desde el menú del editor.
   onBorrar?: (id: string) => void
   onArchivar?: (id: string, archivado: boolean) => void
@@ -141,7 +147,9 @@ export default function EditorView({
   onBorrar,
   onArchivar
 }: EditorViewProps) {
-  useTextos()
+  // -portugues-voz, punto 7, 2026-10-22- Se guarda el idioma de la app para el aviso del idioma del guion.
+  // Antes: useTextos() sin guardar lo que devuelve.
+  const idiomaDeApp = useTextos()
   // 28-09-2026, tarea 77: el cajon Aa del editor -CajonAaEditor, mostrarModalAjustes, su Escape y
   // su registro para el atras del telefono- se fue. El Aa abre la pantalla de Ajustes: un solo
   // estilo de ajustes en toda la app, con la muestra viva arriba.
@@ -191,6 +199,29 @@ export default function EditorView({
     if (marcaIdioma) setIdiomaAnclaEl(idiomaBtnRef.current)
     else setIdiomaAnclaEl(null)
   }, [marcaIdioma])
+  // -portugues-voz, punto 7, 2026-10-22- EL AVISO DEL IDIOMA DEL GUION: si el guion está en otro idioma que
+  // la app, un aviso en el idioma del guion ofrece pasar la app a ese idioma -fijarIdioma-. Una vez por
+  // idioma del guion; nunca con el guion en portugués. Espera a que se cierre la marca de guía: con una a
+  // la vista no sale, y vuelve a mirar cuando marcaIdioma cambia. La espera corta deja que la marca que
+  // dispara el pegar -en una microtarea- salga primero.
+  useEffect(() => {
+    if (!mostrarAviso || marcaIdioma) return
+    const aviso = avisoIdiomaGuion(guion.idioma || 'es', idiomaDeApp)
+    if (!aviso || avisoIdiomaGuionYaVisto(aviso.idioma)) return
+    const id = window.setTimeout(() => {
+      if (marcaIdiomaRef.current || hayMarcaALaVista()) return
+      if (avisoIdiomaGuionYaVisto(aviso.idioma)) return
+      marcarAvisoIdiomaGuionVisto(aviso.idioma)
+      mostrarAviso(aviso.texto, {
+        accionTexto: aviso.accionTexto,
+        accionNeutra: aviso.accionNeutra,
+        duracionMs: 6000,
+        alEjecutarAccion: () => fijarIdioma(aviso.idioma)
+      })
+    }, MS_PANTALLA)
+    return () => window.clearTimeout(id)
+  }, [guion.idioma, idiomaDeApp, marcaIdioma, mostrarAviso])
+
   // Si se desmonta con la marca a la vista: no queda vista y se libera la de la sesión.
   // El disparo blur espera MS_PANTALLA y se cancela aquí si ya no hay editor.
   useEffect(() => {

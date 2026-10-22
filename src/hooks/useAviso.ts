@@ -8,6 +8,16 @@ export interface AvisoInfo {
   texto: string
   accionTexto?: string
   alEjecutarAccion?: () => void
+  // -portugues-voz, punto 7, 2026-10-22- La acción en el color del texto del aviso, en negrita, y no en
+  // --aviso-accion, que es el rojo de borrar. La pide el aviso del idioma del guion; «Deshacer» no la
+  // pide y sigue en rojo.
+  accionNeutra?: boolean
+}
+
+// El color de la acción del aviso, solo con variables que ya existen: --color-texto es el del texto del
+// aviso -AvisoBreve-, --aviso-accion el rojo de borrar.
+export function colorAccionAviso(info: Pick<AvisoInfo, 'accionNeutra'>): string {
+  return info.accionNeutra ? 'var(--color-texto)' : 'var(--aviso-accion)'
 }
 
 export function useAviso() {
@@ -16,13 +26,15 @@ export function useAviso() {
 
   const mostrarAviso = useCallback((
     msg: string,
-    opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number }
+    // -portugues-voz, punto 7, 2026-10-22- Antes: opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number }
+    opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number; accionNeutra?: boolean }
   ) => {
     if (timerAvisoRef.current) clearTimeout(timerAvisoRef.current)
     setAvisoInfo({
       texto: msg,
       accionTexto: opciones?.accionTexto,
-      alEjecutarAccion: opciones?.alEjecutarAccion
+      alEjecutarAccion: opciones?.alEjecutarAccion,
+      accionNeutra: opciones?.accionNeutra
     })
     const dur = opciones?.duracionMs ?? 2000
     timerAvisoRef.current = setTimeout(() => {

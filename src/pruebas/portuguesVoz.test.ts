@@ -172,3 +172,60 @@ describe('Portugués 4 - Las letras y los subtítulos', () => {
     expect(es).toContain('dos')
   })
 })
+
+// -portugues-voz, puntos 6 y 7, 2026-10-22- Nombres de idioma en mapa y aviso del idioma del guion.
+// Solo lógica: ni posiciones, ni tamaños, ni orden en pantalla.
+import { NOMBRE_IDIOMA, IDIOMA_EN_FRASE, ENDONIMO_IDIOMA, avisoIdiomaGuion } from '../textos'
+import { colorAccionAviso } from '../hooks/useAviso'
+import {
+  avisoIdiomaGuionYaVisto,
+  marcarAvisoIdiomaGuionVisto,
+  reiniciarMarcasGuiaParaPruebas
+} from '../lib/marcasGuia'
+
+describe('portugues-voz punto 6 - nombres de idioma', () => {
+  test('los mapas tienen los tres idiomas y el menú nombra cada uno en el suyo', () => {
+    expect(NOMBRE_IDIOMA).toEqual({ es: 'idiomaEspanol', en: 'idiomaIngles', pt: 'idiomaPortugues' })
+    expect(IDIOMA_EN_FRASE).toEqual({ es: 'idiomaEs', en: 'idiomaEn', pt: 'idiomaPt' })
+    expect(ENDONIMO_IDIOMA).toEqual({ es: 'Español', en: 'English', pt: 'Português' })
+  })
+})
+
+describe('portugues-voz punto 7 - aviso del idioma del guion', () => {
+  test('sale en el idioma del guion y solo si difiere de la app; nunca con pt', () => {
+    expect(avisoIdiomaGuion('en', 'es')).toEqual({
+      texto: 'Your script is in English. Use Sigo in English?',
+      accionTexto: 'Switch to English',
+      idioma: 'en',
+      accionNeutra: true
+    })
+    expect(avisoIdiomaGuion('es', 'en')).toEqual({
+      texto: 'Tu guion está en español. ¿Quieres usar Sigo en español?',
+      accionTexto: 'Pasar a español',
+      idioma: 'es',
+      accionNeutra: true
+    })
+    expect(avisoIdiomaGuion('es', 'es')).toBeNull()
+    expect(avisoIdiomaGuion('en', 'en')).toBeNull()
+    expect(avisoIdiomaGuion('pt', 'es')).toBeNull()
+    expect(avisoIdiomaGuion('pt', 'en')).toBeNull()
+  })
+
+  test('el aviso de idioma pide la acción neutra; el de borrar no y sigue en rojo', () => {
+    const idioma = avisoIdiomaGuion('en', 'es')!
+    expect(idioma.accionNeutra).toBe(true)
+    expect(colorAccionAviso(idioma)).toBe('var(--color-texto)')
+    const borrar = { texto: 'Guion borrado', accionTexto: 'Deshacer' }
+    expect(colorAccionAviso(borrar)).toBe('var(--aviso-accion)')
+  })
+
+  test('queda visto una vez por idioma del guion', () => {
+    reiniciarMarcasGuiaParaPruebas()
+    expect(avisoIdiomaGuionYaVisto('en')).toBe(false)
+    marcarAvisoIdiomaGuionVisto('en')
+    expect(avisoIdiomaGuionYaVisto('en')).toBe(true)
+    expect(avisoIdiomaGuionYaVisto('es')).toBe(false)
+    reiniciarMarcasGuiaParaPruebas()
+    expect(avisoIdiomaGuionYaVisto('en')).toBe(false)
+  })
+})

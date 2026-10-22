@@ -280,6 +280,9 @@ export const en: Textos = {
   idiomaEs: 'Spanish',
   idiomaEn: 'English',
   idiomaPt: 'Portuguese',
+  // -portugues-voz, punto 7, 2026-10-22- El guion está en inglés y la app en español: sale en inglés.
+  avisoIdiomaGuion: 'Your script is in English. Use Sigo in English?',
+  avisoIdiomaGuionAccion: 'Switch to English',
   preparandoVoz: 'Preparing the voice…',
   vozRechazada: 'The {idioma} voice will download when you have Wi-Fi. To download it now with mobile data, tap Retry and accept.',
   preparandoGestos: 'Preparing gestures… {n}%',
