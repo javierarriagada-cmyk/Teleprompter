@@ -11,5 +11,7 @@ apply from: 'capacitor.settings.gradle'
 if (startParameter.projectProperties.containsKey('paraPlay')) {
     include ':model-es'
     include ':model-en'
+    // -portugues-voz, 2026-10-22- El portugués de Brasil, a pedido como el inglés -android/model-pt-.
+    include ':model-pt'
     include ':gestos'
 }

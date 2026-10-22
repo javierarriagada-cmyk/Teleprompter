@@ -150,10 +150,14 @@ android {
     // Antes:
     //   assetPacks = [':model-es', ':model-en']
     //   ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~:<dir>model-es:<dir>model-en'
+    // -portugues-voz, 2026-10-22- Suma ':model-pt', el portugués a pedido, y '<dir>model-pt' para sacarlo del paquete base
+    // como los otros dos. Antes:
+    //   assetPacks = [':model-es', ':model-en', ':gestos']
+    //   ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~:<dir>model-es:<dir>model-en:<file>gesture_recognizer.task'
     if (paraPlay) {
-        assetPacks = [':model-es', ':model-en', ':gestos']
+        assetPacks = [':model-es', ':model-en', ':model-pt', ':gestos']
         androidResources {
-            ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~:<dir>model-es:<dir>model-en:<file>gesture_recognizer.task'
+            ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~:<dir>model-es:<dir>model-en:<dir>model-pt:<file>gesture_recognizer.task'
         }
     }
 
@@ -197,7 +201,9 @@ android {
 // lectura partia tarde -3,3 s en el Redmi de la traductora con la 1.0 (439)-. Ahora la marca es
 // la huella de los archivos del modelo: cambia solo si cambia el modelo, y se copia una vez.
 tasks.register('genUUID') {
-    def carpetas = ['model-es', 'model-en']
+    // -portugues-voz, 2026-10-22- Suma model-pt: su uuid lo usan la APK de prueba y el paquete model_pt. Antes:
+    //   def carpetas = ['model-es', 'model-en']
+    def carpetas = ['model-es', 'model-en', 'model-pt']
     def ofiles = carpetas.collect { file("$buildDir/generated/assets/$it/uuid") }
     outputs.files(ofiles)
     outputs.upToDateWhen { false }

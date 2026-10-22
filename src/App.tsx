@@ -80,14 +80,15 @@ import { duracionVisible, MS_MINIMO_QUE_QUEDA } from './lib/tramos'
 // -tarea 104- Más el modelo de gestos a pedido: asegurarModeloGestos y encenderGestos.
 // Antes: import { Gestos, decidirPreparar, MS_ENTRE_INTENTOS_PREPARAR } from './lib/gestos'
 import { Gestos, decidirPreparar, MS_ENTRE_INTENTOS_PREPARAR, asegurarModeloGestos, encenderGestos, EstadoModeloGestos } from './lib/gestos'
-import { crearVozEnSilencio, escucharRedDelNavegador, idiomaDeVoz, EstadoVozEnSilencio, IdiomaVoz, VozEnSilencio } from './lib/vozAPedido'
+// -portugues-voz, 2026-10-22- Suma LANG_MOTOR, el único mapa de idioma a código del motor.
+import { crearVozEnSilencio, escucharRedDelNavegador, idiomaDeVoz, LANG_MOTOR, EstadoVozEnSilencio, IdiomaVoz, VozEnSilencio } from './lib/vozAPedido'
 import { descargaForzada } from './lib/forzado104'
 import { confirmadorNuevo, revisar as revisarGesto } from './lib/confirmadorGestos'
 import { vigiaNuevo, oirParcial, oirFinal, debePedir, alPedir, alResponder, Vigia } from './lib/vigiaGestos'
 // -tarea 88, segunda vuelta- El fin de la última palabra del FINAL, para el corte de la palma.
 import { tomarFinUltimaPalabraEpochMs } from './lib/diagnostico'
 import { IconoAtras, IconoPausa, IconoParar, IconoTacho, IconoEmpezar, IconoEmpezarAPausa } from './components/IconosApp'
-import { t, useTextos, TITULO_SIN_NOMBRE } from './textos'
+import { t, useTextos, TITULO_SIN_NOMBRE, idiomaEnFrase } from './textos'
 import { idiomaApp, leerIdiomaDelTelefono } from './lib/idioma'
 import { PASOS_LETRA } from './components/estiloLectura'
 // -ajustes de pantallas, cuarta vuelta, 10-10-2026- Ninguna puerta abre ya la pantalla completa de Ajustes:
@@ -1258,7 +1259,11 @@ export default function App({ motor, repoOverride }: AppProps) {
   // Sin guion abierto -al abrir la app- vale el idioma de la app: es el del guion de bienvenida
   // y el que la persona usa, y asi la precarga silenciosa carga el modelo correcto -28-09-2026-.
   const idiomaGuion = guionActual && guionActual.idioma ? guionActual.idioma : idiomaApp()
-  const langMotor = idiomaGuion === 'en' ? 'en-US' : idiomaGuion === 'es' ? 'es-ES' : idiomaGuion
+  // -portugues-voz, 2026-10-22- UN SOLO MAPA, para el motor y para pedir el modelo: antes eran dos ternarios que podían
+  // separarse, y el portugués caía en uno como 'pt' y en el otro como español. Lo que no se conoce
+  // pasa por idiomaDeVoz -español, con aviso-. Antes:
+  //   const langMotor = idiomaGuion === 'en' ? 'en-US' : idiomaGuion === 'es' ? 'es-ES' : idiomaGuion
+  const langMotor = LANG_MOTOR[idiomaDeVoz(idiomaGuion)]
 
   const {
     start,
@@ -1321,7 +1326,9 @@ export default function App({ motor, repoOverride }: AppProps) {
       // dirección puede forzar el estado para las capturas -lib/forzado104.ts-.
       asegurar: (idioma, alProgreso) =>
         descargaForzada('t104voz', alProgreso) ||
-        asegurarVozRef.current(idioma === 'en' ? 'en-US' : 'es-ES', alProgreso, { silencioso: true }),
+        // -portugues-voz, 2026-10-22- El mismo mapa de langMotor. Antes:
+        //   asegurarVozRef.current(idioma === 'en' ? 'en-US' : 'es-ES', alProgreso, { silencioso: true }),
+        asegurarVozRef.current(LANG_MOTOR[idioma], alProgreso, { silencioso: true }),
       alCambiar: (idioma, estado) => {
         if (!montadoRef.current) return
         setVozEnSilencio((antes) => ({ ...antes, [idioma]: estado }))
@@ -1358,7 +1365,9 @@ export default function App({ motor, repoOverride }: AppProps) {
     : !descargaVoz && vozDelGuion && vozDelGuion.estado === 'bajando'
     ? vozDelGuion.progreso
     : null
-  const nombreIdiomaVoz = t(idiomaVozGuion === 'en' ? 'idiomaEn' : 'idiomaEs')
+  // -portugues-voz, punto 6, 2026-10-22- Del mapa: con el portugués son tres idiomas.
+  // Antes: const nombreIdiomaVoz = t(idiomaVozGuion === 'en' ? 'idiomaEn' : 'idiomaEs')
+  const nombreIdiomaVoz = idiomaEnFrase(idiomaVozGuion)
   const avisoVoz: { texto: string; onReintentar: () => void } | null = !enListo
     ? null
     : descargaVoz && (descargaVoz.estado === 'sin-conexion' || descargaVoz.estado === 'rechazada')
@@ -3074,6 +3083,7 @@ export default function App({ motor, repoOverride }: AppProps) {
           progresoPrecarga={progresoPrecarga}
           errorPrecarga={errorPrecarga}
           reintentarPrecarga={reintentarPrecarga}
+          idiomaVoz={idiomaVozGuion}
           oculto={camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro') && vista === 'lectura'}
         />
       )}
@@ -3817,6 +3827,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               setDescargaVoz(null)
               handleEmpezarDesdeListo()
             }}
+            idiomaVoz={idiomaVozGuion}
             oculto={false}
           />
         </div>

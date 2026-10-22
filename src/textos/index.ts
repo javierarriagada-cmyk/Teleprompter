@@ -70,3 +70,48 @@ export function fechaCortaDosDigitos(ts: number, idioma: IdiomaApp = idiomaApp()
 export function numeroLocal(n: number, idioma: IdiomaApp = idiomaApp()): string {
   return n.toLocaleString(idioma === 'es' ? 'es' : 'en-US')
 }
+
+// -portugues-voz, punto 6, 2026-10-22- Los nombres de los idiomas del guion, en un mapa: el de la
+// lista, con mayúscula, y el que va dentro de una frase, en minúscula. Antes cada lugar elegía con
+// un ternario de dos idiomas: t(idioma === 'en' ? 'idiomaEn' : 'idiomaEs') -App, EditorView,
+// IndicadorPrecarga- y NOMBRE_IDIOMA vivía en EditorView. Con el portugués son tres y el ternario
+// mandaba pt a español.
+export const NOMBRE_IDIOMA: Record<'es' | 'en' | 'pt', ClaveTexto> = {
+  es: 'idiomaEspanol',
+  en: 'idiomaIngles',
+  pt: 'idiomaPortugues'
+}
+export const IDIOMA_EN_FRASE: Record<'es' | 'en' | 'pt', ClaveTexto> = {
+  es: 'idiomaEs',
+  en: 'idiomaEn',
+  pt: 'idiomaPt'
+}
+
+// El nombre en frase de un idioma cualquiera: si no está en el mapa, el del español, como hacía el
+// ternario de antes.
+export function idiomaEnFrase(idioma: string | null | undefined): string {
+  const clave = IDIOMA_EN_FRASE[(idioma || 'es') as 'es' | 'en' | 'pt'] || IDIOMA_EN_FRASE.es
+  return t(clave)
+}
+
+// Cada idioma del guion nombrado en su propio idioma, para el menú del editor -como «Español» y
+// «English» del selector de Ajustes, que no se traducen-.
+export const ENDONIMO_IDIOMA: Record<'es' | 'en' | 'pt', string> = {
+  es: 'Español',
+  en: 'English',
+  pt: 'Português'
+}
+
+// -portugues-voz, punto 7, 2026-10-22- El aviso de que el guion está en otro idioma que la app, escrito en
+// el idioma del GUION -quien escribe en inglés lee inglés-. Recibe el idioma y lee el diccionario de ese
+// idioma; t() no cambia. Sin aviso si los idiomas coinciden o si el guion está en portugués: la app no
+// tiene textos en portugués. La acción va en el color del texto del aviso -accionNeutra-.
+export function avisoIdiomaGuion(
+  idiomaGuion: string | null | undefined,
+  idiomaDeApp: IdiomaApp
+): { texto: string; accionTexto: string; idioma: IdiomaApp; accionNeutra: true } | null {
+  if (idiomaGuion !== 'es' && idiomaGuion !== 'en') return null
+  if (idiomaGuion === idiomaDeApp) return null
+  const dic = TEXTOS[idiomaGuion]
+  return { texto: dic.avisoIdiomaGuion, accionTexto: dic.avisoIdiomaGuionAccion, idioma: idiomaGuion, accionNeutra: true }
+}

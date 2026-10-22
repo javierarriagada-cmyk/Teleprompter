@@ -2,6 +2,8 @@ import { Capacitor, registerPlugin, PluginListenerHandle } from '@capacitor/core
 import { EventoFinal, EventoParcial, MotorDeVoz, ResultadoVoz } from './MotorDeVoz'
 import { anotar, msDelRegistro, generacionDiagnostico } from '../lib/diagnostico'
 import { HERRAMIENTAS } from '../lib/herramientas'
+// -portugues-voz, 2026-10-22- La única regla del idioma de la voz.
+import { idiomaDeVoz, IdiomaVoz } from '../lib/vozAPedido'
 
 // EL AUDIO QUE ESCUCHO VOSK, GUARDADO -24-09-2026-. Es el instrumento del plan del
 // motor: con el se afina el reconocedor en el PC contra lecturas reales. Quedan los
@@ -47,7 +49,8 @@ type DatosResultado = {
 interface VoskNativoPlugin {
   disponible(): Promise<{ disponible: boolean }>
   // 'es' o 'en': el plugin carga assets/model-es o assets/model-en -docs/ingles.txt D3-.
-  iniciar(opciones?: { idioma?: 'es' | 'en' }): Promise<void>
+  // -portugues-voz, 2026-10-22- IdiomaVoz suma 'pt'. Antes: iniciar(opciones?: { idioma?: 'es' | 'en' }): Promise<void>
+  iniciar(opciones?: { idioma?: IdiomaVoz }): Promise<void>
   escuchar(opciones?: { guardarAudio?: boolean; fuente?: string; frecuenciaMic?: number }): Promise<{ inicioEpochMs?: number; rutaAudio?: string; muestrasPorTrozo?: number } | void>
   detener(): Promise<void>
   abrirAjustesDeLaApp(): Promise<void>
@@ -70,7 +73,9 @@ interface VoskNativoPlugin {
   // -tarea 104- silencioso: sin el diálogo de Play; si Play lo pediría, resuelve estado 'en-pausa'.
   // Sin silencioso, si la persona dice que no al diálogo, rechaza con code 'RECHAZADA'.
   // Antes: asegurarVoz(opciones: { idioma: 'es' | 'en' }): Promise<{ estado: string; descargada?: boolean }>
-  asegurarVoz(opciones: { idioma: 'es' | 'en'; silencioso?: boolean }): Promise<{ estado: string; descargada?: boolean }>
+  // -portugues-voz, 2026-10-22- IdiomaVoz suma 'pt'. Antes:
+  //   asegurarVoz(opciones: { idioma: 'es' | 'en'; silencioso?: boolean }): Promise<{ estado: string; descargada?: boolean }>
+  asegurarVoz(opciones: { idioma: IdiomaVoz; silencioso?: boolean }): Promise<{ estado: string; descargada?: boolean }>
 }
 
 const Nativo = registerPlugin<VoskNativoPlugin>('VoskNativo')
@@ -133,7 +138,8 @@ export class MotorNativo implements MotorDeVoz {
   // PENDIENTE: engancharlo al arranque de la aplicacion. Hoy usePrecargaModelo crea
   // un MotorVosk a mano y no mira este. Va en su propia tarea, no en esta.
   // HECHO el 28-09-2026: precargar(), mas abajo, lo llama App.tsx al abrir y al cambiar de guion.
-  async precargarModelo(idioma: 'es' | 'en' = 'es'): Promise<void> {
+  // -portugues-voz, 2026-10-22- IdiomaVoz suma 'pt'. Antes: async precargarModelo(idioma: 'es' | 'en' = 'es'): Promise<void> {
+  async precargarModelo(idioma: IdiomaVoz = 'es'): Promise<void> {
     // El plugin sabe que modelo tiene cargado: si es el mismo idioma no hace nada, y si es
     // otro lo cambia -VoskNativoPlugin.iniciar-.
     //
@@ -160,7 +166,9 @@ export class MotorNativo implements MotorDeVoz {
   // intentar y ahi el error si se ve.
   async precargar(lang: string): Promise<void> {
     if (!Capacitor.isNativePlatform()) return
-    const idioma: 'es' | 'en' = (lang || '').toLowerCase().startsWith('en') ? 'en' : 'es'
+    // -portugues-voz, 2026-10-22- La única regla, idiomaDeVoz -lib/vozAPedido.ts-. Antes:
+    //   const idioma: 'es' | 'en' = (lang || '').toLowerCase().startsWith('en') ? 'en' : 'es'
+    const idioma: IdiomaVoz = idiomaDeVoz(lang)
     try {
       await this.precargarModelo(idioma)
     } catch {
@@ -204,7 +212,9 @@ export class MotorNativo implements MotorDeVoz {
   //   ... await Nativo.asegurarVoz({ idioma }) ... if (e && e.code === 'SIN_CONEXION') return 'sin-conexion'
   async asegurarVoz(lang: string, alProgreso: (fraccion: number) => void, opciones?: { silencioso?: boolean }): Promise<ResultadoVoz> {
     if (!Capacitor.isNativePlatform()) return 'lista'
-    const idioma: 'es' | 'en' = (lang || '').toLowerCase().startsWith('en') ? 'en' : 'es'
+    // -portugues-voz, 2026-10-22- La única regla, idiomaDeVoz -lib/vozAPedido.ts-. Antes:
+    //   const idioma: 'es' | 'en' = (lang || '').toLowerCase().startsWith('en') ? 'en' : 'es'
+    const idioma: IdiomaVoz = idiomaDeVoz(lang)
     const oyente = await Nativo.addListener('progresoVoz', (d) => {
       if (d && typeof d.progreso === 'number' && (!d.idioma || d.idioma === idioma)) alProgreso(d.progreso)
     })
@@ -235,7 +245,9 @@ export class MotorNativo implements MotorDeVoz {
     // el APK traia solo el espanol y este parametro se ignoraba a proposito: "inventar
     // que se puede cambiar seria mentir". Ahora viajan los dos, y lang llega de App.tsx
     // como 'es-ES' o 'en-EN' -guion.idioma-. Cualquier otro idioma cae en espanol.
-    const idioma: 'es' | 'en' = (opciones?.lang || '').toLowerCase().startsWith('en') ? 'en' : 'es'
+    // -portugues-voz, 2026-10-22- La única regla, idiomaDeVoz -lib/vozAPedido.ts-. Antes:
+    //   const idioma: 'es' | 'en' = (opciones?.lang || '').toLowerCase().startsWith('en') ? 'en' : 'es'
+    const idioma: IdiomaVoz = idiomaDeVoz(opciones?.lang)
 
     await this.precargarModelo(idioma)
 

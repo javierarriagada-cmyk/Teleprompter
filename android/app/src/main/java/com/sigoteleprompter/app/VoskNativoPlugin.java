@@ -79,8 +79,21 @@ public class VoskNativoPlugin extends Plugin {
     // DOS IDIOMAS -27-09-2026, docs/ingles.txt D3-: assets/model-es y assets/model-en. Cada uno
     // se desempaqueta en SU carpeta -antes todo iba a "model" y dos modelos se pisarian-, y se
     // carga uno a la vez: el del idioma del guion que se va a leer.
+    // -portugues-voz, 2026-10-22- TRES IDIOMAS: se suma assets/model-pt. La carpeta sale de idiomaDeVoz, la única regla.
+    // PaqueteDeVoz ya arma model_pt desde model-pt -nombreDelPaquete cambia el guion-: no se repite.
+    // Antes:
+    //   return "en".equals(idioma) ? "model-en" : "model-es";
     private static String carpetaModelo(String idioma) {
-        return "en".equals(idioma) ? "model-en" : "model-es";
+        return "model-" + idiomaDeVoz(idioma);
+    }
+
+    // -portugues-voz, 2026-10-22- UNA SOLA REGLA PARA EL IDIOMA DE LA VOZ, la misma de lib/vozAPedido.ts idiomaDeVoz:
+    // 'es', 'en' o 'pt'. Un idioma que no conocemos no puede dejar a la app sin reconocedor: se
+    // escucha en español, pero queda escrito en el registro para que no pase callado.
+    static String idiomaDeVoz(String idioma) {
+        if ("es".equals(idioma) || "en".equals(idioma) || "pt".equals(idioma)) return idioma;
+        android.util.Log.w("VoskNativo", "idioma desconocido, se escucha en español: " + idioma);
+        return "es";
     }
 
     /**
@@ -184,7 +197,9 @@ public class VoskNativoPlugin extends Plugin {
     public void iniciar(PluginCall call) {
         // 'es' salvo que pidan ingles: un idioma que no conocemos no puede dejar a la app sin
         // reconocedor.
-        String idioma = "en".equals(call.getString("idioma", "es")) ? "en" : "es";
+        // -portugues-voz, 2026-10-22- Ahora con idiomaDeVoz, que suma 'pt'. Antes:
+        //   String idioma = "en".equals(call.getString("idioma", "es")) ? "en" : "es";
+        String idioma = idiomaDeVoz(call.getString("idioma", "es"));
         if (modelo != null && idioma.equals(idiomaModelo)) {
             call.resolve();
             return;
@@ -266,7 +281,9 @@ public class VoskNativoPlugin extends Plugin {
     // -opción B, Javier-. Sin silencioso, si la persona dice que no al diálogo, rechaza con RECHAZADA.
     @PluginMethod
     public void asegurarVoz(PluginCall call) {
-        String idioma = "en".equals(call.getString("idioma", "es")) ? "en" : "es";
+        // -portugues-voz, 2026-10-22- Ahora con idiomaDeVoz, que suma 'pt'. Antes:
+        //   String idioma = "en".equals(call.getString("idioma", "es")) ? "en" : "es";
+        String idioma = idiomaDeVoz(call.getString("idioma", "es"));
         final boolean silencioso = Boolean.TRUE.equals(call.getBoolean("silencioso", false));
         final String paquete = carpetaModelo(idioma);
         if (enAssets(paquete) || PaqueteDeVoz.rutaSiEsta(getContext(), paquete) != null) {

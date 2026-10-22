@@ -70,19 +70,28 @@ export const VENTANA_LINEAS_ADELANTE = 3
 export const SALTO_PARCIAL_SIN_EXACTAS = 5
 export const PALABRAS_EXACTAS_PARA_SALTAR = 2
 
-export function normalizar(s: string): string {
-  return s
+// -portugues-voz, 2026-10-22- EL PORTUGUÉS: la regla de abajo borra ã, õ, ç, â, ê, ô y à -no están en la lista-, y
+// «ação» quedaba «ao», igual que la palabra «ao». Con idioma 'pt' primero se separa la letra de su
+// tilde -NFD- y se borra solo la tilde: «ação» queda «acao» y «à», «a». Con cualquier otro idioma, o
+// sin idioma, todo exactamente como antes. Antes: export function normalizar(s: string): string {
+export function normalizar(s: string, idioma?: string): string {
+  const base = idioma === 'pt' ? s.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : s
+  return base
     .toLowerCase()
     .replace(/[^a-z0-9áéíóúñü\s]/gi, '')
     .replace(/\s+/g, ' ')
     .trim()
 }
 
-export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
+// -portugues-voz, 2026-10-22- Las palabras se normalizan con el idioma del guion -normalizar, arriba-. Un guion
+// completo ya lo trae; a un texto suelto se le puede pasar, y sin él sigue siendo 'es', como antes.
+// Antes: export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
+//   ... idioma: 'es',
+export function tokenizarGuion(guionEntrada: Guion | string, idiomaDelTexto?: string): Token[] {
   const guion: Guion = typeof guionEntrada === 'string' ? {
     id: 'temp',
     titulo: 'Temp',
-    idioma: 'es',
+    idioma: idiomaDelTexto || 'es',
     creado: 0,
     modificado: 0,
     bloques: [{ id: 'b1', nombre: '', texto: guionEntrada }]
@@ -125,7 +134,8 @@ export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
           const charInLine = startWord + i
           if (esCaracterApertura(char)) {
             if (bufferWord) {
-              const norm = normalizar(bufferWord)
+              // -portugues-voz, 2026-10-22- Con el idioma del guion. Antes: const norm = normalizar(bufferWord)
+              const norm = normalizar(bufferWord, guion.idioma)
               if (norm) {
                 tokens.push({
                   palabra: norm,
@@ -143,7 +153,8 @@ export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
             enAcotacion = true
           } else if (esCaracterCierre(char)) {
             if (bufferWord) {
-              const norm = normalizar(bufferWord)
+              // -portugues-voz, 2026-10-22- Con el idioma del guion. Antes: const norm = normalizar(bufferWord)
+              const norm = normalizar(bufferWord, guion.idioma)
               if (norm) {
                 tokens.push({
                   palabra: norm,
@@ -168,7 +179,8 @@ export function tokenizarGuion(guionEntrada: Guion | string): Token[] {
         }
 
         if (bufferWord) {
-          const norm = normalizar(bufferWord)
+          // -portugues-voz, 2026-10-22- Con el idioma del guion. Antes: const norm = normalizar(bufferWord)
+          const norm = normalizar(bufferWord, guion.idioma)
           if (norm) {
             tokens.push({
               palabra: norm,
@@ -417,7 +429,8 @@ export function crearSeguidor(tokens: Token[], opciones: { idioma?: string } = {
         return { bloque: 0, linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false }
       }
 
-      const fraseNorm = normalizar(fraseFinal)
+      // -portugues-voz, 2026-10-22- Con el idioma del seguidor, el mismo del guion. Antes: const fraseNorm = normalizar(fraseFinal)
+      const fraseNorm = normalizar(fraseFinal, opciones.idioma)
       if (!fraseNorm) {
         return obtenerPosicionRespuesta(false)
       }
@@ -470,7 +483,8 @@ export function crearSeguidor(tokens: Token[], opciones: { idioma?: string } = {
         return { bloque: 0, linea: 0, palabra: 0, desdeToken: 0, hastaToken: 0, movio: false }
       }
 
-      const fraseNorm = normalizar(fraseParcial)
+      // -portugues-voz, 2026-10-22- Con el idioma del seguidor. Antes: const fraseNorm = normalizar(fraseParcial)
+      const fraseNorm = normalizar(fraseParcial, opciones.idioma)
       if (!fraseNorm) {
         return obtenerPosicionRespuesta(false)
       }

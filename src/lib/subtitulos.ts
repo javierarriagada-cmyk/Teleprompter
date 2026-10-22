@@ -114,6 +114,25 @@ const ATADAS = new Set((
   'my your his her its our their im youre were theyre is are was be not no very just'
 ).split(' '))
 
+// -portugues-voz, 2026-10-22- EL PORTUGUÉS, EN SU PROPIA LISTA. Se usa SOLO cuando el guion de la toma es pt -la línea
+// «# idioma: pt» del registro-, sumada a la de arriba: "de", "que", "a", "para" también atan en
+// portugués. No va en ATADAS porque "dos" o "da" cierran bien una frase en español -«los dos»-.
+const ATADAS_PT = new Set((
+  'os as e em com do da dos das na nos nas num numa pelo pela pelos pelas ao aos um uma meu minha seu sua'
+).split(' '))
+
+// -portugues-voz, 2026-10-22- El idioma del guion de la toma, de la línea «# idioma:» de la cabecera -App.tsx la escribe
+// en cabeceraMotor, que va en el .palabras.txt y en el .motor.txt-. Una toma de antes sin esa línea
+// da undefined y se arma como siempre.
+function idiomaDelRegistro(registro: string): string | undefined {
+  const m = registro.match(/^# idioma:\s*(\S+)/m)
+  return m ? m[1] : undefined
+}
+
+function atadasDe(idioma: string | undefined): Set<string> {
+  return idioma === 'pt' ? new Set([...ATADAS, ...ATADAS_PT]) : ATADAS
+}
+
 function norm(s: string): string {
   return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ]/g, '')
 }
@@ -151,7 +170,9 @@ function leerOidasYCalces(registro: string): { oidas: Oida[]; calces: Calce[] } 
 // parte de las mismas palabras. Antes el cuerpo de armarPalabras estaba aquí y terminaba en
 // return cortarEnSubtitulos(palabras, maxLetras).
 export function armarSubtitulos(registro: string, forma: FormaCuadro | 'cuadrada' | null = 'vertical'): Subtitulo[] {
-  return cortarEnSubtitulos(armarPalabras(registro), letrasPorRenglon(forma))
+  // -portugues-voz, 2026-10-22- Con las palabras que atan en el idioma del guion. Antes:
+  //   return cortarEnSubtitulos(armarPalabras(registro), letrasPorRenglon(forma))
+  return cortarEnSubtitulos(armarPalabras(registro), letrasPorRenglon(forma), [], atadasDe(idiomaDelRegistro(registro)))
 }
 
 // LAS PALABRAS DEL GUION CON SU HORA, en el reloj del video -tarea 88: era el cuerpo de armarSubtitulos-.
@@ -159,7 +180,8 @@ export function armarPalabras(registro: string): PalabraSubtitulo[] {
   const corpus = leerCorpus(registro)
   if (!corpus.guion.trim()) return []
   // Las acotaciones entre corchetes no se dicen -B9- y no van al subtitulo.
-  const todos = tokenizarGuion(corpus.guion)
+  // -portugues-voz, 2026-10-22- Con el idioma del guion de la toma. Antes: const todos = tokenizarGuion(corpus.guion)
+  const todos = tokenizarGuion(corpus.guion, idiomaDelRegistro(registro))
   const tokens = todos
     .filter((t) => !t.esAcotacion)
     .map((t) => ({ abs: t.tokenAbsoluto, n: norm(t.palabra), texto: corpus.guion.substring(t.desdeChar, t.hastaChar) }))
@@ -284,7 +306,9 @@ export function partirEnRenglones(ws: PalabraSubtitulo[], maxLetras: number = MA
 // -tarea 88- uniones: dónde quedan, en el reloj de la SALIDA, las uniones de una toma con cortes. En una
 // unión se corta SIEMPRE, como en un punto: "de la" no pasa al siguiente. Y ningún subtítulo dura más
 // allá de la unión que sigue a su última palabra. Sin uniones, todo igual que antes.
-function cortarEnSubtitulos(palabras: PalabraSubtitulo[], maxLetras: number = MAX_LETRAS_RENGLON, uniones: number[] = []): Subtitulo[] {
+// -portugues-voz, 2026-10-22- atadas: las palabras que no cierran un subtítulo, según el idioma -atadasDe-. Antes:
+// function cortarEnSubtitulos(palabras: PalabraSubtitulo[], maxLetras: number = MAX_LETRAS_RENGLON, uniones: number[] = []): Subtitulo[] {
+function cortarEnSubtitulos(palabras: PalabraSubtitulo[], maxLetras: number = MAX_LETRAS_RENGLON, uniones: number[] = [], atadas: Set<string> = ATADAS): Subtitulo[] {
   const grupos: PalabraSubtitulo[][] = []
   let actual: PalabraSubtitulo[] = []
   for (const x of palabras) {
@@ -302,7 +326,8 @@ function cortarEnSubtitulos(palabras: PalabraSubtitulo[], maxLetras: number = MA
         // espacio o por tiempo, "de la" pasa al subtitulo siguiente.
         const pasan: PalabraSubtitulo[] = []
         if (!cierra && pausa <= PAUSA_QUE_CORTA_MS) {
-          while (actual.length > 2 && pasan.length < 2 && ATADAS.has(norm(actual[actual.length - 1].texto))) pasan.unshift(actual.pop()!)
+          // -portugues-voz, 2026-10-22- Antes: ... && ATADAS.has(norm(actual[actual.length - 1].texto))) ...
+          while (actual.length > 2 && pasan.length < 2 && atadas.has(norm(actual[actual.length - 1].texto))) pasan.unshift(actual.pop()!)
         }
         grupos.push(actual)
         actual = pasan
@@ -356,7 +381,8 @@ export function subtitulosConCortes(
     quedan.push({ texto: w.texto, desdeMs: menosAntes(d), hastaMs: menosAntes(h) })
   }
   const uniones = ordenados.map((c) => menosAntes(c.hastaMs))
-  return cortarEnSubtitulos(quedan, letrasPorRenglon(forma), uniones)
+  // -portugues-voz, 2026-10-22- Con las atadas del idioma. Antes: return cortarEnSubtitulos(quedan, letrasPorRenglon(forma), uniones)
+  return cortarEnSubtitulos(quedan, letrasPorRenglon(forma), uniones, atadasDe(idiomaDelRegistro(registro)))
 }
 
 // LOS TRES ESTILOS, CERRADOS -Javier, 24-09-2026-: el amarillo del prototipo,

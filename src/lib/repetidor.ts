@@ -196,7 +196,10 @@ export const SALTO_A_MANO = 3
 
 export function repetirLectura(corpus: Corpus, opciones: OpcionesRepeticion = {}): ResultadoRepeticion {
   const comoTelefono = opciones.comoElTelefono === true
-  const tokens = tokenizarGuion(corpus.guion)
+  // -portugues-voz, 2026-10-22- El idioma se decide antes, para que las palabras del guion se normalicen igual que
+  // las del seguidor. Antes, aquí: const tokens = tokenizarGuion(corpus.guion), y el idioma abajo.
+  const idioma = comoTelefono ? detectarIdioma(corpus.guion) ?? undefined : undefined
+  const tokens = tokenizarGuion(corpus.guion, idioma)
 
   const limitesLineaMap = new Map<string, number>()
   const limitesBloqueMap = new Map<number, number>()
@@ -210,7 +213,7 @@ export function repetirLectura(corpus: Corpus, opciones: OpcionesRepeticion = {}
 
   const motor = crearMotorDeAvance(undefined, limitesDeLinea, limitesDeBloque)
   // Antes: const seguidor = crearSeguidor(tokens)
-  const idioma = comoTelefono ? detectarIdioma(corpus.guion) ?? undefined : undefined
+  // -portugues-voz, 2026-10-22- const idioma = ... se movió arriba, antes de tokenizarGuion.
   const seguidor = crearSeguidor(tokens, idioma ? { idioma } : {})
   const cond: Conduccion = { seguidor, motor, tokens, limitesDeLinea }
 

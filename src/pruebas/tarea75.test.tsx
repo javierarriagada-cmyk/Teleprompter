@@ -302,7 +302,10 @@ describe('Tarea 75 - la app en espanol e ingles', () => {
     expect(screen.getByTestId('btn-idioma-guion').getAttribute('aria-label')).toBe('Script language: Spanish')
 
     // Elegido a mano: vuelve a ingles y ya no cambia solo, aunque se siga pegando espanol.
+    // -portugues-voz, punto 6, 2026-10-22- El botón abre un menú de tres idiomas y se elige inglés en él.
+    // Antes: fireEvent.click(screen.getByTestId('btn-idioma-guion')) -un toque alternaba ES y EN-.
     fireEvent.click(screen.getByTestId('btn-idioma-guion'))
+    fireEvent.click(await screen.findByTestId('btn-idioma-guion-en'))
     expect(screen.getByTestId('btn-idioma-guion').getAttribute('data-idioma')).toBe('en')
     pegarEnGuion(' Y despues de eso decidí que la próxima vez iba a preparar todo con tiempo, porque no se puede improvisar una clase entera.')
     expect(screen.getByTestId('btn-idioma-guion').getAttribute('data-idioma')).toBe('en')

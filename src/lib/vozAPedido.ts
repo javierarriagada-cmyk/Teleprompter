@@ -15,14 +15,32 @@
 // -MotorNativo.asegurarVoz en silencio- y con qué saber que volvió la red.
 import type { ResultadoVoz } from '../motor/MotorDeVoz'
 
-export type IdiomaVoz = 'es' | 'en'
+// -portugues-voz, 2026-10-22- Se suma 'pt', el portugués de Brasil -assets/model-pt-. Antes:
+//   export type IdiomaVoz = 'es' | 'en'
+export type IdiomaVoz = 'es' | 'en' | 'pt'
 
 // El modelo que corresponde a un idioma -de la app, 'es' | 'en', o del motor, 'es-ES' | 'en-US'-.
 // Inglés solo si dice inglés: un idioma que no conocemos no puede dejar a la app sin voz, y el
 // español es el mercado principal. Es la misma regla de MotorNativo y de VoskNativoPlugin.
+// -portugues-voz, 2026-10-22- Es ahora LA ÚNICA regla: MotorNativo y App la usan, y VoskNativoPlugin.idiomaDeVoz la
+// repite en Java. Entiende 'pt' y 'pt-BR'. Lo desconocido sigue yendo a español, pero avisa una vez
+// por valor en la consola, para que un idioma mal escrito no pase callado. Antes:
+//   return (lang || '').toLowerCase().startsWith('en') ? 'en' : 'es'
+const desconocidosAvisados = new Set<string>()
 export function idiomaDeVoz(lang: string | null | undefined): IdiomaVoz {
-  return (lang || '').toLowerCase().startsWith('en') ? 'en' : 'es'
+  const base = (lang || '').toLowerCase().split(/[-_]/)[0]
+  if (base === 'es' || base === 'en' || base === 'pt') return base
+  const valor = String(lang)
+  if (!desconocidosAvisados.has(valor)) {
+    desconocidosAvisados.add(valor)
+    console.warn('[voz] idioma desconocido, se escucha en español:', lang)
+  }
+  return 'es'
 }
+
+// -portugues-voz, 2026-10-22- EL CÓDIGO DEL MOTOR DE CADA IDIOMA, en un solo mapa: App lo usa para langMotor y para
+// pedir el modelo en silencio.
+export const LANG_MOTOR: Record<IdiomaVoz, string> = { es: 'es-ES', en: 'en-US', pt: 'pt-BR' }
 
 export type EstadoVozEnSilencio =
   | { estado: 'bajando'; progreso: number }

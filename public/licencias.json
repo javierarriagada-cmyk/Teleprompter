@@ -1739,6 +1739,15 @@
       "texto": ""
     },
     {
+      "nombre": "modelo de voz pt",
+      "version": "vosk-model-small-pt-0.3",
+      "licencia": "Apache-2.0",
+      "origen": "extra",
+      "fuente": "https://alphacephei.com/vosk/models",
+      "nota": "El README del modelo solo dice 'Portuguese model for android', sin copyright. La pagina de modelos de Vosk declara vosk-model-small-pt-0.3 Apache 2.0 (verificado el 2026-10-22).",
+      "texto": ""
+    },
+    {
       "nombre": "Material Symbols",
       "version": "outlined",
       "licencia": "Apache-2.0",

@@ -2,6 +2,7 @@
 // accion si lo trae. El estado vive en hooks/useAviso.ts; enLectura es vista === 'lectura'.
 import React from 'react'
 import { movimientoApagado, MS_CHICO, CURVA_ENTRA } from './movimiento'
+import { colorAccionAviso } from '../hooks/useAviso'
 import type { AvisoInfo } from '../hooks/useAviso'
 
 interface AvisoBreveProps {
@@ -37,6 +38,9 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
         <div
           data-testid="aviso-flotante"
           className="aviso-breve"
+          // -portugues-voz, 2026-10-22- El idioma del aviso si no es el de la app -useAviso, idioma-: TalkBack lo lee
+          // con la voz de ese idioma. Sin idioma no lleva lang y vale el de la página, como antes.
+          lang={avisoInfo.idioma}
           style={{
             position: 'fixed',
             // SOBRE LA BARRA DE ANDROID Y CENTRADO -28-09-2026-. En el moto g86 el aviso quedaba
@@ -94,7 +98,9 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
                 border: 'none',
                 // -mejoras-claridad, 21-10-2026- --aviso-accion: en claro, var(--color-acento) -el crema de los botones claros- sobre el aviso blanco daba
                 // 1,3 a 1 y no se leía; ahora 6,0 a 1. En oscuro sigue siendo --color-acento. Antes: color: 'var(--color-acento)',
-                color: 'var(--aviso-accion)',
+                // -portugues-voz, punto 7, 2026-10-22- Si el aviso pide la acción neutra -el del idioma del guion-, el color
+                // del texto del aviso; si no, el rojo de siempre. Antes: color: 'var(--aviso-accion)',
+                color: colorAccionAviso(avisoInfo),
                 fontWeight: 'bold',
                 cursor: 'pointer',
                 // -mejoras-claridad, 21-10-2026- Destacado: 16 y un área de toque de 48 de alto. Antes: fontSize: 'var(--texto-cuerpo)', padding: 0

@@ -85,6 +85,25 @@ export function marcarComoVista(id: IdMarcaGuia): void {
   } catch (e) {}
 }
 
+// -portugues-voz, punto 7, 2026-10-22- El aviso de que el guion está en otro idioma que la app sale una
+// vez por idioma del guion, guardado igual que las marcas: una clave por idioma en localStorage, con el
+// mismo try/catch. Queda visto al salir: no espera «Entendido».
+export const CLAVE_AVISO_IDIOMA_GUION = 'teleprompter_aviso_idioma_guion_'
+
+export function avisoIdiomaGuionYaVisto(idioma: string): boolean {
+  try {
+    return localStorage.getItem(CLAVE_AVISO_IDIOMA_GUION + idioma) === 'true'
+  } catch (e) {
+    return false
+  }
+}
+
+export function marcarAvisoIdiomaGuionVisto(idioma: string): void {
+  try {
+    localStorage.setItem(CLAVE_AVISO_IDIOMA_GUION + idioma, 'true')
+  } catch (e) {}
+}
+
 // Solo para las pruebas: deja la marca a la vista y el almacenamiento como al abrir.
 export function reiniciarMarcasGuiaParaPruebas(): void {
   marcaALaVista = false
@@ -95,6 +114,9 @@ export function reiniciarMarcasGuiaParaPruebas(): void {
     localStorage.removeItem(CLAVE_MARCA_RECUADRO)
     localStorage.removeItem(CLAVE_MARCA_PALMA)
     localStorage.removeItem(CLAVE_MARCA_SUBTITULOS)
+    // -portugues-voz, punto 7, 2026-10-22- También los avisos de idioma del guion.
+    localStorage.removeItem(CLAVE_AVISO_IDIOMA_GUION + 'es')
+    localStorage.removeItem(CLAVE_AVISO_IDIOMA_GUION + 'en')
   } catch (e) {}
 }
 

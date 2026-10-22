@@ -110,6 +110,8 @@ app/src/main/res/xml/config.xml
 app/src/main/assets/model-es/
 # El ingles, desde el 27-09-2026 -docs/ingles.txt D3-: 68 MB desempaquetados.
 app/src/main/assets/model-en/
+# -portugues-voz, 2026-10-22- El portugués de Brasil: 52 MB desempaquetados, por lo mismo.
+app/src/main/assets/model-pt/
 
 # LAS COPIAS DE LOS MODELOS PARA LOS PAQUETES DE PLAY -tarea 84, D1-. Las arma
 # paquete-de-modelo.gradle desde app/src/main/assets en cada npm run play: no van a git, por lo
@@ -118,6 +120,9 @@ model-es/src/
 model-en/src/
 model-es/build/
 model-en/build/
+# -portugues-voz, 2026-10-22- Y las del portugués.
+model-pt/src/
+model-pt/build/
 # -tarea 104- La copia de gesture_recognizer.task para el paquete de gestos: la arma gestos/build.gradle
 # desde app/src/main/assets, donde sí está en git.
 gestos/src/

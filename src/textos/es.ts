@@ -181,6 +181,8 @@ export const es = {
   idiomaDelGuion: 'Idioma del guion: {idioma}',
   idiomaEspanol: 'Español',
   idiomaIngles: 'Inglés',
+  // -portugues-voz, punto 6, 2026-10-22- El tercer idioma del guion, para el aria-label del botón.
+  idiomaPortugues: 'Portugués',
   tituloDelGuion: 'Título del guion',
   metaEditor: '{palabras} palabras · {duracion}',
   tipografia: 'Tipografía',
@@ -296,6 +298,11 @@ export const es = {
   // de la lista, con mayúscula.
   idiomaEs: 'español',
   idiomaEn: 'inglés',
+  idiomaPt: 'portugués',
+  // -portugues-voz, punto 7, 2026-10-22- El guion está en español y la app en inglés: el aviso va en el
+  // idioma del guion, por eso este texto sale con la app en inglés -avisoIdiomaGuion, textos/index.ts-.
+  avisoIdiomaGuion: 'Tu guion está en español. ¿Quieres usar Sigo en español?',
+  avisoIdiomaGuionAccion: 'Pasar a español',
   // -tarea 104, lámina a- En la pastilla del tiempo, al lado de Empezar, mientras baja la voz.
   preparandoVoz: 'Preparando la voz…',
   // -tarea 104- Al apretar Empezar Play preguntó si bajar con datos móviles y la persona dijo que no.
