@@ -6,6 +6,8 @@ import { describe, expect, test, vi } from 'vitest'
 import { idiomaDeVoz, LANG_MOTOR } from '../lib/vozAPedido'
 import { detectarIdioma } from '../lib/detectarIdioma'
 import { bloqueDeBienvenida } from '../app/bienvenida'
+import { normalizar, tokenizarGuion } from '../lib/seguidor'
+import { armarSubtitulos } from '../lib/subtitulos'
 
 // El código sin comentarios: los «Antes:» guardan los ternarios viejos y no cuentan.
 function sinComentarios(codigo: string): string {
@@ -95,5 +97,63 @@ describe('Portugués 3 - detectarIdioma reconoce el portugués', () => {
 
   test('un texto corto no decide', () => {
     expect(detectarIdioma('Bom dia, meu nome é Roberto.')).toBeNull()
+  })
+})
+
+describe('Portugués 4 - Las letras y los subtítulos', () => {
+  test('normalizar con pt deja la letra sin la tilde', () => {
+    expect(normalizar('ação', 'pt')).toBe('acao')
+    expect(normalizar('ação', 'pt')).not.toBe(normalizar('ao', 'pt'))
+    expect(normalizar('à', 'pt')).toBe('a')
+    expect(normalizar('São', 'pt')).toBe('sao')
+  })
+
+  test('sin idioma, o en español, igual que antes con el Hola', () => {
+    const hola = bloqueDeBienvenida('es').texto
+    // La regla de siempre, copiada: el seguro de que nada cambió para el español.
+    const antes = (t: string) => t.toLowerCase().replace(/[^a-z0-9áéíóúñü\s]/gi, '').replace(/\s+/g, ' ').trim()
+    expect(normalizar(hola)).toBe(antes(hola))
+    expect(normalizar(hola, 'es')).toBe(antes(hola))
+    expect(normalizar(hola, 'en')).toBe(antes(hola))
+    expect(tokenizarGuion(hola).map((t) => t.palabra)).toEqual(tokenizarGuion(hola, 'es').map((t) => t.palabra))
+  })
+
+  // Un guion sin puntos, leído de corrido -una palabra cada 300 ms, sin pausas-: los subtítulos se
+  // cortan solo por espacio, que es cuando las palabras atadas pasan al siguiente.
+  function toma(idioma: string | null, frase: string, veces: number): string {
+    const guion = Array.from({ length: veces }, () => frase).join(' ')
+    const palabras = guion.split(' ')
+    const oidas = palabras.map((w, k) => `${w.toLowerCase()}@${k * 300}-${k * 300 + 250}`).join(' ')
+    return [
+      '# PALABRAS DE UNA TOMA',
+      ...(idioma ? [`# idioma: ${idioma}`] : []),
+      '# ---------- GUION, TAL CUAL SE LEYO ----------',
+      `# | ${guion}`,
+      '# ---------------------------------------------',
+      '',
+      'ms\ttipo\tdetalle',
+      `${palabras.length * 300}\tpalabras\tFINAL: ${oidas}`
+    ].join('\n')
+  }
+  const finales = (registro: string) => armarSubtitulos(registro).map((s) => {
+    const r = s.renglones[s.renglones.length - 1]
+    return r[r.length - 1].texto.toLowerCase()
+  })
+
+  test('con «# idioma: pt» ninguno termina en «do» ni en «pelo»', () => {
+    const frase = 'o caminho do rio passa pelo vale verde e a gente vê a beira do mar pelo lado de lá'
+    const pt = finales(toma('pt', frase, 12))
+    expect(pt.length).toBeGreaterThan(5)
+    expect(pt).not.toContain('do')
+    expect(pt).not.toContain('pelo')
+    // Sin la línea, una toma de antes, se arma como siempre: ahí sí pueden quedar.
+    const sinIdioma = finales(toma(null, frase, 12))
+    expect(sinIdioma.some((w) => w === 'do' || w === 'pelo')).toBe(true)
+  })
+
+  test('con «# idioma: es», «los dos» todavía puede cerrar uno', () => {
+    const frase = 'llegaron temprano a la casa grande y saludaron los dos'
+    const es = finales(toma('es', frase, 12))
+    expect(es).toContain('dos')
   })
 })
