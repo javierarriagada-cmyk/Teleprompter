@@ -54,8 +54,9 @@
   --aire-4: 20px;
   --aire-5: 32px;
   /* -mejoras-claridad, 21-10-2026- El aviso con acción, de pie y fuera de la lectura, a 96 del borde de abajo:
-     encima de los botones y barras de abajo, como pone Material 3 sus avisos. AvisoBreve.tsx. */
-  --aviso-accion-abajo: 96px;
+     encima de los botones y barras de abajo, como pone Material 3 sus avisos. AvisoBreve.tsx.
+     22-10-2026: a 180. Javier lo vio en el Redmi a 96 -«aún sale muy bajo»- y lo aprobó a 180 en vivo. Antes: 96px. */
+  --aviso-accion-abajo: 180px;
   --redondeo: 10px;
   --redondeo-grande: 24px;
   --redondeo-pildora: 999px;
@@ -104,8 +105,10 @@
   --dato-fondo: rgba(255, 154, 107, 0.12);
   --dato-texto: #F3C2A4;
   /* -mejoras-claridad, 21-10-2026- La acción del aviso -Deshacer-: --color-acento, como antes. #E7E1DE
-     sobre --bg-superficie #221F1D da 12,7 a 1. */
-  --aviso-accion: var(--color-acento);
+     sobre --bg-superficie #221F1D da 12,7 a 1.
+     22-10-2026: en rojo, pedido de Javier -«antes aparecía con rojo, una forma de destacar en un fondo negro»-:
+     --color-grabando-texto #FF5A5A sobre #221F1D da 5,4 a 1. Antes: var(--color-acento). */
+  --aviso-accion: var(--color-grabando-texto);
   --leer-fondo: linear-gradient(180deg, #F4ECE7, #E2D6CF);
   --leer-texto: #151312;
   --crear-fondo: #E7E1DE;
@@ -170,8 +173,10 @@
   --dato-fondo: rgba(255, 154, 107, 0.18);
   --dato-texto: #A4471E;
   /* -mejoras-claridad, 21-10-2026- La acción del aviso -Deshacer-. En claro, el --color-acento de antes
-     -#E7E1DE- sobre el aviso blanco daba 1,3 a 1; --dato-texto -#A4471E- sobre #FFFFFF da 6,0 a 1. */
-  --aviso-accion: var(--dato-texto);
+     -#E7E1DE- sobre el aviso blanco daba 1,3 a 1; --dato-texto -#A4471E- sobre #FFFFFF da 6,0 a 1.
+     22-10-2026: en rojo, pedido de Javier -«antes aparecía con rojo, una forma de destacar»-. El rojo de borrar del
+     tema claro -#C62828, el de .peligro- sobre #FFFFFF da 5,6 a 1. Antes: var(--dato-texto). */
+  --aviso-accion: #C62828;
   --leer-fondo: linear-gradient(180deg, #2A2622, #1A1815);
   --leer-texto: #F3F1ED;
   --crear-fondo: #1A1815;
@@ -231,8 +236,10 @@
   --dato-fondo: rgba(255, 154, 107, 0.12);
   --dato-texto: #F3C2A4;
   /* -mejoras-claridad, 21-10-2026- La acción del aviso -Deshacer-: --color-acento, como antes. #E7E1DE
-     sobre --bg-superficie #221F1D da 12,7 a 1. */
-  --aviso-accion: var(--color-acento);
+     sobre --bg-superficie #221F1D da 12,7 a 1.
+     22-10-2026: en rojo, pedido de Javier -«antes aparecía con rojo, una forma de destacar en un fondo negro»-:
+     --color-grabando-texto #FF5A5A sobre #221F1D da 5,4 a 1. Antes: var(--color-acento). */
+  --aviso-accion: var(--color-grabando-texto);
   --leer-fondo: linear-gradient(180deg, #F4ECE7, #E2D6CF);
   --leer-texto: #151312;
   --crear-fondo: #E7E1DE;
