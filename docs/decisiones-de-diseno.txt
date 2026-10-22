@@ -1427,6 +1427,27 @@ I1  OTROS IDIOMAS: GUIONES EN INGLES Y LA APP EN INGLES.            EN ESPERA / 
     ingles -encargado a la nube en el PR #48-. Javier tiene una traductora que puede grabar
     las lecturas en ingles que hagan falta, para la pagina y para medir el motor.
 
+I2  EL AVISO CUANDO EL GUION Y LA APP VAN EN IDIOMAS DISTINTOS.    DECIDIDA / 21 oct 2026, Javier
+    21-10-2026. Javier, en el moto g86: pegó un guion en inglés, lo puso en EN arriba, se bajó
+    la voz inglesa, y esperaba que la app entera pasara a inglés. No es una falla: el idioma del
+    guion y el de la app son dos ajustes a propósito -I1, docs/ingles.txt D1 y D2-. Pero si le
+    pasó a él, le puede pasar a cualquiera.
+    LO QUE DECIDIÓ JAVIER:
+      - Sale un aviso cuando el guion queda en un idioma distinto del de la app. Si quedan en el
+        mismo idioma, no sale.
+      - En el idioma DEL GUION, no en el de la app: quien pone un guion en inglés puede no leer
+        español.
+      - UNA SOLA VEZ, no cada vez: alguien que graba en inglés todos los días con la app en
+        español no tiene que verlo en cada guion.
+    LA FORMA, PROPUESTA POR CLAUDE -Javier la corta con el boceto, D de la lista de decisiones-:
+      - el aviso breve de Material 3 -snackbar: corto, una sola acción, se va solo-;
+      - sale igual si el idioma lo cambió el botón ES/EN del editor o la detección al pegar;
+      - una sola vez por idioma del guion;
+      - por ejemplo "The app is in Spanish. You can change it in Settings.", con un botón
+        -Change / Cambiar- que abre directo "Idioma de la app" en Ajustes.
+    Con el portugués suma su texto en pt: anotado también en el plan del portugués
+    -teleprom/00-arquitectura/portugues-plan.txt-.
+
 ===============================================================================
 AGREGADOS DEL 28 DE SEPTIEMBRE AL 5 DE OCTUBRE DE 2026 -puestos el 05-10, tarea 95-
 ===============================================================================
