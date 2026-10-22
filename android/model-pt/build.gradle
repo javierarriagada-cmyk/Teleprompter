@@ -1,0 +1,22 @@
+// EL MODELO DE VOZ EN PORTUGUÉS DE BRASIL COMO PAQUETE DE RECURSOS DE PLAY -portugues-voz, 2026-10-22-.
+//
+// Copia de android/model-en/build.gradle. on-demand: no viene con la instalación. Se pide a Play la
+// primera vez que alguien lee un guion en portugués -PaqueteDeVoz.java, src/release- y queda en el
+// teléfono: 52 MB menos para quien no lee en portugués. Vosk lo abre directo desde la carpeta del
+// paquete, sin copiarlo.
+//
+// Solo existe en la construcción para Play -settings.gradle, -PparaPlay-. La APK de prueba trae
+// el modelo en android/app/src/main/assets/model-pt, como los otros dos.
+apply plugin: 'com.android.asset-pack'
+
+assetPack {
+    // model_pt con guion bajo, no model-pt: el nombre de un paquete de Play tiene que ser un
+    // nombre de "split" válido -letras, números y guion bajo-, como model_en.
+    // La carpeta del modelo adentro sigue llamándose model-pt, la que busca VoskNativoPlugin.
+    packName = 'model_pt'
+    dynamicDelivery {
+        deliveryType = 'on-demand'
+    }
+}
+
+apply from: '../paquete-de-modelo.gradle'

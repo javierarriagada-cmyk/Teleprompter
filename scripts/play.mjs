@@ -73,7 +73,9 @@ if (!sdk) {
   console.error('No encuentro el SDK de Android. Instala Android Studio o define ANDROID_HOME.')
   process.exit(1)
 }
-for (const carpeta of ['model-es', 'model-en']) {
+// -portugues-voz, 2026-10-22- Suma model-pt: sin él, el paquete model_pt sale vacío y paquete-de-modelo.gradle se para.
+// Antes: for (const carpeta of ['model-es', 'model-en']) {
+for (const carpeta of ['model-es', 'model-en', 'model-pt']) {
   if (!fs.existsSync(path.join(ANDROID, 'app', 'src', 'main', 'assets', carpeta, 'am'))) {
     console.error(`Falta el modelo ${carpeta}. Corre primero:  npm run modelo`)
     process.exit(1)
@@ -234,7 +236,8 @@ if (await asegurarBundletool()) {
         ? `${nombre}: ${mb(base)} MB al instalar -solo la base, sin paquetes install-time-`
         : `${nombre}: al instalar baja ${mb(sinModulos)} MB y la base sola ${mb(base)}: hay un paquete install-time`)
       const extras = []
-      for (const paquete of ['model_es', 'model_en', 'gestos']) {
+      // -portugues-voz, 2026-10-22- Mide también model_pt. Antes: for (const paquete of ['model_es', 'model_en', 'gestos']) {
+      for (const paquete of ['model_es', 'model_en', 'model_pt', 'gestos']) {
         const con = bytes(bt(['get-size', 'total', `--apks=${apks}`, `--device-spec=${spec}`, `--modules=base,${paquete}`]))
         extras.push(con === null ? `${paquete} ?` : `${paquete} +${mb(con - base)} MB`)
       }
