@@ -16,7 +16,8 @@ export interface AvisoInfo {
 
 // El color de la acción del aviso, solo con variables que ya existen: --color-texto es el del texto del
 // aviso -AvisoBreve-, --aviso-accion el rojo de borrar.
-export function colorAccionAviso(info: Pick<AvisoInfo, 'accionNeutra'>): string {
+// Recibe el aviso entero: con Pick<AvisoInfo, 'accionNeutra'> TypeScript rechazaba un aviso sin ese campo.
+export function colorAccionAviso(info: AvisoInfo): string {
   return info.accionNeutra ? 'var(--color-texto)' : 'var(--aviso-accion)'
 }
 
