@@ -2,7 +2,7 @@
 // Con un vite del repo en 127.0.0.1:5191 -npx vite --host 127.0.0.1 --port 5191, desde la raíz-:
 //   node docs/pantallas/portugues/herramientas/capturas.cjs
 // Abre app-real.html en un teléfono de 360 de ancho, con la app en español, siembra un guion en inglés y uno en
-// portugués, entra al editor tocando la fila y abre el boceto. Guarda capturas/editor-<guion>-<tema>.png.
+// portugués, entra al editor tocando la fila y abre el menú de idioma -2026-10-22, del código; antes, el boceto-. Guarda capturas/editor-<guion>-<tema>.png.
 const puppeteer = require('/workspace/tp-shot/node_modules/puppeteer-core')
 const fs = require('fs')
 const path = require('path')
@@ -42,6 +42,10 @@ async function captura(br, guion, tema) {
   await p.setViewport({ width: ANCHO, height: ALTO, deviceScaleFactor: 2, isMobile: true, hasTouch: false })
   await p.evaluateOnNewDocument((tema) => {
     localStorage.setItem('sigo_idioma', 'es')
+    // -2026-10-22- Cada captura parte sin el aviso del idioma visto y sin la marca de guía del idioma pendiente.
+    localStorage.removeItem('teleprompter_aviso_idioma_guion_en')
+    localStorage.removeItem('teleprompter_aviso_idioma_guion_es')
+    localStorage.setItem('teleprompter_marca_idioma', 'true')
     localStorage.setItem('teleprompter_oscuro_impuesto', 'true')
     localStorage.setItem('teleprompter_ajustes', JSON.stringify({ tema, fontSize: 32, mostrarTiempo: true, anclajeZona: 'arriba' }))
   }, tema)
@@ -53,9 +57,13 @@ async function captura(br, guion, tema) {
   await dormir(2500)
   await p.click(`[data-testid="fila-guion-g-${guion}"]`)
   await p.waitForSelector('[data-testid="btn-idioma-guion"]', { timeout: 15000 })
-  await dormir(1500)
-  await p.evaluate(() => { window.__abrirBoceto = true; document.body.setAttribute('data-boceto', '1') })
+  // -2026-10-22- Del código: el aviso del punto 7 sale solo -guion en inglés, app en español- y el menú del
+  // punto 6 se abre tocando el botón. Antes: dormir(1500) y se abría el boceto con window.__abrirBoceto.
   await dormir(1200)
+  await p.click('[data-testid="btn-idioma-guion"]')
+  await p.waitForSelector('[data-testid="menu-idioma-guion"]', { timeout: 5000 })
+  await dormir(700)
+  if (guion === 'en' && !(await p.$('[data-testid="aviso-flotante"]'))) console.log('FALTA EL AVISO', tema)
   const salida = path.join(D, `editor-${guion}-${tema}.png`)
   await p.screenshot({ path: salida })
   console.log('ok', path.basename(salida))
