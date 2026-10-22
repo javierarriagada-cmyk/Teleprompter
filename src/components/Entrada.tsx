@@ -28,6 +28,11 @@ export const COLOR_MARCA_TRAZO_APAGADO = '#8A837C'
 export const COLOR_MARCA_TRAZO = '#E7E1DE'
 export const COLOR_MARCA_PUNTO = '#E11D2E'
 export const COLOR_MARCA_FONDO = '#151312'
+// -mejoras-claridad, 21-10-2026- TELEPROMPTER, algo más claro -marca_lema en colors.xml- y un 10 % más
+// grande, creciendo desde el medio de su borde de abajo, igual que en marca_arranque.xml: el relevo sigue
+// sin salto. Antes, TELEPROMPTER iba en COLOR_MARCA_TRAZO_APAGADO y a escala 1.
+export const COLOR_MARCA_LEMA = '#B3ABA4'
+export const ESCALA_LEMA = 1.1
 
 // El splash nativo dibuja un lienzo de 432 en una caja de 288 dp, centrada en la
 // pantalla. La marca esta centrada en ese lienzo, asi que aca va centrada y a
@@ -220,14 +225,18 @@ export function Entrada({ onFinish, desdeSplashNativo = false, puedeAnimar = tru
           left: '50%',
           top: '50%',
           // Relativo al centro de la pantalla, que es el 216,216 del lienzo.
-          transform: `translate(${(MARCA_LEMA_CAJA.x - 216) * FACTOR_ESPEJO}px, ${(MARCA_LEMA_CAJA.y - 216) * FACTOR_ESPEJO}px)`,
+          // -mejoras-claridad, 21-10-2026- Más la escala del lema, desde el medio de su borde de abajo.
+          // Antes: transform: `translate(${(MARCA_LEMA_CAJA.x - 216) * FACTOR_ESPEJO}px, ${(MARCA_LEMA_CAJA.y - 216) * FACTOR_ESPEJO}px)`,
+          transform: `translate(${(MARCA_LEMA_CAJA.x - 216) * FACTOR_ESPEJO}px, ${(MARCA_LEMA_CAJA.y - 216) * FACTOR_ESPEJO}px) scale(${ESCALA_LEMA})`,
+          transformOrigin: '50% 100%',
           opacity: viajando ? 0 : 1,
           transition: viajando ? `opacity ${MS_LEMA_SE_APAGA}ms ease-out` : 'none',
           // Solo opacidad: el transform de arriba es su posicion.
           animation: desdeSplashNativo ? 'none' : 'lemaEntradaAparece 300ms ease-out'
         }}
       >
-        <path d={MARCA_LEMA_TRAZO} fill={COLOR_MARCA_TRAZO_APAGADO} />
+        {/* -mejoras-claridad, 21-10-2026- Antes: <path d={MARCA_LEMA_TRAZO} fill={COLOR_MARCA_TRAZO_APAGADO} /> */}
+        <path d={MARCA_LEMA_TRAZO} fill={COLOR_MARCA_LEMA} />
       </svg>
     </div>
   )

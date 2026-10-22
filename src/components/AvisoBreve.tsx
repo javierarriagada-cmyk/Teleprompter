@@ -19,6 +19,11 @@ interface AvisoBreveProps {
 
 export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizontal = null, sobreDock = false }: AvisoBreveProps) {
   const enRieles = enLectura && !!columnaHorizontal
+  // -mejoras-claridad, 21-10-2026- EL AVISO CON ACCIÓN -«Guion borrado · Deshacer»- EN EL TELÉFONO DE PIE, FUERA DE LA LECTURA:
+  // más arriba -encima de los botones y barras de abajo, como pone Material 3 sus avisos, y no pegado al
+  // borde-, un poco más grande, y la acción con 48 de alto. Javier: «a veces uno se demora más en
+  // encontrarlo que en apretarlo». En la lectura, de lado y sobre el dock sigue como estaba.
+  const destacado = !!avisoInfo?.accionTexto && !enLectura && !enRieles && !sobreDock
   return (
     /* EL LECTOR DE PANTALLA ANUNCIA EL AVISO -tarea 84, G1, 29-09-2026-. role="status" con
        aria-live="polite": TalkBack lo lee cuando termina lo que estaba diciendo, sin cortar a la
@@ -48,6 +53,9 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
               ? 'calc(16px + env(safe-area-inset-bottom, 0px))'
               : enLectura
               ? 'calc(var(--circulo-desde-abajo) + 72px + var(--aire-3) + env(safe-area-inset-bottom, 0px))'
+              : destacado
+              ? 'calc(var(--aviso-accion-abajo) + env(safe-area-inset-bottom, 0px))'
+              // Antes, también con acción: 'calc(var(--aire-5) + env(safe-area-inset-bottom, 0px))'
               : 'calc(var(--aire-5) + env(safe-area-inset-bottom, 0px))',
             left: enRieles && columnaHorizontal ? columnaHorizontal.izquierda : 0,
             right: enRieles && columnaHorizontal ? columnaHorizontal.derecha : 0,
@@ -58,9 +66,13 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
             // Tanda 2, 15-10-2026: fondo, canto y sombra en .aviso-breve -styles.css-. Antes:
             // backgroundColor: 'var(--bg-superficie)', border: '1px solid var(--color-borde)',
             color: 'var(--color-texto)',
-            padding: 'var(--aire-2) var(--aire-3)',
+            // -mejoras-claridad, 21-10-2026- Destacado: más aire a la izquierda, 56 de alto y letra de 16. Antes, siempre:
+            // padding: 'var(--aire-2) var(--aire-3)', fontSize: 'var(--texto-cuerpo)'
+            padding: destacado ? 'var(--aire-1) var(--aire-2) var(--aire-1) var(--aire-4)' : 'var(--aire-2) var(--aire-3)',
+            minHeight: destacado ? 56 : undefined,
+            boxSizing: 'border-box',
             borderRadius: 'var(--redondeo-pildora)',
-            fontSize: 'var(--texto-cuerpo)',
+            fontSize: destacado ? 16 : 'var(--texto-cuerpo)',
             fontWeight: 600,
             zIndex: 999,
             pointerEvents: avisoInfo.accionTexto ? 'auto' : 'none',
@@ -80,11 +92,16 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: 'var(--color-acento)',
+                // -mejoras-claridad, 21-10-2026- --aviso-accion: en claro, var(--color-acento) -el crema de los botones claros- sobre el aviso blanco daba
+                // 1,3 a 1 y no se leía; ahora 6,0 a 1. En oscuro sigue siendo --color-acento. Antes: color: 'var(--color-acento)',
+                color: 'var(--aviso-accion)',
                 fontWeight: 'bold',
                 cursor: 'pointer',
-                fontSize: 'var(--texto-cuerpo)',
-                padding: 0
+                // -mejoras-claridad, 21-10-2026- Destacado: 16 y un área de toque de 48 de alto. Antes: fontSize: 'var(--texto-cuerpo)', padding: 0
+                fontSize: destacado ? 16 : 'var(--texto-cuerpo)',
+                padding: destacado ? '0 var(--aire-3)' : 0,
+                minHeight: destacado ? 48 : undefined,
+                minWidth: destacado ? 48 : undefined
               }}
             >
               {avisoInfo.accionTexto}

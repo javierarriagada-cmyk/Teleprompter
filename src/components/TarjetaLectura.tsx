@@ -1,6 +1,7 @@
 import React from 'react'
 import { IconoEmpezar, IconoReloj } from './IconosApp'
-import { ResumenGuion, duracionDeLectura } from '../datos/modelo'
+// -mejoras-claridad, 21-10-2026- Antes: import { ResumenGuion, duracionDeLectura } from '../datos/modelo'
+import { ResumenGuion, duracionAproximada } from '../datos/modelo'
 import { estiloComprimirPorAviso, useMantenerApretado } from './mantenerApretado'
 import { t, useTextos, tituloOInicio } from '../textos'
 
@@ -43,7 +44,9 @@ export default function TarjetaLectura({
 
   const palabras = guionResumen?.palabras || 0
   // Mismo formato que la fila del guion: duracionDeLectura, modelo.ts.
-  const timecode = duracionDeLectura(palabras)
+  // -mejoras-claridad, 21-10-2026- «≈18 min»: la misma estimación, en minutos y con ≈, como la fila y el editor.
+  // Antes: const timecode = duracionDeLectura(palabras)
+  const timecode = duracionAproximada(palabras)
   const tituloText = hayGuion
     ? tituloOInicio(guionResumen?.titulo, guionResumen?.inicio)
     // "Sin guiones todavía" no entra a 44 px y se cortaba en "Sin guiones to...".
@@ -185,6 +188,9 @@ export default function TarjetaLectura({
             {timecode}
           </span>
         )}
+        {/* -mejoras-claridad, 21-10-2026- «Continuar con este guion», entre la duración y el título, justo arriba del
+            título: dice qué es la tarjeta. La letra de la etiqueta de la duración -.etiqueta-continuar-. */}
+        {hayGuion && <span className="etiqueta-continuar">{t('continuarConEsteGuion')}</span>}
         <h2
           data-testid="titulo-tarjeta-lectura"
           // DOS RENGLONES Y LA LETRA DE LOS TITULOS -28-09-2026-. En el moto g86 decia "Hay una

@@ -3,7 +3,8 @@ import { createPortal } from 'react-dom'
 import type { Editor } from '@tiptap/react'
 import { Guion } from '../datos/modelo'
 import { hapticaToqueSuave } from '../haptica'
-import { IconoAtras, IconoArchivar, IconoTacho } from './IconosApp'
+// -mejoras-claridad, 21-10-2026- Suma IconoEngranaje. Antes: import { IconoAtras, IconoArchivar, IconoTacho } from './IconosApp'
+import { IconoAtras, IconoArchivar, IconoTacho, IconoEngranaje } from './IconosApp'
 import { t } from '../textos'
 import { colocarMenu } from '../lib/bordesSeguros'
 import { useCerrarAfuera } from '../hooks/useCerrarAfuera'
@@ -128,13 +129,16 @@ export function EditorCabecera({
             }
             onAbrirAjustes()
           }}
-          className="btn-deformable boton-aa"
+          // -mejoras-claridad, 21-10-2026- El engranaje de la portada en lugar del «Aa»: abre el mismo panel de Ajustes.
+          // Antes: className="btn-deformable boton-aa"
+          className="btn-deformable boton-aa boton-aa-engranaje"
           data-testid="btn-menu-opciones-editor"
           /* Nombre para lectores de pantalla -28-09-2026-: TalkBack leia "A, a", que no explicaba la funcion. */
           aria-label={t('ajustesLectura')}
           title={t('ajustesLectura')}
         >
-          Aa
+          {/* -mejoras-claridad, 21-10-2026- Antes: Aa */}
+          <IconoEngranaje tamano={22} />
         </button>
         {/* -guia-sigo- Menú de borrar y archivar, anclado al botón. */}
         <button

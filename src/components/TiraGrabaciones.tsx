@@ -136,7 +136,11 @@ function TarjetaToma({
           {g.errorMudo && <span style={{ position: 'absolute', left: 6, bottom: 6, background: 'rgba(180, 40, 40, 0.9)', color: '#fff', fontSize: 10, padding: '1px 5px', borderRadius: 4 }}>{t('sinAudio')}</span>}
         </div>
         <div style={{ padding: '6px 8px', textAlign: 'left', color: 'var(--color-texto)', fontSize: 'var(--texto-meta)' }}>
-          <div style={{ fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{nombre}</div>
+          {/* -mejoras-claridad, 21-10-2026- El título en DOS renglones, con «…» recién al final del segundo
+              -.titulo-tarjeta-video-: en uno se leía «Si me vieras por d…». Ocupa siempre dos renglones,
+              así las tarjetas de la tira quedan parejas y la fecha de abajo se sigue viendo en todas.
+              Antes: <div style={{ fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{nombre}</div> */}
+          <div className="titulo-tarjeta-video">{nombre}</div>
           <div className="texto-meta" style={{ color: 'var(--color-apagado)' }}>{formatearFechaCorta(g.creado)}</div>
         </div>
       </button>

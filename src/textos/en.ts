@@ -50,6 +50,11 @@ export const en: Textos = {
   haceUnaSemana: '1 week ago',
   haceSemanas: '{n} weeks ago',
   vacio: 'empty',
+  // -mejoras-claridad, 21-10-2026- La duración que es una estimación: «≈18 min», minutos redondeados.
+  duracionAproximada: '≈{minutos} min',
+  // -mejoras-claridad- La etiqueta chica arriba del título de la tarjeta grande y la palabra del «+».
+  continuarConEsteGuion: 'Continue with this script',
+  nuevoGuion: 'New script',
   videos: 'Videos',
   videosVacio: 'Your videos will show up here.',
   videosVacioTitulo: 'No videos yet',
@@ -255,6 +260,8 @@ export const en: Textos = {
   licenciaSinTexto: 'No license text.',
   espejoExplicacion: 'For use with a teleprompter glass',
   lineaMuestraLectura: 'Read this out loud, at your own pace.',
+  // -mejoras-claridad, 21-10-2026- La etiqueta arriba de la línea de muestra.
+  vistaPrevia: 'Preview',
   // Dialogo de permiso de microfono -28-09-2026-.
   microfonoTitulo: 'Sigo needs the microphone',
   microfonoExplicacion: 'It listens to your voice to move the text as you read. Your voice is recognized on the phone, offline.',

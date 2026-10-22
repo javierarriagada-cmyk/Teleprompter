@@ -362,6 +362,17 @@ export function PanelAjustes({
     </>
   )
 
+  // -mejoras-claridad, 21-10-2026- LA MUESTRA CON SU NOMBRE: «VISTA PREVIA» arriba del recuadro, en el estilo
+  // de los títulos de sección -.dock-seccion-. Solo en este panel: el dock de LISTO no cambia.
+  const muestraConEtiqueta = con('lectura') && (
+    <>
+      {/* La letra de .dock-seccion -styles-ajustes.css comparte la regla- pero no la clase: no es una sección
+          del panel, es el nombre de la muestra. */}
+      <div className="etiqueta-vista-previa">{t('vistaPrevia')}</div>
+      <MuestraLectura ajustes={ajustesLectura} />
+    </>
+  )
+
   return (
     <>
       <div
@@ -463,13 +474,16 @@ export function PanelAjustes({
                 {origen !== 'grabar' && <SelectorModoLectura />}
                 {con('lectura') && <MuestraLectura ajustes={ajustesLectura} />} */}
             {!conCuenta && origen !== 'grabar' && <SelectorModoLectura />}
-            {!conCuenta && con('lectura') && <MuestraLectura ajustes={ajustesLectura} />}
+            {/* -mejoras-claridad, 21-10-2026- La muestra lleva arriba la etiqueta VISTA PREVIA -muestraConEtiqueta-.
+                Antes: {!conCuenta && con('lectura') && <MuestraLectura ajustes={ajustesLectura} />} */}
+            {!conCuenta && muestraConEtiqueta}
             <div className="dock-panel-cuerpo">
               {conCuenta && (
                 <>
                   <TarjetaCuenta hostMenus={hostMenus} />
                   {origen !== 'grabar' && <SelectorModoLectura />}
-                  {con('lectura') && <MuestraLectura ajustes={ajustesLectura} />}
+                  {/* -mejoras-claridad, 21-10-2026- Antes: {con('lectura') && <MuestraLectura ajustes={ajustesLectura} />} */}
+                  {muestraConEtiqueta}
                 </>
               )}
               {/* -orden B, 20-10-2026- La tarjeta de la cuenta, arriba de todo, en las mismas puertas de la
