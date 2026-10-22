@@ -88,7 +88,7 @@ import { vigiaNuevo, oirParcial, oirFinal, debePedir, alPedir, alResponder, Vigi
 // -tarea 88, segunda vuelta- El fin de la última palabra del FINAL, para el corte de la palma.
 import { tomarFinUltimaPalabraEpochMs } from './lib/diagnostico'
 import { IconoAtras, IconoPausa, IconoParar, IconoTacho, IconoEmpezar, IconoEmpezarAPausa } from './components/IconosApp'
-import { t, useTextos, TITULO_SIN_NOMBRE } from './textos'
+import { t, useTextos, TITULO_SIN_NOMBRE, idiomaEnFrase } from './textos'
 import { idiomaApp, leerIdiomaDelTelefono } from './lib/idioma'
 import { PASOS_LETRA } from './components/estiloLectura'
 // -ajustes de pantallas, cuarta vuelta, 10-10-2026- Ninguna puerta abre ya la pantalla completa de Ajustes:
@@ -1365,7 +1365,9 @@ export default function App({ motor, repoOverride }: AppProps) {
     : !descargaVoz && vozDelGuion && vozDelGuion.estado === 'bajando'
     ? vozDelGuion.progreso
     : null
-  const nombreIdiomaVoz = t(idiomaVozGuion === 'en' ? 'idiomaEn' : 'idiomaEs')
+  // -portugues-voz, punto 6, 2026-10-22- Del mapa: con el portugués son tres idiomas.
+  // Antes: const nombreIdiomaVoz = t(idiomaVozGuion === 'en' ? 'idiomaEn' : 'idiomaEs')
+  const nombreIdiomaVoz = idiomaEnFrase(idiomaVozGuion)
   const avisoVoz: { texto: string; onReintentar: () => void } | null = !enListo
     ? null
     : descargaVoz && (descargaVoz.estado === 'sin-conexion' || descargaVoz.estado === 'rechazada')
@@ -3081,6 +3083,7 @@ export default function App({ motor, repoOverride }: AppProps) {
           progresoPrecarga={progresoPrecarga}
           errorPrecarga={errorPrecarga}
           reintentarPrecarga={reintentarPrecarga}
+          idiomaVoz={idiomaVozGuion}
           oculto={camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro') && vista === 'lectura'}
         />
       )}
@@ -3824,6 +3827,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               setDescargaVoz(null)
               handleEmpezarDesdeListo()
             }}
+            idiomaVoz={idiomaVozGuion}
             oculto={false}
           />
         </div>

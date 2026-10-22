@@ -167,6 +167,8 @@ export const en: Textos = {
   idiomaDelGuion: 'Script language: {idioma}',
   idiomaEspanol: 'Spanish',
   idiomaIngles: 'English',
+  // -portugues-voz, punto 6, 2026-10-22- El tercer idioma del guion.
+  idiomaPortugues: 'Portuguese',
   tituloDelGuion: 'Script title',
   metaEditor: '{palabras} words · {duracion}',
   tipografia: 'Typeface',
@@ -277,6 +279,7 @@ export const en: Textos = {
   vozSinConexion: 'To read in {idioma} you need a connection once, to download the voice. After that it works offline.',
   idiomaEs: 'Spanish',
   idiomaEn: 'English',
+  idiomaPt: 'Portuguese',
   preparandoVoz: 'Preparing the voice…',
   vozRechazada: 'The {idioma} voice will download when you have Wi-Fi. To download it now with mobile data, tap Retry and accept.',
   preparandoGestos: 'Preparing gestures… {n}%',

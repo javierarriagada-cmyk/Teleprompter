@@ -2,7 +2,7 @@
 // o de que fallo, con su boton para reintentar. La condicion de cuando se muestra queda en App;
 // oculto es la de siempre -camara detras o en recuadro durante la lectura-, calculada en App.
 import React from 'react'
-import { t } from '../textos'
+import { t, idiomaEnFrase } from '../textos'
 import { EstadoPrecarga } from '../hooks/usePrecargaModelo'
 import { idiomaApp } from '../lib/idioma'
 import { IconoAdvertencia, IconoDescarga } from './IconosApp'
@@ -13,9 +13,11 @@ interface IndicadorPrecargaProps {
   errorPrecarga: string | null
   reintentarPrecarga: () => void
   oculto: boolean
+  // -portugues-voz, punto 6, 2026-10-22- El idioma de la voz que se baja. Sin él, el de la app, como antes.
+  idiomaVoz?: string
 }
 
-export function IndicadorPrecarga({ estadoPrecarga, progresoPrecarga, errorPrecarga, reintentarPrecarga, oculto }: IndicadorPrecargaProps) {
+export function IndicadorPrecarga({ estadoPrecarga, progresoPrecarga, errorPrecarga, reintentarPrecarga, oculto, idiomaVoz }: IndicadorPrecargaProps) {
   return (
     /* Indicador de precarga de modelo Vosk */
     // -pulido-1- El color va en una clase -T209-: el rojo del error es --color-grabando-texto, el que se
@@ -47,7 +49,9 @@ export function IndicadorPrecarga({ estadoPrecarga, progresoPrecarga, errorPreca
           texto es el de cualquier idioma, con el de la app. Antes: ⚠️ {t('vozSinConexion')} */}
       {estadoPrecarga === 'sin-conexion' && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--aire-3)', width: '100%', justifyContent: 'space-between' }}>
-          <span data-testid="aviso-voz-sin-conexion">{/* -pulido-1- Antes: ⚠️ */}<IconoAdvertencia tamano={16} className="icono-precarga" /> {t('vozSinConexion', { idioma: t(idiomaApp() === 'en' ? 'idiomaEn' : 'idiomaEs') })}</span>
+          <span data-testid="aviso-voz-sin-conexion">{/* -pulido-1- Antes: ⚠️ */}<IconoAdvertencia tamano={16} className="icono-precarga" /> {t('vozSinConexion', { idioma: idiomaEnFrase(idiomaVoz || idiomaApp()) })}</span>
+          {/* -portugues-voz, punto 6, 2026-10-22- El idioma sale del mapa y es el de la voz: con tres idiomas el
+              ternario mandaba pt a español. Antes: {t('vozSinConexion', { idioma: t(idiomaApp() === 'en' ? 'idiomaEn' : 'idiomaEs') })} */}
           {/* -pulido-1- Cápsula como .segmentado-opcion y 48 px de toque -.boton-reintentar-precarga-.
               Antes: <button onClick={reintentarPrecarga} style={{ padding: 'var(--aire-1) var(--aire-2)', fontSize: 'var(--texto-meta)', cursor: 'pointer' }}> */}
           <button

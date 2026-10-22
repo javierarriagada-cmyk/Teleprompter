@@ -14,7 +14,8 @@ import { BarraEditorVacio, pegarTextoEnEditor } from './BarraEditorVacio'
 import { BarraLeerGrabar } from './BarraLeerGrabar'
 import { EditorGuion } from './EditorGuion'
 import type { Editor } from '@tiptap/react'
-import { t, useTextos, numeroLocal, TITULO_SIN_NOMBRE, ClaveTexto } from '../textos'
+import { t, useTextos, numeroLocal, TITULO_SIN_NOMBRE, ClaveTexto, NOMBRE_IDIOMA, ENDONIMO_IDIOMA, idiomaEnFrase } from '../textos'
+import { MenuAdjuntoAjustes, CheckMenu } from './FilasAjustesLectura'
 import { detectarIdioma, PALABRAS_MINIMAS_PARA_DETECTAR } from '../lib/detectarIdioma'
 import {
   abrirMarcaSiCorresponde,
@@ -100,10 +101,14 @@ function generarIdBloque(): string {
 // conecte MotorNativo con el modelo ingles en el telefono, elegir EN todavia no cambia lo
 // que escucha el motor.
 // La linea de meta ya no lleva el nombre del idioma: lo dice el boton, a la vista.
-const NOMBRE_IDIOMA: Record<string, ClaveTexto> = {
-  es: 'idiomaEspanol',
-  en: 'idiomaIngles'
-}
+// -portugues-voz, punto 6, 2026-10-22- Con el portugués son tres idiomas y un toque ya no alcanza para
+// alternarlos: el botón abre un menú de tres. El mapa pasó a textos/index.ts -NOMBRE_IDIOMA-, junto al
+// de los nombres en frase. Antes:
+// const NOMBRE_IDIOMA: Record<string, ClaveTexto> = {
+//   es: 'idiomaEspanol',
+//   en: 'idiomaIngles'
+// }
+const IDIOMAS_GUION: Array<'es' | 'en' | 'pt'> = ['es', 'en', 'pt']
 
 export default function EditorView({
   guion,
@@ -174,6 +179,8 @@ export default function EditorView({
   const [marcaIdioma, setMarcaIdioma] = useState<'base' | 'detectado' | null>(null)
   const [idiomaAnclaEl, setIdiomaAnclaEl] = useState<HTMLElement | null>(null)
   const idiomaBtnRef = useRef<HTMLButtonElement | null>(null)
+  // -portugues-voz, punto 6, 2026-10-22- El menú de idiomas, colgado del mismo botón.
+  const [menuIdiomaAbierto, setMenuIdiomaAbierto] = useState(false)
   // Si idiomaSegunTexto acaba de cambiar el idioma, la marca usa el texto 1-bis.
   const idiomaAutoCambiadoRef = useRef(false)
   const montadoEditorRef = useRef(true)
@@ -414,6 +421,9 @@ export default function EditorView({
     setMarcaIdioma(null)
   }
 
+  // -portugues-voz, punto 6, 2026-10-22- El botón abre el menú de tres idiomas; elegir uno lo fija.
+  // Antes el toque alternaba ES y EN: idioma: guion.idioma === 'en' ? 'es' : 'en', dentro de
+  // handleAlternarIdioma, que hacía lo de la marca y el cambio en el mismo toque.
   function handleAlternarIdioma() {
     hapticaSeleccion()
     // -tarea 105- Tocar ES/EN cuenta como marca vista, aunque no hubiera salido.
@@ -421,9 +431,15 @@ export default function EditorView({
     // Liberar por si la marca estaba a la vista: otra puede salir en esta sesión.
     liberarMarcaEnSesion()
     setMarcaIdioma(null)
+    setMenuIdiomaAbierto((v) => !v)
+  }
+
+  function handleElegirIdioma(idioma: 'es' | 'en' | 'pt') {
+    hapticaSeleccion()
+    setMenuIdiomaAbierto(false)
     onChangeGuion({
       ...guion,
-      idioma: guion.idioma === 'en' ? 'es' : 'en',
+      idioma,
       idiomaElegido: true,
       modificado: Date.now()
     })
@@ -447,7 +463,8 @@ export default function EditorView({
   // "3 min" en el editor y "2:34 min" en la portada. Lo mostraron las capturas del agente de
   // pruebas de Firebase. Ahora sale de duracionDeLectura, la misma de la portada y de la tarjeta.
   const idiomaGuion = guion.idioma || 'es'
-  const nombreIdioma = NOMBRE_IDIOMA[idiomaGuion] ? t(NOMBRE_IDIOMA[idiomaGuion]) : idiomaGuion
+  const claveNombreIdioma: ClaveTexto | undefined = NOMBRE_IDIOMA[idiomaGuion as 'es' | 'en' | 'pt']
+  const nombreIdioma = claveNombreIdioma ? t(claveNombreIdioma) : idiomaGuion
   // -mejoras-claridad, 21-10-2026- «2631 palabras · ≈18 min». Antes:
   // const resumenMeta = t('metaEditor', { palabras: numeroLocal(numPalabras), duracion: duracionDeLectura(numPalabras) })
   const resumenMeta = t('metaEditor', { palabras: numeroLocal(numPalabras), duracion: duracionAproximada(numPalabras) })
@@ -829,6 +846,30 @@ export default function EditorView({
         />
       )}
 
+      {/* -portugues-voz, punto 6, 2026-10-22- El menú de idiomas del guion: los mismos componentes del menú
+          adjunto de Ajustes. Cada idioma se nombra en el suyo, con su lang. */}
+      {menuIdiomaAbierto && (
+        <MenuAdjuntoAjustes anclaRef={idiomaBtnRef} onCerrar={() => setMenuIdiomaAbierto(false)} testid="menu-idioma-guion">
+          <div className="lista-menu-adjunto">
+            {IDIOMAS_GUION.map((i) => (
+              <button
+                key={i}
+                type="button"
+                lang={i}
+                data-testid={`btn-idioma-guion-${i}`}
+                className={`fila-menu-adjunto${idiomaGuion === i ? ' elegida' : ''}`}
+                role="menuitemradio"
+                aria-checked={idiomaGuion === i}
+                onClick={() => handleElegirIdioma(i)}
+              >
+                <span className="fila-menu-adjunto-etiqueta">{ENDONIMO_IDIOMA[i]}</span>
+                <CheckMenu visible={idiomaGuion === i} />
+              </button>
+            ))}
+          </div>
+        </MenuAdjuntoAjustes>
+      )}
+
       {/* -tarea 105- Marca de guía del idioma, anclada a btn-idioma-guion. */}
       {marcaIdioma && (
         <MarcaGuia
@@ -836,7 +877,8 @@ export default function EditorView({
           texto={
             marcaIdioma === 'detectado'
               ? t('marcaGuiaIdiomaDetectado', {
-                  idioma: t(idiomaGuion === 'en' ? 'idiomaEn' : 'idiomaEs')
+                  // -portugues-voz, punto 6, 2026-10-22- Del mapa. Antes: idioma: t(idiomaGuion === 'en' ? 'idiomaEn' : 'idiomaEs')
+                  idioma: idiomaEnFrase(idiomaGuion)
                 })
               : t('marcaGuiaIdioma')
           }
