@@ -22,13 +22,14 @@ import { SelectorModoLectura } from './ControlesVelocidad'
 import { PantallaLicencias } from './PantallaLicencias'
 // -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor; Ajustes ya no los ofrece. Antes: import { ESTILOS_SUBTITULO, EstiloSubtitulo, estiloSubtituloGuardado, guardarEstiloSubtitulo } from '../lib/subtitulos'
 import { IdiomaApp, idiomaApp, fijarIdioma } from '../lib/idioma'
+import { ENLACES_SITIO } from '../lib/enlacesSitio'
 // -cuenta-google, orden A- Entrar con Google, salir y borrar la cuenta.
 import { configuracionLista } from '../lib/firebaseConfig'
 import { ErrorCuenta, ResultadoCuenta, borrarCuenta, entrar, estadoCuenta, salir, suscribirCuenta } from '../lib/cuenta'
 // -orden B- El estado de la copia de seguridad, para la línea de la tarjeta de la cuenta.
 import { FaseRespaldo, estadoRespaldo, suscribirRespaldo } from '../lib/respaldo'
 import type { ClaveTexto } from '../textos'
-import { t, useTextos } from '../textos'
+import { t, useTextos, ENDONIMO_IDIOMA } from '../textos'
 import { CURVA_RESORTE, MS_CHICO, movimientoApagado } from './movimiento'
 // -últimos detalles, 11-10-2026- De lado el panel va angosto y junto a la ficha que lo abrió.
 import useLayout from '../hooks/useLayout'
@@ -233,12 +234,18 @@ export function PanelAjustes({
     setMenu(null)
   }
 
-  const enlacePrivacidad = idioma === 'es'
-    ? 'https://sigoteleprompter.com/privacidad'
-    : 'https://sigoteleprompter.com/en/privacy'
-  const enlaceSoporte = idioma === 'es'
-    ? 'https://sigoteleprompter.com/soporte'
-    : 'https://sigoteleprompter.com/en/support'
+  // -portugues-app, punto 3, 2026-10-22- Del mapa por idioma -lib/enlacesSitio.ts-: con dos idiomas, el
+  // ternario mandaba el portugues al ingles.
+  // Antes:
+  // const enlacePrivacidad = idioma === 'es'
+  //   ? 'https://sigoteleprompter.com/privacidad'
+  //   : 'https://sigoteleprompter.com/en/privacy'
+  // const enlaceSoporte = idioma === 'es'
+  //   ? 'https://sigoteleprompter.com/soporte'
+  //   : 'https://sigoteleprompter.com/en/support'
+  const enlaces = ENLACES_SITIO[idioma]
+  const enlacePrivacidad = enlaces.privacidad
+  const enlaceSoporte = enlaces.soporte
 
   const anclaActiva =
     menu === 'calidad' ? anclaCalidad
@@ -336,10 +343,13 @@ export function PanelAjustes({
           )}
           {menu === 'idioma' && (
             <div className="lista-menu-adjunto" data-testid="selector-idioma-app">
-              {([
-                { v: 'es' as IdiomaApp, n: 'Español' },
-                { v: 'en' as IdiomaApp, n: 'English' }
-              ]).map((o) => (
+              {/* -portugues-app, punto 3, 2026-10-22- Suma «Português». Los nombres salen de ENDONIMO_IDIOMA, cada
+                  idioma en el suyo y sin banderas -P3 de docs/portugues.txt-. Antes:
+                  {([
+                    { v: 'es' as IdiomaApp, n: 'Español' },
+                    { v: 'en' as IdiomaApp, n: 'English' }
+                  ]).map((o) => ( */}
+              {(['es', 'en', 'pt'] as IdiomaApp[]).map((v) => ({ v, n: ENDONIMO_IDIOMA[v] })).map((o) => (
                 <button
                   key={o.v}
                   type="button"
@@ -579,7 +589,8 @@ export function PanelAjustes({
                         testid="fila-idioma"
                         icono={<IconoIdioma tamano={22} />}
                         nombre={t('idiomaDeLaApp')}
-                        valor={idioma === 'es' ? 'Español' : 'English'}
+                        // -portugues-app, punto 3, 2026-10-22- Antes: valor={idioma === 'es' ? 'Español' : 'English'}
+                        valor={ENDONIMO_IDIOMA[idioma]}
                         onClick={() => alternarMenu('idioma')}
                       />
                     </div>
@@ -601,13 +612,15 @@ export function PanelAjustes({
                       testid="fila-ayuda"
                       icono={<IconoAyuda tamano={22} />}
                       nombre={t('ayuda')}
-                      onClick={() => abrirEnlace(idioma === 'es' ? 'https://sigoteleprompter.com/ayuda' : 'https://sigoteleprompter.com/en/help')}
+                      // -portugues-app, punto 3, 2026-10-22- Antes: onClick={() => abrirEnlace(idioma === 'es' ? 'https://sigoteleprompter.com/ayuda' : 'https://sigoteleprompter.com/en/help')}
+                      onClick={() => abrirEnlace(enlaces.ayuda)}
                     />
                     <FilaAjuste
                       testid="fila-comentarios"
                       nombre={t('enviarComentarios')}
                       icono={<IconoCorreo tamano={22} />}
-                      onClick={() => abrirEnlace('mailto:' + (idioma === 'es' ? 'hola@sigoteleprompter.com' : 'hello@sigoteleprompter.com'))}
+                      // -portugues-app, punto 3, 2026-10-22- Antes: onClick={() => abrirEnlace('mailto:' + (idioma === 'es' ? 'hola@sigoteleprompter.com' : 'hello@sigoteleprompter.com'))}
+                      onClick={() => abrirEnlace('mailto:' + enlaces.correo)}
                     />
                   </div>
                 </>

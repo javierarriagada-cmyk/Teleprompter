@@ -71,3 +71,33 @@ describe('portugues-app punto 2 - pt.ts', () => {
     expect(numeroLocal(1234, 'pt' as never)).toBe('1.234')
   })
 })
+
+describe('portugues-app punto 3 - el idioma de la app con pt', () => {
+  test('normalizarIdioma: pt, pt-BR y pt-PT van a pt; es-CL a es; fr-FR a en', async () => {
+    const { normalizarIdioma } = await import('../lib/idioma')
+    expect(normalizarIdioma('pt')).toBe('pt')
+    expect(normalizarIdioma('pt-BR')).toBe('pt')
+    expect(normalizarIdioma('pt-PT')).toBe('pt')
+    expect(normalizarIdioma('es-CL')).toBe('es')
+    expect(normalizarIdioma('fr-FR')).toBe('en')
+  })
+
+  test('el mapa de enlaces: las paginas /pt y hola@ para pt', async () => {
+    const { ENLACES_SITIO } = await import('../lib/enlacesSitio')
+    expect(ENLACES_SITIO.pt).toEqual({
+      privacidad: 'https://sigoteleprompter.com/pt/privacidade',
+      soporte: 'https://sigoteleprompter.com/pt/suporte',
+      ayuda: 'https://sigoteleprompter.com/pt/ajuda',
+      correo: 'hola@sigoteleprompter.com'
+    })
+    expect(ENLACES_SITIO.es.correo).toBe('hola@sigoteleprompter.com')
+    expect(ENLACES_SITIO.en.correo).toBe('hello@sigoteleprompter.com')
+  })
+
+  test('con la app en pt, la voz y el guion nuevo salen pt sin mas cambios', async () => {
+    const { idiomaDeVoz } = await import('../lib/vozAPedido')
+    const { guionNuevo } = await import('../datos/modelo')
+    expect(idiomaDeVoz('pt')).toBe('pt')
+    expect(guionNuevo('pt').idioma).toBe('pt')
+  })
+})

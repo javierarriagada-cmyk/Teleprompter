@@ -5,9 +5,13 @@ import { Capacitor, registerPlugin } from '@capacitor/core'
 // decide que reconocedor escucha: alguien con el telefono en espanol puede grabar un guion
 // en ingles, y al reves.
 //
-// Espanol si el telefono esta en espanol; ingles en cualquier otro caso. No se pregunta al
-// empezar: se sigue al telefono y se cambia adentro, en el cajon del engranaje de la portada.
-export type IdiomaApp = 'es' | 'en'
+// Antes -hasta el 2026-10-22, cuando entro el portugues de la orden portugues-app-: «Espanol si el
+// telefono esta en espanol; ingles en cualquier otro caso.»
+// Espanol si el telefono esta en espanol, portugues -de Brasil- si esta en portugues -pt-BR o pt-PT-,
+// ingles en cualquier otro caso -P1 de docs/portugues.txt-. No se pregunta al empezar: se sigue al
+// telefono y se cambia adentro, en el cajon del engranaje de la portada.
+// Antes: export type IdiomaApp = 'es' | 'en'
+export type IdiomaApp = 'es' | 'en' | 'pt'
 
 // EL PLUGIN NATIVO 'IdiomaApp' LO ESCRIBE CLAUDE EN EL TELEFONO -locales_config.xml y
 // AppCompatDelegate.setApplicationLocales-, asi lo que se elige adentro y lo que se elige en
@@ -22,8 +26,13 @@ interface PluginIdiomaApp {
 // Android, y tener dos lugares seria tener dos verdades.
 const CLAVE_IDIOMA = 'sigo_idioma'
 
+// -portugues-app, punto 3, 2026-10-22- Suma pt: 'pt', 'pt-BR' y 'pt-PT' van a 'pt'.
+// Antes: return typeof codigo === 'string' && codigo.trim().toLowerCase().startsWith('es') ? 'es' : 'en'
 export function normalizarIdioma(codigo: string | null | undefined): IdiomaApp {
-  return typeof codigo === 'string' && codigo.trim().toLowerCase().startsWith('es') ? 'es' : 'en'
+  const c = typeof codigo === 'string' ? codigo.trim().toLowerCase() : ''
+  if (c.startsWith('es')) return 'es'
+  if (c.startsWith('pt')) return 'pt'
+  return 'en'
 }
 
 // registerPlugin se llama UNA vez: Capacitor avisa si el mismo plugin se registra dos.
@@ -51,7 +60,8 @@ function idiomaDeArranque(): IdiomaApp {
   if (!pluginIdioma()) {
     try {
       const guardado = localStorage.getItem(CLAVE_IDIOMA)
-      if (guardado === 'es' || guardado === 'en') return guardado
+      // -portugues-app, punto 3, 2026-10-22- Antes: if (guardado === 'es' || guardado === 'en') return guardado
+      if (guardado === 'es' || guardado === 'en' || guardado === 'pt') return guardado
     } catch (e) {
       // sin localStorage manda el navegador
     }

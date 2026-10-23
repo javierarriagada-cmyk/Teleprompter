@@ -56,12 +56,18 @@ public class IdiomaAppPlugin extends Plugin {
     @PluginMethod
     public void fijar(PluginCall call) {
         String idioma = call.getString("idioma", "");
-        if (!"es".equals(idioma) && !"en".equals(idioma)) {
+        // -portugues-app, punto 3, 2026-10-22- Suma "pt", que se guarda como "pt-BR": es el locale de
+        // locales_config.xml, y asi Ajustes del telefono muestra «Português (Brasil)». leer() sigue
+        // devolviendo el codigo corto -"pt"-.
+        // Antes: if (!"es".equals(idioma) && !"en".equals(idioma)) {
+        if (!"es".equals(idioma) && !"en".equals(idioma) && !"pt".equals(idioma)) {
             call.reject("Idioma no ofrecido: " + idioma);
             return;
         }
+        // Antes: AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(idioma));
+        final String etiqueta = "pt".equals(idioma) ? "pt-BR" : idioma;
         getActivity().runOnUiThread(() -> {
-            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(idioma));
+            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(etiqueta));
             call.resolve();
         });
     }
