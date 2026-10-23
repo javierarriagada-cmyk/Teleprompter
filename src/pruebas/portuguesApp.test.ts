@@ -101,3 +101,42 @@ describe('portugues-app punto 3 - el idioma de la app con pt', () => {
     expect(guionNuevo('pt').idioma).toBe('pt')
   })
 })
+
+describe('portugues-app punto 4 - el Hola en portugues', () => {
+  test('se llama Olá, lleva cada formato sobre su frase y detectarIdioma da pt', async () => {
+    const { bloqueDeBienvenida, tituloDeBienvenida } = await import('../App')
+    const { detectarIdioma } = await import('../lib/detectarIdioma')
+    const { readFileSync } = await import('fs')
+    const { resolve } = await import('path')
+    const b = bloqueDeBienvenida('pt')
+    const pintado = (b.tramos || []).map((t) => [b.texto.slice(t.desde, t.hasta), t.negrita ? 'negrita' : t.destacado ? 'destacado' : t.color])
+    expect(tituloDeBienvenida('pt')).toBe('Olá')
+    expect(b.texto.startsWith('Olá. Leia isto em voz alta')).toBe(true)
+    expect(pintado).toEqual([
+      ['sem você tocar em nada', 'negrita'],
+      ['o texto espera por você', 'celeste'],
+      ['negrito', 'negrita'],
+      ['âmbar', 'ambar'],
+      ['azul-claro', 'celeste'],
+      ['verde', 'salvia'],
+      ['destaque amarelo', 'destacado'],
+      ['para que seu olhar vá para a câmera', 'ambar'],
+      ['não fica no vídeo', 'negrita'],
+      ['Controle por gestos', 'ambar'],
+      ['O que você vê é o que fica salvo', 'salvia'],
+      ['Você não precisa decorar nada.', 'negrita'],
+      ['na hora que quiser', 'destacado'],
+      ['hola@sigoteleprompter.com', 'celeste']
+    ])
+    const t = b.tramos || []
+    for (let i = 1; i < t.length; i++) expect(t[i].desde).toBeGreaterThanOrEqual(t[i - 1].hasta)
+    expect(t.length).toBe((bloqueDeBienvenida('es').tramos || []).length)
+    expect(detectarIdioma(b.texto)).toBe('pt')
+    // Es el de docs/portugues.txt, seccion 5, letra por letra.
+    const doc = readFileSync(resolve(__dirname, '../../docs/portugues.txt'), 'utf8')
+    const desde = doc.indexOf('Olá. Leia isto em voz alta')
+    const fin = 'Tudo de bom!'
+    expect(desde).toBeGreaterThan(0)
+    expect(b.texto).toBe(doc.slice(desde, doc.indexOf(fin, desde) + fin.length))
+  })
+})
