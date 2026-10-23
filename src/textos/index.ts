@@ -1,12 +1,14 @@
 import { useSyncExternalStore } from 'react'
 import { es, ClaveTexto } from './es'
 import { en } from './en'
+import { pt } from './pt'
 import { IdiomaApp, idiomaApp, suscribirIdioma } from '../lib/idioma'
 
 export type { ClaveTexto } from './es'
 export type { IdiomaApp } from '../lib/idioma'
 
-const TEXTOS = { es, en }
+// Antes: const TEXTOS = { es, en } -2026-10-22, portugues-app punto 2: entra el portugues-.
+const TEXTOS = { es, en, pt }
 
 // t(clave, variables?): el texto en el idioma de la app, con {nombre} reemplazado por su
 // variable. Una clave sin su variable queda con la llave a la vista -"{n}"- en vez de
@@ -50,17 +52,44 @@ export function tituloOInicio(titulo: string | null | undefined, inicio?: string
 
 // Las fechas por idioma, con Intl. En espanol quedan como estaban -27/9 y 27/09-; en
 // ingles, el mes escrito corto -Sep 27-, que es como se lee una fecha suelta en una lista.
+// -portugues-app, punto 2, 2026-10-22- En portugues, como en espanol: el dia antes del mes, 27/9 y 27/09,
+// con 'pt-BR'. Las cifras se arman a mano sobre las partes de Intl, como ya se hacia con el espanol:
+// Intl con 'pt-BR' y 'numeric' puede devolver "27/09", y fechaCorta va sin el cero.
+// Antes:
+// export function fechaCorta(ts: number, idioma: IdiomaApp = idiomaApp()): string {
+//   const opciones: Intl.DateTimeFormatOptions = idioma === 'es'
+//     ? { day: 'numeric', month: 'numeric' }
+//     : { month: 'short', day: 'numeric' }
+//   return new Intl.DateTimeFormat(idioma === 'es' ? 'es' : 'en-US', opciones).format(new Date(ts))
+// }
+// Recibe un string para servir antes y despues de que IdiomaApp sumara 'pt' -punto 3-.
+const esPortugues = (idioma: string) => idioma === 'pt'
+
+const LOCALE_INTL: Record<'es' | 'en' | 'pt', string> = { es: 'es', en: 'en-US', pt: 'pt-BR' }
+
+function diaYMes(ts: number, idioma: 'es' | 'en' | 'pt', dosCifras: boolean): string {
+  const partes = new Intl.DateTimeFormat(LOCALE_INTL[idioma], { day: 'numeric', month: 'numeric' }).formatToParts(new Date(ts))
+  const parte = (tipo: string) => {
+    const v = String(Number(partes.find((p) => p.type === tipo)?.value || '0'))
+    return dosCifras ? v.padStart(2, '0') : v
+  }
+  return `${parte('day')}/${parte('month')}`
+}
+
 export function fechaCorta(ts: number, idioma: IdiomaApp = idiomaApp()): string {
+  if (esPortugues(idioma)) return diaYMes(ts, 'pt', false)
   const opciones: Intl.DateTimeFormatOptions = idioma === 'es'
     ? { day: 'numeric', month: 'numeric' }
     : { month: 'short', day: 'numeric' }
-  return new Intl.DateTimeFormat(idioma === 'es' ? 'es' : 'en-US', opciones).format(new Date(ts))
+  return new Intl.DateTimeFormat(LOCALE_INTL[idioma], opciones).format(new Date(ts))
 }
 
 // La de las tomas, que en espanol lleva dos cifras -07/09-. OJO: Intl con 'es' y '2-digit'
 // devuelve "7/9" en Node -medido el 27-09-2026-, asi que las cifras se completan a mano sobre
 // las partes que entrega Intl.
 export function fechaCortaDosDigitos(ts: number, idioma: IdiomaApp = idiomaApp()): string {
+  // -portugues-app, punto 2, 2026-10-22- El portugues lleva dos cifras como el espanol: 27/09.
+  if (esPortugues(idioma)) return diaYMes(ts, 'pt', true)
   if (idioma !== 'es') return fechaCorta(ts, idioma)
   const partes = new Intl.DateTimeFormat('es', { day: 'numeric', month: 'numeric' }).formatToParts(new Date(ts))
   const parte = (tipo: string) => (partes.find((p) => p.type === tipo)?.value || '').padStart(2, '0')
@@ -68,7 +97,8 @@ export function fechaCortaDosDigitos(ts: number, idioma: IdiomaApp = idiomaApp()
 }
 
 export function numeroLocal(n: number, idioma: IdiomaApp = idiomaApp()): string {
-  return n.toLocaleString(idioma === 'es' ? 'es' : 'en-US')
+  // -portugues-app, punto 2, 2026-10-22- Con 'pt-BR': 1.234. Antes: return n.toLocaleString(idioma === 'es' ? 'es' : 'en-US')
+  return n.toLocaleString(LOCALE_INTL[idioma])
 }
 
 // -portugues-voz, punto 6, 2026-10-22- Los nombres de los idiomas del guion, en un mapa: el de la
