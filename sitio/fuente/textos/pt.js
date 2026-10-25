@@ -26,7 +26,10 @@ export default {
   rutas: { portada: '/pt', privacidad: '/pt/privacidade', soporte: '/pt/suporte', ayuda: '/pt/ajuda', borrarCuenta: '/pt/excluir-conta' },
 
   meta: {
-    titulo: 'Sigo — Teleprompter por voz',
+    // -portugues-sitio, 2026-10-24, decisión de Javier- El nombre del producto es el mismo que en la marca y en la
+    // ficha de Play: «Sigo — Teleprompter de voz», aunque en portugués suene más natural «por voz». Antes:
+    // titulo: 'Sigo — Teleprompter por voz',
+    titulo: 'Sigo — Teleprompter de voz',
     descripcion: 'O Sigo é o teleprompter que acompanha a sua voz: você lê em voz alta e o texto anda junto. Se você para, ele espera. Em breve no Google Play.',
     ogDescripcion: 'O teleprompter que acompanha a sua voz. Em breve no Google Play.',
     privacidadTitulo: 'Privacidade — Sigo',
