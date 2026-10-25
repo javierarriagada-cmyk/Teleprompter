@@ -3,7 +3,8 @@
 // Toma las pantallas de crudas/ -las saca capturar.cjs de la app real- y arma, en ../:
 //   capturas/{es-419,en-US}/01..08.png            teléfono, con su titular arriba
 //   capturas/tableta/{es-419,en-US}/{7,10}/       tabletas, a pantalla completa
-//   grafico-1024x500-{es,en}.png                    el gráfico de funciones, uno por idioma
+// -portugues-ficha, 2026-10-25- Antes: //   grafico-1024x500-{es,en}.png                    el gráfico de funciones, uno por idioma
+//   grafico-1024x500-{es,en,pt}.png                 el gráfico de funciones, uno por idioma de IDIOMAS
 // Qué va en cada número, y cuál va de lado, lo dice escenas.cjs. Antes: la 4 de lado y
 // capturas/tableta-provisional/, mientras la tableta -tarea 83- no estaba en main; el 05-10-2026 fueron
 // 7 hasta que volvió el recuadro como la 08.
@@ -94,7 +95,11 @@ const FRASES = {
   es: { frase: 'El texto sigue|tu voz.', bajada: 'Teleprompter de voz para tus videos',
     renglones: [['Hola, hoy vamos a hacer', 0], ['pan casero en menos', 1], ['de una hora, con cuatro', 2]] },
   en: { frase: 'The script|follows|your voice.', bajada: 'Voice teleprompter for your videos',
-    renglones: [['Hi, today we are going', 0], ['to make homemade bread', 1], ['in under an hour, with', 2]] }
+    renglones: [['Hi, today we are going', 0], ['to make homemade bread', 1], ['in under an hour, with', 2]] },
+  // -portugues-ficha, 2026-10-25- pt-BR, escrito en portugués, no traducido; los renglones son el
+  // primer párrafo del guion del pão de guiones.ts.
+  pt: { frase: 'O texto segue|sua voz.', bajada: 'Teleprompter de voz para seus vídeos',
+    renglones: [['Olá, hoje vamos fazer', 0], ['pão caseiro em menos', 1], ['de uma hora, com quatro', 2]] }
 }
 // Los renglones son el primer párrafo del guion del pan -guiones.ts-: el ya leído, apagado; el
 // que se lee, con la línea bajo las palabras -el seguidor de la app-; el que viene, entero.
@@ -111,7 +116,9 @@ function grafico(idioma) {
 <div style="position:absolute;inset:0;background:radial-gradient(ellipse 700px 420px at 30% 40%, #F6D495 0%, ${C.ambar} 60%, #E8B45E 100%)"></div>
 <div style="position:absolute;left:84px;top:50%;transform:translateY(-50%);width:440px">
   ${marca({ alto: 112, color: C.suelo, id: `a${idioma}` })}
-  <div class="serif" style="margin-top:34px;font-size:${idioma === 'es' ? 56 : 50}px;font-weight:600;line-height:1.04;letter-spacing:-.02em;color:${C.suelo}">${f.frase.split('|').map(html).join('<br>')}</div>
+  <!-- -portugues-ficha, 2026-10-25- Antes: font-size:${idioma === 'es' ? 56 : 50}px -la frase en
+       portugués tiene dos renglones, como la española, y lleva su tamaño- -->
+  <div class="serif" style="margin-top:34px;font-size:${idioma === 'en' ? 50 : 56}px;font-weight:600;line-height:1.04;letter-spacing:-.02em;color:${C.suelo}">${f.frase.split('|').map(html).join('<br>')}</div>
   <div class="sans" style="margin-top:22px;font-size:24px;font-weight:600;color:rgba(21,19,18,.72)">${html(f.bajada)}</div>
 </div>
 <div class="serif" style="position:absolute;right:84px;top:50%;transform:translateY(-50%);font-size:32px;line-height:1.6;color:${C.suelo};padding:28px 34px;border-radius:24px;background:rgba(242,236,232,.55);box-shadow:0 20px 50px rgba(120,70,0,.25)">${renglones(f.renglones, C.suelo, C.suelo, 32)}</div>

@@ -4,12 +4,19 @@ Todo lo que se sube a Play Console, listo para revisar. Nada de esto toca la app
 
 | Qué | Archivo | Para Play |
 |---|---|---|
+| Nombre, descripción breve y completa, con conteos | `textos-es-419.txt`, `textos-en-US.txt`, `textos-pt-BR.txt` | se copia lo que va entre dobles corchetes |
+| Gráfico de funciones | `grafico-1024x500-es.png`, `grafico-1024x500-en.png`, `grafico-1024x500-pt.png` | uno por idioma |
+| 8 capturas de teléfono por idioma, en orden | `capturas/es-419/01..08.png`, `capturas/en-US/01..08.png`, `capturas/pt-BR/01..08.png` | en ese orden |
+| Tabletas de 7" y 10", 4 por idioma | `capturas/tableta/{es-419,en-US,pt-BR}/{7,10}/01..04-*.png` | en ese orden, ver abajo |
+| La lámina para elegir | `lamina-ficha.png` | no se sube |
+| De dónde sale cada cosa que se dice | `evidencia.md` | no se sube |
+
+<!-- -portugues-ficha, 2026-10-25- Antes, las cuatro primeras filas de la tabla, sin pt-BR:
 | Nombre, descripción breve y completa, con conteos | `textos-es-419.txt`, `textos-en-US.txt` | se copia lo que va entre dobles corchetes |
 | Gráfico de funciones | `grafico-1024x500-es.png`, `grafico-1024x500-en.png` | uno por idioma |
 | 8 capturas de teléfono por idioma, en orden | `capturas/es-419/01..08.png`, `capturas/en-US/01..08.png` | en ese orden |
 | Tabletas de 7" y 10", 4 por idioma | `capturas/tableta/{es-419,en-US}/{7,10}/01..04-*.png` | en ese orden, ver abajo |
-| La lámina para elegir | `lamina-ficha.png` | no se sube |
-| De dónde sale cada cosa que se dice | `evidencia.md` | no se sube |
+-->
 
 Ícono: `android/app/src/main/ic_launcher-playstore.png` -512 x 512-. `docs/ic-play-512.png` es viejo.
 
@@ -27,6 +34,16 @@ Antes -29-09-2026-, ocho, empezando por la persona y lo que le cuesta: 1. Tú ha
 sigue. · 2. Mira a la cámara, sin memorizar · 3. Mírate sin perder el hilo · 4. ¿Grabas de lado?
 También funciona. · 5. Lo importante, a la vista · 6. Tu video sale con subtítulos · 7. Todos tus
 guiones, a mano · 8. Letra y colores, a tu manera. El recuadro, la portada y los ajustes salieron.
+
+## La puesta al día -Javier, 25-10-2026, portugués de Brasil-
+
+- Tercer idioma, pt-BR: textos, 8 capturas de teléfono, 4 de tableta de 7" y 4 de 10" y el gráfico
+  `grafico-1024x500-pt.png` -bajada: Teleprompter de voz para seus vídeos-.
+- Mismas escenas, orden y personas que es/en -`herramientas/escenas.cjs`-; la app y el guion del pão
+  -`herramientas/guiones.ts`- en portugués; los titulares en `herramientas/titulares.cjs`.
+- Los idiomas salen de una sola lista, `IDIOMAS` de `scripts/playApi.mjs`: capturar, componer,
+  comprobar, lámina y `scripts/playSubir.mjs` la usan.
+- Los textos en portugués quedan para que los revise el papá de Javier: sin verificar por un nativo.
 
 ## Lo elegido -Javier, 29-09-2026-
 

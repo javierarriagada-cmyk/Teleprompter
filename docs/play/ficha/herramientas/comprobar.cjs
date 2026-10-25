@@ -60,7 +60,9 @@ function soloEstas(dir, esperadas) {
 // app y de los guiones, sus dos primeras letras -es, en, pt-.
 const { IDIOMAS } = require('../../../../scripts/playApi.mjs')
 console.log('— Gráfico de funciones')
-for (const i of ['es', 'en']) imagen(`grafico-1024x500-${i}.png`, 1024, 500, 15)
+// -portugues-ficha, 2026-10-25- Antes: for (const i of ['es', 'en']) imagen(`grafico-1024x500-${i}.png`, 1024, 500, 15)
+// -los idiomas salen de la lista única IDIOMAS-
+for (const i of IDIOMAS.map((c) => c.slice(0, 2))) imagen(`grafico-1024x500-${i}.png`, 1024, 500, 15)
 
 console.log('— Capturas de teléfono')
 // Antes: for (let n = 1; n <= 8; n++), con la 4 de lado.
