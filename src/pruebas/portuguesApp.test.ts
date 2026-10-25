@@ -133,7 +133,10 @@ describe('portugues-app punto 4 - el Hola en portugues', () => {
     expect(t.length).toBe((bloqueDeBienvenida('es').tramos || []).length)
     expect(detectarIdioma(b.texto)).toBe('pt')
     // Es el de docs/portugues.txt, seccion 5, letra por letra.
-    const doc = readFileSync(resolve(__dirname, '../../docs/portugues.txt'), 'utf8')
+    // -2026-10-24- EN WINDOWS git deja el archivo con \r\n y el Hola va con \n: sin normalizar, la prueba
+    // fallaba en el PC de Javier y pasaba en el CI -lo mismo que docs/licencias en 9b5cf53-. Antes:
+    // const doc = readFileSync(resolve(__dirname, '../../docs/portugues.txt'), 'utf8')
+    const doc = readFileSync(resolve(__dirname, '../../docs/portugues.txt'), 'utf8').replace(/\r\n/g, '\n')
     const desde = doc.indexOf('Olá. Leia isto em voz alta')
     const fin = 'Tudo de bom!'
     expect(desde).toBeGreaterThan(0)
