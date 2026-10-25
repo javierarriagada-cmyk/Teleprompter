@@ -69,6 +69,32 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
    cargar bien ya está comprobado en el teléfono, seguir una lectura todavía no. Si antes hay que subir otra
    cosa a Play, se decide con Javier.
 
+   LO QUE FALTA PARA LANZAR EL PORTUGUÉS -portugues-ficha, 2026-10-24-. Se suma a lo de arriba, que sigue
+   valiendo: primero la lectura del papá de Javier. Ayuda de Play Console consultada el 2026-10-24.
+   a. LA FICHA EN pt-BR. Fichas de Play Store → Ficha de Play Store → Administrar traducciones →
+      Seleccionar idiomas → Portugués (Brasil: pt-BR) → Aplicar y Guardar. Los textos, tal cual entre
+      dobles corchetes de docs/play/ficha/textos-pt-BR.txt; o `npm run ficha -- subir`, que ya toma pt-BR
+      de la lista IDIOMAS de scripts/playApi.mjs -y se para si faltan las capturas o el gráfico pt, que
+      esperan los puntos 5 y 6-. Sin capturas propias, Play muestra las del idioma predeterminado. Ayuda
+      oficial: support.google.com/googleplay/android-developer/answer/9844778.
+   b. BRASIL EN LOS PAÍSES DE DISTRIBUCIÓN. Producción → pestaña Países/regiones → Agregar países/regiones.
+      Las pruebas cerradas copian los de producción salvo que se separen: Prueba cerrada → Administrar
+      segmento → Países/regiones. Mirar que Brasil esté en la pista que se vaya a usar. Ayuda oficial:
+      support.google.com/googleplay/android-developer/answer/7550024.
+   c. EL AAB TRAE model_pt. `npm run play` lo mide: la línea «moto g86 en pt-BR ... el AAB trae model_pt»
+      tiene que salir en OK, con un peso mayor que cero. Después de subirlo, en la consola: Explorador de
+      paquete de aplicación → pestaña Entrega → tabla Paquetes de recursos, donde tiene que aparecer
+      model_pt a pedido. Ayuda oficial: support.google.com/googleplay/android-developer/answer/9844279; los
+      límites de tamaño de los paquetes: support.google.com/googleplay/android-developer/answer/9859372.
+   d. EL SITIO EN /pt PUBLICADO. La app ya enlaza privacidade, suporte y ajuda en /pt -docs/portugues.txt,
+      P7, rama portugues-app-: tienen que abrir antes de lanzar. No hay página de la Ayuda de Play Console
+      para esto: es nuestro sitio, no la consola.
+   e. LA FICHA DE SEGURIDAD DE LOS DATOS, SIN CAMBIOS. La voz en portugués se reconoce en el teléfono,
+      como el español y el inglés -model_pt con Vosk, nada sale del teléfono-. La Ayuda dice que lo que se
+      procesa solo en el dispositivo no se declara como recopilación: «Acceso y procesamiento en el
+      dispositivo». Contenido de la app → Seguridad de los datos: no se toca. Ayuda oficial:
+      support.google.com/googleplay/android-developer/answer/10787469.
+
 Conocido y aceptado: la advertencia de símbolos de depuración por las .so de Vosk, que vienen sin
 símbolos. No bloquea.
 
