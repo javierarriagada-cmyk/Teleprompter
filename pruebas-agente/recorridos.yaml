@@ -237,15 +237,19 @@ tests:
           Tap the round "Empezar" / "Start" / "Começar" button, wait for the 3, 2, 1 countdown
           and then about 8 more seconds. Then press the system back button once: that stops the
           recording. Do not tap on the text.
-        finalScreenAssertion: >-
-          A video player shows the recorded take, with options for captions ("Subtítulos",
-          "Captions" or "Legendas").
-      - goal: Turn on captions in the video player.
-        hint: >-
-          In the video player, tap the captions control ("Subtítulos" / "Captions" /
-          "Legendas") and then one of the styles, such as "Amarillo" / "Yellow" / "Amarelo".
-        finalScreenAssertion: >-
-          The video player is still visible and a captions style is selected.
+      # 2026-10-25, ajustes-accesible: se fue el paso de los subtítulos y la aserción ya no los pide. El
+      # selector de subtítulos solo aparece si la toma tiene palabras -ReproductorGrabacion.tsx:812- y en
+      # Test Lab nadie habla. Antes:
+      #   finalScreenAssertion: >-
+      #     A video player shows the recorded take, with options for captions ("Subtítulos",
+      #     "Captions" or "Legendas").
+      # - goal: Turn on captions in the video player.
+      #   hint: >-
+      #     In the video player, tap the captions control ("Subtítulos" / "Captions" /
+      #     "Legendas") and then one of the styles, such as "Amarillo" / "Yellow" / "Amarelo".
+      #   finalScreenAssertion: >-
+      #     The video player is still visible and a captions style is selected.
+        finalScreenAssertion: A video player shows the recorded take.
       # 2026-10-25: paso nuevo. La toma queda en la sección Videos de la portada -TiraGrabaciones.tsx-
       # aunque no se guarde en la galería; sin verificar en Test Lab.
       - goal: Go back to the main screen and find the take.
@@ -298,11 +302,20 @@ tests:
         finalScreenAssertion: >-
           A bar with "1 seleccionadas", "1 selected" or "1 selecionados" is visible.
       # El aviso de las tomas dura 5 s -MS_DESHACER_TOMA, lib/seleccionTomas.ts-: Deshacer va en el mismo paso.
+      # 2026-10-25, ajustes-accesible: ahora dura 6 s y es el aviso destacado -más arriba, como el de los
+      # guiones-; tocar Deshacer es lo primero después de borrar. Textos de src/textos/es.ts, en.ts, pt.ts.
+      # Antes:
+      #   hint: >-
+      #     Tap the trash button in the selection bar, named "Borrar" / "Delete" / "Excluir". A
+      #     message "1 tomas borradas" / "1 takes deleted" / "1 takes excluídos" appears at the
+      #     bottom for only 5 seconds: tap "Deshacer" / "Undo" / "Desfazer" on it right away.
       - goal: Delete the selected take and immediately undo.
         hint: >-
           Tap the trash button in the selection bar, named "Borrar" / "Delete" / "Excluir". A
-          message "1 tomas borradas" / "1 takes deleted" / "1 takes excluídos" appears at the
-          bottom for only 5 seconds: tap "Deshacer" / "Undo" / "Desfazer" on it right away.
+          message "1 tomas borradas" / "1 takes deleted" / "1 takes excluídos" appears in the
+          lower part of the screen, a bit higher than the bottom edge, for only 6 seconds. The
+          very next action must be tapping "Deshacer" / "Undo" / "Desfazer" on that message; do
+          nothing else before it.
         finalScreenAssertion: >-
           The "Videos" or "Vídeos" section shows the video thumbnail again.
 
