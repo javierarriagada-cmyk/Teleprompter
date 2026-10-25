@@ -71,6 +71,9 @@ module.exports = {
     // velocidad que elegir, así que se saca el "no hay velocidades" y A TU MANERA lo cuenta al final.
     // Antes, en LO QUE CAMBIA CUANDO EL TEXTO TE SIGUE: "- Si te detienes, el texto se detiene. No hay velocidades que ajustar."
     // Antes, A TU MANERA terminaba en "- Tema claro u oscuro. La app está en español y en inglés, y sigue tu voz en los dos idiomas."
+    // -2026-10-24, portugues-ficha- Con el portugués son tres idiomas: la app -rama portugues-app- y la
+    // voz -portugues-voz, IdiomaVoz 'pt'-. La línea de «La voz de tu idioma se descarga sola» sigue valiendo.
+    // Antes, en A TU MANERA: "- Tema claro u oscuro. La app está en español y en inglés, y sigue tu voz en los dos idiomas."
     completa: `¿Se te olvida el guion justo cuando empiezas a grabar? Con Sigo lees en voz alta y el texto avanza contigo, a tu ritmo. Si haces una pausa, te espera.
 
 Mira a la cámara con calma. No tienes que aprenderte el texto de memoria ni repetir la toma porque perdiste el hilo.
@@ -104,7 +107,7 @@ TU GUION, CLARO DE UN VISTAZO
 A TU MANERA
 - Tamaño de letra, tipografía, ancho del texto y cinco combinaciones de colores de lectura.
 - Modo espejo, para usar con un vidrio de teleprompter.
-- Tema claro u oscuro. La app está en español y en inglés, y sigue tu voz en los dos idiomas.
+- Tema claro u oscuro. La app está en español, inglés y portugués, y sigue tu voz en los tres idiomas.
 - ¿Prefieres no usar la voz? Con Velocidad fija el texto sube solo, al ritmo que eliges.
 
 CONFIANZA Y PRIVACIDAD
@@ -127,6 +130,8 @@ Escribe tu guion, toca Leer o Grabar, y habla. Sigo te sigue.`
     // -15-10-2026, ficha 0.9.1- Lo mismo que en es-419, por Velocidad fija -Fixed speed-.
     // Antes, en WHAT CHANGES WHEN THE SCRIPT FOLLOWS YOU: "- Stop, and the text stops. No scroll speed to set."
     // Antes, YOUR WAY terminaba en "- Light or dark theme. The app is in English and Spanish, and follows your voice in both."
+    // -2026-10-24, portugues-ficha- Lo mismo que en es-419: ahora son tres idiomas.
+    // Antes, en YOUR WAY: "- Light or dark theme. The app is in English and Spanish, and follows your voice in both."
     completa: `Forget your lines the moment you hit record? With Sigo you read aloud and the script moves with you, at your pace. Pause, and it waits.
 
 Look at the camera and relax. No memorizing, and no redoing a take because you lost your place.
@@ -160,7 +165,7 @@ YOUR SCRIPT, CLEAR AT A GLANCE
 YOUR WAY
 - Font size, typeface, text width and five reading color combinations.
 - Mirror mode, for use with teleprompter glass.
-- Light or dark theme. The app is in English and Spanish, and follows your voice in both.
+- Light or dark theme. The app is in English, Spanish and Portuguese, and follows your voice in all three.
 - Prefer not to use your voice? With Fixed speed the script scrolls on its own, at the pace you choose.
 
 TRUST AND PRIVACY

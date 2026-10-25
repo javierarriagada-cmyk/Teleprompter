@@ -8,7 +8,8 @@ cierto, se corrige la ficha.
 
 | Lo que dice la ficha | Dónde está en el código |
 |---|---|
-| El texto sigue tu voz, en español y en inglés | `src/motor/MotorNativo.ts:46`, `:67` -asegurarVoz es/en- |
+| ~~El texto sigue tu voz, en español y en inglés~~ -Antes, hasta el 2026-10-24: ahora son tres- | ~~`src/motor/MotorNativo.ts:46`, `:67` -asegurarVoz es/en-~~ |
+| El texto sigue tu voz en español, inglés y portugués -2026-10-24- | `src/motor/MotorNativo.ts:52`, `:76` -IdiomaVoz con 'pt'-; `src/lib/vozAPedido.ts:20`; `android/model-pt/build.gradle` |
 | Si haces una pausa, espera | `src/lib/avance.ts:43`, `:300` -motivoFreno 'silencio'- |
 | Velocidad fija: si prefieres no usar la voz, el texto sube solo al ritmo que eliges -15-10-2026- | `src/lib/velocidadFija.ts` -ModoLectura 'fija', siete niveles NIVELES_PPM-; el nombre en la app: `src/textos/es.ts` modoVelocidadFija «Velocidad fija», `src/textos/en.ts` «Fixed speed» |
 | Una línea bajo lo que lees | el seguidor, `src/lib/seguidor.ts`; se ve en las capturas 1 a 4 |
@@ -44,7 +45,8 @@ cierto, se corrige la ficha.
 | Tamaño, tipografía, ancho y colores de lectura | `src/components/PantallaAjustes.tsx:231`, `:238`, `:245`, `:252`; pasos de letra en `src/components/estiloLectura.ts:26` |
 | Espejo para vidrio de teleprompter | `src/textos/es.ts:191` -espejoExplicacion-, `src/components/PantallaAjustes.tsx:260` |
 | Tema claro u oscuro | `src/components/PantallaAjustes.tsx:291`, `:444` |
-| La app en español y en inglés | `src/components/PantallaAjustes.tsx:297`, `:475` |
+| ~~La app en español y en inglés~~ -Antes, hasta el 2026-10-24- | ~~`src/components/PantallaAjustes.tsx:297`, `:475`~~ |
+| La app en español, inglés y portugués -2026-10-24- | el selector de idioma de Ajustes; el portugués, `src/textos/pt.ts` de la rama portugues-app -**aún no en main**- |
 | Guiones y ajustes en la copia de seguridad de Android; vuelven al reinstalar | ver "La copia de seguridad", abajo |
 | Los videos no entran en la copia | `android/app/src/release/res/xml/reglas_respaldo.xml`: solo se incluyen IndexedDB, Local Storage, sharedprefs y el archivo de idioma; `files/grabaciones` no se nombra |
 
