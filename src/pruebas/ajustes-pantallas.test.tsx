@@ -352,7 +352,11 @@ describe('Ajustes de pantallas, cuarta vuelta: un solo panel de Ajustes', () => 
   const LECTURA_VIDEO_PANTALLA = [es.seccionLectura, es.seccionVideo, es.seccionPantalla]
   const sinPantallaCompleta = () => {
     expect(screen.queryByTestId('pantalla-ajustes')).toBeNull()
-    expect(screen.queryByRole('dialog', { name: es.tituloAjustes })).toBeNull()
+    // -ajustes-accesible, 25-10-2026, aprobado por Javier- Desde la portada y el editor el panel ahora es un
+    // diálogo modal -batería del agente del 25-10-: si hay un diálogo llamado Ajustes, es el panel, nunca la
+    // pantalla completa. Antes: expect(screen.queryByRole('dialog', { name: es.tituloAjustes })).toBeNull()
+    const dialogo = screen.queryByRole('dialog', { name: es.tituloAjustes })
+    if (dialogo) expect(dialogo).toBe(screen.getByTestId('panel-ajustes-toma'))
   }
 
   async function montar() {
@@ -599,7 +603,16 @@ describe('Ajustes de pantallas, cuarta vuelta: un solo panel de Ajustes', () => 
       await abrir()
       expect(await screen.findByTestId('panel-ajustes-toma'), puerta).toBeTruthy()
       expect(screen.queryByTestId('pantalla-ajustes'), puerta).toBeNull()
-      expect(screen.queryByRole('dialog', { name: es.tituloAjustes }), puerta).toBeNull()
+      // -ajustes-accesible, 25-10-2026, aprobado por Javier- Desde la portada y el editor el panel es un diálogo
+      // modal -batería del agente del 25-10-: si hay un diálogo llamado Ajustes, es el panel. En las puertas de
+      // Leer y Grabar sigue sin haber ningún diálogo.
+      // Antes: expect(screen.queryByRole('dialog', { name: es.tituloAjustes }), puerta).toBeNull()
+      const dialogo = screen.queryByRole('dialog', { name: es.tituloAjustes })
+      if (puerta.startsWith('Leer') || puerta.startsWith('Grabar')) {
+        expect(screen.queryByRole('dialog'), puerta).toBeNull()
+      } else if (dialogo) {
+        expect(dialogo, puerta).toBe(screen.getByTestId('panel-ajustes-toma'))
+      }
       cleanup()
       window.matchMedia = matchMediaOriginal
     }
