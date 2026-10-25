@@ -210,8 +210,18 @@ describe('portugues-voz punto 7 - aviso del idioma del guion', () => {
     })
     expect(avisoIdiomaGuion('es', 'es')).toBeNull()
     expect(avisoIdiomaGuion('en', 'en')).toBeNull()
-    expect(avisoIdiomaGuion('pt', 'es')).toBeNull()
-    expect(avisoIdiomaGuion('pt', 'en')).toBeNull()
+    // Antes -cambiado el 2026-10-24, aprobado por Javier-: la regla vieja era que con un guion en portugués no
+    // salía aviso, porque la app no tenía portugués; portugues-app, punto 5, la reemplaza a propósito.
+    // expect(avisoIdiomaGuion('pt', 'es')).toBeNull()
+    // expect(avisoIdiomaGuion('pt', 'en')).toBeNull()
+    const avisoPt = {
+      texto: 'Seu roteiro está em português. Quer usar o Sigo em português?',
+      accionTexto: 'Mudar para português',
+      idioma: 'pt',
+      accionNeutra: true
+    }
+    expect(avisoIdiomaGuion('pt', 'es')).toEqual(avisoPt)
+    expect(avisoIdiomaGuion('pt', 'en')).toEqual(avisoPt)
   })
 
   test('el aviso de idioma pide la acción neutra; el de borrar no y sigue en rojo', () => {

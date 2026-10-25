@@ -202,8 +202,9 @@ export default function EditorView({
   }, [marcaIdioma])
   // -portugues-voz, punto 7, 2026-10-22- EL AVISO DEL IDIOMA DEL GUION: si el guion está en otro idioma que
   // la app, un aviso en el idioma del guion ofrece pasar la app a ese idioma -fijarIdioma-. Una vez por
-  // idioma del guion; nunca con el guion en portugués. Espera a que se cierre la marca de guía: con una a
-  // la vista no sale, y vuelve a mirar cuando marcaIdioma cambia. La espera corta deja que la marca que
+  // idioma del guion, también con el guion en portugués desde portugues-app, punto 5, porque la app ya tiene
+  // portugués -2026-10-24-. Antes: «nunca con el guion en portugués», cuando la app no lo tenía. Espera a que se
+  // cierre la marca de guía: con una a la vista no sale, y vuelve a mirar cuando marcaIdioma cambia. La espera corta deja que la marca que
   // dispara el pegar -en una microtarea- salga primero.
   useEffect(() => {
     if (!mostrarAviso || marcaIdioma) return

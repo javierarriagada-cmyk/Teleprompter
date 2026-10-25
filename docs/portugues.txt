@@ -1,0 +1,216 @@
+SIGO EN PORTUGUES — LA APP
+22-10-2026. Orden «portugues-app» de Javier. La app entera en portugues de Brasil, al mismo nivel
+que el espanol y el ingles. Sigue el modelo de docs/ingles.txt -secciones 2, 4 y 5- y el punto I2
+de docs/decisiones-de-diseno.txt. La voz en portugues -reconocedor, deteccion del idioma del
+guion- llego antes, en la orden portugues-voz.
+
+
+==============================================================================
+1. LA IDEA
+==============================================================================
+
+  Igual que en ingles: EL IDIOMA DE LA APP -botones, avisos, el guion Hola- y EL IDIOMA DE CADA
+  GUION -que reconocedor escucha- son dos cosas. Quien tiene el telefono en portugues ve Sigo en
+  portugues: su Hola, los guiones nuevos en pt, la voz pt bajada sola y «Português» en Ajustes ->
+  Idioma de la app.
+
+
+==============================================================================
+2. LAS DECISIONES
+==============================================================================
+
+  P1. LA APP SIGUE EL IDIOMA DEL TELEFONO. Espanol si el telefono esta en es, portugues si esta
+      en pt -pt-BR o pt-PT-, ingles en cualquier otro caso. Amplia D1 de docs/ingles.txt.
+
+  P2. EL PORTUGUES ES EL DE BRASIL. Con «você», no «tu». Un telefono en pt-PT tambien lo ve: es
+      mejor que caer al ingles, y Android guarda «pt-BR» como idioma de la app.
+
+  P3. SIN BANDERAS EN LOS MENUS DE IDIOMA -Javier, 22-10-2026-. La regla del W3C: «Do not use
+      flag icons to indicate languages» -https://www.w3.org/TR/i18n-html-tech-lang/, seccion 7-.
+      Una bandera es un pais, no un idioma: el portugues no es solo de Brasil ni el espanol de
+      Chile. Cada idioma se nombra en su propio idioma -ENDONIMO_IDIOMA-: «Português».
+
+  P4. EL CORREO EN PORTUGUES es hola@sigoteleprompter.com -Javier-. «Olá» y «hola» se parecen lo
+      bastante, y no hace falta otro reenvio.
+
+  P5. SE ESCRIBE, NO SE TRADUCE. Como D5 de docs/ingles.txt: frases naturales para quien habla
+      portugues, calido y directo. Los terminos de Android en pt-BR -Configurações, Compartilhar,
+      Excluir, Desfazer, Cancelar, Fechar...-: los que la persona ya ve en su telefono. El
+      glosario de la seccion 4 manda en toda la app.
+
+  P6. LO ESCRIBE GROK; LO REVISA EL PAPA DE JAVIER, QUE ES BRASILENO. Para su revision estan las
+      capturas en docs/pantallas/portugues-app/index.html.
+
+  P7. LOS ENLACES /pt DEL SITIO -privacidade, suporte, ajuda- no abren hasta que la orden del
+      sitio los publique. La app ya los usa; el sitio no es parte de esta orden.
+
+  QUEDAN EN ESPANOL, como en ingles: el panel de diagnostico, el de corpus y el de mediciones,
+  que no ve quien usa la app.
+
+
+==============================================================================
+3. QUIEN HACE QUE
+==============================================================================
+
+  Grok: este archivo, src/textos/pt.ts, el Hola en portugues, el idioma de la app con pt -web y
+  plugin de Android-, las capturas.
+  El papa de Javier: lee las capturas y el Hola y dice que suena raro. Lo que cambie se cambia
+  primero aca, en el glosario o en la seccion 5, y despues en pt.ts o bienvenida.ts.
+  Claude: arma la APK y la prueba en el Redmi -esta orden no se probo en un telefono-.
+
+
+==============================================================================
+4. GLOSARIO -manda en toda la app-
+==============================================================================
+
+  Todos los terminos de la seccion 4 de docs/ingles.txt, con su portugues.
+
+  espanol                      | ingles                          | portugues
+  -----------------------------+---------------------------------+---------------------------------
+  Leer                         | Read                            | Ler
+  Guion / Guiones              | Script / Scripts                | Roteiro / Roteiros
+  Grabar                       | Record                          | Gravar
+  Toma                         | Take                            | Take (*1)
+  Videos                       | Videos                          | Vídeos
+  Empezar                      | Start                           | Começar
+  Pausa / Seguir               | Pause / Resume                  | Pausar / Continuar
+  Parar                        | Stop                            | Parar
+  Ajustes                      | Settings                        | Configurações
+  Archivar                     | Archive                         | Arquivar
+  Archivados                   | Archived                        | Arquivados
+  Borrar                       | Delete                          | Excluir
+  Compartir                    | Share                           | Compartilhar
+  Guardar en galeria           | Save to gallery                 | Salvar na galeria
+  Subtitulos                   | Captions                        | Legendas
+  Amarillo / Rojo / Formal     | Yellow / Red / Formal           | Amarelo / Vermelho / Formal
+  Pegar texto                  | Paste text                      | Colar texto
+  Abrir archivo                | Open file                       | Abrir arquivo
+  Sin titulo                   | Untitled                        | Sem título
+  Guardado                     | Saved                           | Salvo
+  ¿Seguro?                     | Sure?                           | Tem certeza?
+  Voltear camara               | Flip camera                     | Virar câmera (*2)
+  Donde lees: arriba           | Read at the top                 | Ler em cima
+  ...al medio                  | Read in the middle              | Ler no meio
+  Espejo                       | Mirror                          | Espelhar (*3)
+  Mostrar tiempo               | Show time                       | Mostrar tempo
+  Brillo                       | Brightness                      | Brilho
+  Calidad del video            | Video quality                   | Qualidade do vídeo
+  Tamano de letra              | Text size                       | Tamanho do texto
+  Ancho del texto              | Text width                      | Largura do texto
+  Ancho / Medio / Angosto      | Wide / Medium / Narrow          | Larga / Média / Estreita
+  Tipografia                   | Typeface                        | Fonte
+  Destacado                    | Highlight                       | Destaque
+  Negrita                      | Bold                            | Negrito
+  Ambar / Celeste / Verde      | Amber / Light blue / Green      | Âmbar / Azul-claro / Verde
+  Acotacion                    | Note                            | Anotação
+  Tus videos apareceran aqui.  | Your videos will show up here.  | Seus vídeos vão aparecer aqui.
+  la camara sigue encendida    | the camera is still on          | a câmera continua ligada
+  Te alcanzan unos N minutos   | About N minutes of space left   | Dá para uns N minutos
+  Quedan menos de 2 minutos    | Less than 2 minutes of space    | Restam menos de 2 minutos de
+    de espacio                 |   left                          |   espaço
+  Se recupero una toma de una  | A take from an interrupted      | Um take de uma sessão
+    sesion interrumpida.       |   session was recovered.        |   interrompida foi recuperado.
+  Verla                        | View it                         | Ver
+  hoy / ayer                   | today / yesterday               | hoje / ontem
+
+  AGREGADOS EN LA TAREA 75 de docs/ingles.txt:
+  Tema                         | Theme                           | Tema
+  Claro / Oscuro               | Light / Dark                    | Claro / Escuro
+  Idioma de la app             | App language                    | Idioma do app (*4)
+  Idioma del guion             | Script language                 | Idioma do roteiro
+  Buscar                       | Search                          | Pesquisar
+  Desarchivar                  | Unarchive                       | Desarquivar
+  Deshacer                     | Undo                            | Desfazer
+  Cerrar                       | Close                           | Fechar
+  Eliminar                     | Delete                          | Excluir
+  Volver                       | Back                            | Voltar
+  Salir                        | Exit                            | Sair
+  Reintentar                   | Try again                       | Tentar de novo
+  Repetir toma                 | Retake                          | Refazer take
+  Descartar toma               | Discard take                    | Descartar take
+  Grabando                     | Recording                       | Gravando
+  Grabado                      | Recorded                        | Gravado
+  Ajustes de la app            | Settings                        | Configurações
+  Ajustes de lectura           | Reading settings                | Configurações de leitura
+  Ajustes de la escena         | Scene settings                  | Configurações da cena
+  Imagen de la camara          | Camera view                     | Imagem da câmera
+  Detras / Recuadro / Oculta   | Behind the text / Small window  | Atrás do texto / Janela pequena
+                               |   / Hidden                      |   / Oculta
+  Donde lees                   | Where you read                  | Onde você lê
+  Titulo del guion             | Script title                    | Título do roteiro
+  Colores de lectura           | Reading colors                  | Cores de leitura
+  incompleta                   | incomplete                      | incompleto (es «o take»)
+  Negro con blanco / Negro con | White on black / Amber on black | Branco no preto / Âmbar no preto
+    ambar / Blanco con negro   |   / Black on white              |   / Preto no branco
+  Subtitulos: No               | Captions: Off                   | Legendas: Sem (*5)
+  vacio -duracion-             | empty                           | vazio
+  Guion importado              | Imported script                 | Roteiro importado
+  sin audio                    | no audio                        | sem áudio
+  Tipografia: Sans / Serif     | Sans / Serif                    | Sans / Serif, igual en los tres
+  Letra del boton de negrita   | B                               | N, como en espanol: Negrito
+
+  OTROS QUE APARECEN EN LA APP:
+  Ayuda / Soporte / Privacidad | Help / Support / Privacy        | Ajuda / Suporte / Privacidade
+  Cancelar                     | Cancel                          | Cancelar
+  Guardar                      | Save                            | Salvar
+  Cuenta / Cerrar sesion       | Account / Sign out              | Conta / Sair da conta
+  Copia de seguridad           | Backup                          | Backup (*6)
+  Control por gestos           | Gesture control                 | Controle por gestos
+  Filtro                       | Filter                          | Filtro
+  Telefono                     | Phone                           | Celular
+
+  LAS DUDAS -dos terminos posibles, cual se eligio y por que-:
+  (*1) Toma: «take» o «tomada». Se eligio «take», masculino -«o take», «os takes»-: es lo que
+       dice en Brasil quien graba videos. «Tomada» es de cine y tambien es el enchufe de la pared.
+  (*2) Voltear camara: «Virar câmera» o «Alternar câmera». Se eligio «Virar câmera»: es el verbo
+       de todos los dias y es corto; «Alternar» suena a menu tecnico.
+  (*3) Espejo: «Espelho» o «Espelhar». Se eligio «Espelhar», el verbo: es un interruptor, y en
+       pt-BR los interruptores de imagen se nombran con el verbo -«Espelhar câmera frontal»-.
+  (*4) App: «o app» o «a app». Se eligio «o app», masculino, que es lo de Brasil; «a app» es de
+       Portugal.
+  (*5) Subtitulos: No: «Não», «Desativadas» o «Sem». Se eligio «Sem»: es una ficha chica junto a
+       Amarelo y Vermelho, y «Sem» -sin- se lee como una opcion mas; «Não» suena a respuesta.
+  (*6) Copia de seguridad: «Backup» o «Cópia de segurança». Se eligio «Backup»: es la palabra del
+       Google Drive y del WhatsApp en Brasil.
+  Celular y no «telefone»: en Brasil el aparato es «o celular».
+  «Excluir» y no «Apagar» para borrar: el de Android y Google en pt-BR.
+
+
+==============================================================================
+5. EL GUION HOLA EN PORTUGUES -escrito por Grok; lo revisa el papa de Javier-
+==============================================================================
+
+  Mismos formatos que el espanol y el ingles, sobre las palabras que los nombran: negrito, âmbar,
+  azul-claro, verde, destaque amarelo. Y los extra de la grabacion de prueba: "sem você tocar em
+  nada" negrita, "o texto espera por você" celeste, "para que seu olhar vá para a câmera" ambar,
+  "não fica no vídeo" negrita, "Controle por gestos" ambar, "O que você vê é o que fica salvo"
+  verde, "Você não precisa decorar nada." negrita, "na hora que quiser" destacado, el correo
+  celeste. Va letra por letra a src/app/bienvenida.ts -bienvenidaPortugues-.
+
+Olá. Leia isto em voz alta, devagar ou depressa, como você preferir.
+
+Agora repare no texto. Ele está andando sozinho, no ritmo da sua fala, sem você tocar em nada. A linha suave embaixo das palavras mostra onde você está.
+
+Se você parar para pensar, o texto espera por você. Quando você volta a falar, ele continua junto.
+
+O que você escreve entre colchetes é uma anotação só para você. Ela aparece na tela, mas não precisa ser lida em voz alta. [Como esta: respire e sorria.]
+
+Seu roteiro também pode ajudar você a ler melhor. Use negrito no que você quer dizer com mais força. Pinte palavras de âmbar, azul-claro ou verde para separar ideias ou mudanças de tom. E use o destaque amarelo no que não pode passar batido. É só selecionar o texto no editor e escolher.
+
+Com Aa você muda o tamanho do texto. A fonte, a largura da coluna e as cores da tela ficam em Configurações. Deixe do jeito mais confortável para você.
+
+Quando quiser se gravar, toque em Gravar. A câmera filma enquanto você lê, e o texto fica logo abaixo da lente, para que seu olhar vá para a câmera e não para a tela. Você pode se ver em tela cheia, atrás do texto ou em uma janela pequena. Grave na vertical ou na horizontal, como precisar.
+
+Se precisar parar um pouco, toque na tela e depois em pausar. O que acontece durante a pausa não fica no vídeo: ao continuar, o take segue como se você nunca tivesse parado.
+
+E se você grava longe do celular, ative o Controle por gestos no painel da câmera. Mostre a palma da mão para pausar ou continuar e, em pausa, faça o V para terminar.
+
+Ao terminar, seu vídeo pode ter legendas, que saem do seu roteiro no ritmo da sua voz, e um filtro para dar o tom que você quiser. O que você vê é o que fica salvo: salve na galeria ou compartilhe direto. As legendas e o filtro são escolhidos antes de salvar.
+
+O Sigo está aqui para dar a você o conforto e a tranquilidade de que precisa. Queremos que toda a sua concentração esteja onde deve estar. Você não precisa decorar nada. Não precisa correr para acompanhar o texto. Pode transmitir a emoção que quiser, na hora que quiser.
+
+Serve para gravar um vídeo, dar uma aula ou se preparar para uma entrevista.
+
+Quando terminar, toque em + nos seus roteiros para escrever o seu ou colar um que você já tenha.
+
+E se tem algo de que você gosta, algo que incomoda ou uma ideia para melhorar, conte para a gente. Seus comentários são muito valiosos para nós. Escreva para hola@sigoteleprompter.com. Tudo de bom!
