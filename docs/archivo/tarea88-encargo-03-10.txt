@@ -1,0 +1,1067 @@
+TAREA 88 - LA PAUSA CON CORTES, PARA TODOS: LO PAUSADO NO QUEDA EN LA TOMA GUARDADA
+Encargo para el bot de Grok, 03-10-2026 -de Javier y Claude-. Punto de partida: main, commit
+71166e5. Nunca una rama vieja. Es la PRIMERA MITAD del PLAN 2 -docs/planes/plan-2-gestos-
+grabacion.txt-: la pausa con cortes, con el botón, para todos los usuarios. Los gestos -palma,
+un dedo, dos dedos- van DESPUÉS, en otra tarea, y son premium. Citas archivo:línea revisadas
+otra vez contra el código de 71166e5. Si algo de este texto no calza con lo que encuentres, se
+DESCRIBE, no se improvisa.
+
+==============================================================================
+ANTES DE TODO: NO SE PROGRAMA HASTA QUE LA TAREA 87 ESTÉ EN MAIN
+==============================================================================
+Esta tarea guarda los cortes con la receta común de exportación de la tarea 87: exportarToma y
+RecetaExportacion -docs/tarea87.txt, PARTE B, PR #63-. Hoy esa receta es solo un encargo: no
+existe en main ni recetaExportacion.ts, ni RecetaExportacion.java, ni ExportadorDeTomas.java, ni
+CamaraNativaPlugin.exportarToma, ni archivosNativos.exportarAGaleria. Por eso:
+  - NO SE PROGRAMA NADA DE ESTA TAREA -ni el paso 0-B, ni la máquina, ni los tramos, ni el
+    guardado, ni el visor- hasta que la tarea 87 esté en main: el encargo del #63, su
+    implementación -la parte B con exportarToma y RecetaExportacion- y el paso 0 del #64 con el
+    panel "Medición / Exportación". El boceto de la PARTE A no es programar: puede hacerse antes,
+    sobre main, si Javier lo pide.
+  - Cuando esté, se parte de main ACTUALIZADO, en una rama nueva -tarea88-...-, nunca encima de
+    las ramas de la 87.
+  - Si la 87 entró con nombres o firmas distintos de los de docs/tarea87.txt, mandan los de main:
+    se anota en el PR qué cambió y cómo se adaptó este encargo. No se reinventa la receta.
+  - Todo lo que este texto cita de la 87 -recetaDe, esCopia, validarReceta, TramoMs,
+    RecetaExportacion.desdeJson/desdeValores, ExportadorDeTomas.efectosDeVideo, exportarToma,
+    exportarAGaleria, guardarEnGaleriaConSubtitulos con su quinto parámetro posicion,
+    PanelMediciones, medicionesExport.ts, MedicionExport.java- se busca POR SU NOMBRE en main, no
+    por número.
+
+PULL REQUESTS QUE CORREN LÍNEAS: el #62 -tarea 83- toca src/App.tsx, src/lib/camara.ts y otros;
+el #63 y su implementación tocan ReproductorGrabacion.tsx, archivosNativos.ts, camara.ts,
+CamaraNativaPlugin.java, CapaDeSubtitulos.java, sidecar.ts, modelo.ts y tomaVideo.ts. Si se
+fusionan antes que esto -y el #63 TIENE que estar-, las líneas citadas aquí se corren: se buscan
+las funciones, los testid y los comentarios POR SU NOMBRE, y se anota en el PR la línea nueva.
+
+==============================================================================
+QUÉ ES Y POR QUÉ IMPORTA
+==============================================================================
+Hoy, en Grabar, el botón de pausa -btn-pausa-lectura- apaga la voz y deja quieto el texto, pero
+la cámara SIGUE GRABANDO: capgo no tiene pause() ni resume() -plan 2, 1.1-. Todo lo que pasa en
+la pausa -la persona que se acomoda, mira el guion, tose, se rasca- queda en el archivo y sale
+en la galería. Quien graba solo tiene que cortar después en otra aplicación.
+
+Esta tarea entrega, para todos los usuarios y sin ajuste que encender:
+  1. Cada pausa con el botón queda ANOTADA en la toma -un tramo, en el sidecar y en el índice-.
+  2. Al guardar, lo pausado SE CORTA, en la MISMA pasada de Media3 que quema los subtítulos, y los
+     subtítulos se recalculan sobre la toma cortada. También se corta si se guarda sin subtítulos.
+  3. El visor de una toma recién grabada la muestra YA CORTADA: salta lo pausado, sin bucles, y la
+     barra muestra la duración final.
+  4. Mientras se graba, "en pausa" se ve -según el boceto que Javier apruebe primero-.
+Y por dentro deja la máquina de pausa pura -src/lib/pausaToma.ts-, por la que pasan el botón y
+el tacho, lista para conectar después la palma y un control Bluetooth, sin construirlos.
+
+FUERA DE ESTA TAREA -no se hace, ni a medias-:
+  - Nada de gestos: ni MediaPipe, ni PreviewView.getBitmap(), ni GestosPlugin, ni el vigía, ni el
+    confirmador, ni el reloj de voz, ni el interruptor de Ajustes -plan 2, secciones 6, 9 y 10-.
+    Eso es la segunda mitad, premium.
+  - No se construye el control Bluetooth. Solo queda el origen 'control' declarado.
+  - NO se toca capgo -@capgo/camera-preview 8.11.4-: ni parche, ni versión, ni opciones nuevas. No
+    se usa Recording.pause().
+  - No se toca el seguidor, avance.ts, la conducción ni src/motor/. No se toca <id>.motor.txt.
+  - No se cambia la conducta de una toma SIN pausas: guardarla, verla y recuperarla es
+    EXACTAMENTE lo de hoy -y lo de la 87-.
+  - No se cambia la pausa de Leer -sin cámara-: ahí no hay toma y no se abre tramo.
+  - No se da plazo al "¿Seguro?" del tacho: hoy no tiene y sigue sin tener.
+
+ORDEN -cada parte se termina, se prueba y se entrega antes de empezar la siguiente-:
+  PASO 0-B Media3 con tramos, medido en el moto g86 con el panel del #64. PR APARTE Y PRIMERO.
+  PARTE A  Boceto de "en pausa" mientras se graba -y del visor de una toma con cortes-, y la
+           APROBACIÓN de Javier.
+  PARTE B  La máquina de pausa pura -pausaToma.ts- y el botón y el tacho pasando por ella.
+  PARTE C  Los tramos en la toma -sidecar, índice, recuperación-.
+  PARTE D  Tramos y subtítulos, puros -tramos.ts y subtitulos.ts-.
+  PARTE E  Guardar cortando -receta con tramos, Composition en Java-, con y sin subtítulos.
+  PARTE F  El visor que salta los cortes.
+  PARTE G  Lo visible de "en pausa", según la lámina aprobada.
+  PARTE H  Pruebas completas, la versión de Play y el criterio de éxito.
+
+==============================================================================
+REGLAS DE LA CASA -las mismas de la 87-
+==============================================================================
+1. COMENTARIOS CON TILDES Y SIN BORRAR NINGUNO. Todo comentario nuevo va en español con tildes
+   y eñes. Ningún comentario existente se borra ni se acorta: si algo cambia, el comentario viejo
+   queda y se le agrega debajo, con fecha, el porqué -por ejemplo, el de la fila de pausa de la
+   tarea 85, App.tsx :1378-1386, queda entero; debajo va el de la máquina-. Cuenta las líneas de
+   comentario de cada archivo que toques antes y después -git diff --stat no basta- y pon las
+   cifras en el PR.
+2. SIN DEPENDENCIAS NUEVAS. package.json y package-lock.json no cambian -ni dependencias, ni
+   versiones, ni scripts-. Android: nada nuevo en build.gradle. Media3 1.9.0 -transformer, effect,
+   common, build.gradle:212-214- ya trae ClippingConfiguration, EditedMediaItemSequence y
+   Composition -plan 2, 1.5, comprobado con javap-.
+3. PRUEBAS QUE SE ROMPEN A PROPÓSITO. Cada prueba nueva se verifica así: primero rompes el código
+   a propósito -la línea exacta que esa prueba cuida, la que dice este encargo-, corres la prueba
+   y la ves FALLAR; anotas el mensaje; deshaces la rotura y la ves pasar. En el PR, una tabla:
+   prueba / qué rompiste / mensaje del fallo. Una prueba que nunca se vio fallar no cuenta.
+4. LO QUE NO CALCE SE DESCRIBE. Si un archivo, una línea, una función, una medida o algo de la 87
+   no es como dice este encargo, no lo arregles a tu manera: escríbelo en el PR -qué esperabas,
+   qué encontraste, qué propones- y sigue con lo que no dependa de eso.
+5. NO SE TOCA capgo. NO SE TOCA LA APK DE PLAY más que por el código común. La APK de prueba se
+   sigue construyendo y poniendo en el teléfono exactamente igual: npm run apk -- poner telefono
+   -tarea 84, REGLA MADRE-.
+6. LAS PRUEBAS DE HOY NO SE TOCAN. src/pruebas/tarea85.test.tsx -T85b y T85d, la fila de pausa-,
+   tarea70.test.tsx -h, i y j, el tacho-, tarea38.test.tsx -:133 y :204, btn-pausa-lectura-,
+   tarea75.test.tsx, tarea82.test.tsx, subtitulos.test.ts -los siete casos, :27 a :111-,
+   subtitulosVisor.test.tsx, corteVideo.test.ts, tomasSinVideo.test.ts, las de la 87 y todas las
+   demás quedan en verde SIN modificarlas, y no se mueven umbrales.
+7. LA GUARDIANA T209 -src/pruebas/tarea46.test.tsx:18, lista desde :20-: todo componente NUEVO
+   entra a la lista y no escribe colores, letras, espacios ni radios a mano: solo variables de
+   styles.css. Igual que en la 87: ReproductorGrabacion.tsx NO está en la lista y escribe colores
+   a mano -#111111 de la raíz-; no lo agregues ni lo limpies aquí.
+8. HERRAMIENTAS DE DIAGNÓSTICO SOLO EN LA APK DE PRUEBA. Todo lo del paso 0-B vive detrás de
+   HERRAMIENTAS -src/lib/herramientas.ts:16, VITE_HERRAMIENTAS: .env.android:5 =1, .env.play:6
+   =0-. En Java, las líneas de logcat solo si la app es depurable -FLAG_DEBUGGABLE, como el #64-.
+9. LOS COMMITS VAN FIRMADOS CON javierarriagada-cmyk <javierarriagada-cmyk@users.noreply.github.
+   com> -autor y committer-. Antes de empujar: git log -1 --format='%an <%ae> | %cn <%ce>'.
+10. LA PRIMERA MITAD NO ADELANTA LA SEGUNDA. Lo que es de los gestos -la entrada 'gesto', el
+   'tic', manoBajada, el plazo de 5 s- no se programa "por si acaso": queda DESCRITO aquí, en la
+   PARTE B, para que la segunda mitad lo sume sin cambiar lo que esta deja.
+
+==============================================================================
+DECISIONES YA TOMADAS -DT1 a DT6; Javier y Claude, 03-10-2026; no se reabren-
+==============================================================================
+  DT1. La pausa SIGUE APAGANDO LA VOZ, como hoy -stop() en la fila de filaPausaRef; seguir hace
+      start()-. Responde la P3 del plan 2.
+  DT2. Con el botón, el margen es 0 s ANTES de la pausa y 1 s DESPUÉS de la reanudación.
+      Responde la P4 del plan 2 -"el dedo en la pantalla no sale en cuadro"-.
+  DT3. Sin parchar capgo. La pausa marca TRAMOS que se cortan al guardar -plan 2, alternativa A-.
+  DT4. Es para todos: sin interruptor y sin premium. Los gestos van después y son premium.
+  DT5. Guardar con cortes RECODIFICA aunque sea sin subtítulos -hoy "No" es copia-: Javier lo
+      aceptó en el plan 2 -sección 13-. El tiempo de más lo mide el 0-B.
+  DT6. Lo que se ve "en pausa" mientras se graba se decide con un BOCETO que Javier aprueba antes;
+      el boceto es el piso de la implementación.
+
+==============================================================================
+LO QUE HAY HOY -verificado en 71166e5; cítalo así en tus comentarios-
+==============================================================================
+La pausa y el tacho -src/App.tsx-:
+  - enPausa :749 y confirmandoDescarte :750 -useState-.
+  - setEnPausa(false) en handleStart :908, en handleDescartarToma :1189 y en handleStop :1226.
+  - cortarTomaSiHay :1166-1180. handleDescartarToma :1186-1206 -cancelarCuentaRegresiva,
+    cortarTomaSiHay(false), stop, detenerGrabacion, soltarWakeLock, borrarGrabacionEnDisco,
+    repo.borrar, aviso tomaDescartada-. handleStop :1223-1239 -termina en setGrabacionAbierta-.
+  - appStateChange :1247: a segundo plano, cortarTomaSiHay(true) :1249.
+  - Comentario de la fila de pausa -tarea 85- :1378-1386; filaPausaRef :1387; handleTogglePausa
+    :1388-1394: paso = enPausa ? start : stop; setEnPausa(!enPausa); en fila con filaPausaRef.
+  - Riel izquierdo con enRiel('izquierdo', (!conCamara || enPausa)) :1643. btn-salir-lectura solo
+    sin cámara.
+  - btn-descartar-toma :1676-1724, solo con conCamara && enPausa: primer toque
+    setConfirmandoDescarte(true) :1688; segundo, setConfirmandoDescarte(false) y
+    handleDescartarToma :1690-1691; data-confirmando :1681; ancho 96 con "¿Seguro?" y 40 sin
+    :1706; color --color-grabando. Hoy el "¿Seguro?" NO tiene plazo.
+  - btn-pausa-lectura :1730-1750: onClick hace setConfirmandoDescarte(false) :1738 y después
+    handleTogglePausa :1739. Ícono IconoPausa / IconoEmpezar -IconosApp.tsx:112 y :36-;
+    aria-label t('pausa') / t('seguir') -es.ts:147-148-.
+  - btn-parar-lectura :1769 -> handleStop.
+  - TeleprompterView :1809, con grabandoVideo={grabandoVideo} :1832.
+  - La pausa existe también en Leer -sin cámara-: ahí no hay toma -tarea70.test.tsx, caso j-.
+La toma -src/lib/tomaVideo.ts-:
+  - MS_HEARTBEAT :36. SesionToma :38-52, con inicioVideoEpochMs :51 -SOLO en la sesión y en la
+    cabecera del registro, "# inicio del video (epoch ms)" :243; NO va al sidecar-.
+  - persistirSidecar :68. iniciarTomaVideo :83: sidecarInicial con creado = Date.now() ANTES de
+    empezar a grabar; inicioVideoEpochMs = 0 :120 y = Date.now() DESPUÉS de empezarGrabacionVideo
+    :137 -el error es lo que tarda la cámara en empezar a escribir, dice su comentario-.
+  - Heartbeat :140-144: milisegundos = Date.now() - creado :142 y persistirSidecar :143.
+  - cortarTomaVideo :149: milisegundos :155; analizarVideo :214; extraerMiniatura(…, 1000) :224;
+    cabecera del registro :238-245; milisegundos = analisis.duracionMs :255; persistirSidecar
+    :259; grabacionNueva :261.
+  - recuperarTomasPendientes :290: analizarVideo :367/:386, extraerMiniatura(…, 1000) :397,
+    grabacionNueva :409 con duracionMs = analisis.duracionMs || s.milisegundos :414, sidecar
+    :429-431.
+  - El cero del registro del motor y de los subtítulos es inicioVideoEpochMs: los subtítulos están
+    en el reloj del ARCHIVO -con el error de :137-. Los tramos van en ESE MISMO reloj.
+El sidecar y el índice:
+  - src/lib/sidecar.ts: SidecarToma :12-26 -SIN campo de versión; calidad :25-; sidecarInicial
+    :28-49; marcarLista :56; marcarIncompleta :60; parsearSidecar :107-124, campo por campo -lo
+    que no copia, se pierde; calidad :124-.
+  - src/datos/modelo.ts: ResumenGrabacion :117-137 -galeriaUri :134, estiloGaleria :136-;
+    grabacionNueva :139-155, campo por campo. IndexedDB DB_VERSION = 2 -src/datos/abrirDb.ts:9-.
+Los subtítulos -src/lib/subtitulos.ts-:
+  - PalabraSubtitulo :34, Subtitulo :40, MAX_LETRAS_RENGLON :49, PAUSA_QUE_CORTA_MS 450 :51,
+    MAX_MS_SUBTITULO 5000 :52, SE_QUEDA_MS 600 :55. armarSubtitulos :104 termina en return
+    cortarEnSubtitulos(palabras) :199. partirEnRenglones :207. cortarEnSubtitulos :228, PRIVADA:
+    corta por cierra/pausa/noCabe/muyLargo/coma -:233-239-; las ATADAS pasan al siguiente solo si
+    !cierra y pausa <= 450 -:242-244-; cada subtítulo dura hasta min(siguiente, última + 600)
+    -:254-261, hastaMs :258-. subtituloEn :295.
+  - src/pruebas/subtitulos.test.ts: siete casos -:27, :51, :61, :80, :93, :101, :111-.
+El visor -src/components/ReproductorGrabacion.tsx-:
+  - Controles propios :66-88: reproduciendo, actual y total -total = duracionMs / 1000, y
+    video.duration en loadedmetadata :75-; timeupdate -> setActual(video.currentTime) :74/:79.
+    alternarVideo :89-99.
+  - guardada = !!grabacion.galeriaUri :106; estiloVisible :109. handleGuardar :114-150:
+    conSubtitulos :118; guardarEnGaleriaConSubtitulos o guardarEnGaleria :120-122; borrarArchivo
+    del original :131 -UNA SOLA COPIA POR TOMA, comentario :124-129-; onCambio :135.
+  - <video> :181, CapaSubtitulos :182. Barra: formatearSegundos(actual) :193; input avance-toma
+    :194-209 -max = total, step 0.1, onChange pone video.currentTime = s :203-207-;
+    formatearSegundos(total) :210.
+  - src/components/SubtitulosVisor.tsx: CapaSubtitulos :32; su bucle :60-82 -requestAnimationFrame
+    mientras reproduce, más 'seeked' y 'timeupdate'; SOLO si estilo !== 'no' :63-.
+  - src/pruebas/subtitulosVisor.test.tsx :12-26 finge guardarEnGaleria y
+    guardarEnGaleriaConSubtitulos y anota sus argumentos.
+El guardado nativo -android/app/src/main/java/com/sigoteleprompter/app/-:
+  - CamaraNativaPlugin.guardarConSubtitulos :399 -comentario :390-393-: UN EditedMediaItem
+    :431-436 con OverlayEffect(CapaDeSubtitulos); Transformer :448; copiarAGaleria :363 y :456;
+    avance "progresoGuardado" :486. En la 87 esto pasa a exportarToma + ExportadorDeTomas.
+  - CapaDeSubtitulos.getBitmap(presentationTimeUs) :109: ms = presentationTimeUs / 1000 :110 y
+    busca el subtítulo de ese ms. Los tiempos que recibe TIENEN que estar en el reloj en que le
+    llegan los cuadros -plan 2, 1.5-. En una secuencia de trozos ese reloj no se conoce: 0-B.
+Lo que se ve al grabar:
+  - punto-grabando -TeleprompterView.tsx:1137-1150, comentario :1130-1136-: punto de 10 px a la
+    izquierda de la pausa, solo con grabandoVideo. styles.css:1361-1370: --color-grabando
+    -#E11D2E, styles.css:14/:90/:124- con box-shadow rgba(225, 29, 46, 0.85). HOY NO CAMBIA EN
+    PAUSA: en pausa solo cambia el ícono de btn-pausa-lectura y aparece el tacho.
+  - Piezas que hay: .btn-flotante-40 -styles.css:482-520-, IconoPausa, IconoEmpezar, IconoTacho
+    -IconosApp.tsx:153-, AvisoBreve -role status, aria-live polite-, .texto-meta :238, el pulso
+    pulsoEmpezar :1138 con su prefers-reduced-motion :1153, textos es.ts: seguro :16,
+    tomaDescartada :91, descartarToma :146, pausa :147, seguir :148, grabando :151.
+  - Respuesta táctil: haptica.ts -hapticaToqueMedio :96, etc.-. Hoy la pausa por botón no vibra.
+
+==============================================================================
+PASO 0-B - MEDIA3 CON TRAMOS, MEDIDO EN EL MOTO G86, ANTES DE PROGRAMAR LOS CORTES
+==============================================================================
+Es una tarea propia: se programa y se entrega en un PR APARTE Y PRIMERO -rama tarea88-paso0-
+tramos, desde main actualizado, con la 87 ya en main-. Es código de diagnóstico, detrás de
+HERRAMIENTAS -regla 8-, y NO lleva nada de las partes B a H. Responde la P8 del plan 2 y las
+preguntas del 0-B -plan 2, sección 11-. Se suma al panel "Medición / Exportación" del #64
+-PanelMediciones.tsx, botón btn-abrir-mediciones en PanelDiagnostico- con eventos SigoExport
+NUEVOS, en el mismo formato v=1 -VERSION_FORMATO, medicionesExport.ts-.
+
+QUÉ HAY QUE SABER -sin esto, la PARTE E no se puede escribir-
+  Q1. EL RELOJ DE LA CAPA. En una Composition con UNA EditedMediaItemSequence de N trozos del
+      mismo archivo -cada uno con su ClippingConfiguration-, ¿qué presentationTimeUs le llega a
+      CapaDeSubtitulos.getBitmap :109?
+        MODO_1: una sola capa en los efectos de la Composition -Composition.Builder.setEffects-.
+                ¿Llega el reloj de la SALIDA -0 a duración final, continuo-?
+        MODO_2: una capa por trozo, en los Effects de cada EditedMediaItem. ¿Llega el reloj de
+                cada trozo -desde 0-, el del archivo -desde el inicio del corte- o el de la
+                salida?
+      Si MODO_1 da el reloj de la salida, es el elegido -una capa, subtítulos en reloj de salida-.
+  Q2. LAS UNIONES. ¿El corte cae en el cuadro pedido -ClippingConfiguration sin
+      setStartsAtKeyFrame, recodificando-? ¿O en el keyframe anterior? ¿Hay un cuadro repetido,
+      negro o congelado en la unión? ¿El audio chasquea en la unión?
+  Q3. EL TIEMPO. ¿Cuánto más tarda guardar con 1, 3 y 10 trozos que la pasada de hoy, sobre la
+      misma toma? Y sin capa -estilo "No" con cortes, DT5-: ¿cuánto tarda contra la copia de hoy?
+  Q4. EL ARCHIVO. ¿La salida tiene audio en todo su largo, la duración esperada -suma de los
+      trozos- ± 1 cuadro, la misma resolución y rotación que la entrada?
+  Q5. EL TROZO MÁS CORTO. ¿Qué pasa con un trozo de 1 cuadro -~33 ms- o de 100 ms? ¿Falla, se
+      salta o sale? Fija MS_TRAMO_MINIMO -PARTE D-.
+
+0B-1  EL ENSAYO DE TRAMOS, NATIVO -solo diagnóstico-
+  Archivos: CamaraNativaPlugin.java, CapaDeSubtitulos.java, MedicionExport.java -los del #64-.
+  - @PluginMethod NUEVO medirTramos(call): { ruta: string; tramosMs: string -"a-b,c-d", en ms del
+    archivo-; modo: 'modo1' | 'modo2' | 'sincapa'; subtitulos: string -JSON, el del 0-B2- }.
+    Solo si FLAG_DEBUGGABLE; si no, call.reject. En un Thread, como guardarConSubtitulos.
+  - Arma con Media3 lo que dice la sección 8 del plan 2 -SIN tocar ExportadorDeTomas ni
+    exportarToma: es un prototipo aparte, para que lo medido no dependa del código de la parte E-:
+        para cada [a, b]: MediaItem con ClippingConfiguration setStartPositionMs(a)
+          .setEndPositionMs(b); EditedMediaItem -en modo2, con sus Effects y SU capa-.
+        EditedMediaItemSequence.Builder(items).build()
+        modo1: Composition.Builder(seq).setEffects(new Effects(of(), [OverlayEffect(capa)]))
+        sincapa: Composition.Builder(seq) sin efectos.
+        Transformer con el MISMO codificador y 12 Mbps que guardarConSubtitulos -:446 hoy; en la
+        87, lo que use exportarToma-; Transformer.start(Composition, salida); copiarAGaleria.
+    La rotación de la capa, como hoy -:408-418-. La copia queda anotada para borrar -
+    anotarCopiaDeMedicion / btn-borrar-copias-medicion del #64-.
+  - Si alguna de esas llamadas no existe o no compila en 1.9.0, NO se cambia de versión: se anota
+    el error exacto y se describe -regla 4-.
+  - CapaDeSubtitulos, en modo medición -medirCon del #64, con un id- anota además, por instancia:
+    el primer y el último presentationTimeUs que vio, cuántos cuadros, cuántos SALTOS -un paso
+    entre dos cuadros seguidos menor que 0 o mayor que 100 ms- y el salto más grande. NO una línea
+    por cuadro: el registro tiene tope de 5000 -MAX_LINEAS_REGISTRO-.
+0B-2  LOS SUBTÍTULOS DE PRUEBA -que delatan el reloj a simple vista-
+  - src/lib/medicionesExport.ts: export function subtitulosDeReloj(duracionMs: number):
+    Subtitulo[] -puro-: un subtítulo por segundo del ARCHIVO, texto "a 00:12", desdeMs = 12000,
+    hastaMs = 13000. Quemados en MODO_1, si la capa recibe el reloj de la salida, después de cada
+    corte el texto se ATRASA: muestra un número menor que el cronómetro de la imagen; si recibe
+    el del archivo, calza con el cronómetro.
+  - export function tramosDePrueba(duracionMs: number, cortes: number): Array<[number, number]>
+    -puro-: los que QUEDAN alrededor de `cortes` cortes de 2000 ms repartidos parejo -el corte i
+    empieza en (i + 1) * duracionMs / (cortes + 1)-. Con cortes = 0, un solo trozo [0, duración].
+    Lo de 2000 ms y el reparto parejo son de este ensayo, no del producto.
+0B-3  EL PANEL -PanelMediciones.tsx, del #64-
+  - Por toma, al lado de btn-medir-forma-<id> y btn-medir-guardado-<id>, una fila "Tramos" con:
+    btn-medir-tramos-modo1-<id>, btn-medir-tramos-modo2-<id>, btn-medir-tramos-sincapa-<id> y un
+    selector de cuántos cortes -sel-cortes-tramos-<id>: 0, 2 y 9 -> 1, 3 y 10 trozos-. Mismas
+    piezas que los botones del #64; nada de estilos nuevos.
+  - ENSAYOS -medicionesExport.ts- suma 'tramos-crono-1min': una toma de 1 min, VERTICAL, con un
+    cronómetro con décimas visible en cuadro -otro teléfono- y contando en voz alta del 1 al 60.
+    El nombre es propuesta; si Claude prefiere otro, se cambia antes de programar.
+0B-4  LOS EVENTOS NUEVOS -formato v=1; los de hoy NO cambian ni de claves ni de orden-
+  Se suman a EVENTOS -medicionesExport.ts- y se arman en Java con el mismo orden, con
+  MedicionExport.linea. Clave que no viene: NA, como hoy. Unidad en el nombre de la clave.
+    evento=tramos_inicio  id modo trozos tramos_ms dur_toma_ms dur_esperada_ms rot_grados
+                          bytes_entrada
+        modo: modo1 | modo2 | sincapa. tramos_ms: "a-b,c-d" en ms del archivo -sin espacios-.
+        dur_esperada_ms: suma de (b - a).
+    evento=tramos_reloj   id modo capa primer_pts_ms ultimo_pts_ms cuadros saltos
+                          salto_max_ms
+        Una línea por instancia de CapaDeSubtitulos -capa = 0 en modo1; 0..N-1 en modo2-, al
+        terminar. Es lo que responde Q1.
+    evento=tramos_fin     id modo resultado msTransformer msCopia msGuardado dur_salida_ms
+                          dur_esperada_ms dif_ms bytes_salida cuadros bitrate_salida_bps
+                          error
+        dur_salida_ms con MediaMetadataRetriever sobre la salida, como evento=forma del #64.
+        dif_ms = dur_salida_ms - dur_esperada_ms. Tiempos con nanoTime, como guardado_inicio/fin.
+  Ejemplo -la forma, no cifras-:
+    SigoExport v=1 evento=tramos_inicio t_ms=1791234567890 id=toma-abc modo=modo1 trozos=3
+      tramos_ms=0-18000,20000-38000,40000-61200 dur_toma_ms=61200 dur_esperada_ms=57200
+      rot_grados=90 bytes_entrada=91234567
+  OJO, PUEDE NO CALZAR: si el #64 entró a main con otros nombres de evento, de clave o de
+  función -lineaDeEvento, EVENTOS, MedicionExport.linea-, mandan los de main; se anota. Si el
+  panel del #64 no entró a main, el 0-B NO se arma por su cuenta: se describe y se espera.
+0B-5  PRUEBAS DEL PASO 0-B
+  Vitest -src/pruebas/tarea88-paso0.test.ts-:
+    'tramosDePrueba con 0 cortes es la toma entera'. Rotura: devolver [] con 0 cortes.
+    'tramosDePrueba con 2 cortes deja 3 trozos que suman la duración menos 4000'. Rotura: corte
+      de 1000 ms.
+    'subtitulosDeReloj pone un subtítulo por segundo con su hora'. Rotura: desdeMs en segundos.
+    'lineaDeEvento tramos_fin deja NA en lo que falta y respeta el orden'. Rotura: cambiar el
+      orden de dif_ms y dur_esperada_ms en EVENTOS.
+    'los eventos de hoy no cambiaron' -equipo, camara, ensayo, forma, guardado_inicio, capa,
+      guardado_fin, copias_borradas con las mismas claves, en el mismo orden-. Rotura: sumar una
+      clave a capa.
+  JUnit -android/app/src/test/java/com/sigoteleprompter/app/MedicionExportTest.java si el #64 la
+  dejó; si no, nueva-: 'lineaTramosRelojLlevaLasClavesEnOrden'. Rotura: invertir dos claves.
+  Las pruebas del #64 quedan verdes sin tocarlas.
+0B-6  LAS MEDICIONES EN EL MOTO G86 -las hace Javier; se marca el ensayo antes de grabar-
+  1. Ensayo 'tramos-crono-1min'. Con esa toma: modo1, modo2 y sincapa, cada uno con 0, 2 y 9
+     cortes -nueve guardados-. Además, la pasada de hoy -btn-medir-guardado-<id>- para comparar.
+  2. Por cada guardado, Javier abre la copia en la galería y mira las uniones -con el cronómetro
+     se ve si falta o sobra algo-; escucha con audífonos si chasquea. Lo anota en el ensayo -o en
+     el PR- en una línea por guardado: "modo1 3 trozos: uniones limpias / chasquido en la 2".
+  3. Copia el registro del panel y lo pega en el PR. Claude lo lee y responde Q1 a Q5. Si
+     hace falta ver cuadros, Claude saca la copia con adb y la mira con ffprobe/ffmpeg en su caja
+     -fuera del teléfono y del repositorio-.
+  4. btn-borrar-copias-medicion al final.
+  TERMINADO EL 0-B CUANDO: Claude dejó en el PR, con cifras, qué modo se usa -o que ninguno
+  sirve-, la precisión del corte, si hay chasquido, el tiempo con 1/3/10 trozos y el
+  MS_TRAMO_MINIMO. SI NINGÚN MODO DA UN RELOJ CONOCIDO, o el audio chasquea siempre, la PARTE E
+  se detiene y se describe: no se inventa un arreglo -fundidos, otro codificador, otra versión-.
+
+==============================================================================
+PARTE A - EL BOCETO DE "EN PAUSA", Y LA APROBACIÓN -antes de programar lo visible-
+==============================================================================
+Tu boceto y su hoja de medidas SON EL PISO: la implementación -PARTE G y la barra del visor de
+la PARTE F- no puede quedar por debajo de lo que Javier apruebe. Responde la P9 del plan 2.
+
+A1  EL PROBLEMA
+  Hoy, en pausa con la cámara, el punto rojo -punto-grabando- sigue igual, y lo único que cambia
+  es el ícono del botón -IconoPausa -> IconoEmpezar- y que aparece el tacho. Con esta tarea, lo
+  de la pausa NO queda en la toma guardada, pero la cámara sigue grabando: el punto rojo fijo dice
+  "esto queda" y ya no es cierto. La persona tiene que entender, de lejos y de un vistazo:
+  "estoy en pausa; lo de ahora no va a salir".
+A2  CON LAS PIEZAS QUE YA HAY -nada de estilos nuevos sin decirlo-
+  - punto-grabando -TeleprompterView.tsx:1137-1150, styles.css:1361-1370-, --color-grabando.
+  - btn-pausa-lectura y btn-descartar-toma -.btn-flotante-40, IconoPausa, IconoEmpezar,
+    IconoTacho; el "¿Seguro?" de 96 px-.
+  - AvisoBreve -role status-, .texto-meta, --color-apagado, el pulso pulsoEmpezar
+    -styles.css:1138- con su prefers-reduced-motion -:1153-.
+  - Tokens -styles.css:1-43, tema claro [data-tema="claro"] :72, oscuro [data-tema="oscuro"]
+    :109-; textos de es.ts y en.ts.
+  Propón OPCIONES, no una sola, y no decidas: Javier elige. Por ejemplo -son ideas para la
+  lámina, no decisiones-:
+    O1. El punto rojo se vuelve HUECO -solo el borde, --color-grabando- mientras está en pausa.
+    O2. El punto rojo cambia por dos barritas de pausa del mismo rojo y tamaño.
+    O3. El punto rojo PALPITA lento -pulsoEmpezar con --pulso-empezar: var(--color-grabando)-;
+        quieto con prefers-reduced-motion.
+    O4. Cualquiera de las anteriores más una línea chica "En pausa · esto no queda en la toma"
+        -.texto-meta- junto al punto, que desaparece al seguir. Texto propuesto, no decidido.
+    O5. Al pausar, un AvisoBreve "En pausa: esto no queda en la toma" -lo lee TalkBack- y al
+        seguir, nada.
+  Si una opción necesita una clase nueva -por ejemplo .punto-grabando.en-pausa-, dilo en la hoja
+  de medidas: cuál, por qué, y con qué variables. Ningún color a mano.
+  Lugar: el punto queda donde está -arriba a la derecha, a la izquierda de la pausa; en
+  horizontal, en el riel derecho de la tarea 82, TeleprompterView.tsx:1144-1149-. Nunca sobre el
+  texto que se lee.
+A3  LOS ESTADOS QUE MUESTRA LA LÁMINA -cada uno en tema OSCURO y en tema CLARO-
+    1. Grabando -como hoy-.
+    2. En pausa -cada opción de A2, una al lado de la otra-.
+    3. En pausa con el tacho en "¿Seguro?".
+    4. Los estados 1 y 2 con el teléfono ACOSTADO -los rieles de la tarea 82-.
+    5. El visor de una toma recién grabada CON CORTES: la barra con la duración FINAL. Propón si
+       la barra marca o no las uniones -O6: sin marcas, como hoy; O7: una rayita fina por unión,
+       --color-borde-. Javier elige.
+    6. Lo mismo, guardando -el avance de hoy, es.ts guardando :74 y guardandoAvance :75-.
+  Teléfono vertical 1080x2400 -moto g86-.
+A4  QUÉ SE ENTREGA Y DÓNDE -docs/pantallas/tarea88/-
+    boceto-pausa-oscuro.png y boceto-pausa-claro.png   los seis estados, una hoja cada uno.
+    medidas-implementacion.md   por cada pieza: clase o componente de origen con archivo:línea,
+                                variable de cada color, letra, aire y radio, y texto exacto en
+                                es y en.
+    app-hoy-oscuro.png, app-hoy-claro.png   capturas de la app REAL de hoy en los estados 1, 2, 3
+                                y 5 -hoy el 5 es la toma sin cortes-, para que se vea qué cambia.
+    lamina-aprobacion.png       hoy al lado del boceto, estado por estado, los dos temas.
+    herramientas/               los guiones que generan las capturas y las láminas.
+  Cómo, igual que en la tarea 82 -docs/pantallas/tarea82/herramientas/- y la 87: vite dev en
+  127.0.0.1:5182 y puppeteer-core desde una carpeta FUERA del repo -/workspace/tp-shot-, nunca en
+  package.json; el tema se fija con localStorage teleprompter_ajustes { tema } y
+  teleprompter_oscuro_impuesto, como esos guiones. El boceto se hace con la app real cuando se
+  pueda -componentes de hoy montados con datos fingidos-, no dibujado a mano. La cámara no existe
+  en el navegador: el fondo de la toma va fingido, como en la tarea 82; dilo en la hoja.
+  Javier aprueba mirando lamina-aprobacion.png. Su elección y sus cambios se anotan en
+  medidas-implementacion.md con fecha, y esa versión es el piso.
+  El boceto va en un PR propio -o en el del 0-B, si Javier prefiere-: NO junto con el código.
+
+==============================================================================
+PARTE B - LA MÁQUINA DE PAUSA, PURA, Y EL BOTÓN Y EL TACHO PASANDO POR ELLA
+==============================================================================
+B1  src/lib/pausaToma.ts -NUEVO, TypeScript puro: sin React, sin Capacitor, sin Date.now()-
+  Sale del plan 2, sección 5, RECORTADO a esta mitad: solo alternar y tacho. Lo de los gestos
+  -la entrada 'gesto', el 'tic', manoBajada, el plazo de 5 s, guardarYSalir y cancelarBorrado-
+  NO se escribe ahora -regla 10-; va descrito en B4 para que la segunda mitad lo sume.
+  TIPOS Y FIRMAS
+    // De dónde vino la orden. Hoy solo llega 'boton'. 'palma' es la segunda mitad -premium-;
+    // 'control' es un control Bluetooth que todavía no se construye. Van declarados desde ya
+    // porque el origen queda escrito en el sidecar -PARTE C- y su forma no debe cambiar después.
+    export type OrigenPausa = 'boton' | 'palma' | 'control'
+    export const ORIGENES_PAUSA: readonly OrigenPausa[] = ['boton', 'palma', 'control']
+    export type EstadoPausa =
+      | { tipo: 'grabando' }
+      | { tipo: 'pausada'; desdeMs: number; origen: OrigenPausa }
+      | { tipo: 'confirmando'; desdeMs: number; origen: OrigenPausa; pedidoMs: number }
+    export type Entrada =
+      | { tipo: 'alternar'; origen: OrigenPausa; tMs: number }  // el botón hoy; el control mañana
+      | { tipo: 'tacho'; tMs: number }                          // btn-descartar-toma
+    export type Accion =
+      | { tipo: 'pausar'; desdeMs: number; origen: OrigenPausa }  // abre el tramo y apaga la voz
+      | { tipo: 'reanudar'; hastaMs: number }                      // cierra el tramo y la prende
+      | { tipo: 'pedirConfirmacion' }                              // el tacho pasa a "¿Seguro?"
+      | { tipo: 'borrar' }                                         // handleDescartarToma
+    export const ESTADO_INICIAL: EstadoPausa = { tipo: 'grabando' }
+    export function paso(e: EstadoPausa, en: Entrada): { estado: EstadoPausa; acciones: Accion[] }
+    export const estaEnPausa = (e: EstadoPausa): boolean => e.tipo !== 'grabando'
+    export const estaConfirmando = (e: EstadoPausa): boolean => e.tipo === 'confirmando'
+  Los nombres estaEnPausa y estaConfirmando -no enPausa y confirmandoDescarte, como dice el plan-
+  son para no chocar con las constantes de App.tsx que derivan de ellos -B2-.
+  Los tMs llegan en epoch -Date.now() en App-; la máquina no los convierte. El reloj del video
+  -restar inicioVideoEpochMs- lo pone tomaVideo.ts -PARTE C-.
+  DIAGRAMA -esta mitad-
+                               alternar(cualquier origen)
+                               -> pausar(desdeMs = tMs, origen)
+          +------------+ ----------------------------------------> +---------------------+
+          |  GRABANDO  |                                           |  PAUSADA            |
+          |            | <---------------------------------------- |  desdeMs, origen    |
+          +------------+         alternar -> reanudar(tMs)          +---------------------+
+              ^   tacho: NADA                                          |            ^
+              |   -no se ve-                                           | tacho      |
+              |                                                        | -> pedir   |
+              |                                                        v Confirm.   |
+              |          alternar -> reanudar(tMs)            +---------------------+
+              +---------------------------------------------- |  CONFIRMANDO        |
+                                                              |  desdeMs, origen,   |
+                                                              |  pedidoMs           |
+                                                              +---------------------+
+                                                                tacho -> borrar; el estado
+                                                                vuelve a GRABANDO -la toma
+                                                                ya no existe-
+  REGLAS
+  - alternar en GRABANDO: PAUSADA con desdeMs = tMs y el origen recibido; acción pausar.
+  - alternar en PAUSADA o CONFIRMANDO: GRABANDO; acción reanudar con hastaMs = tMs. Desde
+    CONFIRMANDO también deja la confirmación -hoy btn-pausa-lectura hace setConfirmandoDescarte
+    (false) y reanuda, App.tsx:1738-1739-.
+  - tacho en PAUSADA: CONFIRMANDO con pedidoMs = tMs; acción pedirConfirmacion. Sin plazo: como
+    hoy, el "¿Seguro?" del tacho se queda hasta el segundo toque o hasta seguir.
+  - tacho en CONFIRMANDO: acción borrar; estado GRABANDO -como hoy, setConfirmandoDescarte(false)
+    :1690 antes de handleDescartarToma-.
+  - tacho en GRABANDO: nada -el tacho solo se ve en pausa; si llega igual, no hace nada-.
+  - El origen de la reanudación no importa en esta mitad: cualquier alternar reanuda. La regla de
+    "la palma solo reanuda pasados 3 s y con la mano bajada" es de la segunda mitad -B4-.
+  - La máquina no sabe si hay cámara: en Leer también pausa y reanuda -la voz-, y es tomaVideo.ts
+    el que no abre tramo si no hay toma.
+  - Una entrada que no cambia nada devuelve EL MISMO objeto de estado -para no re-dibujar-.
+B2  LA CONEXIÓN EN App.tsx -sin cambiar props, testid ni lo que se ve-
+  Archivos: src/App.tsx -:749-750, :908, :1189, :1226, :1388-1394, :1676-1724, :1730-1750-.
+  - const [estadoPausa, setEstadoPausa] = useState<EstadoPausa>(ESTADO_INICIAL) junto a :749;
+    const enPausa = estaEnPausa(estadoPausa) y const confirmandoDescarte =
+    estaConfirmando(estadoPausa). Los nombres de hoy quedan como constantes: TODO lo que hoy lee
+    enPausa o confirmandoDescarte -:1643, :1676-1724, :1730-1750 y lo que pase a TeleprompterView-
+    sigue igual.
+  - Los setEnPausa(false) de :908, :1189 y :1226 pasan a setEstadoPausa(ESTADO_INICIAL). Si al
+    parar -:1226- había una pausa abierta, la cierra cortarTomaVideo -PARTE C-, no la máquina.
+  - function despachar(en: Entrada): calcula paso() con un ref del estado -para que dos toques
+    seguidos no lean el mismo estado viejo-, setEstadoPausa y ejecuta las acciones EN ORDEN:
+      pausar    -> abrirPausa(en.tMs, origen) -tomaVideo.ts, PARTE C- y después la fila de hoy:
+                   filaPausaRef.current.then(() => stop()) -:1391, igual que hoy-.
+      reanudar  -> cerrarPausa(en.tMs) y filaPausaRef.current.then(() => start()).
+      pedirConfirmacion -> nada más: el tacho se dibuja con confirmandoDescarte, como hoy.
+      borrar    -> handleDescartarToma() -:1186-.
+    abrirPausa y cerrarPausa van ANTES de la fila: la hora es la del toque, no la de cuando la
+    voz terminó de apagarse.
+  - handleTogglePausa -:1388- queda con su nombre y su comentario y pasa a despachar({ tipo:
+    'alternar', origen: 'boton', tMs: Date.now() }), esperando el mismo turno de la fila -la T85d
+    lo cuida-. btn-pausa-lectura :1738-1739 queda llamando a handleTogglePausa; el
+    setConfirmandoDescarte(false) de :1738 ya no hace falta -lo hace la máquina-: si se quita, su
+    comentario se deja y se le agrega el porqué.
+  - btn-descartar-toma, onClick :1685-1693: los dos toques pasan a despachar({ tipo: 'tacho', tMs:
+    Date.now() }). data-confirmando, el ancho 96/40 y los textos siguen saliendo de
+    confirmandoDescarte.
+  - Respuesta táctil al pausar y seguir con el botón: hoy NO hay; NO se agrega en esta tarea
+    -pregunta abierta P7-.
+B3  PRUEBAS
+  Vitest -src/pruebas/pausaToma.test.ts, puras-:
+    'alternar grabando pausa con desdeMs = tMs y origen boton'. Rotura: desdeMs = 0.
+    'alternar en pausa reanuda con hastaMs = tMs'. Rotura: hastaMs = desdeMs.
+    'alternar con origen control pausa igual que el botón y anota control'. Rotura: origen fijo
+      'boton'.
+    'tacho en pausa pide confirmación'. Rotura: tacho en PAUSADA devuelve borrar.
+    'tacho en confirmación borra y vuelve a grabando'. Rotura: quedar en CONFIRMANDO.
+    'alternar en confirmación reanuda y deja la confirmación'. Rotura: alternar en CONFIRMANDO
+      devuelve PAUSADA.
+    'tacho grabando no hace nada y devuelve el mismo estado'. Rotura: devolver una copia.
+    'dos alternar seguidos vuelven a grabando con un tramo cerrado'. Rotura: el segundo alternar
+      repite pausar.
+  Vitest de trayectoria -src/pruebas/tarea88-pausa.test.tsx, a través de <App>, con la cámara
+  fingida como en corteVideo.test.ts:11 -@capacitor/core registerPlugin-:
+    'PAUSA POR BOTÓN ABRE Y CIERRA UN TRAMO': pausar y seguir con btn-pausa-lectura -> el último
+      sidecar escrito -CamaraNativa.escribirTexto fingido- tiene pausas [{ desdeMs, hastaMs,
+      origen: 'boton' }] con hastaMs > desdeMs >= 0. Rotura: no llamar abrirPausa en 'pausar'.
+    'EL TACHO SIGUE BORRANDO CON DOS TOQUES': pausar, tacho, tacho -> repo sin la toma y aviso
+      tomaDescartada. Rotura: 'borrar' sin despachar handleDescartarToma.
+    'EN LEER LA PAUSA NO ESCRIBE SIDECAR': sin cámara, pausar y seguir -> escribirTexto no se
+      llamó con un sidecar. Rotura: abrirPausa sin mirar si hay toma.
+  Las de hoy -tarea85 T85b y T85d, tarea70 h/i/j, tarea38 :133/:204- verdes SIN tocarlas.
+  Manual moto g86: en Grabar, pausar y seguir tres veces; el tacho con dos toques borra; en Leer,
+  pausar y seguir como hoy. La voz se apaga en la pausa y vuelve al seguir -DT1-, igual que hoy.
+B4  LO QUE SUMA LA SEGUNDA MITAD -solo descrito; NO se programa aquí-
+  - Entrada { tipo: 'gesto'; gesto: Gesto; tMs; vistoDesdeMs } y { tipo: 'tic'; tMs }, el tipo
+    Gesto, manoBajada en PAUSADA y CONFIRMANDO, pedidoPor 'tacho' | 'gesto', las acciones
+    guardarYSalir y cancelarBorrado, MS_PARA_REANUDAR_CON_PALMA 3000 y MS_PARA_CONFIRMAR_BORRADO
+    5000 -plan 2, 5.1 y 5.2-.
+  - Esas reglas se SUMAN: ninguna transición de esta mitad cambia. Un estado sin pedidoPor se lee
+    como 'tacho' -sin plazo-, que es lo de hoy.
+  - El control Bluetooth entra como alternar con origen 'control'. Cómo llega la tecla a App
+    -keydown de un control multimedia, otro plugin- NO se sabe hoy: pregunta abierta P8.
+
+==============================================================================
+PARTE C - LOS TRAMOS EN LA TOMA: SIDECAR, ÍNDICE Y RECUPERACIÓN
+==============================================================================
+C1  EL RELOJ -uno solo, el del video-
+  - Un tramo se guarda en MILISEGUNDOS DEL VIDEO: epochMs - s.inicioVideoEpochMs -tomaVideo.ts
+    :137-. Es el MISMO cero que el registro del motor -:243- y, por eso, que los subtítulos. Lo
+    que el corte deja y lo que el subtítulo dice quedan en la misma escala, con el mismo error de
+    hoy -lo que tarda la cámara en empezar a escribir, comentario de :136-.
+  - Se convierte AL ABRIR y AL CERRAR, no después: así el sidecar ya trae el reloj del video y la
+    recuperación no necesita inicioVideoEpochMs -que NO está en el sidecar, ver "lo que no
+    calza"-. Por lo mismo, NO se agrega inicioVideoEpochMs al sidecar en esta tarea.
+  - Si se pausa antes de que exista ese cero -s.inicioVideoEpochMs === 0, :120, entre iniciar y
+    :137-, el tramo empieza en 0. Si eso puede pasar de verdad -¿se ve la pausa en ese momento?-
+    lo dice la prueba manual C4; si pasa, se anota.
+  - Los márgenes de DT2 -0 s antes, 1 s después- NO se guardan en el tramo: el tramo es la pausa
+    tal cual. Los márgenes se ponen al cortar -PARTE D, tramosACortar-. Así un cambio de margen
+    no reescribe tomas viejas.
+C2  LOS CAMPOS
+  - src/lib/pausaToma.ts -o tramos.ts; uno solo, el que importe menos-:
+      export type PausaToma = { desdeMs: number; hastaMs: number | null; origen: OrigenPausa }
+      // hastaMs null = pausa abierta: la toma se cortó o murió en pausa.
+  - SesionToma -tomaVideo.ts:38-52-: nada nuevo; las pausas viven en s.sidecar.pausas.
+  - SidecarToma -sidecar.ts:12-26-:
+      version?: number            // sin campo = 1 -todas las de hoy-. Las nuevas nacen en 2.
+      pausas?: PausaToma[]        // en ms del video; la última puede estar abierta.
+    export const VERSION_SIDECAR = 2 -sidecar.ts-. sidecarInicial :28-49 pone version:
+    VERSION_SIDECAR y pausas: []. La versión 2 quiere decir: "puede traer pausas, en ms del reloj
+    del video". Una toma de versión 1 no tiene pausas: se ve y se guarda como hoy.
+  - parsearSidecar -:107-124-, con el mismo patrón campo por campo que calidad -:124-:
+      version: Number.isFinite(Number(o.version)) && Number(o.version) >= 1 ? Number(o.version) : 1
+      pausas: si o.pausas es array, cada elemento que cumpla -desdeMs número finito >= 0;
+        hastaMs null o número finito >= desdeMs; origen dentro de ORIGENES_PAUSA- se copia; los
+        demás se DESCARTAN uno por uno. Si o.pausas no es array, sin pausas.
+  - ResumenGrabacion -modelo.ts:117-137-, junto a estiloGaleria :136:
+      pausas?: Array<{ desdeMs: number; hastaMs: number; origen: OrigenPausa }>
+      // en el índice van CERRADAS: la abierta se cerró al cortar o al recuperar.
+    grabacionNueva -:139-155- lo copia. Campo opcional: NO se sube DB_VERSION -abrirDb.ts:9-, como
+    la orientación de la 87.
+  - Si la 87 ya agregó orientacion? y posicionGaleria?, van al lado; si la 87 ya puso una versión
+    al sidecar, se usa ESA y se sube en uno -se anota-.
+C3  LAS FUNCIONES -tomaVideo.ts-
+    export function abrirPausa(desdeEpochMs: number, origen: OrigenPausa): void
+    export function cerrarPausa(hastaEpochMs: number): void
+  - abrirPausa: sin sesión -Leer, o la toma ya se cortó- no hace nada. Si ya hay una abierta, no
+    abre otra -se anota en consola-. Si no: push { desdeMs: max(0, desdeEpochMs -
+    inicioVideoEpochMs -0 si no hay cero-), hastaMs: null, origen } y persistirSidecar AL TIRO
+    -:68-, además del heartbeat.
+  - cerrarPausa: sin sesión o sin una abierta, nada. Si no: hastaMs = max(desdeMs, hastaEpochMs -
+    inicioVideoEpochMs) y persistirSidecar al tiro.
+  - cortarTomaVideo -:149-: si la última está abierta, la cierra en la duración MEDIDA -
+    analisis.duracionMs || milisegundos, :255- antes de marcarLista/marcarIncompleta y del
+    persistirSidecar de :259; ninguna pausa queda con hastaMs > duración. grabacionNueva :261
+    recibe pausas. La miniatura -:224- se saca en msMiniatura(cortes, duración) -PARTE D-.
+  - recuperarTomasPendientes -:290-: con pausas del sidecar -parsearSidecar-, la abierta se cierra
+    en analisis.duracionMs || s.milisegundos -:414- y se recortan las que pasen esa duración; van
+    a grabacionNueva :409 y al sidecar de :429-431. La miniatura -:397-, igual que arriba.
+  - A segundo plano -appStateChange :1247-1249-: si la toma estaba en pausa, la corta
+    cortarTomaSiHay(true) y la pausa se cierra en la duración: al guardar, se corta desde la pausa
+    hasta el final. Es la misma regla que "se paró en pausa".
+  - quitarTomasSinVideo -:447- y borrarGrabacionEnDisco -:492- no cambian.
+C4  PRUEBAS
+  Vitest -src/pruebas/tarea88-tramos-toma.test.ts; CamaraNativa fingido como en corteVideo.test.ts-:
+    'parsearSidecar sin version es version 1 y sin pausas'. Rotura: version por omisión 2.
+    'parsearSidecar conserva pausas, también la abierta'. Rotura: no copiar pausas.
+    'parsearSidecar descarta una por una las pausas con números inválidos o con origen
+      desconocido'. Rotura: aceptar hastaMs < desdeMs.
+    'sidecarInicial nace en versión 2 con pausas vacías'. Rotura: version 1.
+    'grabacionNueva conserva pausas'. Rotura: no copiarlas.
+    'abrirPausa y cerrarPausa guardan en ms del video, restando inicioVideoEpochMs'. Rotura: guardar
+      epoch.
+    'abrirPausa sin toma no hace nada'. Rotura: sacar la guarda de sesión.
+    'abrirPausa escribe el sidecar al tiro, sin esperar el heartbeat'. Rotura: no llamar
+      persistirSidecar.
+    'cortarTomaVideo cierra la pausa abierta en la duración medida'. Rotura: cerrarla en
+      milisegundos y no en analisis.duracionMs.
+    'recuperarTomasPendientes cierra la pausa abierta en el final del archivo'. Rotura: dejarla
+      null en el índice.
+    'una toma sin pausas deja el resumen igual que hoy' -mismo objeto, campo por campo, que sin
+      esta tarea-. Rotura: poner pausas: [] en el resumen -debe quedar sin el campo-.
+  Manual moto g86 -panel "Medición / Exportación" y adb-:
+    - Toma de 30 s con dos pausas de ~3 s cronometradas: el sidecar -adb shell run-as o el que
+      muestre el panel- trae dos pausas cerradas con desdeMs y hastaMs que calzan con el
+      cronómetro ± 300 ms.
+    - Pausar justo al terminar la cuenta regresiva -lo antes posible-: anotar si desdeMs salió 0.
+    - Pausar y mandar la app a segundo plano: al volver, la toma recuperada tiene la pausa cerrada
+      en su final.
+    - Matar la app en pausa -adb shell am force-stop-: al abrir, recuperarTomasPendientes la cierra
+      en el final.
+
+==============================================================================
+PARTE D - TRAMOS Y SUBTÍTULOS, PUROS
+==============================================================================
+D1  src/lib/tramos.ts -NUEVO, puro-
+    import type { TramoMs } from './recetaExportacion'   // el de la 87; no se define otro
+    export const MARGENES_MS: Record<OrigenPausa, { antesMs: number; despuesMs: number }> = {
+      boton:   { antesMs: 0,    despuesMs: 1000 },   // DT2, decidido el 03-10
+      palma:   { antesMs: 1000, despuesMs: 1000 },   // plan 2, sección 3: la mano que sube
+      control: { antesMs: 0,    despuesMs: 1000 }    // PROVISORIO, como el botón: P8
+    }
+    export const MS_TRAMO_MINIMO = <lo fija el 0-B, Q5>
+    export function tramosACortar(pausas: PausaToma[], duracionMs: number): TramoMs[]
+    export function tramosQueQuedan(cortes: TramoMs[], duracionMs: number): TramoMs[]
+    export function duracionFinal(cortes: TramoMs[], duracionMs: number): number
+    export function aSalida(tMs: number, cortes: TramoMs[]): number | null  // null en un corte
+    export function aSalidaPegado(tMs: number, cortes: TramoMs[]): number   // en un corte: su unión
+    export function aArchivo(tSalidaMs: number, cortes: TramoMs[]): number  // la inversa
+    export function corteEn(tMs: number, cortes: TramoMs[]): TramoMs | null
+    export function msMiniatura(cortes: TramoMs[], duracionMs: number): number
+  Los cortes son intervalos MEDIO ABIERTOS [desdeMs, hastaMs): el cuadro en hastaMs se queda.
+  tramosACortar
+    cortes = []
+    para p en pausas ordenadas por desdeMs:
+      m = MARGENES_MS[p.origen]
+      desde = max(0, p.desdeMs - m.antesMs)
+      hasta = p.hastaMs === null ? duracionMs : min(duracionMs, p.hastaMs + m.despuesMs)
+      si hasta > desde: cortes.push({ desdeMs: desde, hastaMs: hasta })
+    juntar los que se tocan o se pisan -c.desdeMs <= anterior.hastaMs-
+    juntar también los que dejan entre ellos un trozo MÁS CORTO que MS_TRAMO_MINIMO: ese trozo se
+      corta -no se puede exportar, Q5-; lo mismo un trozo así al principio o al final de la toma
+    devolver ordenados
+  - Consecuencia de DT2 que hay que saber: si se pausa y se sigue al tiro, igual se corta 1 s -el
+    de después-. Y lo que se diga en ese primer segundo después de seguir SE CORTA: la voz que
+    se come lo mide la prueba manual de la PARTE E -P3-.
+  - Se paró en pausa -o se cortó, o murió-: hastaMs es la duración y el margen no suma nada: se
+    corta desde la pausa hasta el final. Es la corrección 5 del plan 2.
+  - Si los cortes cubren TODA la toma -duracionFinal 0-, no hay nada que guardar: PARTE E, E3.
+  tramosQueQuedan: el complemento en [0, duracionMs], ordenado; sin cortes, [{ 0, duracionMs }].
+  aSalida: el pseudocódigo del plan 2, 7.2 -menos = suma de los cortes que terminan antes; null
+    dentro de uno-.
+  aSalidaPegado: como aSalida, pero dentro de un corte devuelve dónde queda su unión en la salida
+    -= aSalida(corte.hastaMs) si hastaMs < duración, o duracionFinal si el corte llega al final-.
+  aArchivo: el tiempo del archivo que se ve en el instante tSalidaMs de la salida; en una unión
+    exacta, el hastaMs del corte -el primer cuadro que queda-. Nunca cae dentro de un corte.
+  msMiniatura: inicio del primer trozo que queda + min(1000, su largo / 2). Sin cortes da 1000, lo
+    de hoy -tomaVideo.ts:224 y :397-.
+D2  src/lib/subtitulos.ts -refactor sin cambio de conducta, más lo de los cortes-
+  - export function armarPalabras(registro: string): PalabraSubtitulo[] con el cuerpo de
+    armarSubtitulos -:104- hasta antes de :199. armarSubtitulos(registro) queda como
+    cortarEnSubtitulos(armarPalabras(registro)). Sus comentarios se quedan donde están: si el
+    cuerpo se mueve, el comentario se mueve con él, ENTERO.
+  - cortarEnSubtitulos -:228- recibe un segundo parámetro OPCIONAL uniones?: number[] -ms de la
+    SALIDA, ordenados-. Sin él, hace EXACTAMENTE lo de hoy. Con él, dos reglas:
+      a. cruzaUnion = hay una unión u con prev.hastaMs <= u <= x.desdeMs. Corta como un punto:
+         se suma a la condición de :239 y, como cierra, NO deja pasar las ATADAS -:243-.
+      b. el hastaMs de cada subtítulo -:258- tampoco pasa la primera unión que viene después de
+         su última palabra: min(siguiente, última + SE_QUEDA_MS, próximaUnión). Si no, un
+         subtítulo de antes de la unión se quedaría hasta 600 ms encima de lo que viene después
+         del corte. ESTO NO ESTÁ EN EL PLAN 2: se agrega aquí por lo mismo que la regla a.
+  - export function subtitulosConCortes(registro: string, cortes: TramoMs[]): Subtitulo[]
+      sin cortes: devolver armarSubtitulos(registro)          // idéntico, mismo camino
+      palabras = armarPalabras(registro)
+      quedan = []
+      para w en palabras:
+        medio = (w.desdeMs + w.hastaMs) / 2
+        si corteEn(medio, cortes): seguir                     // la palabra cae en un corte
+        quedan.push({ ...w, desdeMs: aSalidaPegado(w.desdeMs), hastaMs: aSalidaPegado(w.hastaMs) })
+      uniones = cortes.map(c => aSalidaPegado(c.desdeMs, cortes))  // sin repetidos, sin 0
+      devolver cortarEnSubtitulos(quedan, uniones)
+    Así ningún subtítulo cruza una unión y los tiempos quedan en el reloj de la SALIDA. Es lo
+    que necesita MODO_1. Si el 0-B elige MODO_2, ver PARTE E, E2.
+  - El registro del motor -<id>.motor.txt- no se toca.
+D3  PRUEBAS
+  Vitest -src/pruebas/tramos.test.ts-:
+    'el botón corta 0 antes y 1 s después de la pausa'. Rotura: antesMs 1000 para boton.
+    'la palma corta 1 s a cada lado'. Rotura: palma con los márgenes del botón.
+    'la pausa abierta corta hasta el final, sin margen'. Rotura: duracionMs + 1000.
+    'dos cortes que se tocan o se pisan se juntan'. Rotura: comparar con < en vez de <=.
+    'un trozo más corto que MS_TRAMO_MINIMO entre dos cortes se corta también'. Rotura: no
+      juntarlos.
+    'no baja de 0 ni pasa la duración'. Rotura: sacar el max(0, …).
+    'tramosQueQuedan es el complemento y suma duracionFinal'. Rotura: olvidar el último trozo.
+    'aSalida dentro de un corte es null; en hastaMs ya no'. Rotura: intervalo cerrado.
+    'aSalida después de dos cortes resta los dos'. Rotura: restar solo el último.
+    'aArchivo de aSalida devuelve el mismo instante fuera de los cortes'. Rotura: aArchivo sin
+      sumar el corte de una unión exacta.
+    'aSalidaPegado en un corte devuelve su unión'. Rotura: devolver el desdeMs del archivo.
+    'msMiniatura sin cortes es 1000; con un corte al principio, después del corte'. Rotura: 1000
+      fijo.
+  Vitest -src/pruebas/subtitulosCortes.test.ts, con el corpus toma-008a7133-palabras.motor.txt-:
+    'armarSubtitulos da lo mismo que antes': igual -toEqual- a lo que daba en 71166e5, guardado
+      como dato en la prueba. Los siete casos de subtitulos.test.ts siguen verdes. Rotura: mover
+      SE_QUEDA_MS fuera de cortarEnSubtitulos.
+    'sin cortes, subtitulosConCortes === armarSubtitulos'. Rotura: pasar uniones [] y cambiar el
+      camino.
+    'TODAS las palabras después de un corte se corren lo mismo' -trayectoria: cada palabra, no solo
+      la última-. Rotura: restar el corte solo a la primera palabra después.
+    'ningún subtítulo cruza una unión'. Rotura: quitar cruzaUnion.
+    'ningún subtítulo se queda pasada la unión siguiente'. Rotura: quitar próximaUnión de :258.
+    'en una unión no pasan "de la" al siguiente'. Rotura: dejar pasar las ATADAS con cruzaUnion.
+    'la palabra cuyo medio cae en un corte desaparece; la que solo lo roza se recorta'. Rotura:
+      mirar desdeMs en vez del medio.
+
+==============================================================================
+PARTE E - GUARDAR CORTANDO, EN LA MISMA PASADA DE MEDIA3
+==============================================================================
+E1  LA RECETA LLEVA LOS TRAMOS -src/lib/recetaExportacion.ts, de la 87-
+  - tramos = tramosQueQuedan(cortes, duracionMs) -los que QUEDAN, en ms del ARCHIVO- y
+    subtitulos = subtitulosConCortes(registro, cortes) -en ms de la SALIDA-. Sin pausas, tramos =
+    null y TODO es EXACTAMENTE lo de la 87 -que es lo de hoy-.
+  - recetaDe -87, B1- suma un campo opcional: recetaDe({ estilo, subtitulos, posicion, tramos? }).
+    Sin tramos, la misma receta de la 87, byte por byte -la prueba de la 87 lo cuida-.
+  - esCopia ya dice "nada que dibujar, cortar ni filtrar": con tramos !== null es false. Si la 87
+    no lo dejó así, se describe.
+  - validarReceta -87- ya rechaza tramos desordenados. Suma: tramos que se pisan, tramo vacío o
+    más corto que MS_TRAMO_MINIMO, tramos = [] -nada que guardar- y desdeMs < 0.
+  - La version de la receta queda en 1 si gana MODO_1: los tramos ya eran parte del contrato de la
+    87. Si gana MODO_2 y hace falta mandar los subtítulos POR TROZO -E2-, se describe y se
+    propone version 2; no se decide aquí.
+E2  JAVA -RecetaExportacion.java y ExportadorDeTomas.java, de la 87-
+  - RecetaExportacion.desdeValores -la parte pura- lee tramosMs como long[][] -o el tipo que haya
+    dejado la 87- y valida lo mismo que validarReceta: ordenados, sin pisarse, cada uno con
+    hasta > desde y dentro de la toma. desdeJson -delgado- solo lee el JSON y llama desdeValores.
+  - ExportadorDeTomas, NUEVA: Composition armar(Context ctx, File origen, RecetaExportacion r,
+    int rotacion) -o EditedMediaItem cuando no hay tramos-:
+        si r.tramosMs == null: lo de la 87, sin cambios
+        items = []
+        para [a, b] en r.tramosMs:
+          mi = new MediaItem.Builder().setUri(Uri.fromFile(origen))
+                 .setClippingConfiguration(new MediaItem.ClippingConfiguration.Builder()
+                     .setStartPositionMs(a).setEndPositionMs(b).build()).build()
+          items.add(new EditedMediaItem.Builder(mi)[ .setEffects(…) solo en MODO_2 ].build())
+        seq = new EditedMediaItemSequence.Builder(items).build()
+        MODO_1: new Composition.Builder(seq).setEffects(new Effects(of(), efectosDeVideo(ctx, r,
+                rotacion))).build()      // efectosDeVideo de la 87, ORDEN FIJO, sin cambios
+        MODO_2: una CapaDeSubtitulos por item, con SUS subtítulos corridos a su cero -los de la
+                salida entre la unión i y la i+1, menos la unión i-. El corrimiento se calcula en
+                TS -puro, con prueba- o en desdeValores; dónde, lo dice el 0-B.
+    El código elige UNO -el que diga el 0-B-; no quedan los dos. Lo mismo setStartsAtKeyFrame: el
+    0-B dice si hace falta; por omisión, no se llama.
+  - Sin subtítulos con cortes -estilo "No", o sin registro-: la misma Composition SIN capa -lo
+    que en el 0-B fue 'sincapa'-; recodifica -DT5-.
+  - CamaraNativaPlugin.exportarToma -87-: con tramos, Transformer.start(Composition, salida) en
+    vez de start(EditedMediaItem, salida); MISMO codificador, 12 Mbps, mismo avance cada 400 ms
+    -"progresoGuardado"-, mismo copiarAGaleria, mismo borrado del temporal. Devuelve recodifico
+    true. Las líneas SigoExport de la 87 -guardado_inicio/guardado_fin- siguen, con modo
+    'tramos' -valor nuevo de una clave que ya existe- y, en la APK de prueba, se suma
+    tramos_inicio/tramos_fin del 0-B con los mismos datos -para comparar con lo medido-.
+  - guardarConSubtitulos -:399- NO se toca: es el camino del APK viejo y no sabe cortar.
+  - Sin parchar capgo: todo pasa sobre el archivo ya escrito.
+E3  EL VISOR -src/components/ReproductorGrabacion.tsx y src/lib/archivosNativos.ts-
+  - cortes = guardada ? [] : tramosACortar(grabacion.pausas ?? [], grabacion.duracionMs). Una toma
+    YA GUARDADA no corta ni salta nada: su archivo es la copia de la galería, ya cortada.
+  - El visor ya lee el registro -leerTexto :55- para armarSubtitulos -:56-; se guarda también
+    el texto del registro para pasarlo a subtitulosConCortes. No se lee dos veces.
+  - handleGuardar -:114-:
+      cortes.length === 0: EXACTAMENTE lo de hoy -guardarEnGaleria o
+        guardarEnGaleriaConSubtitulos con los argumentos de hoy-. subtitulosVisor.test.tsx y las
+        de la 87 lo cuidan; esas pruebas NO tienen pausas.
+      con cortes: archivosNativos.guardarEnGaleriaConCortes(ruta, { estilo, subtitulos:
+        conSubtitulos ? subtitulosConCortes(registro, cortes) : [], tramos: tramosQueQuedan(…),
+        posicion }, alAvanzar) -NUEVA; arma recetaDe y llama exportarAGaleria, como la de la 87-.
+        Se agrega una función nueva en vez de sumar parámetros a las de hoy porque
+        subtitulosVisor.test.tsx :21-22 anota sus argumentos: así esas pruebas no cambian.
+      Con cortes, "No" TAMBIÉN pasa por guardarEnGaleriaConCortes -nunca por la copia: la copia
+      llevaría lo pausado-.
+  - Si exportarToma no existe -APK viejo-: con cortes NO se guarda la toma entera a escondidas:
+    rechaza con el motivo y el visor muestra galeriaNoSeGuardoPorque, como hoy -:144-. Texto del
+    motivo: pregunta P6. Sin cortes, lo de la 87 -cae a guardarConSubtitulos-.
+  - Si duracionFinal es 0 -todo pausado-: Guardar se deshabilita y se dice por qué -texto: P6-.
+  - Después de guardar con cortes: onCambio -:135- con lo de hoy MÁS duracionMs = duracionFinal y
+    pausas: undefined. La toma ahora apunta a la copia ya cortada: dejar las pausas haría que
+    algo -hoy o después- la cortara otra vez. Es una decisión de este encargo, con su porqué: si
+    Javier prefiere guardar las pausas -por ejemplo, como historia-, se cambia antes de programar
+    -P5-.
+  - "Guardar y compartir" -87, PARTE E- pasa por el mismo handleGuardar: corta igual.
+  - "Para redes" -87, PARTE D-: la posición viaja en la receta igual; con cortes no cambia nada.
+E4  PRUEBAS
+  Vitest -src/pruebas/tarea88-guardar.test.tsx, a través de <App>, @capacitor/core fingido como en
+  corteVideo.test.ts:11 para ver lo que llega al nativo-:
+    'LA TOMA CON PAUSAS GUARDA LOS TRAMOS QUE QUEDAN': toma con el corpus y dos pausas de botón,
+      amarillo -> exportarToma recibió tramos = complemento de tramosACortar, en ms del archivo, y
+      los subtítulos de subtitulosConCortes, en ms de la salida. Rotura: mandar los cortes en vez
+      de los que quedan.
+    'SIN PAUSAS, LA RECETA ES LA DE LA 87': tramos null y lo mismo, campo por campo, que la prueba
+      'GUARDAR CON SUBTÍTULOS PASA LA RECETA AL NATIVO' de la 87. Rotura: tramos [] sin pausas.
+    'CON PAUSAS Y SIN SUBTÍTULOS NO ES COPIA': estilo "No" -> exportarToma con estilo 'no',
+      subtitulos [] y tramos; guardarEnGaleria NO se llamó. Rotura: dejar el "No" por la copia.
+    'APK VIEJO CON PAUSAS NO GUARDA LA TOMA ENTERA': sin exportarToma -> ni guardarConSubtitulos ni
+      guardarEnGaleria; aviso galeriaNoSeGuardoPorque. Rotura: caer a guardarConSubtitulos.
+    'GUARDAR CON CORTES DEJA LA TOMA SIN PAUSAS Y CON LA DURACIÓN FINAL'. Rotura: no tocar
+      duracionMs en onCambio.
+    'UNA TOMA GUARDADA NO VUELVE A CORTAR': toma con galeriaUri y pausas -> cortes []. Rotura:
+      sacar la guarda guardada.
+  Vitest -src/pruebas/recetaExportacion.test.ts, de la 87; se SUMAN casos, no se tocan los suyos-:
+    'recetaDe con tramos no es copia aunque no lleve subtítulos'. Rotura: esCopia sin mirar tramos.
+    'validarReceta rechaza tramos que se pisan, vacíos o []'. Rotura: aceptar [].
+  JUnit -RecetaExportacionTest.java de la 87; se suman-:
+    'desdeValoresLeeTramos'. Rotura: leer hasta como desde.
+    'desdeValoresRechazaTramosQueSePisan'. Rotura: sacar esa validación.
+    'desdeValoresRechazaTramoVacio'. Rotura: aceptar hasta == desde.
+    'esCopiaConTramosEsFalso'. Rotura: esCopia sin tramos.
+  OJO, PUEDE NO CALZAR: armar() usa MediaItem, Uri y Composition, que en las pruebas locales son
+  esqueletos -como org.json, 87 B4-. Para no sumar dependencias -ni Robolectric-, lo que decide
+  -qué trozos, en microsegundos, en qué orden, con qué capa- va en un método PURO, por ejemplo
+  ExportadorDeTomas.planDeTrozos(RecetaExportacion): long[][] con su JUnit
+  'planDeTrozosDaUnTrozoPorTramoEnMicrosegundos' -rotura: ms en vez de us-, y armar() solo lo
+  traduce a Media3. Si eso no alcanza, descríbelo. Se corre con cd android && ./gradlew
+  testDebugUnitTest y el resultado va en el PR.
+  Manual moto g86 -con el panel del 0-B-:
+    - Toma de 3 min, vertical, contando en voz alta, con dos pausas de botón de ~5 s; frente a un
+      cronómetro. Guardar con amarillo: la duración de la galería -evento=forma- es duracionFinal ±
+      1 cuadro; en cada unión no se ve lo pausado; el audio no chasquea -o chasquea como dijo el
+      0-B, y eso ya se decidió-; los subtítulos van con la voz después de cada unión; ningún
+      subtítulo cruza una unión.
+    - Contar cuántas palabras dichas en el primer segundo después de seguir se perdieron -DT2, P3-.
+    - La misma toma guardada con "No": sin lo pausado, con audio; msGuardado anotado.
+    - Una toma SIN pausas, con amarillo y con "No": bytes y msGuardado como en la 87 -"No" sigue
+      siendo copia, mismos bytes que el original-.
+    - Parar en pausa: la galería termina donde empezó la pausa.
+    - Tiempo de guardado con 1, 3 y 10 pausas en la toma de 3 min: dentro de lo que dio el 0-B.
+
+==============================================================================
+PARTE F - EL VISOR QUE SALTA LOS CORTES, SIN QUEDAR EN BUCLE
+==============================================================================
+El visor reproduce el archivo ENTERO -el original de Sigo- y salta lo cortado. Es lo que el
+plan 2 llama "la traba de estoy saltando" -corrección del 02-10-: si no, timeupdate vuelve a ver
+el corte y se queda en un bucle.
+F1  src/lib/saltoCortes.ts -NUEVO, puro: la decisión, sin el <video>-
+    export const MS_TOLERANCIA_SALTO = 50      // propuesta; se ajusta con el moto g86 -F4-
+    export const MAX_REINTENTOS_SALTO = 1      // propuesta; ídem
+    export type EstadoSalto = { haciaMs: number | null; reintentos: number; terminado: boolean }
+    export const SALTO_INICIAL: EstadoSalto = { haciaMs: null, reintentos: 0, terminado: false }
+    export type Aviso = 'cuadro' | 'seeked' | 'play' | 'arrastre'
+    export type Decision =
+      | { tipo: 'nada' }
+      | { tipo: 'saltar'; aMs: number }            // video.currentTime = aMs / 1000
+      | { tipo: 'terminar'; enMs: number }         // video.pause(); currentTime = enMs / 1000
+    export function decidirSalto(o: { tMs: number; aviso: Aviso; cortes: TramoMs[];
+      duracionMs: number; estado: EstadoSalto; arrastreAMs?: number }):
+      { estado: EstadoSalto; decision: Decision }
+  Los cortes llegan JUNTADOS -tramosACortar-: dos pausas seguidas son UN corte y se salta una vez.
+  LAS REGLAS -cada una es un caso borde con su prueba-
+    1. TRABA. Con haciaMs !== null -hay un salto pedido- y aviso 'cuadro' -timeupdate o un
+       requestAnimationFrame-: si tMs >= haciaMs - MS_TOLERANCIA_SALTO, el salto llegó: se suelta
+       la traba y sigue con la regla 3. Si no, y tMs sigue en el corte de ese salto, NADA: el
+       seek todavía no termina -el WebView puede seguir dando la hora vieja-. Si tMs está fuera de
+       ese corte -la persona movió la barra o el video siguió-, se suelta y sigue con la regla 3.
+    2. SEEKED CORTO. Con aviso 'seeked' y tMs todavía dentro del corte -el seek cayó antes, por
+       ejemplo en un keyframe-: si reintentos < MAX_REINTENTOS_SALTO, saltar otra vez a
+       corte.hastaMs + MS_TOLERANCIA_SALTO, reintentos + 1. Si no, se rinde: suelta la traba y
+       NADA -se ve un trocito del corte antes que un bucle-. Lo anota en consola.
+    3. DENTRO DE UN CORTE -sin traba-: si el corte termina en la duración -c.hastaMs >=
+       duracionMs - MS_TOLERANCIA_SALTO-, es EL FINAL DENTRO DE UN TRAMO: decision 'terminar' en
+       enMs = max(0, c.desdeMs - MS_TOLERANCIA_SALTO) -c.desdeMs ya es cortado-, terminado =
+       true -se ve el último cuadro que queda, quieto, con el play grande; el siguiente play
+       empieza en el primer cuadro que queda, como después de un 'ended' -regla 5-. Si no,
+       'saltar' a c.hastaMs con haciaMs = c.hastaMs y reintentos = 0.
+    4. FUERA DE LOS CORTES: nada, y reintentos vuelve a 0.
+    5. PLAY. Con terminado, 'saltar' a aArchivo(0) -el primer cuadro que queda- y terminado =
+       false. Sin terminado y con tMs dentro de un corte -por ejemplo la toma EMPIEZA en un
+       corte-, la regla 3.
+    6. ARRASTRE. La barra está en reloj de SALIDA: arrastreAMs se convierte con aArchivo, que
+       nunca cae dentro de un corte, y la decisión es 'saltar' ahí CON la traba -haciaMs-, para
+       que un timeupdate atrasado no lo devuelva. terminado = false.
+    7. CERO AL ABRIR. Si 0 está dentro de un corte, al primer 'cuadro' -loadedmetadata o el primer
+       play- se aplica la regla 3: lo primero que se ve es el primer cuadro que queda.
+    8. CORTES CONTIGUOS. Juntados antes -regla de arriba-; si igual llegaran dos que se tocan, la
+       regla 3 salta al hastaMs del primero, que es el desdeMs del segundo, y como los cortes son
+       medio abiertos la regla 3 vuelve a saltar UNA vez más, al hastaMs del segundo. Nunca más
+       de una vez por corte.
+F2  LA CONEXIÓN -src/hooks/useSaltarCortes.ts, NUEVO, y ReproductorGrabacion.tsx-
+  - useSaltarCortes(video, cortes, duracionMs) -sin JSX; no entra a T209-: con cortes.length ===
+    0 NO pone ningún oyente -la toma sin pausas es la de hoy-. Si hay cortes: un
+    requestAnimationFrame PROPIO mientras reproduce -el de CapaSubtitulos :60-82 solo corre con
+    estilo !== 'no', no sirve para esto-, más 'timeupdate', 'seeked', 'play' y 'loadedmetadata',
+    cada uno llama decidirSalto y aplica la decisión. Se quitan todos al desmontar, como :81-87.
+  - La barra -:193-210- pasa a reloj de SALIDA cuando hay cortes:
+      total = duracionFinal(cortes, duración del archivo) / 1000 -la duración del archivo, como
+        hoy: video.duration si es finita :75, si no grabacion.duracionMs-.
+      actual = aSalidaPegado(video.currentTime * 1000, cortes) / 1000 -en timeupdate :74-.
+      onChange -:203-207-: decidirSalto con aviso 'arrastre' y arrastreAMs = s * 1000; setActual(s).
+    El input, su testid avance-toma, su step y su aria-label quedan iguales. Sin cortes, el código
+    de hoy, sin pasar por las funciones nuevas.
+  - formatearSegundos(total) muestra la duración FINAL. La línea de meta -formatearDuracionMs
+    (grabacion.duracionMs)- también, cuando hay cortes -duracionFinal-.
+  - Los subtítulos del VISOR siguen siendo armarSubtitulos -reloj del ARCHIVO, :56-: el visor
+    reproduce el archivo. Las palabras de los cortes no se ven porque se saltan. La diferencia con
+    los quemados está solo en las uniones -D2, reglas a y b-; se acepta, como en el plan 2, 7.4.
+  - La miniatura de la tira ya sale de msMiniatura -PARTE C-.
+F3  PRUEBAS
+  Vitest -src/pruebas/saltoCortes.test.ts, puras-:
+    'dentro de un corte salta a su final y pone la traba'. Rotura: no poner haciaMs.
+    'con la traba, un cuadro con la hora vieja no vuelve a saltar'. Rotura: sacar la regla 1.
+    'la traba se suelta cuando la hora llega al destino'. Rotura: no soltarla nunca.
+    'un seeked que cae antes reintenta una vez y después se rinde'. Rotura: reintentar sin tope.
+    'el final dentro de un corte termina en el inicio del corte, no salta'. Rotura: saltar a la
+      duración.
+    'después de terminar, play empieza en el primer cuadro que queda'. Rotura: play desde enMs.
+    'si la toma empieza en un corte, lo primero que se ve es su final'. Rotura: mirar solo tMs > 0.
+    'dos cortes que se tocan se saltan sin bucle, como mucho una vez cada uno'. Rotura: intervalo
+      cerrado en corteEn.
+    'arrastrar la barra a una unión cae en el primer cuadro después del corte, con traba'. Rotura:
+      arrastrar sin aArchivo.
+    'sin cortes, nunca decide nada'. Rotura: tratar [] como un corte de 0 a 0.
+  Vitest -src/pruebas/tarea88-visor.test.tsx; <video> de jsdom con currentTime y duration
+  fingidos, como darImagenAlVideo en subtitulosVisor.test.tsx-:
+    'EL VISOR SALTA EL CORTE': currentTime dentro del corte + timeupdate -> currentTime = final del
+      corte. Rotura: no montar useSaltarCortes.
+    'NO SE QUEDA EN BUCLE': después del salto, diez timeupdate con la hora vieja -> currentTime se
+      escribió UNA sola vez. Rotura: sacar la traba.
+    'LA BARRA MUESTRA LA DURACIÓN FINAL': total y actual en reloj de salida. Rotura: total =
+      video.duration.
+    'ARRASTRAR LA BARRA NO ENTRA AL CORTE'. Rotura: currentTime = s sin convertir.
+    'UNA TOMA SIN PAUSAS SE VE COMO HOY': ningún oyente nuevo; la barra con video.duration.
+      Rotura: montar el hook siempre.
+    'UNA TOMA GUARDADA NO SALTA': con galeriaUri. Rotura: cortes sin mirar guardada.
+F4  MANUAL MOTO G86
+  - La toma de 3 min de la PARTE E, antes de guardar: el visor no muestra nada de lo pausado; en
+    cada unión, el salto se ve como un corte -sin parpadeo de lo pausado o, si se ve, cuántos
+    cuadros: con eso se ajusta MS_TOLERANCIA_SALTO-; la barra dice la duración final.
+  - Arrastrar la barra de un lado a otro sobre las uniones, rápido: nunca se queda pegado ni entra
+    en bucle.
+  - Toma parada en pausa: llega al final del último trozo, se detiene y el play vuelve al inicio.
+  - Toma que empieza con una pausa -pausar apenas termina la cuenta-: arranca después del corte.
+  - Con estilo "No" y con amarillo: igual.
+  - Toma sin pausas: se ve y se mueve EXACTAMENTE como hoy.
+
+==============================================================================
+PARTE G - LO VISIBLE DE "EN PAUSA", SEGÚN LA LÁMINA APROBADA
+==============================================================================
+G1  Archivos: los que diga la opción elegida -lo esperable: TeleprompterView.tsx :1137-1150,
+    styles.css :1361-1370 y, si se elige, una clase nueva al lado; App.tsx solo para pasar enPausa
+    a TeleprompterView; es.ts y en.ts con las claves nuevas-. Nada fuera de lo que muestra la
+    lámina aprobada; nada por debajo de ella.
+  - TeleprompterView recibe una prop NUEVA opcional enPausaToma?: boolean -conCamara && enPausa,
+    desde App :1809-1832-. Sin ella, el punto se ve como hoy. Los testid de hoy no cambian; el
+    punto en pausa lleva data-en-pausa="1" para las pruebas.
+  - Si la opción usa animación: con prefers-reduced-motion queda quieta, como :1153.
+  - Si la opción usa un AvisoBreve: se dice al pausar con la CÁMARA; en Leer, nada nuevo.
+  - Textos en es y en, con la misma clave; los del boceto aprobado, letra por letra.
+G2  PRUEBAS
+  Vitest -src/pruebas/tarea88-pantalla.test.tsx, a través de <App> con la cámara fingida-:
+    'EN PAUSA EL PUNTO DE GRABAR CAMBIA': pausar -> punto-grabando con data-en-pausa="1"; seguir
+      -> sin él. Rotura: no pasar enPausaToma.
+    'EN LEER NO HAY PUNTO NI CAMBIO': sin cámara, pausar -> no hay punto-grabando. Rotura: mostrar
+      el punto con enPausa sin cámara.
+    Si la opción lleva texto o aviso: 'EN PAUSA SE DICE QUE ESTO NO QUEDA' -el texto exacto de la
+      lámina, es y en-. Rotura: cambiar una letra de la clave en en.ts.
+    Si hay componente nuevo, a la lista T209 y verde.
+  Manual moto g86: vertical y acostado, tema claro y oscuro: se ve como la lámina; a 1 m del
+  teléfono se distingue grabando de en pausa; con TalkBack, lo que diga la lámina.
+
+==============================================================================
+PARTE H - LAS PRUEBAS, LA VERSIÓN DE PLAY Y EL CRITERIO DE ÉXITO
+==============================================================================
+LAS PRUEBAS
+  - npx vitest run en verde -desde la carpeta del repositorio-; npx tsc --noEmit limpio; las de hoy
+    sin tocar -regla 6-; la tabla de roturas a propósito en el PR -regla 3-; las cifras de
+    comentarios por archivo -regla 1-.
+  - cd android && ./gradlew testDebugUnitTest con las JUnit de E4 y 0B-5.
+  - npm run apk -- poner telefono para la de prueba; npm run play para la de Play, y en el moto
+    g86, B3, E4 y F4 otra vez en esa versión -R8 tumbó Grabar en la tarea 85, commit 04b2c04-. En
+    la de Play no aparece nada del panel ni del 0-B.
+TERMINADO CUANDO -medible-
+  1. Sin pausas, todo igual: las pruebas de hoy y las de la 87 verdes sin tocarlas; una toma sin
+     pausas guardada con "No" tiene los MISMOS bytes que el original, y con amarillo, el mismo
+     evento=capa y msGuardado ± 5 % de la 87.
+  2. Con dos pausas de botón en una toma de 3 min: la copia de la galería dura duracionFinal ± 1
+     cuadro, no tiene lo pausado, tiene audio en todo su largo, y los subtítulos van con la voz
+     después de cada unión.
+  3. El visor de esa toma antes de guardar: no muestra lo pausado, no entra en bucle con 20
+     arrastres seguidos sobre las uniones, y la barra dice la duración final.
+  4. "En pausa" se ve como la lámina aprobada, en los dos temas, vertical y acostado.
+  5. Recuperación: matar la app en pausa deja, al volver, una toma con la pausa cerrada en el
+     final, que al guardar termina donde empezó la pausa.
+  6. tsc limpio, vitest verde, JUnit verde, comentarios que no bajan, package.json igual.
+
+==============================================================================
+LO QUE NO CALZA -encontrado al escribir este encargo; ya está considerado arriba-
+==============================================================================
+  N1. inicioVideoEpochMs -tomaVideo.ts:51, :137- NO está en el sidecar: una toma recuperada no
+      sabe el cero del video. Por eso los tramos se guardan YA en ms del video -C1- y no se agrega
+      ese campo.
+  N2. SidecarToma no tiene versión hoy -sidecar.ts:12-26-. Se agrega version, con "sin campo = 1"
+      -C2-. Si la 87 agregó una antes, se usa esa.
+  N3. La receta, exportarToma y el panel del paso 0 -#63 y #64- NO están en main en 71166e5. Esta
+      tarea depende de ellos: ver "ANTES DE TODO". El 0-B se suma al panel del #64 cuando entre.
+  N4. La pausa con el botón existe también en Leer, sin cámara y sin toma: la máquina la maneja
+      igual, pero no se abre tramo -B1, C3-.
+  N5. El "¿Seguro?" del tacho no tiene plazo hoy; el plan 2 lo da por sentado para el tacho y le
+      pone plazo solo al gesto. Se queda sin plazo -B1-.
+  N6. btn-pausa-lectura cancela la confirmación -setConfirmandoDescarte(false), App.tsx:1738-
+      antes de alternar: la máquina lo hace en la transición CONFIRMANDO -> GRABANDO -B2-.
+  N7. El margen de 1 s después de reanudar no se aplica si la pausa quedó abierta -se paró, se
+      cortó o murió en pausa-: se corta desde la pausa hasta el final -D1-.
+  N8. El plan 2 -7.3- no dice que un subtítulo de antes de la unión se queda hasta SE_QUEDA_MS
+      después de su última palabra -subtitulos.ts:258- y puede tapar lo que viene después del
+      corte. Se suma la regla b de D2.
+  N9. El plan 2 -7.2- usa aSalida para recortar una palabra que roza un corte, pero aSalida da
+      null en el borde de un corte -intervalo medio abierto-. Se suma aSalidaPegado -D1-.
+  N10. En el plan 2, la máquina se llama enPausa / confirmandoDescarte; chocan con las constantes
+      de App.tsx. Aquí: estaEnPausa / estaConfirmando -B1-.
+  N11. subtitulosVisor.test.tsx -:21-22- anota los argumentos de guardarEnGaleria y
+      guardarEnGaleriaConSubtitulos: el guardado con cortes va por una función NUEVA
+      -guardarEnGaleriaConCortes, E3-, para no tocar esas pruebas.
+  N12. CapaSubtitulos -SubtitulosVisor.tsx:60-82- solo corre su requestAnimationFrame con estilo
+      !== 'no': el salto de cortes necesita su propio bucle -F2-.
+  N13. JUnit con Media3, Uri y org.json en pruebas locales: son esqueletos de android.jar. Lo que
+      decide va en métodos puros -E4-; si no alcanza, se describe.
+
+==============================================================================
+PREGUNTAS ABIERTAS -nada se inventa; cada una dice cómo se responde-
+==============================================================================
+  P1. ¿MODO_1 o MODO_2 para la capa en una Composition? ¿Hace falta setStartsAtKeyFrame? -0-B,
+      Q1 y Q2; es la P8 del plan 2-.
+  P2. ¿El audio chasquea en las uniones? Si chasquea, ¿se acepta o se para la PARTE E hasta
+      encontrar cómo? -0-B, Q2; Javier decide con lo que oyó-.
+  P3. El segundo de después de reanudar -DT2- ¿se queda aunque se coma una palabra dicha muy
+      rápido al seguir? -E4 manual cuenta cuántas se pierden; Javier decide con esa cifra-.
+  P4. ¿Una pausa muy corta -por ejemplo, menos de 1 s, un toque doble sin querer- se corta igual
+      -1 s mínimo por DT2- o se ignora? El encargo la corta. -Javier-.
+  P5. Después de guardar con cortes, ¿se borran las pausas del índice -lo que propone E3- o se
+      guardan como historia en otro campo? -Javier-.
+  P6. Los textos nuevos: el motivo de "APK viejo con cortes" y el de "todo quedó en pausa, no hay
+      nada que guardar", en es y en. -Javier, en la lámina-.
+  P7. ¿Vibrar al pausar y al seguir con el botón -hapticaToqueMedio-? Hoy no vibra; el plan lo
+      pone para los gestos. -Javier, en la lámina-.
+  P8. El control Bluetooth: ¿cómo llega la tecla a la app -keydown de un control multimedia, otro
+      plugin- y qué márgenes lleva? Hoy queda con los del botón, provisorio -D1-. -Se averigua
+      cuando se encargue el control-.
+  P9. ¿Cómo se ve "en pausa" mientras se graba? ¿Se marcan las uniones en la barra del visor?
+      -PARTE A; Javier elige en la lámina; es la P9 del plan 2-.
+  P10. MS_TRAMO_MINIMO, MS_TOLERANCIA_SALTO y MAX_REINTENTOS_SALTO: valores de 0-B y F4, no
+      inventados. ¿Quién los fija con las cifras? -Claude, con el registro y lo que vio Javier-.
+  P11. ¿El nombre del ensayo 'tramos-crono-1min' y los eventos tramos_inicio / tramos_reloj /
+      tramos_fin le sirven a Claude para leer el registro, o prefiere otros? -Claude, antes de
+      programar el 0-B-.
+  P12. ¿Se puede pausar en el instante entre iniciar la toma y que la cámara empiece a escribir
+      -inicioVideoEpochMs 0-? -C4 manual-.
+
+Después: Claude lee el registro del 0-B, Javier aprueba la lámina del boceto, y al final Claude
+lo prueba en el moto g86 con las mediciones de la PARTE H.

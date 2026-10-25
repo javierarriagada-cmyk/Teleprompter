@@ -1,0 +1,446 @@
+EL PESO DE SIGO: CUÁNTO PESA HOY, DÓNDE ESTÁ EL PESO Y QUÉ SE PODRÍA SACAR
+Tarea 103 -06-10-2026-. SOLO ESTUDIO Y PROPUESTA: no se borró, movió ni cambió nada de la app.
+Lo único que se agregó es este informe, el anexo docs/peso/modelos.txt, la medición en bruto
+docs/peso/medicion-1d72aeb.txt y la herramienta npm run peso -scripts/medir-peso.mjs, con sus
+pruebas-. Javier decide qué se toca.
+
+==========================================================================================
+0. LO MÁS IMPORTANTE, EN CINCO LÍNEAS
+==========================================================================================
+
+1. Los 55,4 MB de Play son lo que se DESCARGA, no lo que ocupa instalado. En el moto g86 Sigo
+   ocupa 92,8 MB al terminar de instalarse y 150,3 MB después de la primera lectura en español.
+2. El motivo: el modelo español queda guardado DOS veces -su paquete de Play, sin comprimir, y
+   la copia que Vosk hace la primera vez-. Son 57,5 MB repetidos.
+3. En los modelos de voz no hay peso muerto: Vosk lee todos los archivos salvo el README -683
+   bytes-. No hay rescore/ ni rnnlm/. Nada del modelo se puede sacar sin cambiar la precisión.
+4. Lo que sí se puede mover a pedido sin tocar el motor: el modelo de gestos -6,1 MB de descarga,
+   8,0 MB instalado-, y con más riesgo la biblioteca MediaPipe -4,7 MB más-.
+5. Código muerto y archivos sin uso: hay, pero suman menos de 1 MB entre todos.
+
+==========================================================================================
+1. EL AAB QUE SE MIDIÓ
+==========================================================================================
+
+- Commit: 1d72aeb -main, verificado con git fetch: origin/main está en 1d72aeb-. Rama de este
+  informe: tarea103-peso, creada desde 1d72aeb.
+- Armado en el computador del bot con el camino de Play del repo, igual que npm run play
+  -tarea 84-: vite build --mode play, cap sync android, gradlew bundleRelease -PparaPlay. Con R8.
+  Los modelos se copiaron de otra copia de trabajo del bot -/workspace/tarea84-: son los
+  oficiales, idénticos por sha256 al zip de alphacephei salvo el --frames-per-chunk=3 que pone
+  scripts/bajar-modelo.mjs -ver modelos.txt-.
+- AAB: android/app/build/outputs/bundle/release/app-release.aab, copiado a
+  /workspace/t103/sigo-1d72aeb-play.aab -en el computador del bot, fuera del repo-.
+  110.816.795 bytes, sha256 9c15de4a74e5f1f4d47623853c6356744519ac02bb77de72443c1a4b75cd94fd.
+- versionCode 630, versionName 0.9.0. OJO: el encargo habla de versionCode 597. El versionCode
+  es la cantidad de commits -app/build.gradle- y en 1d72aeb son 630. En el computador del bot NO
+  había ningún AAB de 597 ni de 1d72aeb -solo tres de la tarea 85, de antes de los gestos-, así
+  que se armó uno nuevo. Los números calzan con los de Claude en 597 salvo la app web -1,94 MB
+  aquí, 1,7 allá-; lo más probable es licencias.json -0,19 MB, tarea 100-. Sin verificar.
+- Sin firmar: no hay llave de subida en el bot, y no hace falta para medir. bundletool firmó las
+  APK de la medición con la llave de depuración del bot -fuera del repo-. La firma pesa unos KB.
+- bundletool 1.18.3, la misma versión fija de scripts/play.mjs.
+
+==========================================================================================
+2. CUÁNTO PESA HOY, POR TELÉFONO
+==========================================================================================
+
+MB = 1.048.576 bytes, como en scripts/play.mjs. Play muestra 55,4 MB para el g86 y bundletool
+calcula 55,5: Play comprime con su propio método y puede variar unas décimas.
+
+                                              moto g86              32 bits tipo moto e20
+                                              arm64-v8a, 450 dpi    armeabi-v7a, 280 dpi
+                                              Android 15, es-419    Android 11, es-419
+DESCARGA
+  Al instalar -lo que muestra Play-           55,5 MB               54,6 MB
+     de eso, la app -base-                    17,5 MB               16,7 MB
+     de eso, el modelo español -model_es-     38,0 MB               38,0 MB
+  Extra si lee en inglés -model_en, a pedido- +39,3 MB              +39,3 MB
+INSTALADO -estimado, ver el método-
+  Al terminar la instalación                  92,8 MB               88,6 MB
+  Tras la primera lectura en español          150,3 MB              146,1 MB
+  Con el inglés bajado                        217,9 MB              213,7 MB
+  Si además prende los gestos                 +8,0 MB               +8,0 MB
+
+Bytes exactos de la descarga -bundletool get-size total-: g86 58.166.020, solo base 18.343.479,
+con model_en 99.354.920. e20 57.284.726, solo base 17.462.185, con model_en 98.473.626.
+Un e20 a 320 dpi da los mismos bytes: los recursos por densidad pesan unos KB.
+
+LAS APK QUE PLAY LE ENTREGA A CADA UNO -bundletool extract-apks, bytes en disco-:
+  g86: base-master 15.638.708, base-arm64_v8a 21.324.467, base-xxhdpi 62.590, base-es 16.730,
+       model_es-master 60.298.680 -install-time-; model_en-master 70.911.416 -a pedido-.
+  e20: base-master 15.638.708, base-armeabi_v7a 16.925.373, base-xhdpi 50.262, base-es 16.730,
+       model_es-master 60.298.680; model_en-master 70.911.416.
+
+DÓNDE ESTÁ EL PESO -g86; sin comprimir / descarga estimada con deflate 6-:
+  modelo inglés -model_en, a pedido-               67,62 MB   39,27 MB
+  modelo español -model_es, install-time-          57,49 MB   37,97 MB
+  libmediapipe_tasks_jni.so -gestos-               10,50 MB    4,70 MB   -e20: 7,36 / 3,97-
+  libvosk.so -voz-                                  9,58 MB    3,11 MB   -e20: 8,57 / 3,01-
+  gesture_recognizer.task -modelo de gestos-        7,99 MB    6,07 MB
+  código Java/Kotlin -dex-                          5,74 MB    2,45 MB
+  app web -assets/public-                           1,94 MB    0,81 MB
+  recursos Android -res-                            0,86 MB    0,33 MB
+  otros de base -native-bridge.js, root/...-        0,29 MB    0,09 MB
+  otras bibliotecas nativas -JNA, CameraX-          0,20 MB    0,06 MB
+No hay bibliotecas x86 ni x86_64 en el AAB: solo arm64-v8a y armeabi-v7a.
+Las bibliotecas nativas ya vienen sin símbolos -readelf: sin .symtab ni .debug-: no hay nada que
+ganar "stripeando".
+
+MÉTODO
+- Descarga: bundletool build-apks sobre el AAB y get-size total con un --device-spec por
+  teléfono. Sin --modules da base + paquetes install-time; con --modules=base,model_es,model_en
+  suma el inglés. Es comprimido -gzip de cada APK-, como Play.
+- Instalado: bundletool no lo calcula. Se estima así:
+    al instalar = suma de las APK que quedan en el teléfono -base y model_es, tal como las arma
+                  bundletool-. Las bibliotecas nativas y el dex ya van sin comprimir dentro de
+                  la APK -extractNativeLibs=false, dex sin comprimir para Android 10+-, así que
+                  Android no los desempaca aparte.
+    + la copia del español: VoskNativoPlugin lo pasa por StorageService.unpack, que copia la
+                  carpeta entera a la memoria de la app la primera vez -StorageService.java
+                  83-88, ver modelos.txt-: 60.286.683 bytes.
+    + el inglés bajado: Play lo deja como archivos sueltos sin comprimir en la memoria de la app
+                  -"expanded in the app's internal storage", documentación de Play Asset
+                  Delivery-: 70.899.052 bytes.
+    + gestos: MediaPipe copia el .task a la caché cada vez que crea el reconocedor -ver punto 4-:
+                  8.373.440 bytes, si se prenden los gestos.
+  NO se cuenta: el código que Android compila al instalar -oat, vdex, perfiles-, la caché del
+  WebView, ni los guiones y tomas de la persona. Por eso el número real en Ajustes > Apps va a
+  ser algo mayor. Sin verificar en el teléfono.
+- El desglose: cada archivo del AAB, con la ABI que bundletool elige para el teléfono; lo
+  guardado sin comprimir se comprime con deflate 6 para estimar su descarga.
+- Todo esto se repite con npm run peso -scripts/medir-peso.mjs-. Salida en bruto de esta
+  medición: docs/peso/medicion-1d72aeb.txt.
+
+==========================================================================================
+3. PROPUESTAS, DE MÁS A MENOS MB AHORRADOS EN EL MOTO g86
+==========================================================================================
+
+Orden: por MB instalados que se ahorran en el g86. Al lado, la descarga que muestra Play.
+"Medido" = bundletool sobre un AAB modificado fuera del repo; "estimado" = cálculo.
+Ninguna se aplicó.
+
+ #  QUÉ SE HACE                         INSTALADO   DESCARGA     RIESGO  QUÉ VE LA PERSONA
+--  ----------------------------------  ----------  -----------  ------  -------------------------
+ 1  El modelo español pasa de           -57,5 MB    -38,0 MB en  alto    Instala más rápido -17,5 MB-.
+    install-time a fast-follow, y       (estimado)  la ficha;            Play baja la voz en español
+    Vosk lo abre directo de la carpeta              los 38 MB            sola, apenas termina, aunque
+    del paquete, sin copiarlo -como el              se bajan             no abra la app. Si alguien
+    inglés hoy-.                                    igual justo          lee antes de que termine, o
+                                                    después              sin internet, ve "Bajando la
+                                                                         voz..." o "Hace falta
+                                                                         conexión una vez".
+ 2  El paquete del español se guarda    -19,5 MB    -0,3 MB      medio   Nada. Quizás la primera
+    COMPRIMIDO dentro de su APK         (medido)    (medido)             lectura tras instalar o
+    -BundleConfig: installTimeAsset-                                     actualizar tarda un poco más
+    ModuleDefaultCompression=COMPRESSED-.                                -descomprime al copiar-.
+    Solo si NO se hace la 1.
+ 3  La biblioteca MediaPipe -y su       -11,5 MB    -4,7 MB      alto    Lo mismo que la 4, más una
+    código- a un módulo de función a    (.so medido (.so medido;         instalación de módulo al
+    pedido -Play Feature Delivery-.     10,5 + dex  dex ~0,5 sin         prender los gestos.
+    Va junto con la 4.                  ~1,0 est.)  verificar)
+ 4  El modelo de gestos -.task- a un    -8,0 MB     -6,1 MB      medio   La primera vez que prende
+    paquete on-demand, como el inglés.  todos;      (medido)             "Control por gestos": una
+    MediaPipe lo abre por su ruta.      -16,0 MB                         descarga de ~6 MB con su
+                                        quien usa                        avance. Sin internet: aviso
+                                        gestos                           y el interruptor no se
+                                        (estimado)                       prende. Después, sin red.
+ 5  Sacar noCompress 'task' de          -1,9 MB     ~0           bajo-   Nada, si MediaPipe lo sigue
+    app/build.gradle. Solo si NO se     (estimado)                medio  abriendo -el código dice que
+    hace la 4.                                                           sí, ver 4.4-.
+ 6  Excluir lo que capgo trae y Sigo    -0,3 a      -0,1 a       medio   Nada, si capgo no entra
+    no usa: ML Kit de códigos de        -0,5 MB     -0,2 MB              nunca a esas funciones.
+    barras, play-services-location,     (sin        (sin
+    commons-imaging.                    verificar)  verificar)
+ 7  Las fuentes .woff de respaldo:      -0,21 MB    -0,21 MB     bajo    Nada: el WebView usa las
+    dejar solo las .woff2.              (medido)    (medido)             .woff2.
+ 8  Archivos sobrantes en la raíz de    -0,14 MB    ~-0,05 MB    bajo    Nada.
+    la APK -.proto de protobuf,         (medido     (estimado)
+    kotlin_builtins, DebugProbesKt.bin, en el AAB)
+    rgb.txt de commons-imaging-.
+ 9  El editor sin StarterKit entero:    -0,03 MB    -0,01 MB     bajo    Nada.
+    linkifyjs y extension-link viajan   (medido,
+    aunque link: false.                 mapa)
+10  Restos de herramientas en el JS     -0,013 MB   ~-0,005 MB   bajo    Nada.
+    de Play, vad-processor.js e
+    icon-*.png de la PWA.
+11  Los íconos PNG mipmap viejos        -0,013 MB   -0,013 MB    bajo    Nada: con Android 10 como
+    -Android 10+ usa siempre el                                          mínimo siempre se usa el
+    adaptativo-. AGENTS.md: los iconos                                   ícono adaptativo.
+    no se tocan sin permiso.
+--  NO SE PROPONEN:
+    README de los modelos -683 bytes-: cambia el uuid y todos los teléfonos recopiarían 57,5 MB.
+    ControlesAa.tsx -sin uso, ver 5.2-: 0 bytes en el paquete; sacarlo es solo limpieza.
+    Quitar armeabi-v7a: 0 MB en el g86 -cada teléfono baja solo su ABI- y deja fuera los de 32
+    bits. Ver 5.6.
+    Cualquier cambio de modelo de voz: requiere medición -modelos.txt-.
+
+1, 2 y 5 son incompatibles de a pares con su alternativa -1 con 2, 4 con 5-. 3 sin 4 no tiene
+sentido. Los ahorros de la tabla NO se suman tal cual.
+
+CÓMO SE VERIFICARÍA CADA UNA
+ 1  npm run peso: model_es debe salir fast-follow y la base en ~17,5 MB. En el moto g86, por la
+    pista de prueba interna de Play -bundletool --local-testing no simula bien fast-follow-:
+    instalar con Wi-Fi y leer; instalar y cortar la red antes de que termine; borrar los datos de
+    la app y leer sin red. Ajustes > Apps > Sigo antes y después. Y que la primera lectura no
+    tarde más que hoy. OJO: contradice la decisión de la tarea 84 -D1: el español install-time
+    "porque nadie tiene que esperar una descarga para leer"-. Decide Javier.
+    Además: los teléfonos que ya tienen la copia vieja -getExternalFilesDir/model-es- tendrían
+    que borrarla una vez, como hoy borrarCarpetaVieja borra "model".
+ 2  AGP 8.13 no deja poner esa opción -su PackageBundleTask solo escribe uncompressedGlob,
+    mirado en gradle-8.13.0.jar-: habría que reescribir BundleConfig.pb del AAB después de
+    armarlo y ANTES de firmarlo -o volver a firmar-. Medido aquí agregando el campo a mano:
+    model_es-master.apk baja de 60.298.680 a 39.826.872 bytes y la descarga de 58.166.020 a
+    57.835.074. Verificar: npm run peso; en el teléfono, la primera lectura tras instalar
+    -StorageService lee con AssetManager.open, que descomprime- y medir cuánto tarda la copia.
+    Sin verificar: que Play respete ese campo del AAB subido.
+ 3  Ver 4.5. Un AAB con el módulo, bundletool --local-testing y el teléfono: prender gestos
+    recién instalado, sin red, después de actualizar.
+ 4  npm run peso: base sin el .task -medido: 51.804.937 bytes de descarga en el g86-. En el
+    moto g86 con bundletool --local-testing -npm run play -- probar, igual que el inglés-:
+    prender gestos con y sin red, cerrar y abrir, actualizar. Que no exista
+    cache/mediapipe_asset_cache/gesture_recognizer.task.
+ 5  npm run peso y prender los gestos en el g86 con la APK de Play.
+ 6  Construir con los exclude y mirar el informe de R8 -missing classes-; recorrer Grabar,
+    Guardar, la cámara frontal y trasera en el g86. Medir con npm run peso.
+ 7  vite build --mode play: que dist no traiga .woff y el CSS solo pida .woff2. Mirar las dos
+    letras -serif y sans, 400 y 600, con tildes y ñ- en el teléfono.
+ 8  packaging { resources { excludes ... } } y npm run peso. Las licencias de META-INF -AL2.0,
+    LGPL2.1- solo si su texto está en la pantalla de licencias -tarea 100-.
+ 9  Importar las extensiones de TipTap una por una; las pruebas del editor y vite build.
+10  Sacarlos de dist en el modo play -vite.config.ts no se toca sin permiso- y vite build.
+11  Ver el ícono en el lanzador del g86 y del e20.
+
+==========================================================================================
+4. EL MODELO DE GESTOS Y MEDIAPIPE
+==========================================================================================
+
+4.1 HOY
+- gesture_recognizer.task, 8.373.440 bytes, en base/assets, guardado SIN comprimir por
+  androidResources { noCompress 'task' } -app/build.gradle, tarea 88-. Viaja a todos, aunque
+  solo lo usa quien prende "Control por gestos". Descarga: 6,07 MB -medido: el AAB sin el .task
+  baja de 58.166.020 a 51.804.937 bytes en el g86-.
+- GestosPlugin.preparar crea el reconocedor con BaseOptions.setModelAssetPath(
+  "gesture_recognizer.task") -GestosPlugin.java 63-66-, solo cuando se prende el interruptor.
+- LO QUE HACE MEDIAPIPE CON ESE NOMBRE -tasks-vision 1.0.0, etiqueta v1.0.0 de
+  google-ai-edge/mediapipe, commit 6d31f1e-:
+    BaseOptionsUtils.java 76: el nombre pasa como file_name.
+    tasks/cc/core/external_file_handler.cc 124-127: PathToResourceAsFile(file_name) y open().
+    util/resource_util_android.cc 77-79: si la ruta empieza con "/", se usa tal cual.
+      83 y 37: si no, CachedFileFromAsset.
+    util/android/asset_manager_util.cc 156-180: lee el asset entero y lo ESCRIBE en
+      cache/mediapipe_asset_cache/, "unconditionally" -cada vez que se crea el reconocedor-.
+  O sea: hoy, quien usa gestos tiene el modelo dos veces -8 MB en la APK y 8 MB en la caché-.
+  Y el noCompress no es lo que permite abrirlo: MediaPipe lo lee con AAssetManager y lo copia
+  igual, esté comprimido o no. Sin verificar en el teléfono -no se miró la caché con run-as-.
+
+4.2 PROPUESTA: EL .task COMO PAQUETE ON-DEMAND, IGUAL QUE EL INGLÉS
+Lo que cambiaría -nada de esto se hizo-:
+- Un módulo android/gestos con apply plugin 'com.android.asset-pack', packName 'gestos',
+  deliveryType 'on-demand' -como android/model-en/build.gradle-; incluido solo con -PparaPlay
+  -settings.gradle- y en assetPacks de app/build.gradle. El .task iría en una carpeta propia
+  -assets/gestos/- para sacarlo de la base con '<dir>gestos' en ignoreAssetsPattern, como hoy
+  '<dir>model-en'. La APK de prueba -debug- lo seguiría trayendo en assets, como los modelos.
+- Una clase como PaqueteDeVoz -o PaqueteDeVoz generalizada- con rutaSiEsta y bajar para
+  'gestos'. La versión de src/debug respondería "está en assets".
+- GestosPlugin.preparar: si el paquete está, setModelAssetPath(<ruta absoluta del .task>) -o
+  setModelAssetBuffer con un MappedByteBuffer, que BaseOptions.java 43-49 también acepta-. Con
+  ruta absoluta MediaPipe abre el archivo directo, sin copiarlo a la caché -punto 4.1-.
+- Si no está: un método nuevo, tipo asegurarGestos, que lo pide a Play y avisa el avance.
+
+QUÉ VE LA PERSONA
+- Cuándo baja: la primera vez que prende "Control por gestos" -no al instalar, no al abrir-.
+- Mientras baja: ~6 MB; con Wi-Fi o 4G, segundos. Un avance en la misma tarjeta del interruptor
+  -"Bajando el control por gestos... 40 %"-, como IndicadorPrecarga con el inglés. Si Play pide
+  confirmar por datos móviles, el mismo diálogo de Play que PaqueteDeVoz ya maneja.
+- Sin internet: un aviso de una línea -"Para usar los gestos hace falta conexión la primera
+  vez"- y el interruptor vuelve a apagado. Nunca en silencio.
+- Después: funciona sin internet para siempre. Sin verificar: qué pasa con el paquete cuando la
+  app se actualiza y el .task cambió -Play lo actualizaría-, y si la persona borra los datos
+  de la app -se vuelve a bajar-.
+- Quien nunca prende los gestos: 6,1 MB menos de descarga y 8,0 MB menos instalado.
+
+LÍMITES DE PLAY: un paquete on-demand puede pesar hasta 1,5 GB y los on-demand/fast-follow
+juntos hasta 30 GB; hasta 100 paquetes por AAB -Play Console Help, "Optimize your app's size"-.
+8 MB está muy lejos. Los on-demand van siempre sin comprimir en el teléfono.
+
+4.3 LA BIBLIOTECA MEDIAPIPE A PEDIDO -PLAY FEATURE DELIVERY-: SE PUEDE, PERO NO AHORA
+Lo que hay: libmediapipe_tasks_jni.so -10,5 MB arm64, 7,4 MB v7- más ~1,0 MB de su código Java
+-com.google.mediapipe en el dex, apkanalyzer- y la parte de protobuf que usa. Descarga medida
+sacando el .so -además del .task-: 4,7 MB menos en el g86, 4,0 en el e20.
+Por qué es de riesgo alto:
+- Capacitor registra los plugins al crear el puente -MainActivity.registerPlugin(GestosPlugin.
+  class)-. Un módulo de función depende de la base, no al revés: GestosPlugin no podría importar
+  clases de MediaPipe. Habría que dejar en la base un GestosPlugin sin MediaPipe que cargue la
+  implementación por reflexión cuando el módulo esté instalado.
+- SplitCompat -SplitCompat.install en la actividad- para usar el módulo sin reiniciar la app.
+- La biblioteca nativa la carga MediaPipe por dentro con System.loadLibrary, en código que no
+  es nuestro. Para módulos a pedido Google recomienda cargar con ReLinker o
+  SplitInstallHelper.loadLibrary -"Load native code in an app using on-demand delivery"-;
+  ReLinker es de terceros, y SplitInstallHelper es la biblioteca feature-delivery: los dos son
+  dependencias nuevas.
+- La APK de prueba -assembleDebug, npm run apk- no instala módulos de función: habría que
+  mantener dos caminos.
+- R8, las reglas de proguard y el arreglo del backend "cct" de datatransport -tarea 88,
+  manifiesto- quedarían repartidos entre dos módulos.
+- Limitación de Play: WebView y SplitCompat no se llevan en Android 9 o menos; Sigo pide 10
+  como mínimo, así que esto no afecta.
+Conclusión: posible, pero toca el arranque de la app y el registro de plugins para 4,7 MB.
+Primero la 4 -sin código nuevo en la carga de bibliotecas, 6,1 MB-; esto, si después hace falta.
+
+4.4 SOBRE noCompress 'task'
+El comentario de app/build.gradle dice que MediaPipe necesita el archivo sin comprimir. El código
+de MediaPipe 1.0.0 -4.1- lo lee completo con AAssetManager y lo copia a la caché: no necesita
+que vaya sin comprimir. Sacarlo ahorraría 1,9 MB instalados -8,0 MB guardado contra ~6,1 MB
+comprimido- y casi nada de descarga. Si se hace la 4, da lo mismo: los on-demand van sin
+comprimir siempre. Requiere probarlo en el teléfono.
+
+==========================================================================================
+5. CÓDIGO Y ARCHIVOS SIN USO
+==========================================================================================
+
+5.1 DEPENDENCIAS
+- package.json: todas se importan en alguna parte -knip temporal con npx, sin guardarlo; y git
+  grep de cada una-. vosk-browser -src/workers/vosk.worker.ts- y public/vad-processor.js solo los
+  usa el motor web, que en Android no entra -VITE_SIN_MOTOR_WEB-: no están en el JS del AAB.
+  @capacitor/clipboard se usa en BarraEditorVacio -pegar-, no solo en PanelMediciones.
+- build.gradle: todas se usan -camera-view y media3 en CamaraNativaPlugin, CapaDeSubtitulos y
+  ExportadorDeTomas; core-splashscreen en styles.xml; coordinatorlayout en activity_main.xml y
+  en Capacitor; asset-delivery en PaqueteDeVoz; vosk y jna en VoskNativoPlugin-.
+- Lo que entra de rebote -gradlew :app:dependencies-:
+    capgo/camera-preview 8.11.4 trae play-services-mlkit-barcode-scanning 18.3.1, play-services-
+    location 21.4.0 y commons-imaging 1.0.0-alpha6. Sigo no lee códigos de barras ni ubicación.
+    En el dex: com.google.mlkit 31 KB, com.google.android.gms 367 KB -parte de ML Kit-,
+    org.apache.commons.imaging 87 KB, más rgb.txt 17 KB en la raíz. Propuesta 6.
+    asset-delivery 2.3.0 trae WorkManager 2.9.1 y Room -136 KB-: se necesitan para bajar los
+    paquetes.
+    media3-transformer trae exoplayer y los extractores -~425 KB de dex-: Transformer los usa
+    para leer la toma; no se pueden sacar.
+- Observación, no de peso: vosk-android 0.3.75 pide JNA 5.18.1 en su pom, y Sigo fija
+  jna:5.13.0@aar. Visto y no tocado.
+
+5.2 CÓDIGO EN src/
+- knip -temporal, sin guardarlo- encuentra UN archivo sin uso: src/components/ControlesAa.tsx
+  -3.903 bytes; solo lo nombra un comentario de TeleprompterView.tsx-. Como nadie lo importa,
+  no llega al paquete: 0 bytes en el AAB.
+- 41 exportaciones y 29 tipos exportados sin uso fuera de su archivo -casi todos constantes que
+  usan las pruebas-. Rollup los saca del paquete: 0 bytes. No hay nada que ganar en peso.
+
+5.3 HERRAMIENTAS DE DIAGNÓSTICO EN EL AAB DE PLAY
+- PanelCorpus, PanelDiagnostico y PanelMediciones NO están en el JS de Play: .env.play pone
+  VITE_HERRAMIENTAS=0, src/lib/herramientas.ts lo vuelve una constante false y Rollup saca las
+  ramas. Comprobado con el mapa de fuentes del build --mode play: ninguno de los tres paneles
+  aparece en los chunks.
+- Quedan restos chicos en el chunk principal: lib/diagnostico.ts 2,9 KB, lib/grabadorCorpus.ts
+  2,6 KB, lib/medicionesTarea87.ts 0,7 KB, lib/almacenCorpus.ts 0,5 KB y la parte web de
+  @capacitor/clipboard 1,6 KB. ~8 KB sin comprimir. Propuesta 10.
+- public/vad-processor.js -3,3 KB- e icon-192.png, icon-512.png, icon-512-maskable.png -1,9 KB-
+  viajan en el AAB de Play sin uso: el primero es del motor web; los íconos son del manifiesto de
+  la PWA, que en modo play no se genera.
+- Del lado nativo, MedicionExport.java escribe solo si la app es depurable: en Play queda el
+  código -unos KB- sin efecto.
+
+5.4 RECURSOS Y ARCHIVOS DE android/
+- mipmap-*dpi/ic_launcher.png e ic_launcher_round.png: con minSdk 29 Android usa siempre
+  mipmap-anydpi-v26 -el ícono adaptativo-. En el AAB pesan 47 KB entre todas las densidades; a
+  un g86 le llegan 13 KB -xxhdpi-. Propuesta 11.
+- drawable/ic_launcher_background.xml y drawable/ic_marca.xml: nadie los nombra, pero R8
+  -shrinkResources- ya los saca: no están en el AAB. values/ic_launcher_background.xml -un
+  color- tampoco lo nombra nadie; si quedó en resources.pb son bytes sueltos.
+- base/root: archivos que las bibliotecas meten en la raíz de la APK -google/protobuf/*.proto,
+  kotlin/*.kotlin_builtins, DebugProbesKt.bin, META-INF/AL2.0, META-INF/LGPL2.1,
+  org/apache/commons/imaging/formats/xpm/rgb.txt-: 145.302 bytes. Propuesta 8.
+- La única cosa en src/main/assets es gesture_recognizer.task -punto 4-. No hay res/raw.
+
+5.5 PERMISOS -manifiesto combinado del AAB; los permisos no pesan bytes-
+  INTERNET                     app + datatransport -MediaPipe-
+  ACCESS_NETWORK_STATE         manifiesto de release -PaqueteDeVoz- + media3-exoplayer
+  RECORD_AUDIO, CAMERA         app + capgo
+  MODIFY_AUDIO_SETTINGS        app. El WebView lo pide para getUserMedia, que en Play no se usa
+                               -la voz es nativa-. Posiblemente sobra en Play: sin verificar.
+  VIBRATE                      capacitor-haptics
+  WAKE_LOCK                    media3-exoplayer + WorkManager
+  FOREGROUND_SERVICE, FOREGROUND_SERVICE_DATA_SYNC   asset-delivery -extrae paquetes-
+  RECEIVE_BOOT_COMPLETED       WorkManager
+  DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION           androidx.core
+  Ninguno es claramente muerto. El backend "cct" de datatransport ya sale del manifiesto
+  -tarea 88-.
+
+5.6 ARQUITECTURAS
+- El AAB trae arm64-v8a y armeabi-v7a; x86 y x86_64 no -abiFilters, app/build.gradle-.
+- Play exige 64 bits -arm64-v8a- para apps con código nativo; 32 bits sigue siendo opcional.
+- Como Play entrega solo la ABI del teléfono, armeabi-v7a no le cuesta nada al g86 -0 MB-. Sí
+  pesa en el AAB -16,1 MB de APK de 32 bits-, pero eso no lo baja nadie con un teléfono de 64.
+- Sacarlo dejaría fuera a los teléfonos de 32 bits como el moto e20 de Test Lab -Android Go,
+  solo armeabi-v7a-. No se propone.
+
+==========================================================================================
+6. LA APP WEB -1,94 MB sin comprimir, 0,81 MB de descarga-
+==========================================================================================
+
+vite build --mode play, con mapa de fuentes fuera del repo -/tmp, no en el AAB- y
+source-map-explorer temporal con npx:
+
+  assets/index-BXEUooku.js -el chunk principal-   841 KB   270 KB gzip
+     editor -TipTap + ProseMirror + linkifyjs-     396 KB   47 %
+     el código de Sigo -src/-                      293 KB   App.tsx 33, ReproductorGrabacion 20,
+                                                            TeleprompterView 18, Biblioteca 13
+     react + react-dom                             141 KB
+  assets/index-DbNjdQlV.js -mammoth, para .docx-   501 KB   131 KB gzip
+     mammoth 160, dingbat-to-unicode 117, jszip 94, bluebird 83, underscore 21
+  licencias.json -pantalla de licencias-           199 KB    29 KB comprimido
+  fuentes .woff2 -las que se usan-                 175 KB
+  fuentes .woff -de respaldo, no se usan-          221 KB   propuesta 7 -220.840 bytes-
+  CSS                                               63 KB
+  native-bridge.js -Capacitor-                      53 KB
+
+- mammoth YA se carga solo cuando se importa un .docx -import() en src/datos/importarArchivo.ts
+  145-: va en su propio chunk.
+- OJO CON "CARGAR A PEDIDO" EN UNA APK: todos los chunks viajan igual dentro del paquete. Un
+  import() perezoso acelera el arranque -menos JavaScript que leer al abrir- pero no ahorra
+  NI UN BYTE de descarga ni de instalación. Lo único que achica el AAB es sacar cosas. El editor
+  a pedido sería una mejora de arranque, no de peso.
+- linkifyjs + @tiptap/extension-link -27 KB- viajan aunque EditorGuion.tsx pone link: false:
+  StarterKit los importa igual. Propuesta 9.
+- Las .woff: @fontsource pone woff2 y woff en cada @font-face; el WebView de Android 10+ usa
+  siempre la woff2 y nunca pide la woff. Medido: sacarlas baja la descarga 223.531 bytes.
+- El CSS pide pesos 500 y 700 que no se cargan -main.tsx trae 400 y 600-: el WebView los imita.
+  No es peso; queda anotado.
+
+==========================================================================================
+7. SIN VERIFICAR
+==========================================================================================
+
+1. El tamaño instalado real en el teléfono -Ajustes > Apps-. Es una estimación: no incluye el
+   código compilado por Android -oat, vdex-, la caché del WebView ni los datos. No hubo
+   teléfono.
+2. La copia del .task a cache/mediapipe_asset_cache al prender los gestos: sale del código de
+   MediaPipe v1.0.0, no se miró en el teléfono.
+3. El número exacto que muestra Play: bundletool da 55,5 MB y Play 55,4; Play comprime a su
+   manera.
+4. El AAB de versionCode 597 que midió Claude: no estaba en el computador del bot. Se midió
+   uno nuevo de 1d72aeb -versionCode 630-. La diferencia en la app web -1,94 contra 1,7 MB- se
+   atribuye a licencias.json sin haberlo comprobado.
+5. Que la libvosk.so del AAR 0.3.75 sea exactamente la compilada desde el commit 625e44c de
+   vosk-api: no hay etiqueta v0.3.75. Las rutas que trae escritas calzan con model.cc.
+6. Que Gr.fst trae su tabla de palabras: se deduce porque no hay words.txt y el modelo carga
+   -model.cc 304-318-; no se abrió el .fst.
+7. Fast-follow -propuesta 1-: que la ficha de Play muestre ~17,5 MB -la documentación de Play
+   dice que fast-follow no cuenta en el tamaño de la ficha-, qué pasa sin red o si la persona
+   borra los datos, y cómo se ve en la pista interna.
+8. Que Play respete installTimeAssetModuleDefaultCompression en un AAB subido, y cuánto más
+   tarda la primera copia del español con el paquete comprimido -propuesta 2-.
+9. Que MediaPipe abra el .task desde la ruta absoluta del paquete on-demand en el teléfono
+   -propuesta 4-; el código dice que sí.
+10. Que los gestos sigan andando sin noCompress 'task' -propuesta 5-; el código dice que sí.
+11. Cuánto se ahorra excluyendo ML Kit, location y commons-imaging, y si capgo los toca en algún
+    camino que Sigo usa -propuesta 6-. No se armó.
+12. La parte del dex que es de MediaPipe -~1,0 MB- y lo que ahorraría en descarga -~0,5 MB-:
+    estimado con apkanalyzer, no medido sacándolo.
+13. Si MODIFY_AUDIO_SETTINGS e INTERNET hacen falta en la versión de Play.
+14. Qué pasa con un paquete on-demand ya bajado cuando la app se actualiza.
+15. Las características del moto e20 -Android 11 Go, solo 32 bits, ~270 dpi- y que Test Lab lo
+    use: tomadas del encargo. Y que el g86 tenga Android 15 -sdk 35-.
+16. Que el AAB armado en el bot pese lo mismo que uno armado en el computador de Javier. En el
+    bot no hay NDK y Gradle avisó "Unable to strip"; las bibliotecas ya vienen sin símbolos, así
+    que no debería cambiar nada.

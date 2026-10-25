@@ -1,0 +1,41 @@
+AAB: /workspace/t103/sigo-1d72aeb-play.aab  (105,7 MB, versionCode 630)
+Paquetes de recursos: model_es install-time (57,5 MB sin comprimir), model_en on-demand (67,6 MB sin comprimir)
+MB = 1.048.576 bytes. Descarga: bundletool get-size total. Instalado: estimación -ver el encabezado de scripts/medir-peso.mjs-.
+
+== moto g86 -arm64-v8a, 450 dpi (xxhdpi), Android 15, es-419-
+  Descarga al instalar (base + install-time): 55,5 MB  -solo base: 17,5 MB-
+  Descarga extra a pedido (on-demand/fast-follow): 39,3 MB
+  Instalado al terminar la instalación: 92,8 MB
+  Instalado tras la primera lectura -copia de StorageService-: 150,3 MB
+  Instalado con los paquetes a pedido bajados: 217,9 MB
+  APK que entrega Play: base-arm64_v8a.apk 20,34, base-es.apk 0,02, base-master.apk 14,91, base-xxhdpi.apk 0,06, model_en-master.apk 67,63, model_es-master.apk 57,51
+  Desglose -sin comprimir / comprimido estimado, deflate 6-:
+    paquete model_en                                       67,62 MB    39,27 MB
+    paquete model_es                                       57,49 MB    37,97 MB
+    MediaPipe libmediapipe_tasks_jni.so (arm64-v8a)        10,50 MB     4,70 MB
+    Vosk libvosk.so (arm64-v8a)                             9,58 MB     3,11 MB
+    modelo de gestos (.task)                                7,99 MB     6,07 MB
+    código Java/Kotlin (dex)                                5,74 MB     2,45 MB
+    app web (assets/public)                                 1,94 MB     0,81 MB
+    recursos Android (res)                                  0,86 MB     0,33 MB
+    otros de base                                           0,29 MB     0,09 MB
+    otras bibliotecas nativas (arm64-v8a)                   0,20 MB     0,06 MB
+
+== 32 bits tipo moto e20 -armeabi-v7a, 280 dpi (xhdpi), Android 11, es-419-
+  Descarga al instalar (base + install-time): 54,6 MB  -solo base: 16,7 MB-
+  Descarga extra a pedido (on-demand/fast-follow): 39,3 MB
+  Instalado al terminar la instalación: 88,6 MB
+  Instalado tras la primera lectura -copia de StorageService-: 146,1 MB
+  Instalado con los paquetes a pedido bajados: 213,7 MB
+  APK que entrega Play: base-armeabi_v7a.apk 16,14, base-es.apk 0,02, base-master.apk 14,91, base-xhdpi.apk 0,05, model_en-master.apk 67,63, model_es-master.apk 57,51
+  Desglose -sin comprimir / comprimido estimado, deflate 6-:
+    paquete model_en                                       67,62 MB    39,27 MB
+    paquete model_es                                       57,49 MB    37,97 MB
+    Vosk libvosk.so (armeabi-v7a)                           8,57 MB     3,01 MB
+    modelo de gestos (.task)                                7,99 MB     6,07 MB
+    MediaPipe libmediapipe_tasks_jni.so (armeabi-v7a)       7,36 MB     3,97 MB
+    código Java/Kotlin (dex)                                5,74 MB     2,45 MB
+    app web (assets/public)                                 1,94 MB     0,81 MB
+    recursos Android (res)                                  0,86 MB     0,33 MB
+    otros de base                                           0,29 MB     0,09 MB
+    otras bibliotecas nativas (armeabi-v7a)                 0,14 MB     0,06 MB

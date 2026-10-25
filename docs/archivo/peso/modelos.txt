@@ -1,0 +1,167 @@
+LOS MODELOS DE VOZ, ARCHIVO POR ARCHIVO -tarea 103, anexo de docs/peso/informe.txt-
+06-10-2026. Solo medición: no se tocó ningún archivo del modelo.
+
+==========================================================================================
+EN CORTO
+==========================================================================================
+
+En los dos modelos el reconocedor lee TODOS los archivos, menos el README. No hay carpetas
+rescore/ ni rnnlm/: son los modelos "small" y no las traen. El único peso muerto real son los
+dos README: 483 + 199 bytes, menos de 1 KB en total. Y sacarlos NO conviene -ver al final-.
+
+Los modelos son los oficiales de Alpha Cephei, idénticos byte a byte -sha256 de cada archivo
+contra el zip bajado hoy de alphacephei.com- salvo conf/model.conf, al que
+scripts/bajar-modelo.mjs le agrega a propósito la línea --frames-per-chunk=3:
+  español: vosk-model-small-es-0.42      inglés: vosk-model-small-en-us-0.15
+
+==========================================================================================
+QUÉ VERSIÓN DE VOSK USA SIGO, Y DE DÓNDE SALE LA EVIDENCIA
+==========================================================================================
+
+- android/app/build.gradle: implementation 'com.alphacephei:vosk-android:0.3.75@aar'.
+- vosk-api no tiene la etiqueta v0.3.75. El commit que publica la 0.3.75 es 625e44c
+  "Bump JNA requirements to 5.18.1 and update version" -08-12-2025-, que pone version = '0.3.75'
+  en android/build.gradle. src/model.cc no cambió entre ese commit y el último de hoy -05adbfc-.
+  Las líneas citadas abajo son de ese commit:
+    https://github.com/alphacep/vosk-api/blob/625e44c62607a3b48fec6d72a30118448909e83f/src/model.cc
+- StorageService: el jar de fuentes de vosk-android 0.3.75 en Maven Central
+  -vosk-android-0.3.75-sources.jar- trae un StorageService.java IDÉNTICO al de 625e44c:
+    https://github.com/alphacep/vosk-api/blob/625e44c62607a3b48fec6d72a30118448909e83f/android/lib/src/main/java/org/vosk/android/StorageService.java
+- Kaldi -la parte que lee el i-vector- es el fork alphacep/kaldi, rama vosk, commit bc5baf1:
+    https://github.com/alphacep/kaldi/blob/bc5baf14231660bd50b7d05788865b4ac6c34481/src/online2/online-ivector-feature.cc
+- La libvosk.so que viaja en el AAB -arm64-v8a- trae escritas exactamente las rutas de
+  model.cc: /am/final.mdl, /conf/model.conf, /graph/HCLr.fst, /graph/Gr.fst, /rescore/G.carpa,
+  /rnnlm/final.raw, /ivector/splice.conf, etc. -strings sobre el .so-. Ninguna dice README.
+  SIN VERIFICAR: que el .so sea byte a byte el compilado de 625e44c -no hay etiqueta-.
+
+CÓMO LO USA SIGO -VoskNativoPlugin.java, en 1d72aeb-:
+- Español en Play -paquete install-time model_es- y los dos en la APK de prueba:
+  StorageService.unpack(contexto, "model-es", "model-es", ...) -líneas 216-234-. Eso copia la
+  carpeta entera a la memoria de la app y hace new Model(ruta) sobre la copia.
+- Inglés en Play -paquete on-demand model_en-: new Model(ruta) directo sobre la carpeta del
+  paquete, sin copiar -cargarDesdeCarpeta, líneas 298-309-.
+- El reconocedor: new Recognizer(modelo, FRECUENCIA) -línea 357- y setWords(true) -línea 372-.
+  Nada más: ni gramática, ni setMaxAlternatives, ni nada que prenda o apague el reescorado.
+  En Vosk el reescorado no tiene interruptor: se activa solo si el modelo trae rescore/G.carpa
+  -model.cc 326-332- o rnnlm/final.raw -model.cc 335-357-, y el reconocedor lo usa solo si
+  quedó cargado -src/recognizer.cc 133-142, mismo commit-. Estos modelos no traen ninguno de
+  los dos, así que hoy no hay reescorado y no hay nada que medir ahí.
+
+==========================================================================================
+CÓMO LEE VOSK UN MODELO -model.cc, commit 625e44c-
+==========================================================================================
+
+- 121-126: si existen am/final.mdl y conf/model.conf -stat- usa el formato nuevo -ConfigureV2-.
+  Los dos modelos lo son.
+- 196: lee conf/model.conf -beam, max-active, endpoints, frames-per-chunk-.
+- 199-216: arma las rutas: am/final.mdl, graph/HCLG.fst, graph/HCLr.fst, graph/Gr.fst,
+  graph/disambig_tid.int, graph/words.txt, graph/phones/word_boundary.int, rescore/G.carpa,
+  rescore/G.fst, ivector/final.ie, conf/mfcc.conf, conf/fbank.conf, am/global_cmvn.stats,
+  conf/pitch.conf y las cuatro de rnnlm/.
+- 228-238: lee conf/mfcc.conf -si no está, conf/fbank.conf; si no hay ninguno, error-.
+- 245-253: lee am/final.mdl -modelo de transición y red neuronal-.
+- 258-276: si está ivector/final.ie, arma el extractor de i-vector con ivector/splice.conf,
+  ivector/online_cmvn.conf, ivector/final.mat, ivector/global_cmvn.stats, ivector/final.dubm
+  e ivector/final.ie -262-267-. Si no está y la red pide i-vector, error -272-273-.
+  Kaldi -online-ivector-feature.cc 49-66- lee LOS SEIS, uno por uno; si falta uno, error.
+  Ojo con online_cmvn.conf: por dentro es solo un comentario, pero ReadConfigFromFile lo abre
+  igual -línea 57-, y si no existe el modelo no carga. No es peso muerto aunque esté "vacío".
+- 278-282: am/global_cmvn.stats, solo si existe. Estos modelos no lo traen.
+- 284-289: conf/pitch.conf, solo si existe. No lo traen.
+- 291-302: si existe graph/HCLG.fst lo usa; si no -este caso-, lee graph/HCLr.fst,
+  graph/Gr.fst y graph/disambig_tid.int -295-300-.
+- 304-318: las palabras salen de la tabla de símbolos de Gr.fst; graph/words.txt solo se lee
+  si Gr.fst no la trae. Estos modelos no traen words.txt y cargan: Gr.fst la trae -deducido,
+  ver "sin verificar" en el informe-.
+- 320-324: graph/phones/word_boundary.int, si existe -sí existe; da los tiempos de cada
+  palabra que Sigo pide con setWords-.
+- 326-332: rescore/G.fst + rescore/G.carpa, si existe G.carpa. No existe en ninguno.
+- 335-357: rnnlm/final.raw, feat_embedding.final.mat, word_feats.txt, special_symbol_opts.conf,
+  si existe final.raw. No existe en ninguno.
+
+LA COPIA Y EL uuid -StorageService.java, commit 625e44c-:
+- 76-79: lee "<modelo>/uuid" de los assets y lo compara con el de la copia: si son iguales,
+  no copia.
+- 83-88: si no, borra la copia vieja y copia TODO -copyAssets, 113-133, recorre la carpeta
+  entera, README incluido- y al final el uuid.
+- Sigo además mira el uuid para saber si el modelo está en assets -VoskNativoPlugin.enAssets,
+  284-291-. El uuid lo calcula app/build.gradle -genUUID- como huella del contenido del modelo.
+
+==========================================================================================
+model-es -paquete model_es, install-time-
+==========================================================================================
+Bytes = sin comprimir, iguales en el AAB -model_es/assets/model-es/...- y en
+android/app/src/main/assets/model-es -de donde lo copia paquete-de-modelo.gradle-.
+"gzip" = comprimido con gzip -6, para estimar lo que pesa en la descarga.
+
+archivo                          bytes        gzip     ¿se carga?  evidencia
+README                             483         282     NO          ninguna ruta lo nombra en model.cc
+                                                                   ni en libvosk.so; solo lo copia
+                                                                   StorageService -113-133-
+am/final.mdl                16.098.256  14.800.749     SÍ          model.cc 199, 245-253
+conf/mfcc.conf                     155         134     SÍ          model.cc 209, 228-231
+conf/model.conf                    310         194     SÍ          model.cc 122-126, 196
+graph/Gr.fst                21.818.215  12.844.286     SÍ          model.cc 202, 295-297
+graph/HCLr.fst              12.226.498   2.465.079     SÍ          model.cc 201, 295-296
+graph/disambig_tid.int              50          69     SÍ          model.cc 203, 298-301
+graph/phones/word_boundary.int   1.131         316     SÍ          model.cc 205, 320-324
+ivector/final.dubm             168.048     154.086     SÍ          model.cc 266; kaldi 61-63
+ivector/final.ie             9.927.287   9.505.460     SÍ          model.cc 258, 267; kaldi 64-66
+ivector/final.mat               44.975      42.798     SÍ          model.cc 264; kaldi 49-51
+ivector/global_cmvn.stats        1.081         496     SÍ          model.cc 265; kaldi 52-54
+ivector/online_cmvn.conf            95         117     SÍ          model.cc 263; kaldi 55-57
+ivector/splice.conf                 35          57     SÍ          model.cc 262; kaldi 58-60
+uuid -lo agrega genUUID-            64           -     SÍ, por     StorageService 76-79;
+                                                       la app      VoskNativoPlugin 284-291
+TOTAL                       60.286.683  39.814.123                 = 57,5 MB
+No existen: graph/HCLG.fst, graph/words.txt, am/global_cmvn.stats, conf/pitch.conf,
+conf/fbank.conf, rescore/, rnnlm/.
+
+==========================================================================================
+model-en -paquete model_en, on-demand-
+==========================================================================================
+
+archivo                          bytes        gzip     ¿se carga?  evidencia
+README                             199         189     NO          igual que en español
+am/final.mdl                15.962.575  14.633.610     SÍ          model.cc 199, 245-253
+conf/mfcc.conf                     131         123     SÍ          model.cc 209, 228-231
+conf/model.conf                    311         192     SÍ          model.cc 122-126, 196
+graph/Gr.fst                24.013.795  13.684.390     SÍ          model.cc 202, 295-297
+graph/HCLr.fst              22.416.994   4.751.537     SÍ          model.cc 201, 295-296
+graph/disambig_tid.int             102          79     SÍ          model.cc 203, 298-301
+graph/phones/word_boundary.int   1.761         451     SÍ          model.cc 205, 320-324
+ivector/final.dubm             168.048     153.970     SÍ          model.cc 266; kaldi 61-63
+ivector/final.ie             8.288.887   7.933.933     SÍ          model.cc 258, 267; kaldi 64-66
+ivector/final.mat               44.975      42.961     SÍ          model.cc 264; kaldi 49-51
+ivector/global_cmvn.stats        1.080         490     SÍ          model.cc 265; kaldi 52-54
+ivector/online_cmvn.conf            95         117     SÍ          model.cc 263; kaldi 55-57
+ivector/splice.conf                 35          57     SÍ          model.cc 262; kaldi 58-60
+uuid -lo agrega genUUID-            64           -     no en Play  en Play el inglés no pasa por
+                                                                   StorageService: Sigo mira am/
+                                                                   -PaqueteDeVoz.rutaSiEsta-
+TOTAL                       70.899.052  41.202.099                 = 67,6 MB
+No existen: los mismos que en español.
+
+==========================================================================================
+LO QUE SE PODRÍA SACAR, Y POR QUÉ NO CONVIENE
+==========================================================================================
+
+README -683 bytes entre los dos-: es lo único que no se carga. Pero el uuid sale del contenido
+de la carpeta -genUUID-: sacar el README cambia la marca, y en la primera lectura después de
+actualizar TODOS los teléfonos vuelven a copiar los 57,5 MB del español -el atraso de 3,3 s que
+anota app/build.gradle-. Un ahorro de medio KB no paga eso. No se propone.
+
+TODO LO DEMÁS SE CARGA. Cualquier cambio en esos archivos cambia lo que reconoce el motor.
+
+OPCIONES QUE REQUIEREN MEDICIÓN -no se recomiendan; la regla del motor es que no entra nada que
+no mantenga la precisión en las grabaciones-:
+- Otro modelo, más chico o distinto, para cualquiera de los dos idiomas.
+- Podar o recompilar el grafo -Gr.fst/HCLr.fst, 34 MB en español- con menos vocabulario, o
+  armarlo como HCLG.fst.
+- Cambiar o quitar el extractor de i-vector -ivector/, 10 MB en español-. Además, sin
+  final.ie el modelo puede no cargar: model.cc 272-273 da error si la red pide i-vector.
+- Cuantizar o comprimir am/final.mdl.
+Todas cambian la precisión: requiere medición.
+
+LO QUE SÍ AHORRA SIN TOCAR EL MODELO está en el informe: el español queda guardado DOS veces en
+el teléfono -su APK install-time y la copia de StorageService-, y su APK va sin comprimir.

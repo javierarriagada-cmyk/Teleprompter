@@ -42,22 +42,28 @@ Todas las líneas citadas en la tabla se leyeron en `origin/main` (`84450b8`) el
 | #112 | CERRAR | Sí | `src/styles-ajustes.css:166,1315`; `b3fc817` |
 | #113 | CERRAR | Sí | `src/pruebas/accesibilidadEstudio3.test.tsx:48,96`; `72df550` |
 | #114 | CERRAR | Sí | `src/pruebas/estudio5-textos.test.tsx:18`; `src/textos/es.ts:196`; `95acde8` |
-| #115 | **DEJAR ABIERTO** (antes CERRAR) | NO ESTÁ | `docs/pantallas/portada/` ausente (SVG, PNG y `svg-de-pantalla.mjs`) |
-| #121 | **DEJAR ABIERTO** (antes CERRAR) | NO ESTÁ | Faltan 6 de sus 11 archivos (`BancoLargo.java` debug y release, `scripts/banco-largo.mjs`, `useBancoLargo.ts`, `bancoLargo.ts`, `vigiaDetencion.ts`). El banco largo de `main` es otro: `613f257`, `d81c397` |
+| #115 | **CERRAR** (decisión de Javier, 2026-10-25) | NO ESTÁ; reemplazado | La portada cambió el 20-10 (`8fbe883`) y el SVG ya no la muestra |
+<!-- Antes (2026-10-25): | #115 | **DEJAR ABIERTO** (antes CERRAR) | NO ESTÁ | `docs/pantallas/portada/` ausente (SVG, PNG y `svg-de-pantalla.mjs`) | | Porqué: decisión de Javier del 2026-10-25 -->
+| #121 | **CERRAR** (decisión de Javier, 2026-10-25) | NO ESTÁ; reemplazado | El banco largo de `main` la reemplazó: `613f257`, `d81c397`; `src/pruebas/bancoLargo.test.ts` |
+<!-- Antes (2026-10-25): | #121 | **DEJAR ABIERTO** (antes CERRAR) | NO ESTÁ | Faltan 6 de sus 11 archivos (`BancoLargo.java` debug y release, `scripts/banco-largo.mjs`, `useBancoLargo.ts`, `bancoLargo.ts`, `vigiaDetencion.ts`). El banco largo de `main` es otro: `613f257`, `d81c397` | | Porqué: decisión de Javier del 2026-10-25 -->
 | #125 | RESCATAR | NO ESTÁ (el informe) | Arreglo posterior en `e62dec7`; `docs/mediciones/toma-25-min/` ausente |
-| #128 | CERRAR | A medias: la parte funcional sí, la sonda no | `src/components/ReproductorGrabacion.tsx:110,352`; `ServidorLocal.java:32,71`; `PedidoLocalTest.java` existe; `c3b822f`. No están `MedirServidorPlugin.java`, `src/lib/medirServidor.ts` ni su prueba (ver dudas) |
+| #128 | CERRAR, sin guardar la sonda (decisión de Javier, 2026-10-25) | A medias: la parte funcional sí, la sonda no | `src/components/ReproductorGrabacion.tsx:110,352`; `ServidorLocal.java:32,71`; `PedidoLocalTest.java`; `c3b822f`. La sonda (`MedirServidorPlugin.java`, `medirServidor.ts`) no se guarda |
+<!-- Antes (2026-10-25): | #128 | CERRAR | A medias: la parte funcional sí, la sonda no | `src/components/ReproductorGrabacion.tsx:110,352`; `ServidorLocal.java:32,71`; `PedidoLocalTest.java` existe; `c3b822f`. No están `MedirServidorPlugin.java`, `src/lib/medirServidor.ts` ni su prueba (ver dudas) | | Porqué: decisión de Javier del 2026-10-25 -->
 | #129 | RESCATAR | NO ESTÁ (el informe) | Arreglo posterior en `0cea92a`; `docs/mediciones/toma-30-min/` ausente |
 
-**Totales (28 PR revisados, sin contar este #153):** CERRAR 14 · RESCATAR 12 · DEJAR ABIERTO 2 · MEZCLAR 0.
+**Totales (28 PR revisados, sin contar este #153):** CERRAR 16 · RESCATAR 12 · DEJAR ABIERTO 0 · MEZCLAR 0.
+<!-- Antes (2026-10-25): **Totales (28 PR revisados, sin contar este #153):** CERRAR 14 · RESCATAR 12 · DEJAR ABIERTO 2 · MEZCLAR 0. | Porqué: decisión de Javier del 2026-10-25: #115 y #121 pasan a CERRAR -->
 
 ## Listas para ejecutar (corregidas, 2026-10-25)
 
-- **CERRAR (14), con evidencia en `main`:** #70, #89, #90, #91, #92, #93, #95, #96, #109, #111, #112, #113, #114 y #128.
+- **CERRAR (16), cerrados el 2026-10-25 sin borrar sus ramas:** #70, #89, #90, #91, #92, #93, #95, #96, #109, #111, #112, #113, #114, #115, #121 y #128.
+<!-- Antes (2026-10-25): - **CERRAR (14), con evidencia en `main`:** #70, #89, #90, #91, #92, #93, #95, #96, #109, #111, #112, #113, #114 y #128. | Porqué: decisión de Javier del 2026-10-25 -->
 - **MEZCLAR:** ninguno.
 - **RESCATAR (12), solo texto; no se rescatan capturas, audio, binarios ni herramientas:**
   - #61: `docs/investigacion/idiomas.md` → misma ruta, `docs/investigacion/idiomas.md` (la ruta que ya cita `main`).
   - #65: `docs/tarea88.txt` → `docs/archivo/tarea88-encargo-03-10.txt` (no pisa el `docs/archivo/tarea88.txt` del 04-10).
-  - #67: `docs/tarea89.txt` y `docs/pantallas/tarea89/medidas-implementacion.md` → junto a sus versiones en `docs/archivo/` (duda abajo: reemplazar o guardar al lado).
+  - #67: `docs/tarea89.txt` → `docs/archivo/tarea89-pr67.txt` y `docs/pantallas/tarea89/medidas-implementacion.md` → `docs/archivo/pantallas/tarea89/medidas-implementacion-pr67.md`, AL LADO de las versiones archivadas, sin pisarlas.
+<!-- Antes (2026-10-25):   - #67: `docs/tarea89.txt` y `docs/pantallas/tarea89/medidas-implementacion.md` → junto a sus versiones en `docs/archivo/` (duda abajo: reemplazar o guardar al lado). | Porqué: decisión de Javier del 2026-10-25 -->
   - #82: `docs/peso/informe.txt`, `medicion-1d72aeb.txt` y `modelos.txt` → `docs/archivo/peso/` (las cifras son del AAB `1d72aeb`, no del actual).
   - #103: `ESTUDIO-2-SISTEMA-VISUAL.md` → `docs/archivo/estudios/sistema-visual/`.
   - #104: `informe.md` → `docs/archivo/estudios/recorridos/`.
@@ -68,9 +74,10 @@ Todas las líneas citadas en la tabla se leyeron en `origin/main` (`84450b8`) el
   - #125: `docs/mediciones/toma-25-min/INFORME.txt` → `docs/archivo/mediciones/toma-25-min/INFORME.txt`.
   - #129: `docs/mediciones/toma-30-min/INFORME.txt` → `docs/archivo/mediciones/toma-30-min/INFORME.txt`.
   - Los estudios #103 a #108 van a `docs/archivo/` y no a `docs/`, porque la guía los marca SIN VERIFICAR (`docs/lo-que-hay-que-saber.txt:211-212`) y `docs/archivo/LEEME.txt` dice que esa carpeta «ES HISTORIA».
-- **DEJAR ABIERTO / preguntas para Javier (2):**
+- **DEJAR ABIERTO:** ninguno. Javier decidió el 2026-10-25 cerrar #115 y #121.
+<!-- Antes (2026-10-25): - **DEJAR ABIERTO / preguntas para Javier (2):**
   - #115: ¿sirve todavía el SVG de la portada del 14-10, si la portada cambió el 20-10 (`8fbe883`)? Si sirve, se rescata; si no, se cierra.
-  - #121: ¿se descarta la sonda de 35 min (`BancoLargo.java`, `vigiaDetencion.ts`) o se guarda? `main` la reemplazó por otro camino, pero el código no está.
+  - #121: ¿se descarta la sonda de 35 min (`BancoLargo.java`, `vigiaDetencion.ts`) o se guarda? `main` la reemplazó por otro camino, pero el código no está. | Porqué: decisión de Javier del 2026-10-25 -->
 
 ## #125 y #129: qué se rescata y qué queda fuera
 
@@ -113,11 +120,35 @@ Destino: `docs/archivo/mediciones/` **no existe todavía en `main`**; se crea al
 
 **Corrección:** lo que queda fuera **no son solo videos o binarios**. Ningún PR trae video. El único binario de cada uno es el audio (`audio.flac` en #125, `audio.wav` en #129); el resto es texto, código y JSON (LEEME, guion, herramientas, resultados y, en #129, la bitácora de 4,2 MB). Lo que queda fuera suma 20.425.307 bytes en #125 y 63.164.966 bytes en #129, igual que decía el informe. Si Javier quiere guardar además los LEEME, son 1.453 y 2.190 bytes (sin decidir).
 
+## Rescate hecho (2026-10-25)
+
+Copia exacta desde la head ref de cada PR (`git show refs/pr/N:<ruta>`); el tamaño y el hash git coinciden con el original en los 15 archivos. Ningún destino existía antes en la rama ni en `main`. Los 12 PR con rescate siguen abiertos hasta que el #153 esté en `main`.
+
+| PR | Original | Copia | Bytes original = copia | Hash git |
+|---:|---|---|---:|---|
+| #61 | `docs/investigacion/idiomas.md` | `docs/investigacion/idiomas.md` | 80.162 | `6be25e7403` |
+| #65 | `docs/tarea88.txt` | `docs/archivo/tarea88-encargo-03-10.txt` | 82.392 | `0ddf2aa34f` |
+| #67 | `docs/tarea89.txt` | `docs/archivo/tarea89-pr67.txt` | 58.042 | `be93d01185` |
+| #67 | `docs/pantallas/tarea89/medidas-implementacion.md` | `docs/archivo/pantallas/tarea89/medidas-implementacion-pr67.md` | 33.450 | `3641a669a9` |
+| #82 | `docs/peso/informe.txt` | `docs/archivo/peso/informe.txt` | 32.015 | `039cdf406c` |
+| #82 | `docs/peso/medicion-1d72aeb.txt` | `docs/archivo/peso/medicion-1d72aeb.txt` | 3.134 | `ba21fd9639` |
+| #82 | `docs/peso/modelos.txt` | `docs/archivo/peso/modelos.txt` | 12.285 | `85923445da` |
+| #103 | `docs/estudios/sistema-visual/ESTUDIO-2-SISTEMA-VISUAL.md` | `docs/archivo/estudios/sistema-visual/ESTUDIO-2-SISTEMA-VISUAL.md` | 24.415 | `d0e44e60c5` |
+| #104 | `docs/estudios/recorridos/informe.md` | `docs/archivo/estudios/recorridos/informe.md` | 32.956 | `5fbada0a23` |
+| #105 | `docs/estudios/accesibilidad/informe-accesibilidad.md` | `docs/archivo/estudios/accesibilidad/informe-accesibilidad.md` | 14.795 | `4647c4fb2e` |
+| #106 | `docs/estudios/textos/informe.md` | `docs/archivo/estudios/textos/informe.md` | 29.993 | `c4abe082ed` |
+| #107 | `docs/estudios/modernidad/informe.md` | `docs/archivo/estudios/modernidad/informe.md` | 20.097 | `d9932bf13f` |
+| #108 | `docs/estudios/motor/informe.md` | `docs/archivo/estudios/motor/informe.md` | 20.588 | `8feba5dd8b` |
+| #125 | `docs/mediciones/toma-25-min/INFORME.txt` | `docs/archivo/mediciones/toma-25-min/INFORME.txt` | 10.763 | `57b9375323` |
+| #129 | `docs/mediciones/toma-30-min/INFORME.txt` | `docs/archivo/mediciones/toma-30-min/INFORME.txt` | 11.695 | `b9636aca49` |
+
 ## Dudas (2026-10-25)
 
-- **#128:** se deja en CERRAR porque su parte funcional (servidor local, `PedidoLocal`, su prueba) está en `main` en `c3b822f` y el título del PR dice «no se mezcla». Pero la sonda de medición (`MedirServidorPlugin.java`, `medirServidor.ts`) **no está**. Si Javier quiere guardar la sonda, pasa a DEJAR ABIERTO.
+- **#128:** resuelto. Javier decidió CERRAR sin guardar la sonda (2026-10-25).
+<!-- Antes (2026-10-25): - **#128:** se deja en CERRAR porque su parte funcional (servidor local, `PedidoLocal`, su prueba) está en `main` en `c3b822f` y el título del PR dice «no se mezcla». Pero la sonda de medición (`MedirServidorPlugin.java`, `medirServidor.ts`) **no está**. Si Javier quiere guardar la sonda, pasa a DEJAR ABIERTO. | Porqué: decisión de Javier del 2026-10-25 -->
 - **#70:** el comportamiento y una prueba equivalente están en `main`, pero el archivo de prueba propio del PR no. Se tomó como «está».
-- **#67:** las versiones de `tarea89.txt` y `medidas-implementacion.md` en `docs/archivo/` son más cortas que las del PR. No se comprobó cuál es la última ni si las líneas que faltan son solo las iteraciones descartadas: **sin verificar**. Las 119 PNG del PR no se rescatan.
+- **#67:** resuelto. Sus dos textos se guardan al lado de los archivados, sin pisarlos. Sigue sin verificar si las líneas extra del PR son solo iteraciones descartadas.
+<!-- Antes (2026-10-25): - **#67:** las versiones de `tarea89.txt` y `medidas-implementacion.md` en `docs/archivo/` son más cortas que las del PR. No se comprobó cuál es la última ni si las líneas que faltan son solo las iteraciones descartadas: **sin verificar**. Las 119 PNG del PR no se rescatan. | Porqué: decisión de Javier del 2026-10-25 -->
 - **#90:** la referencia vieja `src/pruebas/estabilizacion.test.ts:27-75` no se leyó línea por línea (sin verificar); sí el archivo y el commit.
 - **Rutas de rescate** de #65, #82 y #103 a #108: son propuestas de esta revisión, no órdenes que ya existan.
 
