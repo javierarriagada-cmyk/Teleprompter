@@ -70,6 +70,44 @@ const ES: Ejemplo[] = [
   ].join('\n\n') }
 ]
 
+// PORTUGUÉS DE BRASIL -portugues-ficha, 2026-10-25-. Los mismos cinco guiones, escritos en portugués de
+// Brasil con «você» -docs/portugues.txt-, no traducidos palabra por palabra. El del pan lleva los mismos
+// formatos en el mismo lugar: «água morna» en celeste, como «agua tibia» y «warm water».
+const PT: Ejemplo[] = [
+  {
+    titulo: 'Pão caseiro em uma hora',
+    haceMs: 2 * HORA,
+    texto: [
+      'Olá, que bom ver você por aqui. Hoje vamos fazer **pão caseiro em menos de uma hora**, com quatro ingredientes que você provavelmente já tem na cozinha.',
+      '[Mostrar os ingredientes na mesa]',
+      'Você vai precisar de {a:farinha}, {c:água morna}, {v:fermento} e uma pitada de sal. ==O segredo está na água:== ela tem que estar morna, nunca quente.',
+      'Misture tudo numa tigela e sove por dez minutos, até a massa ficar lisa e parar de grudar nas mãos. Se grudar, coloque mais um pouco de farinha.',
+      'Deixe a massa descansar coberta enquanto o forno esquenta. Em meia hora você vai ver como ela cresce.',
+      'Asse por vinte minutos em forno médio. Quando a casca fizer um som oco ao bater nela, está pronto.'
+    ].join('\n\n')
+  },
+  { titulo: 'Apresentação do projeto final', haceMs: 1 * DIA, texto: [
+    'Bom dia a todos. Nos próximos dez minutos, vou apresentar o projeto que desenvolvemos neste semestre: que problema ele resolve, como fizemos e o que aprendemos no caminho.',
+    'Tudo começou com uma pergunta simples: por que é tão difícil achar um horário que sirva para a equipe inteira? Fizemos uma pesquisa com sessenta estudantes e a resposta foi clara.',
+    'Com esses dados, criamos uma ferramenta simples, testamos com três grupos e fomos ajustando semana a semana. Hoje mostro o resultado e o que faríamos diferente.'
+  ].join('\n\n') },
+  { titulo: 'Boas-vindas ao curso de fotografia', haceMs: 3 * DIA, texto: [
+    'Seja bem-vindo ao curso. Nesta primeira aula, vamos entender a luz: de onde ela vem, como muda ao longo do dia e por que ela é o mais importante numa boa foto.',
+    'Você não precisa de uma câmera cara. O celular que está no seu bolso dá conta de tudo o que vamos praticar.',
+    'No fim de cada aula, deixo um exercício curto. Faça com calma, olhe suas fotos no dia seguinte e anote o que você mudaria.'
+  ].join('\n\n') },
+  { titulo: 'Três ideias para falar em público', haceMs: 6 * DIA, texto: [
+    'Falar na frente dos outros é algo que se aprende. Hoje vou compartilhar três ideias simples que você pode usar já na sua próxima apresentação.',
+    'A primeira: prepare muito bem o começo. Os primeiros trinta segundos dão o tom de todo o resto.',
+    'A segunda: fale mais devagar do que você acha que precisa. O que parece lento para você soa claro para quem escuta. E a terceira: olhe para uma pessoa de cada vez, como se estivesse conversando só com ela.'
+  ].join('\n\n') },
+  { titulo: 'Entrevista: perguntas para a convidada', haceMs: 9 * DIA, texto: [
+    'Obrigado por estar com a gente. Para começar, conte como você chegou à cerâmica e o que fez você se apaixonar pelo ofício.',
+    'Como é um dia normal no seu ateliê? Que parte do processo você mais curte e qual ainda é difícil?',
+    'Para terminar, o que você diria para alguém que quer começar e não sabe por onde?'
+  ].join('\n\n') }
+]
+
 const EN: Ejemplo[] = [
   {
     titulo: 'Homemade bread in one hour',
@@ -105,8 +143,11 @@ const EN: Ejemplo[] = [
   ].join('\n\n') }
 ]
 
-export function guionesDeEjemplo(idioma: 'es' | 'en', ahora: number): Guion[] {
-  return (idioma === 'es' ? ES : EN).map((e, i) => ({
+// -portugues-ficha, 2026-10-25- Con pt, sus guiones de PT. Antes:
+//   export function guionesDeEjemplo(idioma: 'es' | 'en', ahora: number): Guion[] {
+//     return (idioma === 'es' ? ES : EN).map((e, i) => ({
+export function guionesDeEjemplo(idioma: 'es' | 'en' | 'pt', ahora: number): Guion[] {
+  return { es: ES, en: EN, pt: PT }[idioma].map((e, i) => ({
     id: `ejemplo-${idioma}-${i + 1}`,
     titulo: e.titulo,
     idioma,

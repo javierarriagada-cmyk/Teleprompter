@@ -15,7 +15,7 @@ DESCRIPCIÓN BREVE (máximo 80) — 73 caracteres
 La A, elegida por Javier, sin "sin internet": eso ahora va al final de la completa.
 
 ==============================================================================
-DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2900 caracteres
+DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2909 caracteres
 ==============================================================================
 [[¿Se te olvida el guion justo cuando empiezas a grabar? Con Sigo lees en voz alta y el texto avanza contigo, a tu ritmo. Si haces una pausa, te espera.
 
@@ -50,7 +50,7 @@ TU GUION, CLARO DE UN VISTAZO
 A TU MANERA
 - Tamaño de letra, tipografía, ancho del texto y cinco combinaciones de colores de lectura.
 - Modo espejo, para usar con un vidrio de teleprompter.
-- Tema claro u oscuro. La app está en español y en inglés, y sigue tu voz en los dos idiomas.
+- Tema claro u oscuro. La app está en español, inglés y portugués, y sigue tu voz en los tres idiomas.
 - ¿Prefieres no usar la voz? Con Velocidad fija el texto sube solo, al ritmo que eliges.
 
 CONFIANZA Y PRIVACIDAD

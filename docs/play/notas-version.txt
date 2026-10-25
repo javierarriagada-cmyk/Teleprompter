@@ -11,3 +11,9 @@ Prueba cerrada de Sigo, 0.10.0.
 • The home screen makes better use of the screen width.
 • The Settings panel lets more of the background show through.
 </en-US>
+<pt-BR>
+• Novidade: entre com sua conta do Google, se quiser, e o Sigo faz backup dos seus roteiros. Você tem seus roteiros em todos os seus aparelhos e não perde nada se trocar de celular.
+• Sua conta aparece no topo de Configurações; dali você sai da conta ou a exclui.
+• A tela inicial aproveita melhor a largura da tela.
+• O painel de Configurações deixa ver mais o fundo.
+</pt-BR>

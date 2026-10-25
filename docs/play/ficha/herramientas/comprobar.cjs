@@ -55,13 +55,20 @@ function soloEstas(dir, esperadas) {
   ok(sobran.length === 0, `${dir}: solo las ${esperadas.length} de escenas.cjs${sobran.length ? ` (sobran: ${sobran.join(', ')})` : ''}`)
 }
 
+// LOS IDIOMAS -portugues-ficha, 2026-10-25-: los de la lista IDIOMAS de scripts/playApi.mjs -es-419, en-US, pt-BR-, la misma
+// que usan ficha.mjs y playSubir.mjs: una sola lista. La carpeta es el código entero; el idioma de la
+// app y de los guiones, sus dos primeras letras -es, en, pt-.
+const { IDIOMAS } = require('../../../../scripts/playApi.mjs')
 console.log('— Gráfico de funciones')
-for (const i of ['es', 'en']) imagen(`grafico-1024x500-${i}.png`, 1024, 500, 15)
+// -portugues-ficha, 2026-10-25- Antes: for (const i of ['es', 'en']) imagen(`grafico-1024x500-${i}.png`, 1024, 500, 15)
+// -los idiomas salen de la lista única IDIOMAS-
+for (const i of IDIOMAS.map((c) => c.slice(0, 2))) imagen(`grafico-1024x500-${i}.png`, 1024, 500, 15)
 
 console.log('— Capturas de teléfono')
 // Antes: for (let n = 1; n <= 8; n++), con la 4 de lado.
 ok(TELEFONO.length >= 2 && TELEFONO.length <= 8, `teléfono: ${TELEFONO.length} capturas por idioma (Play pide entre 2 y 8)`)
-for (const c of ['es-419', 'en-US']) {
+// -portugues-ficha, 2026-10-25- Antes: for (const c of ['es-419', 'en-US']) {
+for (const c of IDIOMAS) {
   const esperadas = TELEFONO.map((_, i) => `${String(i + 1).padStart(2, '0')}.png`)
   TELEFONO.forEach((e, i) => {
     const rel = `capturas/${c}/${esperadas[i]}`
@@ -77,7 +84,8 @@ console.log('— Aire entre los renglones de los titulares')
 // titular llega hasta donde empieza la pantalla -componer.cjs, marcoTelefono: 420 de pie, 250 de lado-,
 // y se sube hasta un renglón y medio de la letra -80 y 66- buscando el renglón de arriba. Las tabletas
 // no llevan titular. Un titular de un renglón no tiene nada que medir y lo dice.
-for (const c of ['es-419', 'en-US']) TELEFONO.forEach((e, i) => {
+// -portugues-ficha, 2026-10-25- Antes: for (const c of ['es-419', 'en-US']) TELEFONO.forEach((e, i) => {
+for (const c of IDIOMAS) TELEFONO.forEach((e, i) => {
   const rel = `capturas/${c}/${String(i + 1).padStart(2, '0')}.png`
   if (!fs.existsSync(path.join(FICHA, rel))) return
   const lado = deLado(e)
@@ -92,7 +100,8 @@ console.log('— Capturas de tableta')
 // Antes, en capturas/tableta-provisional/, con «al menos 4» contados en la carpeta.
 const TAB = { 7: [1440, 2560], 10: [2160, 3840] }
 ok(!fs.existsSync(path.join(FICHA, 'capturas/tableta-provisional')), 'capturas/tableta-provisional/ ya no está: la tableta de la tarea 83 está en main')
-for (const c of ['es-419', 'en-US']) for (const [p, [a, b]] of Object.entries(TAB)) {
+// -portugues-ficha, 2026-10-25- Antes: for (const c of ['es-419', 'en-US']) for (const [p, [a, b]] of Object.entries(TAB)) {
+for (const c of IDIOMAS) for (const [p, [a, b]] of Object.entries(TAB)) {
   const lista = TABLETA[p] || []
   ok(lista.length >= 4, `tableta ${p}" ${c}: ${lista.length} capturas (Play pide al menos 4)`)
   for (const e of lista) {
@@ -110,8 +119,15 @@ imagen('lamina-ficha.png', lamina?.w || 0, lamina?.h || 0, 50, true)
 console.log('— Textos')
 const largo = (s) => [...s].length
 const EMOJI = /\p{Extended_Pictographic}/u
-const PROHIBIDAS_BREVE = /\b(best|#1|top|new|free|mejor|gratis|nuevo|nueva|descarga|download|install|instala)\b|n\.º ?1/i
-for (const archivo of ['textos-es-419.txt', 'textos-en-US.txt']) {
+// -2026-10-24, portugues-ficha- Se suman las de portugués -melhor, grátis, novo, baixe, instale-,
+// porque ahora hay ficha pt-BR. Antes:
+// const PROHIBIDAS_BREVE = /\b(best|#1|top|new|free|mejor|gratis|nuevo|nueva|descarga|download|install|instala)\b|n\.º ?1/i
+const PROHIBIDAS_BREVE = /\b(best|#1|top|new|free|mejor|gratis|nuevo|nueva|descarga|download|install|instala|melhor|grátis|novo|nova|baixe|baixar|instale|instalar)\b|n\.º ?1/i
+// -2026-10-24, portugues-ficha- Los archivos de texto salen de textos.cjs, la misma fuente que los
+// arma, para no tener otra lista de idiomas que se olvide de pt-BR. Las capturas y el gráfico en
+// pt-BR esperan el aviso de Javier -puntos 5 y 6-, así que las listas de imágenes de arriba no se tocan aún.
+// Antes: for (const archivo of ['textos-es-419.txt', 'textos-en-US.txt']) {
+for (const archivo of Object.values(require('./textos.cjs')).map((t) => t.archivo)) {
   const t = fs.readFileSync(path.join(FICHA, archivo), 'utf8')
   const bloques = [...t.matchAll(/\[\[([\s\S]*?)\]\]/g)].map((m) => m[1])
   ok(bloques.length === 3, `${archivo}: 3 bloques [[ ]] -nombre, breve, completa- (hay ${bloques.length})`)

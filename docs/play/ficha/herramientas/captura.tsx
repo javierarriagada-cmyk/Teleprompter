@@ -26,7 +26,10 @@ import { guionesDeEjemplo } from './guiones'
 import { VozGuiada } from './vozGuiada'
 
 const parametros = new URLSearchParams(location.search)
-const idioma = parametros.get('idioma') === 'en' ? 'en' : 'es'
+// -portugues-ficha, 2026-10-25- Se suma pt; cualquier otro valor sigue siendo es. Antes:
+// const idioma = parametros.get('idioma') === 'en' ? 'en' : 'es'
+const pedido = parametros.get('idioma')
+const idioma = pedido === 'en' || pedido === 'pt' ? pedido : 'es'
 
 // El registro de la toma, con el formato que escribe el teléfono -src/lib/tomaVideo.ts y
 // src/lib/repetidor.ts, leerCorpus-: el guion tal cual se leyó y, por cada frase, sus palabras

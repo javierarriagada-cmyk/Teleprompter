@@ -12,6 +12,10 @@
 // del recuadro. Mismo método que las láminas aprobadas de la tarea 82.
 const puppeteer = require(process.env.PUPPETEER || '/workspace/tp-shot/node_modules/puppeteer-core')
 const fs = require('fs')
+// LOS IDIOMAS -portugues-ficha, 2026-10-25-: los de la lista IDIOMAS de scripts/playApi.mjs -es-419, en-US, pt-BR-, la misma
+// que usan ficha.mjs y playSubir.mjs: una sola lista. La carpeta es el código entero; el idioma de la
+// app y de los guiones, sus dos primeras letras -es, en, pt-.
+const { IDIOMAS } = require('../../../../scripts/playApi.mjs')
 const path = require('path')
 
 const BASE = process.env.SIGO_URL || 'http://127.0.0.1:5186/docs/play/ficha/herramientas/captura.html'
@@ -50,7 +54,8 @@ const PANTALLAS = {
 // completo.
 
 // Hasta qué palabra del guion del pan "lee" la voz en cada captura de lectura.
-const HASTA = { es: 'tibia,', en: 'warm,' }
+// -portugues-ficha, 2026-10-25- Se suma pt: «água morna», como «agua tibia» y «warm water». Antes: const HASTA = { es: 'tibia,', en: 'warm,' }
+const HASTA = { es: 'tibia,', en: 'warm,', pt: 'morna,' }
 
 // El filtro elegido en la captura de la tira: B/N, el único que se nota en una miniatura de la ficha. Se
 // probó Cálido: en el visor apenas se distingue de Natural. Los seis están en src/lib/filtros.ts, TONOS.
@@ -66,7 +71,8 @@ async function abrir(b, { idioma, pantalla, ajustes = {}, subtitulos = 'no' }) {
   const p = await b.newPage()
   const { w, h, dsf } = PANTALLAS[pantalla]
   await p.setViewport({ width: w, height: h, deviceScaleFactor: dsf })
-  const lang = idioma === 'es' ? 'es-419' : 'en-US'
+  // -portugues-ficha, 2026-10-25- El código sale de IDIOMAS, no de un ternario de dos. Antes: const lang = idioma === 'es' ? 'es-419' : 'en-US'
+  const lang = IDIOMAS.find((c) => c.slice(0, 2) === idioma)
   await p.evaluateOnNewDocument((lang, aj, sub) => {
     Object.defineProperty(navigator, 'language', { get: () => lang })
     Object.defineProperty(navigator, 'languages', { get: () => [lang, lang.slice(0, 2)] })
@@ -131,7 +137,8 @@ async function tocar(p) {
 // ELEGIR EL ESTILO DE SUBTÍTULOS EN EL VISOR -tomas-largas, 15-10-2026-. El botón Subtítulos abre las
 // opciones; cada una se llama por su nombre en el idioma de la app -src/textos, subtitulosAmarillo-.
 // Al elegir, las opciones se cierran solas -SubtitulosVisor.tsx-.
-const NOMBRE_SUBTITULO = { amarillo: { es: 'Amarillo', en: 'Yellow' } }
+// -portugues-ficha, 2026-10-25- Con pt, el nombre de src/textos/pt.ts. Antes: const NOMBRE_SUBTITULO = { amarillo: { es: 'Amarillo', en: 'Yellow' } }
+const NOMBRE_SUBTITULO = { amarillo: { es: 'Amarillo', en: 'Yellow', pt: 'Amarelo' } }
 async function elegirSubtitulos(p, idioma, estilo) {
   await p.click('[data-testid="btn-subtitulos"]')
   await p.waitForSelector('[data-testid="opciones-subtitulos"]')
@@ -176,7 +183,8 @@ const ESCENAS = {
         n.parentElement.scrollIntoView({ block: 'center' })
         break
       }
-    }, o.idioma === 'es' ? 'agua tibia' : 'warm water')
+    // -portugues-ficha, 2026-10-25- Antes: }, o.idioma === 'es' ? 'agua tibia' : 'warm water')
+    }, { es: 'agua tibia', en: 'warm water', pt: 'água morna' }[o.idioma])
     await sleep(1200)
     return p
   },
@@ -240,7 +248,8 @@ const LISTA = [
 
 ;(async () => {
   fs.mkdirSync(CRUDAS, { recursive: true })
-  for (const idioma of ['es', 'en']) {
+  // -portugues-ficha, 2026-10-25- Antes: for (const idioma of ['es', 'en']) {
+  for (const idioma of IDIOMAS.map((c) => c.slice(0, 2))) {
     for (const [nombre, escena, pantalla, persona] of LISTA) {
       const id = `${idioma}-${nombre}`
       if (filtro && !id.includes(filtro)) continue

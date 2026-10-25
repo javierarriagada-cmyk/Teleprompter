@@ -220,7 +220,12 @@ if (await asegurarBundletool()) {
     const mb = (n) => (n / 1048576).toFixed(1)
     const telefonos = [
       ['moto g86 -arm64-v8a, 450 dpi, sdk 35-', { supportedAbis: ['arm64-v8a', 'armeabi-v7a', 'armeabi'], supportedLocales: ['es-419'], screenDensity: 450, sdkVersion: 35 }],
-      ['32 bits -armeabi-v7a, 280 dpi, sdk 30-', { supportedAbis: ['armeabi-v7a', 'armeabi'], supportedLocales: ['es-419'], screenDensity: 280, sdkVersion: 30 }]
+      ['32 bits -armeabi-v7a, 280 dpi, sdk 30-', { supportedAbis: ['armeabi-v7a', 'armeabi'], supportedLocales: ['es-419'], screenDensity: 280, sdkVersion: 30 }],
+      // -2026-10-24, portugues-ficha- Un teléfono en portugués de Brasil, el mismo moto g86 con
+      // supportedLocales pt-BR: es lo que baja quien lo tiene en portugués. Su línea «a pedido» muestra
+      // model_pt, la voz que se le baja sola. Antes la lista terminaba en el de 32 bits.
+      // Comparte el archivo telefono-arm64-v8a.json con el g86: se escribe justo antes de medir cada uno.
+      ['moto g86 en pt-BR -arm64-v8a, 450 dpi, sdk 35-', { supportedAbis: ['arm64-v8a', 'armeabi-v7a', 'armeabi'], supportedLocales: ['pt-BR'], screenDensity: 450, sdkVersion: 35 }]
     ]
     for (const [nombre, datos] of telefonos) {
       const spec = path.join(HERRAMIENTAS, `telefono-${datos.supportedAbis[0]}.json`)
@@ -242,6 +247,12 @@ if (await asegurarBundletool()) {
         extras.push(con === null ? `${paquete} ?` : `${paquete} +${mb(con - base)} MB`)
       }
       anotarResultado(true, `${nombre}, a pedido: ${extras.join(', ')}`)
+      // -2026-10-24, portugues-ficha- En el teléfono en portugués, model_pt tiene que existir y pesar algo:
+      // sin él la voz en portugués no se baja. Antes no se miraba aparte.
+      if (datos.supportedLocales.includes('pt-BR')) {
+        const pt = extras.find((e) => e.startsWith('model_pt'))
+        anotarResultado(!!pt && !pt.endsWith('?') && !/\+0\.0 MB/.test(pt), `${nombre}: el AAB trae model_pt -${pt || 'no medido'}-`)
+      }
     }
   }
 

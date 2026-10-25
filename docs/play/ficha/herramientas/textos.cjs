@@ -46,6 +46,19 @@
 // Antes, en GRABA TU VIDEO: "- Cámara frontal o trasera, en 1080p, 720p o 480p. En vertical o de lado."
 // y en A TU MANERA: "- Tamaño de letra, tipografía, ancho del texto y colores de lectura." -y en
 // inglés "Portrait or landscape." y "Font size, typeface, text width and reading colors."-.
+//
+// PORTUGUÉS DE BRASIL -orden portugues-ficha de Javier, 2026-10-24-. Se suma pt-BR, que arma
+// ../textos-pt-BR.txt con el mismo formato. Lo manda docs/portugues.txt de la rama portugues-app:
+// portugués de Brasil con «você» -P2-, escrito y no traducido -P5-, y el glosario de su sección 4
+// -roteiro, gravar, take, legendas Amarelo/Vermelho/Formal, Configurações, celular-. Los nombres de
+// los filtros y de Velocidade fixa son los de src/textos/pt.ts de esa rama -Quente, Frio, Vívido,
+// Suave, P&B-. Dice lo mismo que es-419 y en-US, punto por punto, con el mismo orden de secciones.
+// «Teleprompter» en vez de «apuntador»: en Brasil se dice así, y «ponto eletrônico» es el audífono.
+// Las rayas van separadas por espacios, como se escriben en Brasil.
+// La línea de los idiomas nace ya con los tres -español, inglés y portugués-: una ficha en portugués
+// que dijera «em espanhol e inglês» sería falsa. es-419 y en-US se ponen al día en el commit siguiente.
+// OJO: lo que dice del app en portugués es cierto en la rama portugues-app; esta ficha no se sube
+// hasta que esa rama esté en main y la lea el papá de Javier -ANTES-DE-SUBIR.txt, punto 10-.
 module.exports = {
   es: {
     archivo: 'textos-es-419.txt',
@@ -58,6 +71,9 @@ module.exports = {
     // velocidad que elegir, así que se saca el "no hay velocidades" y A TU MANERA lo cuenta al final.
     // Antes, en LO QUE CAMBIA CUANDO EL TEXTO TE SIGUE: "- Si te detienes, el texto se detiene. No hay velocidades que ajustar."
     // Antes, A TU MANERA terminaba en "- Tema claro u oscuro. La app está en español y en inglés, y sigue tu voz en los dos idiomas."
+    // -2026-10-24, portugues-ficha- Con el portugués son tres idiomas: la app -rama portugues-app- y la
+    // voz -portugues-voz, IdiomaVoz 'pt'-. La línea de «La voz de tu idioma se descarga sola» sigue valiendo.
+    // Antes, en A TU MANERA: "- Tema claro u oscuro. La app está en español y en inglés, y sigue tu voz en los dos idiomas."
     completa: `¿Se te olvida el guion justo cuando empiezas a grabar? Con Sigo lees en voz alta y el texto avanza contigo, a tu ritmo. Si haces una pausa, te espera.
 
 Mira a la cámara con calma. No tienes que aprenderte el texto de memoria ni repetir la toma porque perdiste el hilo.
@@ -91,7 +107,7 @@ TU GUION, CLARO DE UN VISTAZO
 A TU MANERA
 - Tamaño de letra, tipografía, ancho del texto y cinco combinaciones de colores de lectura.
 - Modo espejo, para usar con un vidrio de teleprompter.
-- Tema claro u oscuro. La app está en español y en inglés, y sigue tu voz en los dos idiomas.
+- Tema claro u oscuro. La app está en español, inglés y portugués, y sigue tu voz en los tres idiomas.
 - ¿Prefieres no usar la voz? Con Velocidad fija el texto sube solo, al ritmo que eliges.
 
 CONFIANZA Y PRIVACIDAD
@@ -114,6 +130,8 @@ Escribe tu guion, toca Leer o Grabar, y habla. Sigo te sigue.`
     // -15-10-2026, ficha 0.9.1- Lo mismo que en es-419, por Velocidad fija -Fixed speed-.
     // Antes, en WHAT CHANGES WHEN THE SCRIPT FOLLOWS YOU: "- Stop, and the text stops. No scroll speed to set."
     // Antes, YOUR WAY terminaba en "- Light or dark theme. The app is in English and Spanish, and follows your voice in both."
+    // -2026-10-24, portugues-ficha- Lo mismo que en es-419: ahora son tres idiomas.
+    // Antes, en YOUR WAY: "- Light or dark theme. The app is in English and Spanish, and follows your voice in both."
     completa: `Forget your lines the moment you hit record? With Sigo you read aloud and the script moves with you, at your pace. Pause, and it waits.
 
 Look at the camera and relax. No memorizing, and no redoing a take because you lost your place.
@@ -147,7 +165,7 @@ YOUR SCRIPT, CLEAR AT A GLANCE
 YOUR WAY
 - Font size, typeface, text width and five reading color combinations.
 - Mirror mode, for use with teleprompter glass.
-- Light or dark theme. The app is in English and Spanish, and follows your voice in both.
+- Light or dark theme. The app is in English, Spanish and Portuguese, and follows your voice in all three.
 - Prefer not to use your voice? With Fixed speed the script scrolls on its own, at the pace you choose.
 
 TRUST AND PRIVACY
@@ -159,5 +177,58 @@ TRUST AND PRIVACY
 - You can also use it offline. The voice for your language downloads on its own the first time you open Sigo; after that it works without internet.
 
 Write your script, tap Read or Record, and start talking. Sigo follows.`
+  },
+  pt: {
+    archivo: 'textos-pt-BR.txt',
+    idioma: 'Português (Brasil) — pt-BR',
+    nombre: 'Sigo — Teleprompter de voz',
+    nombreNota: 'El mismo de es-419: «de voz» se dice igual en portugués. Se queda igual -Javier, 29-09-2026-.',
+    breve: 'Teleprompter que segue sua voz: o texto anda enquanto você lê em voz alta.',
+    breveNota: 'La A de es-419, escrita en portugués: sin «sem internet», que va al final de la completa.',
+    completa: `Esquece o roteiro bem na hora de começar a gravar? Com o Sigo você lê em voz alta e o texto anda junto com você, no seu ritmo. Se você faz uma pausa, ele espera.
+
+Olhe para a câmera com calma. Você não precisa decorar o texto nem refazer o take porque se perdeu.
+
+É PARA VOCÊ SE
+- Você grava vídeos para redes sociais, aulas ou trabalho, e acha difícil falar para a câmera.
+- Você esquece o que vem depois ou se perde no meio de uma frase.
+- Você refaz o mesmo take várias e várias vezes.
+- Você ensaia uma apresentação, um discurso ou uma leitura, e precisa de um teleprompter que não corra na frente nem fique para trás.
+
+O QUE MUDA QUANDO O TEXTO SEGUE VOCÊ
+- Você fala no seu ritmo. O Sigo escuta sua voz e marca com uma linha o que você está lendo.
+- Se você para, o texto para.
+- Você escolhe ler em cima, perto da câmera, ou no meio da tela.
+
+GRAVE SEU VÍDEO ALI MESMO
+- Sua imagem fica atrás do texto, em uma janela pequena que você move para onde quiser, ou oculta enquanto você grava.
+- Câmera frontal ou traseira, em 1080p, 720p ou 480p. Na vertical ou na horizontal, no celular ou no tablet.
+- Pause quando quiser: o que acontece durante a pausa não fica no vídeo.
+- Controle por gestos com a câmera frontal: longe do celular, mostre a palma da mão para pausar ou continuar e, em pausa, faça o V para terminar.
+- Legendas em três estilos: Amarelo, Vermelho e Formal. Elas saem do seu roteiro e do tempo da sua voz, e ficam dentro do vídeo quando você salva.
+- Seis filtros — Natural, Quente, Frio, Vívido, Suave e P&B — que você escolhe vendo o seu vídeo. O que você vê é o que fica salvo.
+- Salve seu vídeo na galeria ou compartilhe.
+
+SEU ROTEIRO, CLARO À PRIMEIRA VISTA
+- Negrito, três cores e destaque para ver de longe o que importa.
+- Anotações entre [colchetes] ou (parênteses) que não são lidas em voz alta nem aparecem nas legendas.
+- Cole seu texto ou abra um arquivo .txt, .md ou .docx.
+- Todos os seus roteiros em um só lugar, com a duração estimada de cada um.
+
+DO SEU JEITO
+- Tamanho do texto, fonte, largura do texto e cinco combinações de cores de leitura.
+- Modo espelho, para usar com um vidro de teleprompter.
+- Tema claro ou escuro. O app está em português, espanhol e inglês, e segue sua voz nos três idiomas.
+- Prefere não usar a voz? Com a Velocidade fixa o texto sobe sozinho, na velocidade que você escolher.
+
+CONFIANÇA E PRIVACIDADE
+- Sem conta e sem cadastro.
+- Sua voz é reconhecida no celular. O áudio não é enviado a nenhum servidor.
+- Os gestos são reconhecidos no celular e nenhuma imagem sai dele. O Sigo não envia estatísticas de uso.
+- Seus roteiros e seus vídeos ficam no seu celular, até você compartilhar.
+- Seus roteiros e configurações entram no backup do Android: se você reinstalar o Sigo com o backup do Google ativado, eles voltam. Os vídeos não entram nesse backup.
+- Você também pode usar sem conexão. A voz do seu idioma é baixada sozinha na primeira vez que você abre o Sigo; depois funciona sem internet.
+
+Escreva seu roteiro, toque em Ler ou Gravar, e fale. O Sigo segue você.`
   }
 }

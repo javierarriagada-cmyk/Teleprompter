@@ -25,11 +25,18 @@ function mini(rel, ancho) {
 }
 
 const W = 2480
-const CARPETA = { es: 'es-419', en: 'en-US' }
-const NOMBRE_IDIOMA = { es: 'Español (Latinoamérica)', en: 'English (United States)' }
+// -portugues-ficha, 2026-10-25- La carpeta sale de la lista IDIOMAS de scripts/playApi.mjs -la misma de ficha.mjs-, no de un
+// mapa de dos. Antes:
+//   const CARPETA = { es: 'es-419', en: 'en-US' }
+//   const NOMBRE_IDIOMA = { es: 'Español (Latinoamérica)', en: 'English (United States)' }
+const { IDIOMAS } = require('../../../../scripts/playApi.mjs')
+const CORTOS = IDIOMAS.map((c) => c.slice(0, 2))
+const CARPETA = Object.fromEntries(IDIOMAS.map((c) => [c.slice(0, 2), c]))
+const NOMBRE_IDIOMA = { es: 'Español (Latinoamérica)', en: 'English (United States)', pt: 'Português (Brasil)' }
 
 function graficos() {
-  return `<div class="fila">${['es', 'en'].map((i) => `<figure>${mini(`grafico-1024x500-${i}.png`, 1100)}<figcaption><b>${CARPETA[i]}</b> grafico-1024x500-${i}.png</figcaption></figure>`).join('')}</div>`
+  // -portugues-ficha, 2026-10-25- Antes: ['es', 'en'].map(...)
+  return `<div class="fila">${CORTOS.filter((i) => fs.existsSync(path.join(FICHA, `grafico-1024x500-${i}.png`))).map((i) => `<figure>${mini(`grafico-1024x500-${i}.png`, 1100)}<figcaption><b>${CARPETA[i]}</b> grafico-1024x500-${i}.png</figcaption></figure>`).join('')}</div>`
 }
 // Antes: for (let k = 1; k <= 8; k++), con la 4 de lado.
 function telefonos(i) {
@@ -43,11 +50,13 @@ function tabletas() {
   const filas = []
   for (const p of ['7', '10']) {
     // En el orden de escenas.cjs. Antes: lo que hubiera en capturas/tableta-provisional/, por nombre.
-    const grupos = ['es', 'en'].map((i) => {
+    // -portugues-ficha, 2026-10-25- Antes: const grupos = ['es', 'en'].map((i) => {
+    const grupos = CORTOS.map((i) => {
       const dir = `capturas/tableta/${CARPETA[i]}/${p}`
       return `<div class="grupo"><div class="eti-g">${p}" · ${CARPETA[i]}</div><div class="fila">${TABLETA[p].map((e) => mini(`${dir}/${e.nombre}.png`, deLado(e) ? 480 : 152)).join('')}</div></div>`
     })
-    filas.push(`<div class="fila">${grupos.join('')}</div>`)
+    // -portugues-ficha, 2026-10-25- Con tres idiomas no caben en una fila: se parten en renglones. Antes: filas.push(`<div class="fila">${grupos.join('')}</div>`)
+    filas.push(`<div class="fila" style="flex-wrap:wrap">${grupos.join('')}</div>`)
   }
   return filas.join('')
 }
@@ -61,6 +70,8 @@ function textos(i) {
 </div>`
 }
 
+// -portugues-ficha, 2026-10-25- Los teléfonos y los textos, de cada idioma de IDIOMAS. Antes, en la página:
+//   ${telefonos('es')} y ${telefonos('en')}, y <div class="cols">${textos('es')}${textos('en')}</div>
 const pagina = `<!doctype html><html><head><meta charset="utf-8"><style>${LETRAS}
 body{width:${W}px;background:linear-gradient(180deg,${C.suelo},${C.hondo});color:${C.letra};font-family:"Source Sans 3",sans-serif;padding:96px 80px 120px}
 header{display:flex;align-items:flex-end;gap:40px;padding-bottom:48px;border-bottom:1px solid rgba(231,225,222,.14);margin-bottom:24px}
@@ -101,11 +112,10 @@ ${graficos()}
 
 <h2>Capturas de teléfono <small>1080 x 1920 · la ${TELEFONO.findIndex(deLado) + 1} en 1920 x 1080 · en este orden</small></h2>
 <div class="bajada">Las escenas que pidió Javier el 05-10-2026, en su orden: hablas y el texto te sigue; lo importante a la vista; miras a la cámara sin memorizar; las pausas no quedan en tu video; el video sale con subtítulos; eliges el filtro mirando tu video; también de lado; y te miras en un recuadro. El titular dice el beneficio en 7 palabras o menos y ocupa menos del 20 % de alto. Sin marco de teléfono: Play no quiere imágenes de dispositivos. Las personas son generadas por computador -ver abajo-.</div>
-${telefonos('es')}
-${telefonos('en')}
+${CORTOS.map(telefonos).join('\n')}
 
 <h2>Textos <small>los conteos los hace herramientas/armar-textos.cjs</small></h2>
-<div class="cols">${textos('es')}${textos('en')}</div>
+<div class="cols">${CORTOS.map(textos).join('')}</div>
 
 <h2>Tabletas <small>7": 1440 x 2560 / 2560 x 1440 · 10": 2160 x 3840 / 3840 x 2160</small></h2>
 <div class="bajada">Con el diseño de tableta de la tarea 83 -<code>useLayout</code> da tab-v y tab-h-: el 7" en 612 x 1088 dp y el 10" en 810 x 1440 dp, 9:16 justo. La letra la pone la app: 32 en tableta. De pie: leer, grabar con la cámara detrás y el visor con la tira de filtros; de lado: grabar con la cámara detrás. A pantalla completa y sin titulares: para pantallas grandes Play pide no agregar texto fuera de la app.</div>

@@ -35,7 +35,8 @@ done
 # instala Playwright no trae H.264 -canPlayType('video/mp4; codecs="avc1.42E01E"') da ''- y el visor
 # se quedaba esperando el cuadro. VP9 en MP4 lo abren ese Chromium y Chrome. Lo que se ve es lo
 # mismo: una imagen quieta. Antes: -c:v libx264 -preset veryfast -crf 28 -c:a aac.
-for l in es en; do
+# -portugues-ficha, 2026-10-25- Los idiomas, de la lista IDIOMAS de scripts/playApi.mjs -es, en, pt-. Antes: for l in es en; do
+for l in $(node -p "require('../../../../scripts/playApi.mjs').IDIOMAS.map((c) => c.slice(0, 2)).join(' ')"); do
   ffmpeg -loglevel error -y -loop 1 -i medios/persona-D.jpg -f lavfi -i anullsrc=r=48000:cl=mono -t 42 -r 30 \
     -vf "scale=1080:1920,format=yuv420p" -c:v libvpx-vp9 -deadline realtime -cpu-used 8 -crf 40 -b:v 0 -c:a libopus -shortest medios/toma-$l.mp4
   cp medios/persona-D.jpg medios/miniatura-$l.jpg
