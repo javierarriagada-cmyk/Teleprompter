@@ -1,0 +1,151 @@
+TOMA DE 30 MIN EN EL REDMI -investigación, sin arreglo, 16-10-2026-
+====================================================================
+
+Motor: main e62dec7 -con #126-. src/ no cambia. Relojes: "video" = el de la bitácora y el de Javier
+(14:26, 18:10); "audio" = el de audio.wav y del registro de transcribir.py. audio = video + 2,73 s
+(comparar.ts lo midió con 127 finales idénticos: 2734 ms; el LEEME suponía 2746).
+
+Herramientas: las de docs/mediciones/toma-25-min/herramientas/ -traídas de motor-investigacion, sin
+subir- y docs/mediciones/motor-parentesis/rastro.ts. Nueva: herramientas/comparar.ts -la verificación
+de abajo-. medir.ts revienta con "Maximum call stack size exceeded" en esta toma -Math.max(...eventos)
+con 16540 eventos, medir.ts:45-: se corrió con más pila, sin tocarla:
+  node --stack-size=8000 node_modules/vite-node/vite-node.mjs docs/mediciones/toma-25-min/herramientas/medir.ts -- ...
+Arreglarla sería cambiar ese Math.max por un recorrido; no se hizo.
+
+Regenerar el registro -no se sube, 4,6 MB-:
+  cd docs/mediciones && python3 toma-25-min/herramientas/transcribir.py <es-fpc3> toma-30-min/audio.wav \
+     toma-30-min/guion.txt <toma30.motor.txt> <palabras.json>      (palabras.json sí está en resultados/)
+Los tokens del guion de ese registro y los de la bitácora son los mismos: 2823 y 2823, iguales uno a uno.
+
+
+0. ¿SE PUEDE CONFIAR EN LA REPETICIÓN? Sí. -resultados/comparar.txt-
+---------------------------------------------------------------------
+
+Primeros 686,5 s -lo que cubre la bitácora-, 140 finales en el teléfono, 50 con calce.
+
+a) La bitácora repetida con el motor de e62dec7 -la misma entrada que tuvo el teléfono, cuadros cada 16 ms-:
+   finales 140/140 iguales, mismo tiempo; calce igual en 138/140 y los 2 restantes son los dos rechazados
+   por la ventana (294,8 s en 215 y 675,8 s en 679): el teléfono anota el calce del seguidor antes de
+   rechazarlo y la repetición da "sin calce" -es el mismo hecho, y los dos dan la misma devolución-.
+   Posición del motor en cada final: diferencia mediana 0,0, p90 0,0, máxima 0,2 tokens.
+b) La transcripción del PC -Vosk sobre audio.wav- repetida:
+   - mismo texto: 127/140 finales (90,7 %); desfase de tiempo mediana 0 ms, p10 -30, p90 +14 ms;
+   - mismo calce -o los dos sin calce-: 123/127 (96,9 %); de los que calzaron en el teléfono 41/45 (91,1 %);
+   - posición del motor: diferencia mediana 0,0, p90 1,4, máxima 29 tokens. Las diferencias grandes son
+     tres tramos que vuelven a juntarse solos: 82-87 s (13,6 y 5,9), 317-337 s (hasta 26,6) y 442-462 s
+     (hasta 29), por finales que en el PC salieron con otro texto. Los dos hechos del LEEME -294,8 s y
+     675,8 s- salen iguales.
+   Pasados los 686,5 s solo hay la transcripción del PC: lo de abajo vale con ese margen.
+
+
+1. 4:55 VIDEO (294.816 ms): UN FINAL EN 215 RECHAZADO CON EL MOTOR EN 236
+--------------------------------------------------------------------------
+(rastro.ts sobre la bitácora; tiempos de video)
+
+  257,81  «pero vamos despacio y vamos colocando»   calce 204 -dentro de la acotación 1, por A-
+  262,26  «esto»  -final de UNA palabra, fuera del guion-  calza en 219 «está» por parecida (esto/está,
+          una letra): seguidor 204 → 219, motor confirma 219. La voz seguía en 201-204.
+  264-284 cuatro finales fuera del guion, sin calce; freno sin-calce desde 270,58; motor 213,2.
+  288,40  parcial «y me viera por» -Javier empieza la acotación 1, «si me vieras por dentro»-:
+          seguidor pos 219, posPredicha 259 -219 + 40, el tope de C-: calza la repetición del texto,
+          231-233 «me vieras por». Ancla 233 → 234 → 235 → 236 en los parciales siguientes.
+  294,81  FINAL «y me vieras por dentro seguro hallaría se y por ello no encuentro»: A lo sigue dentro de
+          la acotación -calce 215, la última palabra-, pero la ventana es ref = 236 → 226..276: se rechaza
+          y el seguidor vuelve a 236. Motor 235,6, ancla 236, confirmado 219.
+  Por qué 21 adelante: un final de una palabra -«esto»- confirmó 219 con la voz en ~204, y desde 219 la
+  predicción alcanzó 259 y el parcial de la acotación calzó su repetición en 233-236. B no suelta el
+  ancla: iba 17 adelante de lo confirmado (236 - 219), menos de 40.
+  Costo: medir.ts lo da como ADELANTO, no como detención: 4:23-5:16 video (4:26-5:19 audio), motor
+  hasta 21,5 tokens delante de la voz -236 contra 215-. Al alcanzar la voz el texto, el motor estaba en
+  248-258 y sigue una detención de 22 s, 5:13-5:35 video (voz 240→273, motor 258). Ninguna movida a mano.
+
+
+2. DESDE 10:59 VIDEO (659.020 ms): MOTOR QUIETO EN 630,52
+----------------------------------------------------------
+  656,96  «es un desajuste» calza 630 -la última palabra antes de la acotación 11 (631-644)-.
+  659,56  «es totalmente desahogo», 668,45 «hacemos este», 669,96 «filoso», 675,78 «en», 680,87 «como»:
+          fuera del guion -el audio habla de otra cosa o hay silencio-; el reconocedor no oye texto.
+  675,78  «en», UNA palabra, calza en 679 «un» por parecida, con posPredicha 654 -la predicción corre:
+          630 + 78 ppm · 19 s, por debajo del tope de 40-. La ventana -620..670- la rechaza bien: va 49
+          adelante. El seguidor vuelve a 630. No costó nada: fue el rechazo correcto.
+  ~692    se lee la acotación 11, pero llega rota: «mitad y batir de las estilo desde ayer desde este mismo
+          momento de de siempre» (695,2 video, transcripción del PC). Calza en 645 «cuatro» -después de la
+          acotación-; desde ahí 646, 650, 652, 653, 657, 661, 664... sin problema.
+  Cuánto: 659,0 → 695,2 video, 36 s. medir.ts: detención 10:58-11:32 video (11:01-11:35 audio), voz
+  630→642, 12 tokens de acotación dicha. Por qué: ~24 s sin texto del guion -no es del motor- y unos 10 s
+  de acotación que el reconocedor oyó demasiado mal para que A la siguiera.
+
+
+3. CERCA DEL 14:26 VIDEO: EL TEXTO SE PIERDE Y JAVIER LO ALCANZA LEYENDO
+-------------------------------------------------------------------------
+(transcripción del PC; tiempos de video = audio - 2,7)
+
+  838,6   FINAL «o» -UNA palabra-: seguidor pos 773 -«terminar», la voz ahí-, posPredicha 802,7. «o» se
+          parece a «no» y calza en 810 «no» -«...que no se fue»-: seguidor 773 → 810. El motor confirma
+          782, el tope de renglón -acotación «mi niña juventud...», 774-782-.
+  852,9   «la juventud mi niña mi vieja niña» -la acotación leída-: nada. 859,8 «...está hablando de tres
+          edades» (786-787), 865,2 «habla de una vida donde las edades» (788-794), 871,3 «dejaron de
+          respetar el orden...» (795-799): nada. Con el seguidor en 810 la búsqueda empieza en
+          min(810, basePos) - (largo + 5) = 798: lo que se lee, 783-799, queda DETRÁS del comienzo de la
+          búsqueda. Y posPredicha está en 850 -810 + 40-.
+  881,7   «la vejez aparece como niña» calza 804 y el motor sigue: 806, 812...
+  Cuánto: el motor en 773,8-782 de 838,6 a 881,7 video, 43 s. medir.ts: detención 14:00-14:40 video
+  (14:03-14:43 audio, 40 s), voz 773→804. Es lo que vio Javier: el texto parado a las 14:26 y él leyendo
+  en voz alta -esa voz también está en audio.wav- hasta que «la vejez aparece como niña» calzó.
+  B no aplica: el ancla no vino de un parcial, la confirmó un final.
+
+
+4. CERCA DEL 18:10 VIDEO: SE DETIENE Y RETOMA SOLO
+---------------------------------------------------
+  1041,8  final largo, calza 923 «ajenas» -la última antes de la acotación 5 (925-943), 19 palabras:
+          «porque aunque mi existencia sea un accidente tengo razón de ser...»-.
+  1049,1  «la», UNA palabra, calza 919 «a» -por parecida, hacia atrás: seguidor 923 → 919-.
+  1050,7  «el énfasis», 1060,4 «tienes razón» -la acotación 5 leída, rota: «tienes razón» por «tengo
+          razón»; tienes/tengo no son parecidas (3 letras) y con dos palabras hacen falta las dos-: nada.
+  1071,2  «ya», UNA palabra, calza «la» 956 -seguidor 919 → 956-; el motor confirma 943, fin de la
+          acotación. La voz estaba en ~944. Retoma.
+  1075,6  «aquí está el corazón filosófico» (944-948): nada -el seguidor en 956, la búsqueda empieza en
+          946: «aquí» 944 y «está» 945 quedan fuera-. 1081,7 «realmente» calza 951 y sigue.
+  Cuánto: motor en 923 de 1041,8 a 1071,2 video, 29 s. medir.ts: detención 17:21-17:51 video
+  (17:24-17:54 audio), voz 923→944, 20 tokens de acotación dicha. Javier lo ubicó «cerca del 18:10».
+  Por qué: la acotación 5 se leyó pero llegó demasiado rota para A, y lo que la destrabó fue otro final
+  de una palabra que calzó por parecido y adelantó al seguidor 12 palabras de más.
+
+
+LO QUE SE REPITE: FINALES DE UNA PALABRA QUE CALZAN POR PARECIDO -resultados/rastro-finales.txt-
+--------------------------------------------------------------------------------------------------
+En toda la toma, 18 finales de una palabra; 8 calzan. 3 con la palabra idéntica y bien (ayer 653,
+realmente 951, entero 1369). 5 solo por parecido (es/en 0, esto/está 219, o/no 810, la/a 919, ya/la
+956), y tres son el origen de 1, 3 y 4. Con una palabra, PALABRAS_SEGUIDAS_MINIMO y
+MIN_PALABRAS_COINCIDENTES piden 1 -min(3, largo)-, y similar() da por buena una letra de diferencia.
+Hay además un segundo efecto en 3 y 4: cuando un final así adelanta al SEGUIDOR, la búsqueda de los
+finales siguientes empieza en su posición menos (largo + 5), y lo que se lee detrás queda fuera.
+
+
+MEDIR.TS EN ESTA TOMA -guion tal cual, transcripción del PC, tiempos de audio-
+------------------------------------------------------------------------------
+  a-mano   movidas a mano   s quieto   detenciones   con acotación dicha
+  60       0                365        19            6 (151 s)
+  20       10               285        18            5 (81 s)
+Detalle en resultados/medir-a-mano-60.txt y -20.txt.
+
+
+OPCIONES DE ARREGLO -sin hacer; cada una con su costo-
+-------------------------------------------------------
+a. Un final de UNA palabra solo calza si es IDÉNTICA -comparando sin tildes-, como un parcial lejos con
+   SALTO_PARCIAL_SIN_EXACTAS. En esta toma quita las 5 malas y deja las 3 buenas; habría evitado 1, 3 y
+   el salto a 956 de 4 (en 4 la detención sería más larga, porque «ya» fue lo que la destrabó).
+   Costo: los finales cortos legítimos y mal oídos dejan de mover -una palabra rara vez trae
+   información-; hay que medir las dos tomas largas y el banco -inglés con fonética-. Mecanismo existente.
+b. La búsqueda de un final empieza en min(posición del seguidor, posición del motor) en vez de la del
+   seguidor. En 3 y 4 habría alcanzado 783-799 y 944-948. Costo: más finales repetidos calzando atrás
+   -el título repetido de tarea89-; la ventana de conduccion.ts (-10) acota cuánto.
+c. Que el final confirmado de una palabra no empuje al seguidor más allá del tope de renglón que sí
+   respeta el motor (en 3: seguidor 810, motor 782). Costo: dos topes que hoy son distintos pasan a ser
+   uno; toca seguidor.ts y conduccion.ts.
+d. Acotaciones leídas pero oídas rotas (2 y 4): A no las puede seguir sin palabras parecidas. No es del
+   motor: el reconocedor oyó el parlante de otro teléfono. Una salida sería saltar la acotación si tras
+   N s sin calce la voz sigue -costo: un salto a ciegas-. No recomendado sin más tomas.
+e. Lo de 1 en sí -el ancla del parcial 17 adelante, bajo el umbral 40 de B-: bajar el umbral ya se midió
+   en #126 y empeora sin paréntesis; con a, el «esto» no confirmaría 219 y el resto no ocurre.
+Recomendado medir primero a, después a+b.
