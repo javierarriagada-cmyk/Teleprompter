@@ -108,7 +108,14 @@
      sobre --bg-superficie #221F1D da 12,7 a 1.
      22-10-2026: en rojo, pedido de Javier -«antes aparecía con rojo, una forma de destacar en un fondo negro»-:
      --color-grabando-texto #FF5A5A sobre #221F1D da 5,4 a 1. Antes: var(--color-acento). */
-  --aviso-accion: var(--color-grabando-texto);
+  /* -ajustes-accesible, 25-10-2026, decisión de Javier vista en el Redmi- EL AVISO CON LA SUPERFICIE INVERTIDA DE
+     MATERIAL 3 -material-components-android, docs/components/Snackbar.md: colorSurfaceInverse de fondo,
+     colorOnSurfaceInverse de texto, la acción en el color invertido-. Con --bg-superficie el aviso casi no se
+     distinguía cuando caía sobre un guion. Tema oscuro: aviso claro, texto oscuro, acción en el rojo del tema claro.
+     Antes: --aviso-accion: var(--color-grabando-texto); -sin --aviso-fondo ni --aviso-texto- */
+  --aviso-fondo: #ECE6E0;
+  --aviso-texto: #1D1B1A;
+  --aviso-accion: #C62828;
   --leer-fondo: linear-gradient(180deg, #F4ECE7, #E2D6CF);
   --leer-texto: #151312;
   --crear-fondo: #E7E1DE;
@@ -176,7 +183,13 @@
      -#E7E1DE- sobre el aviso blanco daba 1,3 a 1; --dato-texto -#A4471E- sobre #FFFFFF da 6,0 a 1.
      22-10-2026: en rojo, pedido de Javier -«antes aparecía con rojo, una forma de destacar»-. El rojo de borrar del
      tema claro -#C62828, el de .peligro- sobre #FFFFFF da 5,6 a 1. Antes: var(--dato-texto). */
-  --aviso-accion: #C62828;
+  /* -ajustes-accesible, 25-10-2026, decisión de Javier vista en el Redmi- EL AVISO CON LA SUPERFICIE INVERTIDA DE
+     MATERIAL 3 -Snackbar.md, ver :root-. Tema claro: el fondo es --bg-superficie del tema oscuro -#221F1D-, el texto
+     su --color-texto -#E7E1DE- y la acción el rojo del tema oscuro.
+     Antes: --aviso-accion: #C62828; -sin --aviso-fondo ni --aviso-texto- */
+  --aviso-fondo: #221F1D;
+  --aviso-texto: #E7E1DE;
+  --aviso-accion: #FF5A5A;
   --leer-fondo: linear-gradient(180deg, #2A2622, #1A1815);
   --leer-texto: #F3F1ED;
   --crear-fondo: #1A1815;
@@ -239,7 +252,14 @@
      sobre --bg-superficie #221F1D da 12,7 a 1.
      22-10-2026: en rojo, pedido de Javier -«antes aparecía con rojo, una forma de destacar en un fondo negro»-:
      --color-grabando-texto #FF5A5A sobre #221F1D da 5,4 a 1. Antes: var(--color-acento). */
-  --aviso-accion: var(--color-grabando-texto);
+  /* -ajustes-accesible, 25-10-2026, decisión de Javier vista en el Redmi- EL AVISO CON LA SUPERFICIE INVERTIDA DE
+     MATERIAL 3 -material-components-android, docs/components/Snackbar.md: colorSurfaceInverse de fondo,
+     colorOnSurfaceInverse de texto, la acción en el color invertido-. Con --bg-superficie el aviso casi no se
+     distinguía cuando caía sobre un guion. Tema oscuro: aviso claro, texto oscuro, acción en el rojo del tema claro.
+     Antes: --aviso-accion: var(--color-grabando-texto); -sin --aviso-fondo ni --aviso-texto- */
+  --aviso-fondo: #ECE6E0;
+  --aviso-texto: #1D1B1A;
+  --aviso-accion: #C62828;
   --leer-fondo: linear-gradient(180deg, #F4ECE7, #E2D6CF);
   --leer-texto: #151312;
   --crear-fondo: #E7E1DE;
@@ -2813,13 +2833,19 @@ button.btn-deformable.miniatura-banda:not(:active) {
 
 /* EL AVISO BREVE -AvisoBreve.tsx, tanda 2-: superficie que flota, con su fondo, el canto --sup-canto y
    --sup-sombra. Antes, en linea: backgroundColor var(--bg-superficie) y border 1px solid var(--color-borde). */
+/* -ajustes-accesible, 25-10-2026, decisión de Javier- La superficie invertida de Material 3: fondo --aviso-fondo,
+   sin el canto -sobre el fondo invertido no hace falta- y la elevación de 6dp. El borde transparente queda: sin él
+   el aviso cambiaría de tamaño. Antes:
+   background-image: linear-gradient(var(--bg-superficie), var(--bg-superficie)), var(--sup-canto);
+   background-origin: border-box;
+   background-clip: padding-box, border-box;
+   box-shadow: var(--sup-sombra); */
 .aviso-breve {
   border: 1px solid transparent;
   /* El color va como gradiente de un tono: un color solo no puede ir en una capa que no sea la ultima. */
-  background-image: linear-gradient(var(--bg-superficie), var(--bg-superficie)), var(--sup-canto);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  box-shadow: var(--sup-sombra);
+  background-color: var(--aviso-fondo);
+  background-clip: padding-box;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
 }
 
 /* EL VELO DE LA MINIATURA: el 45 % de abajo -no 40px fijos, sirve en telefono y tableta-, debajo de

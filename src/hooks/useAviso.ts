@@ -20,9 +20,13 @@ export interface AvisoInfo {
 
 // El color de la acción del aviso, solo con variables que ya existen: --color-texto es el del texto del
 // aviso -AvisoBreve-, --aviso-accion el rojo de borrar.
+// -ajustes-accesible, 25-10-2026- Ahora el texto del aviso es --aviso-texto -superficie invertida-. Antes: «--color-texto
+// es el del texto del aviso».
 // Recibe el aviso entero: con Pick<AvisoInfo, 'accionNeutra'> TypeScript rechazaba un aviso sin ese campo.
 export function colorAccionAviso(info: AvisoInfo): string {
-  return info.accionNeutra ? 'var(--color-texto)' : 'var(--aviso-accion)'
+  // -ajustes-accesible, 25-10-2026, decisión de Javier- La acción neutra va en el texto del aviso invertido: con
+  // --color-texto quedaba texto claro sobre aviso claro. Antes: return info.accionNeutra ? 'var(--color-texto)' : 'var(--aviso-accion)'
+  return info.accionNeutra ? 'var(--aviso-texto)' : 'var(--aviso-accion)'
 }
 
 export function useAviso() {

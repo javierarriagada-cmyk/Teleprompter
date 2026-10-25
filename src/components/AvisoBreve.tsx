@@ -69,7 +69,8 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
             maxWidth: 'calc(100% - 2 * var(--aire-4))',
             // Tanda 2, 15-10-2026: fondo, canto y sombra en .aviso-breve -styles.css-. Antes:
             // backgroundColor: 'var(--bg-superficie)', border: '1px solid var(--color-borde)',
-            color: 'var(--color-texto)',
+            // -ajustes-accesible, 25-10-2026, decisión de Javier- Texto sobre la superficie invertida. Antes: color: 'var(--color-texto)',
+            color: 'var(--aviso-texto)',
             // -mejoras-claridad, 21-10-2026- Destacado: más aire a la izquierda, 56 de alto y letra de 16. Antes, siempre:
             // padding: 'var(--aire-2) var(--aire-3)', fontSize: 'var(--texto-cuerpo)'
             padding: destacado ? 'var(--aire-1) var(--aire-2) var(--aire-1) var(--aire-4)' : 'var(--aire-2) var(--aire-3)',
