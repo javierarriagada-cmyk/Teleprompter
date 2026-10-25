@@ -117,6 +117,8 @@ export function reiniciarMarcasGuiaParaPruebas(): void {
     // -portugues-voz, punto 7, 2026-10-22- También los avisos de idioma del guion.
     localStorage.removeItem(CLAVE_AVISO_IDIOMA_GUION + 'es')
     localStorage.removeItem(CLAVE_AVISO_IDIOMA_GUION + 'en')
+    // -portugues-app, punto 5, 2026-10-22- Y el del portugués.
+    localStorage.removeItem(CLAVE_AVISO_IDIOMA_GUION + 'pt')
   } catch (e) {}
 }
 

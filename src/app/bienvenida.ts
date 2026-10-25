@@ -12,11 +12,13 @@ import { IdiomaApp } from '../lib/idioma'
 // Javier-; si se retoca, se retoca alla primero. Mismos formatos que el espanol, sobre las
 // palabras que los nombran.
 export function tituloDeBienvenida(idioma: IdiomaApp): string {
-  return idioma === 'es' ? 'Hola' : 'Hi'
+  // -portugues-app, punto 4, 2026-10-22- Antes: return idioma === 'es' ? 'Hola' : 'Hi'
+  return idioma === 'es' ? 'Hola' : idioma === 'pt' ? 'Olá' : 'Hi'
 }
 
 export function bloqueDeBienvenida(idioma: IdiomaApp): Bloque {
-  return idioma === 'es' ? bienvenidaEspanol() : bienvenidaIngles()
+  // -portugues-app, punto 4, 2026-10-22- Antes: return idioma === 'es' ? bienvenidaEspanol() : bienvenidaIngles()
+  return idioma === 'es' ? bienvenidaEspanol() : idioma === 'pt' ? bienvenidaPortugues() : bienvenidaIngles()
 }
 
 function tramosSobre(texto: string, marcas: Array<[string, Omit<TramoFormato, 'desde' | 'hasta'>]>): TramoFormato[] {
@@ -156,6 +158,63 @@ function bienvenidaIngles(): Bloque {
       ["You don't have to memorize anything.", { negrita: true }],
       ['whenever you want', { destacado: true }],
       ['hello@sigoteleprompter.com', { color: 'celeste' }]
+    ])
+  }
+}
+
+// -portugues-app, punto 4, 2026-10-22- El Hola en portugues de Brasil. Es de docs/portugues.txt, seccion 5,
+// letra por letra: lo escribio Grok y lo revisa el papa de Javier; si se retoca, se retoca alla primero.
+// Mismos formatos que el espanol y el ingles, sobre las palabras que los nombran, y los mismos extra de la
+// grabacion de prueba. El correo es hola@ -P4 de docs/portugues.txt-.
+function bienvenidaPortugues(): Bloque {
+  const texto = [
+    'Olá. Leia isto em voz alta, devagar ou depressa, como você preferir.',
+    '',
+    'Agora repare no texto. Ele está andando sozinho, no ritmo da sua fala, sem você tocar em nada. A linha suave embaixo das palavras mostra onde você está.',
+    '',
+    'Se você parar para pensar, o texto espera por você. Quando você volta a falar, ele continua junto.',
+    '',
+    'O que você escreve entre colchetes é uma anotação só para você. Ela aparece na tela, mas não precisa ser lida em voz alta. [Como esta: respire e sorria.]',
+    '',
+    'Seu roteiro também pode ajudar você a ler melhor. Use negrito no que você quer dizer com mais força. Pinte palavras de âmbar, azul-claro ou verde para separar ideias ou mudanças de tom. E use o destaque amarelo no que não pode passar batido. É só selecionar o texto no editor e escolher.',
+    '',
+    'Com Aa você muda o tamanho do texto. A fonte, a largura da coluna e as cores da tela ficam em Configurações. Deixe do jeito mais confortável para você.',
+    '',
+    'Quando quiser se gravar, toque em Gravar. A câmera filma enquanto você lê, e o texto fica logo abaixo da lente, para que seu olhar vá para a câmera e não para a tela. Você pode se ver em tela cheia, atrás do texto ou em uma janela pequena. Grave na vertical ou na horizontal, como precisar.',
+    '',
+    'Se precisar parar um pouco, toque na tela e depois em pausar. O que acontece durante a pausa não fica no vídeo: ao continuar, o take segue como se você nunca tivesse parado.',
+    '',
+    'E se você grava longe do celular, ative o Controle por gestos no painel da câmera. Mostre a palma da mão para pausar ou continuar e, em pausa, faça o V para terminar.',
+    '',
+    'Ao terminar, seu vídeo pode ter legendas, que saem do seu roteiro no ritmo da sua voz, e um filtro para dar o tom que você quiser. O que você vê é o que fica salvo: salve na galeria ou compartilhe direto. As legendas e o filtro são escolhidos antes de salvar.',
+    '',
+    'O Sigo está aqui para dar a você o conforto e a tranquilidade de que precisa. Queremos que toda a sua concentração esteja onde deve estar. Você não precisa decorar nada. Não precisa correr para acompanhar o texto. Pode transmitir a emoção que quiser, na hora que quiser.',
+    '',
+    'Serve para gravar um vídeo, dar uma aula ou se preparar para uma entrevista.',
+    '',
+    'Quando terminar, toque em + nos seus roteiros para escrever o seu ou colar um que você já tenha.',
+    '',
+    'E se tem algo de que você gosta, algo que incomoda ou uma ideia para melhorar, conte para a gente. Seus comentários são muito valiosos para nós. Escreva para hola@sigoteleprompter.com. Tudo de bom!'
+  ].join('\n')
+  return {
+    id: 'b-bienvenida-1',
+    nombre: '',
+    texto,
+    tramos: tramosSobre(texto, [
+      ['negrito', { negrita: true }],
+      ['âmbar', { color: 'ambar' }],
+      ['azul-claro', { color: 'celeste' }],
+      ['verde', { color: 'salvia' }],
+      ['destaque amarelo', { destacado: true }],
+      ['sem você tocar em nada', { negrita: true }],
+      ['o texto espera por você', { color: 'celeste' }],
+      ['para que seu olhar vá para a câmera', { color: 'ambar' }],
+      ['não fica no vídeo', { negrita: true }],
+      ['Controle por gestos', { color: 'ambar' }],
+      ['O que você vê é o que fica salvo', { color: 'salvia' }],
+      ['Você não precisa decorar nada.', { negrita: true }],
+      ['na hora que quiser', { destacado: true }],
+      ['hola@sigoteleprompter.com', { color: 'celeste' }]
     ])
   }
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- -portugues-app, punto 3, 2026-10-22- Los textos nativos en portugues de Brasil. En values-pt y no en
+     values-pt-rBR: asi tambien los ve un telefono en pt-PT. -->
+<resources>
+    <string name="acceso_nuevo_guion">Novo roteiro com o texto copiado</string>
+    <string name="acceso_nuevo_guion_corta">Novo roteiro</string>
+</resources>
