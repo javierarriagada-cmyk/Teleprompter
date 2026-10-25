@@ -140,3 +140,22 @@ describe('portugues-app punto 4 - el Hola en portugues', () => {
     expect(b.texto).toBe(doc.slice(desde, doc.indexOf(fin, desde) + fin.length))
   })
 })
+
+describe('portugues-app punto 5 - aviso del idioma del guion con pt', () => {
+  test('con la app en pt, el guion es o en avisa en su idioma; pt con pt no avisa', async () => {
+    const { avisoIdiomaGuion } = await import('../textos')
+    expect(avisoIdiomaGuion('es', 'pt')?.texto).toBe('Tu guion está en español. ¿Quieres usar Sigo en español?')
+    expect(avisoIdiomaGuion('es', 'pt')?.idioma).toBe('es')
+    expect(avisoIdiomaGuion('en', 'pt')?.texto).toBe('Your script is in English. Use Sigo in English?')
+    expect(avisoIdiomaGuion('en', 'pt')?.idioma).toBe('en')
+    expect(avisoIdiomaGuion('pt', 'pt')).toBeNull()
+  })
+
+  test('reiniciarMarcasGuiaParaPruebas limpia también la clave pt', async () => {
+    const m = await import('../lib/marcasGuia')
+    m.marcarAvisoIdiomaGuionVisto('pt')
+    expect(m.avisoIdiomaGuionYaVisto('pt')).toBe(true)
+    m.reiniciarMarcasGuiaParaPruebas()
+    expect(m.avisoIdiomaGuionYaVisto('pt')).toBe(false)
+  })
+})

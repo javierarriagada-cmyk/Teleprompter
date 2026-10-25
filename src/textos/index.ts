@@ -136,11 +136,14 @@ export const ENDONIMO_IDIOMA: Record<'es' | 'en' | 'pt', string> = {
 // el idioma del GUION -quien escribe en inglés lee inglés-. Recibe el idioma y lee el diccionario de ese
 // idioma; t() no cambia. Sin aviso si los idiomas coinciden o si el guion está en portugués: la app no
 // tiene textos en portugués. La acción va en el color del texto del aviso -accionNeutra-.
+// -portugues-app, punto 5, 2026-10-22- Antes: sin aviso con el guion en portugués, porque la app no tenía
+// textos en portugués. Ahora los tiene -pt.ts-: con el guion en portugués sale el aviso en portugués.
 export function avisoIdiomaGuion(
   idiomaGuion: string | null | undefined,
   idiomaDeApp: IdiomaApp
 ): { texto: string; accionTexto: string; idioma: IdiomaApp; accionNeutra: true } | null {
-  if (idiomaGuion !== 'es' && idiomaGuion !== 'en') return null
+  // Antes: if (idiomaGuion !== 'es' && idiomaGuion !== 'en') return null
+  if (idiomaGuion !== 'es' && idiomaGuion !== 'en' && idiomaGuion !== 'pt') return null
   if (idiomaGuion === idiomaDeApp) return null
   const dic = TEXTOS[idiomaGuion]
   return { texto: dic.avisoIdiomaGuion, accionTexto: dic.avisoIdiomaGuionAccion, idioma: idiomaGuion, accionNeutra: true }
