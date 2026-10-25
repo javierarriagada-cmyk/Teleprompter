@@ -1,26 +1,72 @@
-# RECORRIDOS DEL AGENTE DE PRUEBAS DE FIREBASE -27-09-2026-.
+# RECORRIDOS DEL AGENTE DE PRUEBAS DE FIREBASE -puesto al día el 2026-10-25, Sigo 0.11.0 (725)-.
 #
-# El agente -Gemini, App Distribution- lee estos pasos en lenguaje natural, recorre Sigo en
-# telefonos reales de Test Lab y dice si cada uno pasa o falla, con capturas.
+# Formato: el de la guía oficial, https://firebase.google.com/docs/app-distribution/android/app-testing-agent
+# -leída el 2026-10-25-. Por prueba: id, displayName, prerequisiteTestCaseId, steps. Por paso: goal,
+# hint, finalScreenAssertion.
 #
-#   npx firebase-tools apptesting:execute <apk> --app 1:505619935722:android:449893e0c5d723d98d8293 \
+# EL COMANDO. La APK de esta versión, los cinco teléfonos de telefonos.txt:
+#
+#   npx firebase-tools apptesting:execute Sigo-0.11.0-725.apk \
+#     --app 1:505619935722:android:449893e0c5d723d98d8293 \
 #     --test-dir pruebas-agente --test-devices-file pruebas-agente/telefonos.txt
 #
-# LO QUE CUESTA. Gratis en la preview hasta 200 pruebas al mes por proyecto, y cada
-# recorrido en cada telefono cuenta una: 5 recorridos x 4 telefonos = 20 por bateria. Con eso
-# entran unas 8 baterias al mes; se corre la bateria entera solo en versiones que tocan
-# pantallas, y lo que falla se repite en ESE telefono, no en todos.
+# Para repetir una sola prueba en un solo teléfono: --test-name-pattern "<displayName>" y
+# --test-devices "model=...,version=...,locale=...,orientation=portrait".
 #
-# LO QUE NO PUEDE. No habla: el seguimiento de la voz no se prueba aca -eso lo cubren las
-# lecturas reales-. Por eso ningun paso espera que el texto avance solo.
+# LO QUE CUESTA. La guía oficial -«Testing quotas»- dice: gratis en la vista previa hasta 200 pruebas
+# al mes por proyecto, y cada recorrido en cada teléfono cuenta una. 16 recorridos x 5 teléfonos = 80
+# por batería: entran 2 baterías completas al mes -160- y sobran 40 para repetir lo que falle en ESE
+# teléfono. Por eso la batería entera se corre solo en versiones que tocan pantallas.
 #
-# COMO SE ESCRIBEN. El telefono puede estar en espanol o en ingles y la app sigue su idioma:
-# cada pista nombra los dos rotulos. El agente falla con tareas largas en un solo paso y con
-# cosas que hay que buscar desplazando: pasos cortos, y la pista dice donde esta. Las
-# afirmaciones finales solo pueden hablar de lo que se VE en la pantalla.
+# LOS LÍMITES DE LA GUÍA, y cómo se respetan:
+# - 5 minutos por prueba, contando su prerrequisito: pasos cortos, tomas de unos 8 segundos.
+# - Solo tocar, escribir, deslizar, mantener apretado, arrastrar, atrás y esperar: ningún paso pide otra cosa.
+# - Cuenta mal las repeticiones: ningún paso dice «toca tres veces»; se pide un valor que se ve -p.ej. el
+#   tamaño 42-.
+# - No desplaza si no ve señal: la pista dice dónde está cada cosa y cuándo hay que deslizar.
+# - La afirmación final habla solo de lo que se VE.
+# - FLAG_SECURE deja la pantalla en blanco: Sigo no lo usa -rg en android/ y src/, 2026-10-25-.
 #
-# Los menus ocultos -el diagnostico de 5 toques en la marca- no se mencionan: el agente hace
+# LOS TRES IDIOMAS. Los teléfonos van en español, inglés y portugués y la app sigue al teléfono: cada
+# pista nombra el rótulo en los tres, sacado de src/textos/es.ts, en.ts y pt.ts -archivo:línea en el PR-.
+#
+# QUEDAN FUERA, y por qué:
+# - Entrar con Google y borrar la cuenta: los teléfonos de Test Lab no tienen cuenta de Google.
+# - Seguir la voz: el agente no habla. Ningún paso espera que el texto avance solo.
+# - Gestos y palma: hace falta una mano frente a la cámara; el agente no la tiene.
+# - Accesos directos del ícono: se abren manteniendo apretado el ícono en el escritorio de Android,
+#   fuera de la app; sin verificar si el agente sale de la app para eso, y no es lo que se quiere probar.
+# - Ayuda: abre el navegador, fuera de Sigo.
+# - Guardar en la galería: el resultado queda en la galería del teléfono, que el agente no revisa.
+#
+# Los menús ocultos -el diagnóstico de 5 toques en la marca- no se mencionan: el agente hace
 # solo lo que se le pide y no los encuentra.
+#
+# Antes -encabezado del 27-09-2026, completo, cambiado el 2026-10-25 porque la app, los teléfonos, la
+# APK y el costo cambiaron-:
+#    RECORRIDOS DEL AGENTE DE PRUEBAS DE FIREBASE -27-09-2026-.
+#   
+#    El agente -Gemini, App Distribution- lee estos pasos en lenguaje natural, recorre Sigo en
+#    telefonos reales de Test Lab y dice si cada uno pasa o falla, con capturas.
+#   
+#      npx firebase-tools apptesting:execute <apk> --app 1:505619935722:android:449893e0c5d723d98d8293 \
+#        --test-dir pruebas-agente --test-devices-file pruebas-agente/telefonos.txt
+#   
+#    LO QUE CUESTA. Gratis en la preview hasta 200 pruebas al mes por proyecto, y cada
+#    recorrido en cada telefono cuenta una: 5 recorridos x 4 telefonos = 20 por bateria. Con eso
+#    entran unas 8 baterias al mes; se corre la bateria entera solo en versiones que tocan
+#    pantallas, y lo que falla se repite en ESE telefono, no en todos.
+#   
+#    LO QUE NO PUEDE. No habla: el seguimiento de la voz no se prueba aca -eso lo cubren las
+#    lecturas reales-. Por eso ningun paso espera que el texto avance solo.
+#   
+#    COMO SE ESCRIBEN. El telefono puede estar en espanol o en ingles y la app sigue su idioma:
+#    cada pista nombra los dos rotulos. El agente falla con tareas largas en un solo paso y con
+#    cosas que hay que buscar desplazando: pasos cortos, y la pista dice donde esta. Las
+#    afirmaciones finales solo pueden hablar de lo que se VE en la pantalla.
+#   
+#    Los menus ocultos -el diagnostico de 5 toques en la marca- no se mencionan: el agente hace
+#    solo lo que se le pide y no los encuentra.
 
 tests:
   - id: portada
@@ -28,12 +74,93 @@ tests:
     steps:
       - goal: Open the app and wait until the main screen is shown.
         hint: >-
-          On a fresh install the app shows its main screen with the brand "Sigo" at the top,
-          a list of scripts that already contains a welcome script (titled "Hola" in Spanish
-          or "Hi" in English) and a "Videos" section below it.
+          On a fresh install the app shows its main screen with the brand "Sigo" at the top and a
+          gear button at the top right. Below there is a large card with the most recent script,
+          then the section "Guiones" / "Scripts" / "Roteiros" with the button "+ Nuevo guion" /
+          "+ New script" / "+ Novo roteiro" and a list that already contains a welcome script,
+          titled "Hola" (Spanish), "Hi" (English) or "Olá" (Portuguese). Further down is the
+          section "Videos" / "Videos" / "Vídeos"; swipe up once if it is not visible.
         finalScreenAssertion: >-
-          The main screen shows the word "Sigo" and at least one script in a list. No error
-          message, blank screen or crash dialog is visible.
+          The main screen shows the word "Sigo", a script titled "Hola", "Hi" or "Olá", and a
+          section titled "Videos" or "Vídeos". No error message, blank screen or crash dialog
+          is visible.
+
+  - id: crear-guion
+    displayName: Crear un guion nuevo
+    prerequisiteTestCaseId: portada
+    steps:
+      # 2026-10-25: el "+" redondo pasó a ser la píldora «+ Nuevo guion», a la derecha del título
+      # Guiones -BibliotecaView.tsx, mejoras-claridad 21-10-2026-.
+      - goal: Create a new script.
+        hint: >-
+          Tap the button "+ Nuevo guion" / "+ New script" / "+ Novo roteiro", at the right of
+          the title "Guiones" / "Scripts" / "Roteiros". An editor opens with an empty area to write.
+        finalScreenAssertion: An editor with an empty writing area is visible.
+      - goal: Type the sentence "Prueba del agente de Firebase." in the editor.
+        hint: Tap the empty writing area first so the keyboard opens.
+        finalScreenAssertion: The text "Prueba del agente de Firebase." is visible in the editor.
+      - goal: Go back to the main screen.
+        hint: >-
+          Tap the back arrow at the top left, labeled "Guiones" / "Scripts" / "Roteiros". If the
+          keyboard is open, the system back button closes it first; then tap the arrow.
+        finalScreenAssertion: >-
+          The main screen lists a script that shows the words "Prueba del agente" and, under
+          it, a duration that starts with "≈" and ends with "min", such as "≈1 min".
+
+  - id: editor-ajustes
+    displayName: Ajustes de lectura desde el editor
+    prerequisiteTestCaseId: portada
+    steps:
+      - goal: Open the welcome script in the editor.
+        hint: >-
+          Tap the row of the welcome script ("Hola", "Hi" or "Olá") in the list of scripts. Tap
+          the row itself, not the "Leer" / "Read" / "Ler" or "Grabar" / "Record" / "Gravar"
+          buttons of the large card. If a small tip bubble appears, tap "Entendido" / "Got it" /
+          "Entendi".
+        finalScreenAssertion: The text of the welcome script is visible in an editor.
+      # 2026-10-25: el botón «Aa» del editor ya no existe: los ajustes se abren por el engranaje de la
+      # cabecera -EditorCabecera.tsx- y la letra se elige en la fila Tamaño de letra -FilasAjustesLectura.tsx-.
+      - goal: Open the reading settings.
+        hint: >-
+          Tap the gear button at the top right of the editor, named "Ajustes de lectura" /
+          "Reading settings" / "Configurações de leitura". A panel opens with the label
+          "VISTA PREVIA" / "PREVIEW" / "PRÉVIA" above a sample line.
+        finalScreenAssertion: >-
+          A settings panel is open with the label "VISTA PREVIA", "PREVIEW" or "PRÉVIA" above a
+          sample text.
+      - goal: Make the letters as big as possible.
+        hint: >-
+          Tap the row "Tamaño de letra" / "Text size" / "Tamanho do texto". A short list of sizes
+          opens; tap the biggest one, labeled "42".
+        finalScreenAssertion: >-
+          The row "Tamaño de letra", "Text size" or "Tamanho do texto" shows the value 42 and
+          the label "VISTA PREVIA", "PREVIEW" or "PRÉVIA" is visible.
+
+  - id: colores-de-lectura
+    displayName: Cambiar los colores de lectura
+    prerequisiteTestCaseId: portada
+    steps:
+      - goal: Open the welcome script in the editor and open its reading settings.
+        hint: >-
+          Tap the row of the welcome script ("Hola", "Hi" or "Olá"). In the editor, tap the gear
+          at the top right, "Ajustes de lectura" / "Reading settings" / "Configurações de leitura".
+        finalScreenAssertion: >-
+          A settings panel is open with a row "Colores de lectura", "Reading colors" or
+          "Cores de leitura".
+      - goal: Choose the amber reading colors.
+        hint: >-
+          Tap the row "Colores de lectura" / "Reading colors" / "Cores de leitura" and then the
+          option "Negro con ámbar" / "Amber on black" / "Âmbar no preto".
+        finalScreenAssertion: >-
+          The row "Colores de lectura", "Reading colors" or "Cores de leitura" shows "Negro con
+          ámbar", "Amber on black" or "Âmbar no preto".
+      - goal: Close the settings and open the reading screen.
+        hint: >-
+          Press the system back button once to close the panel. Then tap "Leer" / "Read" / "Ler"
+          at the bottom of the editor.
+        finalScreenAssertion: >-
+          A reading screen shows the text of the script in amber or orange letters on a black
+          background.
 
   - id: leer
     displayName: Leer un guion
@@ -41,16 +168,16 @@ tests:
     steps:
       - goal: Start reading the welcome script.
         hint: >-
-          Tap the welcome script ("Hola" or "Hi") in the list. It shows the buttons "Leer"
-          / "Read" and "Grabar" / "Record". Tap "Leer" / "Read".
+          On the large card at the top of the main screen, with the welcome script ("Hola", "Hi"
+          or "Olá"), tap "Leer" / "Read" / "Ler".
         finalScreenAssertion: >-
           A reading screen is shown with the text of the script in large letters and a round
           start button near the bottom.
       - goal: Start the reading and wait until the countdown ends.
         hint: >-
-          Tap the round button labeled "Empezar" / "Start". A countdown 3, 2, 1 appears; wait
-          about 5 seconds. The text will NOT scroll by itself because nobody is speaking: that
-          is expected.
+          Tap the round button labeled "Empezar" / "Start" / "Começar". A countdown 3, 2, 1
+          appears; wait about 5 seconds. The text will NOT scroll by itself because nobody is
+          speaking: that is expected.
         finalScreenAssertion: >-
           The countdown numbers are gone and the script text is visible on the screen.
       # 28-09-2026: SALIR SON DOS "ATRAS". En Sigo el primero deja la lectura lista para empezar
@@ -63,38 +190,30 @@ tests:
           the main screen. Do not tap on the text.
         finalScreenAssertion: The main screen with the list of scripts is visible.
 
-  - id: crear-guion
-    displayName: Crear un guion nuevo
+  - id: fichas-antes-de-grabar
+    displayName: Fichas de Grabar antes de empezar
     prerequisiteTestCaseId: portada
     steps:
-      - goal: Create a new script.
+      - goal: Open the welcome script in recording mode.
         hint: >-
-          Tap the round "+" button, labeled "Crear nuevo guion" / "New script". An editor
-          opens with an empty area to write.
-        finalScreenAssertion: An editor with an empty writing area and a keyboard or cursor is visible.
-      - goal: Type the sentence "Prueba del agente de Firebase." in the editor.
-        finalScreenAssertion: The text "Prueba del agente de Firebase." is visible in the editor.
-      - goal: Go back to the main screen.
-        hint: Use the back arrow at the top or the system back button, once or twice.
+          On the large card at the top of the main screen, tap "Grabar" / "Record" / "Gravar".
+          If Android asks for permission to use the camera or the microphone, allow it.
         finalScreenAssertion: >-
-          The main screen lists a script that shows the words "Prueba del agente".
-
-  - id: letra-y-ancho
-    displayName: Cambiar letra y ancho en el editor
-    prerequisiteTestCaseId: portada
-    steps:
-      - goal: Open the welcome script in the editor.
+          A recording screen is shown with the script text, a round start button near the bottom
+          and a row of small chips at the bottom.
+      # 2026-10-25: las fichas de abajo -FichasListo.tsx-. La de la cámara muestra su valor
+      # -«Detrás»- y abre tres opciones: Detrás, Recuadro y Oculta.
+      - goal: Hide the camera image.
         hint: >-
-          Tap the welcome script ("Hola" or "Hi"). If only the Read / Record buttons appear,
-          tap the text of the card or the pencil to edit.
-        finalScreenAssertion: The text of the welcome script is visible in an editor.
-      - goal: Open the text settings and make the letters bigger.
-        hint: >-
-          Tap the button showing "Aa". A panel opens from the bottom. Tap the "A+" / larger
-          letter control two times.
+          In the row of chips at the bottom, under "Cámara" / "Camera" / "Câmera", tap the chip
+          that shows "Detrás" / "Behind" / "Atrás". A panel "Imagen de la cámara" / "Camera
+          view" / "Imagem da câmera" opens; tap "Oculta" / "Hidden" / "Oculta".
         finalScreenAssertion: >-
-          A panel with text size controls is open and the sample text looks bigger than
-          before.
+          The script text is shown over a plain dark background, without the camera image, and
+          the camera chip shows "Oculta" or "Hidden".
+      - goal: Go back to the main screen without recording.
+        hint: Press the system back button until the main screen is shown. Do not tap the start button.
+        finalScreenAssertion: The main screen with the list of scripts is visible.
 
   - id: grabar
     displayName: Grabar una toma corta
@@ -102,8 +221,8 @@ tests:
     steps:
       - goal: Open the welcome script in recording mode.
         hint: >-
-          Tap the welcome script ("Hola" or "Hi") and then "Grabar" / "Record". If Android
-          asks for permission to use the camera or the microphone, allow it.
+          On the large card at the top of the main screen, tap "Grabar" / "Record" / "Gravar".
+          If Android asks for permission to use the camera or the microphone, allow it.
         finalScreenAssertion: >-
           A recording screen is shown: the script text over the camera image or over a dark
           background, with a round start button near the bottom.
@@ -115,15 +234,242 @@ tests:
       # ARREGLE P1g, este paso vuelve a "toca la pantalla y aprieta Parar".
       - goal: Record for about 8 seconds and then stop.
         hint: >-
-          Tap the round "Empezar" / "Start" button, wait for the 3, 2, 1 countdown and then
-          about 8 more seconds. Then press the system back button once: that stops the
+          Tap the round "Empezar" / "Start" / "Começar" button, wait for the 3, 2, 1 countdown
+          and then about 8 more seconds. Then press the system back button once: that stops the
           recording. Do not tap on the text.
         finalScreenAssertion: >-
-          A video player shows the recorded take, with options for captions ("Subtítulos" /
-          "Captions") or to save it to the gallery.
+          A video player shows the recorded take, with options for captions ("Subtítulos",
+          "Captions" or "Legendas").
       - goal: Turn on captions in the video player.
         hint: >-
-          In the video player, find the captions options ("Subtítulos" / "Captions") and tap
-          one of the styles, such as "Amarillo" / "Yellow".
+          In the video player, tap the captions control ("Subtítulos" / "Captions" /
+          "Legendas") and then one of the styles, such as "Amarillo" / "Yellow" / "Amarelo".
         finalScreenAssertion: >-
           The video player is still visible and a captions style is selected.
+      # 2026-10-25: paso nuevo. La toma queda en la sección Videos de la portada -TiraGrabaciones.tsx-
+      # aunque no se guarde en la galería; sin verificar en Test Lab.
+      - goal: Go back to the main screen and find the take.
+        hint: >-
+          Press the system back button until the main screen is shown. The section "Videos" /
+          "Vídeos" is below the list of scripts; swipe up once if it is not visible.
+        finalScreenAssertion: >-
+          The main screen shows the section "Videos" or "Vídeos" with at least one video
+          thumbnail in it.
+
+  - id: visor-filtros
+    displayName: Filtro en el visor de la toma
+    prerequisiteTestCaseId: portada
+    steps:
+      # 2026-10-25: graba su propia toma en vez de usar «grabar» de prerrequisito: no se sabe si la
+      # guía permite prerrequisitos encadenados -sin verificar-.
+      - goal: Record a short take of the welcome script.
+        hint: >-
+          On the large card at the top, tap "Grabar" / "Record" / "Gravar" (allow camera and
+          microphone if asked), tap "Empezar" / "Start" / "Começar", wait for the countdown and
+          about 5 more seconds, then press the system back button once to stop.
+        finalScreenAssertion: A video player shows the recorded take.
+      # «La lista cambia» no existe tal cual: lo que cambia al elegir un filtro es la miniatura marcada
+      # y el valor del botón Filtro -SelectorFiltro.tsx-.
+      - goal: Apply a warm filter to the take.
+        hint: >-
+          In the video player, tap the control "Filtro" / "Filter" / "Filtro". A row of small
+          thumbnails opens; tap the one named "Cálido" / "Warm" / "Quente".
+        finalScreenAssertion: >-
+          The "Filtro" or "Filter" control shows the value "Cálido", "Warm" or "Quente", and the
+          video looks warmer, more orange, than before.
+
+  - id: tomas-seleccion
+    displayName: Seleccionar, borrar y recuperar una toma
+    prerequisiteTestCaseId: portada
+    steps:
+      - goal: Record a short take of the welcome script and return to the main screen.
+        hint: >-
+          On the large card at the top, tap "Grabar" / "Record" / "Gravar" (allow camera and
+          microphone if asked), tap "Empezar" / "Start" / "Começar", wait for the countdown and
+          about 5 more seconds, then press the system back button until the main screen shows.
+        finalScreenAssertion: >-
+          The main screen shows the section "Videos" or "Vídeos" with a video thumbnail. Swipe
+          up if needed.
+      - goal: Select the take.
+        hint: >-
+          Long press the video thumbnail in the "Videos" / "Vídeos" section. A selection bar
+          appears at the top with "1 seleccionadas" / "1 selected" / "1 selecionados" and a
+          trash button.
+        finalScreenAssertion: >-
+          A bar with "1 seleccionadas", "1 selected" or "1 selecionados" is visible.
+      # El aviso de las tomas dura 5 s -MS_DESHACER_TOMA, lib/seleccionTomas.ts-: Deshacer va en el mismo paso.
+      - goal: Delete the selected take and immediately undo.
+        hint: >-
+          Tap the trash button in the selection bar, named "Borrar" / "Delete" / "Excluir". A
+          message "1 tomas borradas" / "1 takes deleted" / "1 takes excluídos" appears at the
+          bottom for only 5 seconds: tap "Deshacer" / "Undo" / "Desfazer" on it right away.
+        finalScreenAssertion: >-
+          The "Videos" or "Vídeos" section shows the video thumbnail again.
+
+  - id: borrar-y-deshacer
+    displayName: Borrar un guion y deshacer
+    prerequisiteTestCaseId: portada
+    steps:
+      # 2026-10-25: el guion se borra desde el menú de mantener apretada la fila -BibliotecaView.tsx,
+      # tarea 102-; el aviso dura 6 s -MS_DESHACER_GUION, App.tsx-.
+      - goal: Open the menu of the welcome script.
+        hint: >-
+          Long press the row of the welcome script ("Hola", "Hi" or "Olá") in the list of
+          scripts. A small menu opens with "Archivar" / "Archive" / "Arquivar" and "Borrar" /
+          "Delete" / "Excluir".
+        finalScreenAssertion: A menu with "Borrar", "Delete" or "Excluir" is visible.
+      - goal: Delete the script and immediately undo.
+        hint: >-
+          Tap "Borrar" / "Delete" / "Excluir". A message "Guion borrado" / "Script deleted" /
+          "Roteiro excluído" appears at the bottom for only 6 seconds: tap "Deshacer" / "Undo" /
+          "Desfazer" on it right away.
+        finalScreenAssertion: >-
+          The list of scripts shows the welcome script "Hola", "Hi" or "Olá" again.
+
+  - id: idioma-del-guion
+    displayName: Aviso del idioma del guion
+    prerequisiteTestCaseId: portada
+    steps:
+      - goal: Create a new script.
+        hint: >-
+          Tap "+ Nuevo guion" / "+ New script" / "+ Novo roteiro", at the right of the title
+          "Guiones" / "Scripts" / "Roteiros".
+        finalScreenAssertion: An editor with an empty writing area is visible.
+      # El detector -lib/detectarIdioma.ts- decide con 12 palabras o más y con el doble de palabras
+      # frecuentes de un idioma que del otro; este párrafo tiene 40 palabras y muchas "the", "and",
+      # "you". En un teléfono en inglés el aviso sale al revés: por eso la pista pide el párrafo en
+      # español si la app está en inglés.
+      - goal: Type a paragraph in the other language.
+        hint: >-
+          Tap the writing area. If the app is in Spanish or Portuguese, type exactly: "This is a
+          short test for the app. When you read the script, the text will follow your voice and
+          you can look at the camera. It is easy to use and it works with your phone." If the app
+          is in English, type exactly: "Este es un guion de prueba para la app. Cuando lees el
+          texto, la pantalla sigue tu voz y puedes mirar a la cámara. Es muy fácil de usar y
+          funciona en el teléfono."
+        finalScreenAssertion: The typed paragraph is visible in the editor.
+      # La marca de guía del idioma -«Entendido»- sale antes y el aviso espera a que se cierre
+      # -EditorView.tsx-. El aviso dura 6 s y no se toca: la prueba es que aparezca.
+      - goal: Close the keyboard and wait for the language message, without tapping its button.
+        hint: >-
+          Press the system back button once to close the keyboard. If a tip bubble appears near
+          the language button at the top, tap "Entendido" / "Got it" / "Entendi". Then wait: a
+          message appears at the bottom for 6 seconds, "Your script is in English. Use Sigo in
+          English?" with "Switch to English" (or, on an English phone, "Tu guion está en
+          español. ¿Quieres usar Sigo en español?" with "Pasar a español"). Do NOT tap it.
+        finalScreenAssertion: >-
+          A message is visible that says "Your script is in English. Use Sigo in English?" with
+          "Switch to English", or "Tu guion está en español. ¿Quieres usar Sigo en español?"
+          with "Pasar a español".
+
+  - id: idioma-de-la-app
+    displayName: Cambiar el idioma de la app
+    prerequisiteTestCaseId: portada
+    steps:
+      - goal: Open the app settings from the main screen.
+        hint: >-
+          Tap the gear button at the top right of the main screen, named "Ajustes de la app" /
+          "Settings" / "Configurações".
+        finalScreenAssertion: >-
+          A settings panel titled "Ajustes", "Settings" or "Configurações" is open.
+      # Solo hay tres opciones -Español, English, Português, PanelAjustes.tsx-; no hay «idioma del
+      # teléfono»: para volver se elige a mano el idioma que tenía.
+      - goal: Change the app language to Portuguese.
+        hint: >-
+          Swipe up inside the panel to the section "Apariencia" / "Appearance" / "Aparência".
+          Remember the current value of the row "Idioma de la app" / "App language" / "Idioma do
+          app", tap it, and choose "Português".
+        finalScreenAssertion: >-
+          The settings show "Idioma do app" with the value "Português".
+      - goal: Close the settings and look at the main screen.
+        hint: Press the system back button once.
+        finalScreenAssertion: >-
+          The main screen is in Portuguese: the section titles "Roteiros" and "Vídeos" and the
+          button "Novo roteiro" are visible.
+      - goal: Set the app language back to the phone language.
+        hint: >-
+          Tap the gear at the top right ("Configurações"), swipe up to "Aparência", tap "Idioma
+          do app" and choose the language it had before: "Español" on a Spanish phone, "English"
+          on an English phone, "Português" on a Portuguese phone. Then press the system back
+          button once.
+        finalScreenAssertion: >-
+          The main screen is shown in the phone language, with "Guiones", "Scripts" or "Roteiros"
+          as the title of the list.
+
+  - id: ajustes-portada
+    displayName: Ajustes desde la portada
+    prerequisiteTestCaseId: portada
+    steps:
+      # 2026-10-25: la tarjeta de la cuenta va arriba de todo en Ajustes -TarjetaCuenta, PanelAjustes.tsx-.
+      # El botón de Google no se toca: los teléfonos de Test Lab no tienen cuenta.
+      - goal: Open the app settings from the main screen.
+        hint: >-
+          Tap the gear button at the top right of the main screen, named "Ajustes de la app" /
+          "Settings" / "Configurações". Do NOT tap "Continuar con Google" / "Continue with
+          Google" / "Continuar com o Google".
+        finalScreenAssertion: >-
+          A settings panel is open with a card at the top that says "Nunca pierdas un guion",
+          "Never lose a script" or "Nunca perca um roteiro".
+
+  - id: acerca-y-licencias
+    displayName: Acerca de y licencias
+    prerequisiteTestCaseId: portada
+    steps:
+      - goal: Open the app settings from the main screen.
+        hint: >-
+          Tap the gear button at the top right of the main screen, named "Ajustes de la app" /
+          "Settings" / "Configurações". Do not tap the Google button.
+        finalScreenAssertion: A settings panel titled "Ajustes", "Settings" or "Configurações" is open.
+      - goal: Open About Sigo.
+        hint: >-
+          Swipe up inside the panel to the last section, "Acerca de" / "About" / "Sobre", and
+          tap "Acerca de Sigo" / "About Sigo" / "Sobre o Sigo".
+        finalScreenAssertion: >-
+          A panel titled "Acerca de Sigo", "About Sigo" or "Sobre o Sigo" shows a version row.
+      - goal: Open the open source licenses.
+        hint: >-
+          Tap "Licencias de código abierto" / "Open source licenses" / "Licenças de código aberto".
+        finalScreenAssertion: >-
+          A screen titled "Licencias de código abierto", "Open source licenses" or "Licenças de
+          código aberto" shows a list of library names.
+
+  # 2026-10-25: RECORRIDOS SUMADOS AL LEER EL CÓDIGO. Archivar es la otra acción de la fila de guion
+  # -BibliotecaView.tsx- y el tema claro/oscuro está en Apariencia; ninguno tenía prueba.
+  - id: archivar-y-desarchivar
+    displayName: Archivar y desarchivar un guion
+    prerequisiteTestCaseId: portada
+    steps:
+      - goal: Archive the welcome script.
+        hint: >-
+          Long press the row of the welcome script ("Hola", "Hi" or "Olá") and tap "Archivar" /
+          "Archive" / "Arquivar" in the small menu. Wait about 6 seconds until the message at the
+          bottom goes away.
+        finalScreenAssertion: >-
+          Below the list there is a link "Archivados · 1", "Archived · 1" or "Arquivados · 1".
+      - goal: Open the archived scripts.
+        hint: >-
+          Tap "Archivados · 1" / "Archived · 1" / "Arquivados · 1", below the list of scripts;
+          swipe up once if it is not visible.
+        finalScreenAssertion: >-
+          The list is titled "Archivados", "Archived" or "Arquivados" and shows the welcome script.
+      - goal: Unarchive the welcome script and go back to the main list.
+        hint: >-
+          Long press the welcome script row and tap "Desarchivar" / "Unarchive" / "Desarquivar".
+          Then tap "‹ Volver a tus guiones" / "‹ Back to your scripts" / "‹ Voltar aos seus
+          roteiros".
+        finalScreenAssertion: >-
+          The list titled "Guiones", "Scripts" or "Roteiros" shows the welcome script.
+
+  - id: tema-claro-oscuro
+    displayName: Cambiar el tema
+    prerequisiteTestCaseId: portada
+    steps:
+      - goal: Open the app settings and change the theme.
+        hint: >-
+          Tap the gear at the top right of the main screen ("Ajustes de la app" / "Settings" /
+          "Configurações"), swipe up to "Apariencia" / "Appearance" / "Aparência", tap the row
+          "Tema" / "Theme" / "Tema" and choose the option that is not selected: "Claro" / "Light"
+          / "Claro" or "Oscuro" / "Dark" / "Escuro".
+        finalScreenAssertion: >-
+          The row "Tema" or "Theme" shows the newly chosen value and the colors of the panel changed
+          between light and dark.
