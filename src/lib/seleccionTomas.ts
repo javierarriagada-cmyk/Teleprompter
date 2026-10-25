@@ -5,8 +5,13 @@
 // los archivos esperan 5 s, el mismo plazo del borrado de guiones. Si llega
 // otra tanda mientras el aviso sigue, la anterior se confirma: el aviso es uno
 // solo y el nuevo lo reemplaza. A segundo plano se confirma al tiro.
+// -ajustes-accesible, 25-10-2026, decisión de Javier- EL AVISO DE BORRAR TOMAS, IGUAL AL DE GUIONES: 6 s, el
+// mismo plazo que MS_DESHACER_GUION -App.tsx, mejoras-claridad 21-10-2026-, y el mismo aviso «destacado» de
+// AvisoBreve -sale solo, porque lleva «Deshacer» y se muestra en la portada-. «Los archivos esperan 5 s, el
+// mismo plazo del borrado de guiones», arriba, es de cuando los guiones también eran 5 s.
+// Antes: export const MS_DESHACER_TOMA = 5000
 
-export const MS_DESHACER_TOMA = 5000
+export const MS_DESHACER_TOMA = 6000
 
 export function entrarSeleccion(id: string): string[] {
   return [id]

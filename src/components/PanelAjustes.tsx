@@ -86,6 +86,12 @@ export function seccionesDeAjustes(origen: OrigenAjustes): SeccionAjustes[] {
   return ['lectura', 'pantalla']
 }
 
+// -ajustes-accesible, 25-10-2026- Las puertas donde el panel es un diálogo modal para los lectores y App
+// esconde lo de atrás: la portada y el editor. Leer y Grabar -el dock de LISTO y la ficha Más- no cambian.
+export function esDialogoDeAjustes(origen: OrigenAjustes): boolean {
+  return origen === 'portada' || origen === 'editor'
+}
+
 // El título: «Ajustes» / «Settings» en todas las puertas; Grabar sigue con «Ajustes de la toma».
 export function tituloDeAjustes(origen: OrigenAjustes): ClaveTexto {
   return origen === 'grabar' ? 'tituloAjustesToma' : 'tituloAjustes'
@@ -396,7 +402,15 @@ export function PanelAjustes({
         // un bloque más de la página: al abrirla seguía leyendo lo de atrás. role="dialog" con
         // aria-modal la marca como la capa de encima, y su nombre es el título -"Ajustes"-.
         // El panel de vidrio usa role="region"; el comentario queda como historia de la pantalla completa.
-                role="region"
+        // -ajustes-accesible, 25-10-2026- DESDE LA PORTADA Y EL EDITOR, OTRA VEZ UN DIÁLOGO. La batería del
+        // agente de Firebase del 25-10: con el panel abierto, Android seguía exponiendo la pantalla de atrás y
+        // el agente y TalkBack leían los botones de la portada. Se recupera lo de la tarea 84: role="dialog"
+        // con aria-modal, y App esconde a los lectores la pantalla de atrás -aria-hidden, nada visual ni
+        // táctil-. Leer y Grabar quedan como estaban: su panel sigue siendo role="region".
+        // Antes:
+        //         role="region"
+        role={esDialogoDeAjustes(origen) ? 'dialog' : 'region'}
+        aria-modal={esDialogoDeAjustes(origen) ? true : undefined}
         aria-labelledby={idTitulo}
         // Crece hacia arriba con una animación corta; sin movimiento si el sistema lo pide.
         style={conMovimiento ? { animation: `dock-crece ${MS_CHICO}ms ${CURVA_RESORTE} both` } : undefined}

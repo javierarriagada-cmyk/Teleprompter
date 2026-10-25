@@ -138,13 +138,25 @@ describe('Tarea 84 - La versión para Google Play', () => {
   //   expect(pantalla.getAttribute('aria-modal')).toBe('true')
   //   expect(screen.getByRole('dialog', { name: es.tituloAjustes })).toBe(pantalla)
   // })
-  test('T84e Ajustes, abierto desde la portada, es una región con el título como nombre y no un diálogo modal.', async () => {
+  // -ajustes-accesible, 25-10-2026, aprobado por Javier- Por la batería del agente del 25-10: abierto desde la
+  // portada, el panel vuelve a ser un diálogo modal -role="dialog", aria-modal="true", el título como nombre-,
+  // y la portada de atrás queda escondida a los lectores. Sigue siendo el panel de vidrio, no la pantalla completa.
+  // Antes -versión del 10-10-2026-:
+  // test('T84e Ajustes, abierto desde la portada, es una región con el título como nombre y no un diálogo modal.', async () => {
+  //   await montar()
+  //   fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
+  //   const panel = await screen.findByTestId('panel-ajustes-toma')
+  //   expect(panel.getAttribute('role')).toBe('region')
+  //   expect(screen.getByRole('region', { name: es.tituloAjustes })).toBe(panel)
+  //   expect(screen.queryByRole('dialog', { name: es.tituloAjustes })).toBeNull()
+  // })
+  test('T84e Ajustes, abierto desde la portada, es un diálogo modal con el título como nombre.', async () => {
     await montar()
     fireEvent.click(screen.getByTestId('btn-menu-superior-biblioteca'))
     const panel = await screen.findByTestId('panel-ajustes-toma')
-    expect(panel.getAttribute('role')).toBe('region')
-    expect(screen.getByRole('region', { name: es.tituloAjustes })).toBe(panel)
-    expect(screen.queryByRole('dialog', { name: es.tituloAjustes })).toBeNull()
+    expect(panel.getAttribute('role')).toBe('dialog')
+    expect(panel.getAttribute('aria-modal')).toBe('true')
+    expect(screen.getByRole('dialog', { name: es.tituloAjustes })).toBe(panel)
   })
 
   test('T84f El campo del título del guion tiene nombre para el lector.', () => {

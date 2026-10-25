@@ -227,7 +227,9 @@ describe('portugues-voz punto 7 - aviso del idioma del guion', () => {
   test('el aviso de idioma pide la acción neutra; el de borrar no y sigue en rojo', () => {
     const idioma = avisoIdiomaGuion('en', 'es')!
     expect(idioma.accionNeutra).toBe(true)
-    expect(colorAccionAviso(idioma)).toBe('var(--color-texto)')
+    // -ajustes-accesible, 25-10-2026, decisión de Javier- El aviso usa la superficie invertida: la acción neutra va
+    // en --aviso-texto. Antes: expect(colorAccionAviso(idioma)).toBe('var(--color-texto)')
+    expect(colorAccionAviso(idioma)).toBe('var(--aviso-texto)')
     const borrar = { texto: 'Guion borrado', accionTexto: 'Deshacer' }
     expect(colorAccionAviso(borrar)).toBe('var(--aviso-accion)')
   })
