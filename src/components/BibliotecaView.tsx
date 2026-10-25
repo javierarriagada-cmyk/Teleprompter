@@ -54,6 +54,10 @@ interface BibliotecaViewProps {
   'data-pantalla-direccion'?: string
   // -atrás predictivo- Debajo del editor la biblioteca queda montada pero TalkBack no la ve.
   'aria-hidden'?: boolean
+  // -ajustes-accesible, 25-10-2026- Con Ajustes abierto desde la portada, TalkBack tampoco la ve. Va aparte de
+  // aria-hidden a propósito: aria-hidden además corta la entrada de las filas -animarDespliegue, más abajo- y
+  // abrir Ajustes no puede cambiar nada de lo que se ve. Solo pone el atributo.
+  ocultaPorAjustes?: boolean
   style?: React.CSSProperties
   onAnimationEnd?: (e: React.AnimationEvent) => void
 }
@@ -548,6 +552,7 @@ export default function BibliotecaView({
   onBorrarTomas,
   'data-pantalla-direccion': dataPantallaDireccion,
   'aria-hidden': ariaHidden,
+  ocultaPorAjustes,
   style,
   onAnimationEnd
 }: BibliotecaViewProps) {
@@ -770,7 +775,8 @@ export default function BibliotecaView({
   return (
     <div
       data-pantalla-direccion={dataPantallaDireccion}
-      aria-hidden={ariaHidden}
+      // -ajustes-accesible, 25-10-2026- También con Ajustes abierto desde la portada. Antes: aria-hidden={ariaHidden}
+      aria-hidden={ariaHidden || ocultaPorAjustes ? true : undefined}
       onAnimationEnd={onAnimationEnd}
       // -portada con luz, 15-10-2026- .portada: el contenedor al que se acotan las tres alturas -styles.css-.
       className="portada"

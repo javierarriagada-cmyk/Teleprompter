@@ -3147,6 +3147,10 @@ export default function App({ motor, repoOverride }: AppProps) {
               setMenuBibliotecaAbierto(hayAbierto === true)
             }}
             aria-hidden={vista === 'editor' ? true : undefined}
+            // -ajustes-accesible, 25-10-2026- Con el panel de Ajustes abierto desde la portada, la portada queda
+            // escondida para TalkBack y el agente: el panel es un diálogo modal -PanelAjustes, esDialogoDeAjustes-.
+            // Solo el atributo: el panel, sus menús, sus diálogos y los avisos viven fuera de la portada.
+            ocultaPorAjustes={ajustesAbiertos && origenAjustes === 'portada'}
             grabaciones={grabaciones}
             onAbrirGrabacion={(g) => setGrabacionAbierta(g)}
             onBorrarGrabacion={async (id) => {
@@ -3213,8 +3217,15 @@ export default function App({ motor, repoOverride }: AppProps) {
               />
             </Pantalla>
           )} */}
+      {/* -ajustes-accesible, 25-10-2026- Con el panel de Ajustes abierto desde el editor, el editor queda
+          escondido para TalkBack y el agente -aria-hidden en el hueco, el contenedor de afuera-: el panel es un
+          diálogo modal y vive fuera de él, como sus menús, sus diálogos y los avisos. Nada visual ni táctil.
+          Antes: <div ref={huecoEditorRef} style={gestoEnEditor?.editor ? { height: gestoEnEditor.editor.altoHueco } : undefined}> */}
       {vista === 'editor' && guionActual && (
-        <div ref={huecoEditorRef} style={gestoEnEditor?.editor ? { height: gestoEnEditor.editor.altoHueco } : undefined}>
+        <div
+          ref={huecoEditorRef}
+          aria-hidden={ajustesAbiertos && origenAjustes === 'editor' ? true : undefined}
+          style={gestoEnEditor?.editor ? { height: gestoEnEditor.editor.altoHueco } : undefined}>
         <div
           ref={marcoEditorRef}
           style={gestoEnEditor
