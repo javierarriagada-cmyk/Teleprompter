@@ -110,8 +110,15 @@ imagen('lamina-ficha.png', lamina?.w || 0, lamina?.h || 0, 50, true)
 console.log('— Textos')
 const largo = (s) => [...s].length
 const EMOJI = /\p{Extended_Pictographic}/u
-const PROHIBIDAS_BREVE = /\b(best|#1|top|new|free|mejor|gratis|nuevo|nueva|descarga|download|install|instala)\b|n\.º ?1/i
-for (const archivo of ['textos-es-419.txt', 'textos-en-US.txt']) {
+// -2026-10-24, portugues-ficha- Se suman las de portugués -melhor, grátis, novo, baixe, instale-,
+// porque ahora hay ficha pt-BR. Antes:
+// const PROHIBIDAS_BREVE = /\b(best|#1|top|new|free|mejor|gratis|nuevo|nueva|descarga|download|install|instala)\b|n\.º ?1/i
+const PROHIBIDAS_BREVE = /\b(best|#1|top|new|free|mejor|gratis|nuevo|nueva|descarga|download|install|instala|melhor|grátis|novo|nova|baixe|baixar|instale|instalar)\b|n\.º ?1/i
+// -2026-10-24, portugues-ficha- Los archivos de texto salen de textos.cjs, la misma fuente que los
+// arma, para no tener otra lista de idiomas que se olvide de pt-BR. Las capturas y el gráfico en
+// pt-BR esperan el aviso de Javier -puntos 5 y 6-, así que las listas de imágenes de arriba no se tocan aún.
+// Antes: for (const archivo of ['textos-es-419.txt', 'textos-en-US.txt']) {
+for (const archivo of Object.values(require('./textos.cjs')).map((t) => t.archivo)) {
   const t = fs.readFileSync(path.join(FICHA, archivo), 'utf8')
   const bloques = [...t.matchAll(/\[\[([\s\S]*?)\]\]/g)].map((m) => m[1])
   ok(bloques.length === 3, `${archivo}: 3 bloques [[ ]] -nombre, breve, completa- (hay ${bloques.length})`)

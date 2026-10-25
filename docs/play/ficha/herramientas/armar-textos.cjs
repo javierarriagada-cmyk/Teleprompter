@@ -3,6 +3,8 @@
 // comprobar.cjs vuelve a contar desde los .txt, así que un texto editado a mano también se revisa.
 // Desde la revisión de Javier -29-09-2026- hay un solo nombre y una sola breve: las elegidas. Las
 // propuestas que no quedaron están en la historia del PR #60.
+// -2026-10-24, portugues-ficha- También arma ../textos-pt-BR.txt: recorre todos los idiomas de
+// textos.cjs, así que el pt-BR no necesitó nada aquí.
 const fs = require('fs')
 const path = require('path')
 const T = require('./textos.cjs')

@@ -137,3 +137,16 @@ pero no se probaron.
 - Política de metadatos: https://support.google.com/googleplay/android-developer/answer/9898842
 - Límites de texto -nombre 30, breve 80, completa 4000-:
   https://support.google.com/googleplay/android-developer/answer/9859152
+
+## La ficha en portugués de Brasil -portugues-ficha, 2026-10-24-
+
+`textos-pt-BR.txt` dice lo mismo que es-419 y en-US, punto por punto: cada línea tiene su respaldo
+en la tabla de arriba. Lo que es propio del portugués:
+
+| Lo que dice la ficha pt-BR | Dónde está |
+|---|---|
+| El texto sigue tu voz en portugués | `src/lib/vozAPedido.ts:20` -IdiomaVoz 'pt'-; `src/motor/MotorNativo.ts:52`; `android/model-pt/build.gradle:18` -'on-demand', como es y en- -main, orden portugues-voz- |
+| La voz en portugués se reconoce en el teléfono y se descarga sola | lo mismo que es y en: `android/model-pt/build.gradle` y `src/lib/vozAPedido.ts` |
+| El app está en portugués | rama portugues-app -4666226-, `src/textos/pt.ts` -idiomaPortugues «Português»-; **todavía no está en main**: la ficha pt-BR no se sube hasta que lo esté |
+| Los nombres de los filtros -Natural, Quente, Frio, Vívido, Suave, P&B- y «Velocidade fixa» | `src/textos/pt.ts:81-86` y `:275` de portugues-app |
+| Roteiro, take, legendas Amarelo/Vermelho/Formal, celular, backup | glosario de `docs/portugues.txt`, sección 4, rama portugues-app |
