@@ -10,8 +10,10 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
-  PAQUETE, leerLlave, armarJwt, leerBloques, validarTextos, validarImagen, rutaDeLaLlave
+  PAQUETE, IDIOMAS, leerLlave, armarJwt, leerBloques, validarTextos, validarImagen, rutaDeLaLlave
 } from './playApi.mjs'
+// -2026-10-24, portugues-ficha- Antes: el import no traía IDIOMAS. Ahora los idiomas salen de esa
+// lista única de playApi.mjs -con pt-BR-, en vez de ['es-419', 'en-US'] repetida tres veces aquí.
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const FICHA = path.join(RAIZ, 'docs', 'play', 'ficha')
@@ -24,6 +26,15 @@ const subir = args.includes('subir')
 // para la ficha 0.9.1 -camino A-. Sin --directo, todo sigue como antes: borrador.
 const directo = args.includes('--directo')
 
+// -2026-10-24, portugues-ficha- El gráfico de cada idioma, en un mapa. Antes el nombre salía de un
+// ternario de dos -ver plan()-, y un tercer idioma habría caído al gráfico en inglés sin aviso.
+// Si un idioma de IDIOMAS no está aquí, plan() lo cuenta como error y no sube nada.
+const GRAFICO = {
+  'es-419': 'grafico-1024x500-es.png',
+  'en-US': 'grafico-1024x500-en.png',
+  'pt-BR': 'grafico-1024x500-pt.png'
+}
+
 function listar(dir) {
   if (!fs.existsSync(dir)) return []
   return fs.readdirSync(dir).filter((f) => f.endsWith('.png')).sort()
@@ -32,7 +43,8 @@ function listar(dir) {
 function plan() {
   const errores = []
   const textos = {}
-  for (const idioma of ['es-419', 'en-US']) {
+  // Antes: for (const idioma of ['es-419', 'en-US']) {
+  for (const idioma of IDIOMAS) {
     const archivo = `textos-${idioma}.txt`
     const bloques = leerBloques(fs.readFileSync(path.join(FICHA, archivo), 'utf8'))
     errores.push(...validarTextos(bloques, archivo))
@@ -44,7 +56,8 @@ function plan() {
     ['sevenInchScreenshots', (idioma) => path.join(FICHA, 'capturas', 'tableta', idioma, '7')],
     ['tenInchScreenshots', (idioma) => path.join(FICHA, 'capturas', 'tableta', idioma, '10')]
   ]
-  for (const idioma of ['es-419', 'en-US']) {
+  // Antes: for (const idioma of ['es-419', 'en-US']) {
+  for (const idioma of IDIOMAS) {
     for (const [tipo, dirDe] of tipos) {
       const archivos = listar(dirDe(idioma))
       if (tipo === 'phoneScreenshots' && (archivos.length < 2 || archivos.length > 8)) {
@@ -58,7 +71,15 @@ function plan() {
         imagenes.push({ idioma, tipo, nombre, bytes: buf.length })
       }
     }
-    const grafico = path.join(FICHA, idioma === 'es-419' ? 'grafico-1024x500-es.png' : 'grafico-1024x500-en.png')
+    // Antes: const grafico = path.join(FICHA, idioma === 'es-419' ? 'grafico-1024x500-es.png' : 'grafico-1024x500-en.png')
+    //        const buf = fs.readFileSync(grafico)
+    // -2026-10-24- Sin gráfico en el mapa o sin el archivo, es un error y no un fallo a medio subir: el
+    // gráfico en portugués es el punto 6, que espera el aviso de Javier.
+    if (!GRAFICO[idioma] || !fs.existsSync(path.join(FICHA, GRAFICO[idioma]))) {
+      errores.push(`${idioma}: falta el gráfico ${GRAFICO[idioma] || '-no está en el mapa GRAFICO-'}`)
+      continue
+    }
+    const grafico = path.join(FICHA, GRAFICO[idioma])
     const buf = fs.readFileSync(grafico)
     const mal = validarImagen(path.basename(grafico), buf, 'featureGraphic')
     if (mal) errores.push(mal)
@@ -78,7 +99,8 @@ if (hecho.errores.length) {
   process.exit(1)
 }
 console.log(simular ? 'Simulación. No llamé a la API.' : 'Validación OK.')
-for (const idioma of ['es-419', 'en-US']) {
+// Antes: for (const idioma of ['es-419', 'en-US']) {
+for (const idioma of IDIOMAS) {
   const t = hecho.textos[idioma]
   console.log(`${idioma}: nombre «${t.nombre}», breve ${[...t.breve].length}, completa ${[...t.completa].length}`)
 }
@@ -104,7 +126,8 @@ const edicion = await fetch(`${base}/edits`, { method: 'POST', headers: auth })
 if (!edicion.ok) throw new Error(await edicion.text())
 const { id } = await edicion.json()
 try {
-  for (const idioma of ['es-419', 'en-US']) {
+  // Antes: for (const idioma of ['es-419', 'en-US']) {
+  for (const idioma of IDIOMAS) {
     const t = hecho.textos[idioma]
     const r = await fetch(`${base}/edits/${id}/listings/${idioma}`, {
       method: 'PUT',

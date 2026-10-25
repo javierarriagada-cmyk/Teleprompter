@@ -53,11 +53,32 @@ export function pistaPedida(pista) {
   return 'internal'
 }
 
+// -2026-10-24, portugues-ficha- LA LISTA DE IDIOMAS DE PLAY, UNA SOLA. De aquí la toman ficha.mjs
+// -textos, capturas y gráfico- y las notas de la versión. Con el portugués de Brasil son tres; antes
+// la lista ['es-419', 'en-US'] estaba escrita a mano en cada lugar y era fácil olvidarse de uno.
+export const IDIOMAS = ['es-419', 'en-US', 'pt-BR']
+
+// -2026-10-24, portugues-ficha- Lee los tres bloques de IDIOMAS. Si falta uno se para, como antes con
+// dos: una versión con las notas en un solo idioma mostraría las de otro, o nada, a quien la baja.
+// Antes:
+// export function leerNotas(texto) {
+//   const es = texto.match(/<es-419>([\s\S]*?)<\/es-419>/)
+//   const en = texto.match(/<en-US>([\s\S]*?)<\/en-US>/)
+//   if (!es || !en) throw new Error('faltan los bloques <es-419> y <en-US> en docs/play/notas-version.txt')
+//   return { 'es-419': es[1].trim(), 'en-US': en[1].trim() }
+// }
 export function leerNotas(texto) {
-  const es = texto.match(/<es-419>([\s\S]*?)<\/es-419>/)
-  const en = texto.match(/<en-US>([\s\S]*?)<\/en-US>/)
-  if (!es || !en) throw new Error('faltan los bloques <es-419> y <en-US> en docs/play/notas-version.txt')
-  return { 'es-419': es[1].trim(), 'en-US': en[1].trim() }
+  const notas = {}
+  const faltan = []
+  for (const idioma of IDIOMAS) {
+    const m = texto.match(new RegExp(`<${idioma}>([\\s\\S]*?)</${idioma}>`))
+    if (m) notas[idioma] = m[1].trim()
+    else faltan.push(`<${idioma}>`)
+  }
+  if (faltan.length) {
+    throw new Error(`faltan los bloques ${faltan.join(' y ')} en docs/play/notas-version.txt -hacen falta ${IDIOMAS.map((i) => `<${i}>`).join(', ')}-`)
+  }
+  return notas
 }
 
 export function leerBloques(texto) {
@@ -76,7 +97,9 @@ export function validarTextos(bloques, archivo) {
   if (largo(bloques.nombre) > 30) errores.push(`${archivo}: nombre ${largo(bloques.nombre)} de 30`)
   if (largo(bloques.breve) > 80) errores.push(`${archivo}: breve ${largo(bloques.breve)} de 80`)
   if (largo(bloques.completa) > 4000) errores.push(`${archivo}: completa ${largo(bloques.completa)} de 4000`)
-  if (/\b(best|#1|top|new|free|mejor|gratis|nuevo|nueva|descarga|download|install|instala)\b|n\.º ?1/i.test(bloques.breve)) {
+  // -2026-10-24, portugues-ficha- Suma las de portugués, como comprobar.cjs. Antes:
+  // if (/\b(best|#1|top|new|free|mejor|gratis|nuevo|nueva|descarga|download|install|instala)\b|n\.º ?1/i.test(bloques.breve)) {
+  if (/\b(best|#1|top|new|free|mejor|gratis|nuevo|nueva|descarga|download|install|instala|melhor|grátis|novo|nova|baixe|baixar|instale|instalar)\b|n\.º ?1/i.test(bloques.breve)) {
     errores.push(`${archivo}: la breve tiene una palabra que Play no quiere`)
   }
   return errores
@@ -87,10 +110,15 @@ export function cuerpoDePista({ versionName, notas, lanzar, versionCode }) {
   const release = {
     status: lanzar ? 'completed' : 'draft',
     name: `${versionName} – prueba interna`,
-    releaseNotes: [
-      { language: 'es-419', text: notas['es-419'] },
-      { language: 'en-US', text: notas['en-US'] }
-    ]
+    // -2026-10-24, portugues-ficha- Una nota por cada idioma de IDIOMAS que venga en notas, en ese
+    // orden: con leerNotas llegan los tres, pt-BR incluido. Se salta el que no viene para no mandarle a
+    // Play una nota vacía -leerNotas ya se paró antes si faltaba uno en notas-version.txt-.
+    // Antes:
+    //   releaseNotes: [
+    //     { language: 'es-419', text: notas['es-419'] },
+    //     { language: 'en-US', text: notas['en-US'] }
+    //   ]
+    releaseNotes: IDIOMAS.filter((idioma) => idioma in notas).map((idioma) => ({ language: idioma, text: notas[idioma] }))
   }
   if (versionCode) release.versionCodes = [String(versionCode)]
   return { track: 'internal', releases: [release] }
