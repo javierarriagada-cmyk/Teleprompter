@@ -5,7 +5,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
-  PAQUETE, leerLlave, armarJwt, leerNotas, cuerpoDePista, versionNameDe, planDeSubida, pistaPedida, juntarConPista
+  PAQUETE, IDIOMAS, leerLlave, armarJwt, leerNotas, cuerpoDePista, versionNameDe, planDeSubida, pistaPedida, juntarConPista
 } from './playApi.mjs'
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -14,15 +14,22 @@ export async function subirAInterna({ aab, lanzar, simular, pista = 'internal' }
   pistaPedida(pista)
   const notasPath = path.join(RAIZ, 'docs', 'play', 'notas-version.txt')
   if (!fs.existsSync(notasPath)) {
-    throw new Error('Falta docs/play/notas-version.txt, con bloques <es-419> y <en-US>. No subí nada.')
+    // Antes: throw new Error('Falta docs/play/notas-version.txt, con bloques <es-419> y <en-US>. No subí nada.')
+    // Cambiado el 2026-10-24 -portugues-ficha, pedido de Javier-: con el portugués son tres bloques, y el
+    // mensaje los nombra desde la misma lista IDIOMAS de playApi.mjs, para no tener otra lista acá.
+    throw new Error(`Falta docs/play/notas-version.txt, con bloques ${IDIOMAS.map((i) => `<${i}>`).join(', ')}. No subí nada.`)
   }
   const notas = leerNotas(fs.readFileSync(notasPath, 'utf8'))
   const versionName = versionNameDe(fs.readFileSync(path.join(RAIZ, 'android', 'app', 'build.gradle'), 'utf8'))
   const plan = planDeSubida({ aab, versionName, notas, lanzar })
   console.log(simular ? 'Simulación. No llamé a la API.' : 'Subiendo a internal.')
   console.log(`Pista ${plan.pista}, estado ${plan.estado}, nombre «${plan.nombre}»`)
-  console.log(`Notas es-419: ${plan.notas['es-419']}`)
-  console.log(`Notas en-US: ${plan.notas['en-US']}`)
+  // Antes:
+  //   console.log(`Notas es-419: ${plan.notas['es-419']}`)
+  //   console.log(`Notas en-US: ${plan.notas['en-US']}`)
+  // Cambiado el 2026-10-24 -portugues-ficha, pedido de Javier-: muestra las notas de cada idioma de la
+  // lista IDIOMAS de playApi.mjs -es-419, en-US y pt-BR-, en vez de dos fijos.
+  for (const idioma of IDIOMAS) console.log(`Notas ${idioma}: ${plan.notas[idioma]}`)
   console.log(`Archivo ${plan.archivo}` + (plan.bytes ? ` (${plan.bytes} bytes)` : ' (todavía no está)'))
   if (simular) return plan
 
