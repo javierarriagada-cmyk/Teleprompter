@@ -17,6 +17,10 @@ const fs = require('fs')
 const path = require('path')
 const { execFileSync } = require('child_process')
 const TITULARES = require('./titulares.cjs')
+// LOS IDIOMAS -portugues-ficha, 2026-10-25-: los de la lista IDIOMAS de scripts/playApi.mjs -es-419, en-US, pt-BR-, la misma
+// que usan ficha.mjs y playSubir.mjs: una sola lista. La carpeta es el código entero; el idioma de la
+// app y de los guiones, sus dos primeras letras -es, en, pt-.
+const { IDIOMAS } = require('../../../../scripts/playApi.mjs')
 
 const AQUI = __dirname
 const FICHA = path.resolve(AQUI, '..')
@@ -146,7 +150,8 @@ const { TELEFONO, TABLETA, deLado } = require('./escenas.cjs')
   const solo = process.argv[2] || ''
   const b = await puppeteer.launch({ executablePath: process.env.CHROME || '/usr/bin/google-chrome', args: ['--no-sandbox', '--font-render-hinting=none'] })
   try {
-    for (const [idioma, carpeta] of [['es', 'es-419'], ['en', 'en-US']]) {
+    // -portugues-ficha, 2026-10-25- Antes: for (const [idioma, carpeta] of [['es', 'es-419'], ['en', 'en-US']]) {
+    for (const [idioma, carpeta] of IDIOMAS.map((c) => [c.slice(0, 2), c])) {
       if (!solo || solo === 'tel') {
         for (const [i, e] of TELEFONO.entries()) {
           const cruda = path.join(CRUDAS, `${idioma}-tel-${e.nombre}.png`)

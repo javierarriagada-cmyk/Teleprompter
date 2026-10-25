@@ -55,13 +55,18 @@ function soloEstas(dir, esperadas) {
   ok(sobran.length === 0, `${dir}: solo las ${esperadas.length} de escenas.cjs${sobran.length ? ` (sobran: ${sobran.join(', ')})` : ''}`)
 }
 
+// LOS IDIOMAS -portugues-ficha, 2026-10-25-: los de la lista IDIOMAS de scripts/playApi.mjs -es-419, en-US, pt-BR-, la misma
+// que usan ficha.mjs y playSubir.mjs: una sola lista. La carpeta es el código entero; el idioma de la
+// app y de los guiones, sus dos primeras letras -es, en, pt-.
+const { IDIOMAS } = require('../../../../scripts/playApi.mjs')
 console.log('— Gráfico de funciones')
 for (const i of ['es', 'en']) imagen(`grafico-1024x500-${i}.png`, 1024, 500, 15)
 
 console.log('— Capturas de teléfono')
 // Antes: for (let n = 1; n <= 8; n++), con la 4 de lado.
 ok(TELEFONO.length >= 2 && TELEFONO.length <= 8, `teléfono: ${TELEFONO.length} capturas por idioma (Play pide entre 2 y 8)`)
-for (const c of ['es-419', 'en-US']) {
+// -portugues-ficha, 2026-10-25- Antes: for (const c of ['es-419', 'en-US']) {
+for (const c of IDIOMAS) {
   const esperadas = TELEFONO.map((_, i) => `${String(i + 1).padStart(2, '0')}.png`)
   TELEFONO.forEach((e, i) => {
     const rel = `capturas/${c}/${esperadas[i]}`
@@ -77,7 +82,8 @@ console.log('— Aire entre los renglones de los titulares')
 // titular llega hasta donde empieza la pantalla -componer.cjs, marcoTelefono: 420 de pie, 250 de lado-,
 // y se sube hasta un renglón y medio de la letra -80 y 66- buscando el renglón de arriba. Las tabletas
 // no llevan titular. Un titular de un renglón no tiene nada que medir y lo dice.
-for (const c of ['es-419', 'en-US']) TELEFONO.forEach((e, i) => {
+// -portugues-ficha, 2026-10-25- Antes: for (const c of ['es-419', 'en-US']) TELEFONO.forEach((e, i) => {
+for (const c of IDIOMAS) TELEFONO.forEach((e, i) => {
   const rel = `capturas/${c}/${String(i + 1).padStart(2, '0')}.png`
   if (!fs.existsSync(path.join(FICHA, rel))) return
   const lado = deLado(e)
@@ -92,7 +98,8 @@ console.log('— Capturas de tableta')
 // Antes, en capturas/tableta-provisional/, con «al menos 4» contados en la carpeta.
 const TAB = { 7: [1440, 2560], 10: [2160, 3840] }
 ok(!fs.existsSync(path.join(FICHA, 'capturas/tableta-provisional')), 'capturas/tableta-provisional/ ya no está: la tableta de la tarea 83 está en main')
-for (const c of ['es-419', 'en-US']) for (const [p, [a, b]] of Object.entries(TAB)) {
+// -portugues-ficha, 2026-10-25- Antes: for (const c of ['es-419', 'en-US']) for (const [p, [a, b]] of Object.entries(TAB)) {
+for (const c of IDIOMAS) for (const [p, [a, b]] of Object.entries(TAB)) {
   const lista = TABLETA[p] || []
   ok(lista.length >= 4, `tableta ${p}" ${c}: ${lista.length} capturas (Play pide al menos 4)`)
   for (const e of lista) {

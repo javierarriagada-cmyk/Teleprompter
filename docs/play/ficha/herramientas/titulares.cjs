@@ -25,6 +25,9 @@
 //                'Your scripts' · 'All your scripts, ==close at hand=='
 //   ajustes      'Ajustes de lectura' · 'Letra y colores, ==a tu manera==' /
 //                'Reading settings' · 'Text and colors, ==your way=='
+// PORTUGUÉS DE BRASIL -portugues-ficha, 2026-10-25-. Escritos y no traducidos, con «você» y el glosario de docs/portugues.txt
+// -roteiro, legendas, take, janela pequena-: la misma historia, escena por escena, con lo que se diría en
+// Brasil. Los cuenta comprobar.cjs -7 palabras o menos- y el aire lo mide aire.cjs, como los otros.
 module.exports = {
   es: {
     '01-leer': { etiqueta: 'Teleprompter de voz', titular: 'Tú hablas.|El texto ==te sigue==.' },
@@ -49,5 +52,15 @@ module.exports = {
     '06-filtros': { etiqueta: 'Six filters', titular: 'Pick a filter|==while you watch==' },
     '07-de-lado': { etiqueta: 'Landscape', titular: 'Recording sideways? ==That works too==.' },
     '08-recuadro': { etiqueta: 'Camera in a small frame', titular: 'Your image ==in a frame==' }
+  },
+  pt: {
+    '01-leer': { etiqueta: 'Teleprompter de voz', titular: 'Você fala.|O texto ==segue você==.' },
+    '02-editor': { etiqueta: 'Editor de roteiros', titular: 'O que importa, ==à vista==' },
+    '03-grabar-detras': { etiqueta: 'A câmera atrás do texto', titular: 'Olhe para a câmera, ==sem decorar==' },
+    '04-pausa': { etiqueta: 'Pausa', titular: 'As pausas|==não ficam no vídeo==' },
+    '05-subtitulos': { etiqueta: 'Legendas em três estilos', titular: 'Seu vídeo sai ==com legendas==' },
+    '06-filtros': { etiqueta: 'Seis filtros', titular: 'Escolha o filtro|==vendo seu vídeo==' },
+    '07-de-lado': { etiqueta: 'Horizontal', titular: 'Gravando deitado? ==Também funciona==.' },
+    '08-recuadro': { etiqueta: 'A câmera numa janela pequena', titular: 'Sua imagem ==numa janela==' }
   }
 }
