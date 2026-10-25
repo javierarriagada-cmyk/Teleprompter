@@ -62,12 +62,18 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
    "Sigo Play", con otra huella que la APK de prueba.
 
 10. EL PORTUGUÉS -desde 2ddb1f5, 22-10-2026-: main ya trae la voz en portugués -el paquete model_pt- y
-   «Português» en el menú de idioma del guion. NO subir a Play una versión con eso hasta que el papá de
-   Javier haya leído en voz alta con la APK de prueba en el Redmi y los números den -teleprom/00-arquitectura/
-   portugues-plan.txt, decisión 3; el protocolo está en docs/investigacion/idiomas.md, sección 7.3, de la
-   rama investigacion-idiomas-. El modelo de portugués se equivoca el doble que el de español en el PC:
-   cargar bien ya está comprobado en el teléfono, seguir una lectura todavía no. Si antes hay que subir otra
-   cosa a Play, se decide con Javier.
+   «Português» en el menú de idioma del guion.
+   A LA PRUEBA CERRADA, SÍ -decisión de Javier, 25-10-2026-: la 0.11.0 sube completa, con el portugués.
+   Javier: «que suba completa, así también para mí es más fácil pasársela a mi papá, debe subir con todo lo
+   que hacemos». Para instalarla desde Play, el papá de Javier tiene que estar entre los verificadores de la
+   prueba cerrada.
+   A PRUEBA ABIERTA O A PRODUCCIÓN, NO, hasta que el papá de Javier haya leído en voz alta y los números den
+   -teleprom/00-arquitectura/portugues-plan.txt, decisión 3; el protocolo está en docs/investigacion/
+   idiomas.md, sección 7.3, de la rama investigacion-idiomas-. El modelo de portugués se equivoca el doble
+   que el de español en el PC: cargar bien ya está comprobado en el teléfono, seguir una lectura todavía no.
+   Antes -22-10-2026-: «NO subir a Play una versión con eso hasta que el papá de Javier haya leído en voz alta
+   con la APK de prueba en el Redmi y los números den. […] Si antes hay que subir otra cosa a Play, se decide
+   con Javier.»
 
    LO QUE FALTA PARA LANZAR EL PORTUGUÉS -portugues-ficha, 2026-10-24-. Se suma a lo de arriba, que sigue
    valiendo: primero la lectura del papá de Javier. Ayuda de Play Console consultada el 2026-10-24.

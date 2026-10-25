@@ -1,19 +1,22 @@
-Prueba cerrada de Sigo, 0.10.0.
+Prueba cerrada de Sigo, 0.11.0.
 <es-419>
-• Nuevo: inicia sesión con Google, si quieres, y Sigo hace una copia de seguridad de tus guiones. Los tienes en todos tus dispositivos y no los pierdes si cambias de teléfono.
-• Tu cuenta aparece arriba de Ajustes; desde ahí cierras sesión o la borras.
-• La portada aprovecha mejor el ancho de la pantalla.
-• El panel de Ajustes deja ver más el fondo.
+• Nuevo: Sigo en portugués de Brasil. Lee guiones en portugués con tu voz: elige Português en el menú de idioma del guion. También puedes usar toda la app en portugués, desde Ajustes.
+• Si tu guion está en otro idioma que la app, Sigo te ofrece cambiarla.
+• La duración se muestra aproximada: ≈18 min.
+• El aviso de borrar sale más arriba, más grande y dura más.
+• La portada se lee mejor.
 </es-419>
 <en-US>
-• New: sign in with Google, if you want, and Sigo backs up your scripts. You have them on all your devices and don't lose them if you change phones.
-• Your account appears at the top of Settings; from there you can sign out or delete it.
-• The home screen makes better use of the screen width.
-• The Settings panel lets more of the background show through.
+• New: Sigo in Brazilian Portuguese. Read scripts in Portuguese with your voice: choose Português in the script's language menu. You can also use the whole app in Portuguese, from Settings.
+• If your script is in a different language than the app, Sigo offers to switch.
+• Durations are shown as approximate: ≈18 min.
+• The delete notice appears higher, larger and stays longer.
+• The home screen is easier to read.
 </en-US>
 <pt-BR>
-• Novidade: entre com sua conta do Google, se quiser, e o Sigo faz backup dos seus roteiros. Você tem seus roteiros em todos os seus aparelhos e não perde nada se trocar de celular.
-• Sua conta aparece no topo de Configurações; dali você sai da conta ou a exclui.
-• A tela inicial aproveita melhor a largura da tela.
-• O painel de Configurações deixa ver mais o fundo.
+• Novidade: o Sigo em português do Brasil. Leia roteiros em português com a sua voz: escolha Português no menu de idioma do roteiro. O Sigo também pode ficar todo em português, em Configurações.
+• Se o seu roteiro estiver em outro idioma, o Sigo oferece a troca.
+• A duração aparece aproximada: ≈18 min.
+• O aviso de excluir aparece mais acima, maior e por mais tempo.
+• A tela inicial ficou mais fácil de ler.
 </pt-BR>
