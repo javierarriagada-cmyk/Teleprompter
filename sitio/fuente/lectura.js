@@ -27,6 +27,12 @@
 // sitio/fuente/textos/<idioma>.js, en "lectura". armar.mjs llama a armarLectura una vez por
 // idioma. En ingles la voz tambien es estimada, al mismo ritmo.
 //
+// -portugues-sitio, 2026-10-24- TRES IDIOMAS, Y CADA LECTURA CON EL IDIOMA DE SU GUION. armar.mjs pasa
+// idioma -'es', 'en' o 'pt'- y aca va a tokenizarGuion y a crearSeguidor, que lo aceptan desde el #149,
+// como hace la aplicacion con el idioma de cada guion. El registro de la voz estimada lleva «# idioma:»,
+// como el que escribe App.tsx, para que armarSubtitulos use las palabras que atan en portugues. En
+// espanol y en ingles la lectura tiene que salir identica a la de antes: se comparo el JSON publicado.
+//
 // LA LECTURA DEFINITIVA -la grabacion real de cada idioma: en espanol la hara Javier, en ingles
 // una traductora-. Como se cambia:
 //   1. Grabar en Sigo una toma leyendo el guion de textos/<idioma>.js, tal cual -con la camara
@@ -129,10 +135,18 @@ function leerFormatos(parrafos) {
 
 // ---------- el registro de la voz estimada ----------
 
-const normalizar = (s) => s.toLowerCase().replace(/[^a-z0-9áéíóúñü]/gi, '')
+// -portugues-sitio, 2026-10-24- En portugues la regla de abajo borraba ã, õ, ç, â, ê y ô: «não» quedaba «no» en
+// el registro, y el seguidor -que con 'pt' deja «nao», seguidor.ts, normalizar- no la reconocia. Con 'pt' se
+// separa primero la letra de su tilde -NFD- y se borra solo la tilde, como en seguidor.ts. Con 'es' y 'en',
+// exactamente como antes. Antes:
+// const normalizar = (s) => s.toLowerCase().replace(/[^a-z0-9áéíóúñü]/gi, '')
+const normalizar = (s, idioma) => (idioma === 'pt' ? s.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : s).toLowerCase().replace(/[^a-z0-9áéíóúñü]/gi, '')
 
-function registroEstimado(texto, tokens, pausaDespuesDe) {
-  const letras = tokens.map((t) => normalizar(texto.substring(t.desdeChar, t.hastaChar)).length || 1)
+// -portugues-sitio, 2026-10-24- Recibe el idioma del guion: para normalizar y para la linea «# idioma:». Antes:
+// function registroEstimado(texto, tokens, pausaDespuesDe) {
+//   const letras = tokens.map((t) => normalizar(texto.substring(t.desdeChar, t.hastaChar)).length || 1)
+function registroEstimado(texto, tokens, pausaDespuesDe, idioma) {
+  const letras = tokens.map((t) => normalizar(texto.substring(t.desdeChar, t.hastaChar), idioma).length || 1)
   const media = letras.reduce((s, x) => s + x, 0) / letras.length
   const voz = []
   let t = 400
@@ -154,7 +168,8 @@ function registroEstimado(texto, tokens, pausaDespuesDe) {
     frase.push(k)
     const silencio = k + 1 < tokens.length ? voz[k + 1][0] - voz[k][1] : Infinity
     if (silencio > 500) {
-      const palabras = frase.map((j) => `${normalizar(texto.substring(tokens[j].desdeChar, tokens[j].hastaChar))}@${voz[j][0]}-${voz[j][1]}`)
+      // -portugues-sitio, 2026-10-24- Con el idioma. Antes: ...${normalizar(texto.substring(tokens[j].desdeChar, tokens[j].hastaChar))}@...
+      const palabras = frase.map((j) => `${normalizar(texto.substring(tokens[j].desdeChar, tokens[j].hastaChar), idioma)}@${voz[j][0]}-${voz[j][1]}`)
       lineas.push(`${voz[k][1] + CIERRE_FRASE_MS}\tpalabras\tFINAL: ${palabras.join(' ')}`)
       frase = []
     }
@@ -163,6 +178,9 @@ function registroEstimado(texto, tokens, pausaDespuesDe) {
     '# REGISTRO DEL MOTOR DE UNA TOMA',
     '# toma: voz estimada de la pagina -sitio/fuente/lectura.js-',
     '# motor de voz: estimado',
+    // -portugues-sitio, 2026-10-24- El idioma del guion, como lo escribe App.tsx: armarSubtitulos lo lee para
+    // saber que palabras atan -subtitulos.ts, idiomaDelRegistro-. Antes no habia esta linea.
+    `# idioma: ${idioma}`,
     `# letra: ${PANTALLA.letra} px, ${PANTALLA.tipo}`,
     `# columna: completa, margen ${PANTALLA.margen}%`,
     `# donde lees: ${PANTALLA.anclaje}`,
@@ -251,10 +269,15 @@ function htmlDelGuion(texto, tokens, tramos) {
 
 // ---------- todo junto ----------
 
-export function armarLectura(raiz, { guion, parrafosLeidos, pausaDespuesDe, toma }) {
+// -portugues-sitio, 2026-10-24- Recibe el idioma del guion -armar.mjs, t.idioma-. Antes:
+// export function armarLectura(raiz, { guion, parrafosLeidos, pausaDespuesDe, toma }) {
+//   ...
+//   const tokens = tokenizarGuion(texto)
+export function armarLectura(raiz, { guion, parrafosLeidos, pausaDespuesDe, toma }, idioma) {
+  if (!['es', 'en', 'pt'].includes(idioma)) throw new Error(`armarLectura: idioma "${idioma}" no es es, en ni pt.`)
   const TOMA = toma
   const { texto, tramos } = leerFormatos(guion)
-  const tokens = tokenizarGuion(texto)
+  const tokens = tokenizarGuion(texto, idioma)
 
   let registro
   let voz
@@ -268,7 +291,8 @@ export function armarLectura(raiz, { guion, parrafosLeidos, pausaDespuesDe, toma
     voz = subs.map((w) => [Math.round(w.desdeMs), Math.round(w.hastaMs)])
   } else {
     const leidos = tokens.filter((t) => t.linea < parrafosLeidos)
-    ;({ registro, voz } = registroEstimado(texto, leidos, pausaDespuesDe))
+    // -portugues-sitio, 2026-10-24- Con el idioma. Antes: ;({ registro, voz } = registroEstimado(texto, leidos, pausaDespuesDe))
+    ;({ registro, voz } = registroEstimado(texto, leidos, pausaDespuesDe, idioma))
   }
 
   const corpus = leerCorpus(registro)
@@ -282,7 +306,8 @@ export function armarLectura(raiz, { guion, parrafosLeidos, pausaDespuesDe, toma
   const limitesDeLinea = [...limitesLinea.values()].sort((a, b) => a - b)
   const limitesDeBloque = [...limitesBloque.values()].sort((a, b) => a - b)
   const motor = crearMotorDeAvance(undefined, limitesDeLinea, limitesDeBloque)
-  const seguidor = crearSeguidor(tokens)
+  // -portugues-sitio, 2026-10-24- Con el idioma del guion, como useSeguidor.ts. Antes: const seguidor = crearSeguidor(tokens)
+  const seguidor = crearSeguidor(tokens, { idioma })
   const conduccion = { seguidor, motor, tokens, limitesDeLinea }
 
   // CUANTAS PALABRAS DESTACA: palabrasDelDestacado de la aplicacion, con las palabras por

@@ -21,6 +21,11 @@
 //      exista, va en textos/<idioma>.js, lectura.toma: ver sitio/fuente/lectura.js, "LA
 //      LECTURA DEFINITIVA".
 //
+//   4. (-portugues-sitio, 2026-10-24-) LOS TRES IDIOMAS: se suma el portugues de Brasil, con el
+//      mismo armado y las mismas plantillas -textos/pt.js-: /pt, /pt/privacidade, /pt/suporte,
+//      /pt/ajuda y /pt/excluir-conta, las rutas que ya usa la app en portugues. El punto 4 de
+//      arriba queda como estaba, y vale igual para los tres.
+//
 // Vite -que ya esta en el proyecto- solo se usa aca: para entender el TypeScript de src/ al
 // calcular la lectura, y para juntar en un archivo el JavaScript de la pagina.
 // Lo armado se sube al repositorio: Firebase publica sitio/public tal cual.
@@ -75,18 +80,27 @@ function marca(id, { resplandor = true, etiqueta = true } = {}) {
 // son las mismas para los dos idiomas; cada texto es una marca {{clave}}. Asi no hay dos paginas
 // copiadas a mano que se separen: una frase nueva va en los dos archivos, o el armado se para.
 const IDIOMAS = {}
-for (const idioma of ['es', 'en']) {
+// -portugues-sitio, 2026-10-24- Suma el portugues de Brasil. Antes: for (const idioma of ['es', 'en']) {
+for (const idioma of ['es', 'en', 'pt']) {
   // -18-10-2026- EN WINDOWS: import() con una ruta C:\... falla -«Only URLs with a scheme in: file,
   // data, and node are supported»-; con la dirección file:// anda en los dos sistemas. El sitio no se
   // podía armar en el PC de Javier. Antes: IDIOMAS[idioma] = (await import(path.join(FUENTE, 'textos', `${idioma}.js`))).default
   IDIOMAS[idioma] = (await import(pathToFileURL(path.join(FUENTE, 'textos', `${idioma}.js`)).href)).default
 }
 const hojas = (o, pre = '') => Object.entries(o).flatMap(([k, v]) => (v && typeof v === 'object' && !Array.isArray(v) ? hojas(v, `${pre}${k}.`) : [`${pre}${k}`]))
+// -portugues-sitio, 2026-10-24- LAS CLAVES ENTRE LOS TRES ARCHIVOS, no solo entre es y en: cada idioma tiene
+// que tener todas las claves que tenga cualquiera de los otros. Antes:
+// {
+//   const es = new Set(hojas(IDIOMAS.es))
+//   const en = new Set(hojas(IDIOMAS.en))
+//   const faltan = [...[...es].filter((k) => !en.has(k)).map((k) => `en: ${k}`), ...[...en].filter((k) => !es.has(k)).map((k) => `es: ${k}`)]
+//   if (faltan.length) throw new Error(`Los textos de los dos idiomas no tienen las mismas claves. Falta ${faltan.join(', ')}.`)
+// }
 {
-  const es = new Set(hojas(IDIOMAS.es))
-  const en = new Set(hojas(IDIOMAS.en))
-  const faltan = [...[...es].filter((k) => !en.has(k)).map((k) => `en: ${k}`), ...[...en].filter((k) => !es.has(k)).map((k) => `es: ${k}`)]
-  if (faltan.length) throw new Error(`Los textos de los dos idiomas no tienen las mismas claves. Falta ${faltan.join(', ')}.`)
+  const claves = Object.fromEntries(Object.entries(IDIOMAS).map(([i, t]) => [i, new Set(hojas(t))]))
+  const todas = new Set(Object.values(claves).flatMap((c) => [...c]))
+  const faltan = Object.entries(claves).flatMap(([i, c]) => [...todas].filter((k) => !c.has(k)).map((k) => `${i}: ${k}`))
+  if (faltan.length) throw new Error(`Los textos de los tres idiomas no tienen las mismas claves. Falta ${faltan.join(', ')}.`)
 }
 
 const DOMINIO = 'https://sigoteleprompter.com'
@@ -98,17 +112,34 @@ const archivoDe = (ruta) => (ruta === '/' ? 'index.html' : `${ruta.slice(1)}.htm
 
 // Lo que va en el <head> de cada pagina para el idioma: la direccion canonica, la de la misma
 // pagina en el otro idioma -hreflang, con el espanol como x-default- y og:locale.
+// -portugues-sitio, 2026-10-24- CON TRES IDIOMAS «el otro idioma» deja de existir: son «los otros». hreflang
+// de los tres -el portugues como «pt», sin pais, para que lo encuentre tambien Portugal-, x-default sigue en
+// espanol, un og:locale:alternate por cada uno de los otros dos, y scriptIdioma recibe las rutas de la
+// pagina en los tres idiomas. Antes:
+// function cabeceraIdioma(t, pagina) {
+//   const otro = IDIOMAS[t.idioma === 'es' ? 'en' : 'es']
+//   return [
+//     `<link rel="canonical" href="${DOMINIO}${t.rutas[pagina]}">`,
+//     `<meta property="og:url" content="${DOMINIO}${t.rutas[pagina]}">`,
+//     `<meta property="og:locale" content="${t.locale}">`,
+//     `<meta property="og:locale:alternate" content="${otro.locale}">`,
+//     `<link rel="alternate" hreflang="es" href="${DOMINIO}${IDIOMAS.es.rutas[pagina]}">`,
+//     `<link rel="alternate" hreflang="en" href="${DOMINIO}${IDIOMAS.en.rutas[pagina]}">`,
+//     `<link rel="alternate" hreflang="x-default" href="${DOMINIO}${IDIOMAS.es.rutas[pagina]}">`,
+//     scriptIdioma(t, otro.rutas[pagina])
+//   ].join('\n')
+// }
 function cabeceraIdioma(t, pagina) {
-  const otro = IDIOMAS[t.idioma === 'es' ? 'en' : 'es']
+  const otros = Object.values(IDIOMAS).filter((o) => o.idioma !== t.idioma)
+  const rutas = Object.fromEntries(Object.values(IDIOMAS).map((o) => [o.idioma, o.rutas[pagina]]))
   return [
     `<link rel="canonical" href="${DOMINIO}${t.rutas[pagina]}">`,
     `<meta property="og:url" content="${DOMINIO}${t.rutas[pagina]}">`,
     `<meta property="og:locale" content="${t.locale}">`,
-    `<meta property="og:locale:alternate" content="${otro.locale}">`,
-    `<link rel="alternate" hreflang="es" href="${DOMINIO}${IDIOMAS.es.rutas[pagina]}">`,
-    `<link rel="alternate" hreflang="en" href="${DOMINIO}${IDIOMAS.en.rutas[pagina]}">`,
+    ...otros.map((o) => `<meta property="og:locale:alternate" content="${o.locale}">`),
+    ...Object.values(IDIOMAS).map((o) => `<link rel="alternate" hreflang="${o.idioma}" href="${DOMINIO}${o.rutas[pagina]}">`),
     `<link rel="alternate" hreflang="x-default" href="${DOMINIO}${IDIOMAS.es.rutas[pagina]}">`,
-    scriptIdioma(t, otro.rutas[pagina])
+    scriptIdioma(t, rutas)
   ].join('\n')
 }
 
@@ -122,12 +153,26 @@ function cabeceraIdioma(t, pagina) {
 //   - A los buscadores no se los mueve: cada pagina tiene su direccion y su hreflang.
 //   - Si localStorage no esta -modo privado estricto-, no se mueve a nadie.
 // No es logica de la aplicacion: es la pagina recordando un idioma.
-function scriptIdioma(t, otra) {
-  const js = `(function(){var C='sigo-idioma',A='sigo-idioma-auto',yo='${t.idioma}',otra='${otra}';` +
+// -portugues-sitio, 2026-10-24- CON TRES IDIOMAS. Recibe las rutas de la pagina en los tres -{ es, en, pt }-,
+// no una «otra»:
+//   - La eleccion guardada acepta 'pt' ademas de 'es' y 'en', y lleva a la misma pagina en ese idioma.
+//   - La primera vez, la portada en espanol lleva a /pt si el navegador esta en portugues -pt-BR o pt-PT,
+//     todo lo que empiece con «pt»-, a /en si esta en otro idioma que no sea espanol ni portugues, y no
+//     mueve a nadie si esta en espanol. Igual que antes: una sola vez y nunca a los buscadores.
+// Antes:
+// function scriptIdioma(t, otra) {
+//   const js = `(function(){var C='sigo-idioma',A='sigo-idioma-auto',yo='${t.idioma}',otra='${otra}';` +
+//     `try{var s=window.localStorage,e=s.getItem(C);` +
+//     `if(e==='es'||e==='en'){if(e!==yo)location.replace(otra);}` +
+//     `else if(yo==='es'&&!s.getItem(A)&&!/bot|crawl|spider|slurp|lighthouse|headless/i.test(navigator.userAgent)){s.setItem(A,'1');` +
+//     `var l=(navigator.languages&&navigator.languages[0])||navigator.language||'';if(l&&!/^es/i.test(l))location.replace(otra);}}catch(_){}` +
+//     (las dos lineas siguientes, el click que guarda la eleccion, no cambian)
+function scriptIdioma(t, rutas) {
+  const js = `(function(){var C='sigo-idioma',A='sigo-idioma-auto',yo='${t.idioma}',r=${JSON.stringify(rutas)};` +
     `try{var s=window.localStorage,e=s.getItem(C);` +
-    `if(e==='es'||e==='en'){if(e!==yo)location.replace(otra);}` +
+    `if(e==='es'||e==='en'||e==='pt'){if(e!==yo)location.replace(r[e]);}` +
     `else if(yo==='es'&&!s.getItem(A)&&!/bot|crawl|spider|slurp|lighthouse|headless/i.test(navigator.userAgent)){s.setItem(A,'1');` +
-    `var l=(navigator.languages&&navigator.languages[0])||navigator.language||'';if(l&&!/^es/i.test(l))location.replace(otra);}}catch(_){}` +
+    `var l=(navigator.languages&&navigator.languages[0])||navigator.language||'';if(l&&/^pt/i.test(l))location.replace(r.pt);else if(l&&!/^es/i.test(l))location.replace(r.en);}}catch(_){}` +
     `document.addEventListener('click',function(v){var a=v.target&&v.target.closest?v.target.closest('a[data-idioma]'):null;` +
     `if(a){try{localStorage.setItem(C,a.getAttribute('data-idioma'));}catch(_){}}});})();`
   return `<script>${js}</script>`
@@ -135,12 +180,16 @@ function scriptIdioma(t, otra) {
 
 // "ES · EN": arriba a la derecha y en el pie. Son enlaces de verdad -funcionan sin JavaScript-
 // a la misma pagina en el otro idioma.
+// -portugues-sitio, 2026-10-24- «ES · EN · PT», con los mismos enlaces de verdad. SIN BANDERAS -Javier, con la
+// regla del W3C «Do not use flag icons to indicate languages», https://www.w3.org/TR/i18n-html-tech-lang/
+// seccion 7-: una bandera es un pais, no un idioma. Antes, la ultima linea era:
+//   return `<nav class="idioma idioma-${lugar}" aria-label="${t.selector.etiqueta}">${enlace('es')}<span aria-hidden="true">·</span>${enlace('en')}</nav>`
 function selector(t, pagina, lugar) {
   const enlace = (i) => {
     const actual = i === t.idioma
     return `<a href="${IDIOMAS[i].rutas[pagina]}" lang="${i}" hreflang="${i}" data-idioma="${i}"${actual ? ' aria-current="page"' : ''}>${i.toUpperCase()}</a>`
   }
-  return `<nav class="idioma idioma-${lugar}" aria-label="${t.selector.etiqueta}">${enlace('es')}<span aria-hidden="true">·</span>${enlace('en')}</nav>`
+  return `<nav class="idioma idioma-${lugar}" aria-label="${t.selector.etiqueta}">${Object.keys(IDIOMAS).map(enlace).join('<span aria-hidden="true">·</span>')}</nav>`
 }
 
 // Antes, en el pie: <a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a>
@@ -199,7 +248,8 @@ const lecturas = {}
 try {
   const modulo = await servidor.ssrLoadModule('/sitio/fuente/lectura.js')
   for (const [idioma, t] of Object.entries(IDIOMAS)) {
-    lecturas[idioma] = modulo.armarLectura(RAIZ, t.lectura)
+    // -portugues-sitio, 2026-10-24- Con el idioma del guion -lectura.js-. Antes: lecturas[idioma] = modulo.armarLectura(RAIZ, t.lectura)
+    lecturas[idioma] = modulo.armarLectura(RAIZ, t.lectura, idioma)
     console.log(`${idioma}: ${lecturas[idioma].resumen}`)
   }
 } finally {

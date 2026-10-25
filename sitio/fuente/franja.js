@@ -4,8 +4,11 @@
 // necesita JavaScript:
 //   - LA X la cierra POR ESTA VISITA: queda en sessionStorage, y el <script> del <head> de
 //     portada.html la esconde antes de pintar si se recarga. En otra visita vuelve.
-//   - EL SELECTOR ES · EN baja mientras la franja se ve -estilo.css-; cuando la franja sale de
-//     la pantalla, vuelve a su lugar: la clase franja-fuera.
+//   - EL SELECTOR ES · EN · PT baja mientras la franja se ve -estilo.css-; cuando la franja sale
+//     de la pantalla, vuelve a su lugar: la clase franja-fuera.
+//     -portugues-sitio, 2026-10-24- El selector suma PT. Antes: «EL SELECTOR ES · EN baja mientras
+//     la franja se ve -estilo.css-; cuando la franja sale de la pantalla, vuelve a su lugar: la
+//     clase franja-fuera.»
 //   - EL FOCO va a la seccion al tocar la franja. El salto mismo, directo y sin recorrer las
 //     escenas, lo hace escenas.js con Lenis, o el navegador si no hay Lenis.
 // No depende de GSAP ni de las letras: corre apenas esta el documento.
