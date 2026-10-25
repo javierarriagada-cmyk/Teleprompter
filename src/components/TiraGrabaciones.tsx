@@ -63,7 +63,9 @@ interface Props {
 // selección y la marca. El menú chico -tacho y X- se fue.
 // Antes: para llegar a Eliminar hay que MANTENER APRETADA la toma, y el menú
 // pregunta "¿Seguro?" una segunda vez. Un video grabado no se recupera.
-// Ahora el tacho de la barra saca las marcadas y Deshacer las devuelve 5 s.
+// Ahora el tacho de la barra saca las marcadas y Deshacer las devuelve 6 s.
+// -ajustes-accesible, 25-10-2026- 6 s, igual que el aviso de borrar un guion -MS_DESHACER_TOMA-. Antes: «...y
+// Deshacer las devuelve 5 s.»
 //
 // Antes, el comentario entero -repuesto en la revisión de la 94, los comentarios no se borran-:
 // BORRAR PREGUNTA UNA VEZ, Y ES LA UNICA ACCION DE LA APLICACION QUE NO SE

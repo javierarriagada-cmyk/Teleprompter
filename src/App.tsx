@@ -1003,6 +1003,9 @@ export default function App({ motor, repoOverride }: AppProps) {
         void confirmarTomasPendientes()
       }
     }, MS_DESHACER_TOMA)
+    // -ajustes-accesible, 25-10-2026, decisión de Javier- El mismo aviso del guion borrado: mostrarAviso con
+    // «Deshacer» -AvisoBreve lo dibuja «destacado» en la portada- y 6 s -MS_DESHACER_TOMA, igual que
+    // MS_DESHACER_GUION-. El código no cambia aquí: cambió el plazo en lib/seleccionTomas.ts.
     mostrarAviso(t('tomasBorradas', { n: ids.length }), {
       accionTexto: t('deshacer'),
       duracionMs: MS_DESHACER_TOMA,

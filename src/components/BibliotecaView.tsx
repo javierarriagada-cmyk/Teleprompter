@@ -49,7 +49,8 @@ interface BibliotecaViewProps {
   grabaciones?: ResumenGrabacion[]
   onAbrirGrabacion?: (g: ResumenGrabacion) => void
   onBorrarGrabacion?: (id: string) => void
-  // -tarea 94- el tacho de la selección. App esconde la lista al tiro y borra los archivos a los 5 s.
+  // -tarea 94- el tacho de la selección. App esconde la lista al tiro y borra los archivos a los 6 s.
+  // -ajustes-accesible, 25-10-2026- 6 s como el borrado de guiones -MS_DESHACER_TOMA-. Antes: «...borra los archivos a los 5 s.»
   onBorrarTomas?: (ids: string[]) => void
   'data-pantalla-direccion'?: string
   // -atrás predictivo- Debajo del editor la biblioteca queda montada pero TalkBack no la ve.

@@ -24,7 +24,9 @@ describe('selección de tomas', () => {
     expect(seleccionarTodas(['a', 'b', 'c'])).toEqual(['a', 'b', 'c'])
   })
 
-  test('borrar y deshacer: el lote espera 5 s', () => {
+  // -ajustes-accesible, 25-10-2026, decisión de Javier- 6 s, igual que el borrado de guiones.
+  // Antes: test('borrar y deshacer: el lote espera 5 s', () => {
+  test('borrar y deshacer: el lote espera 6 s', () => {
     const lote = loteNuevo(['a', 'b'], 1000)
     expect(lote.ids).toEqual(['a', 'b'])
     expect(lote.venceEn).toBe(1000 + MS_DESHACER_TOMA)
@@ -34,7 +36,9 @@ describe('selección de tomas', () => {
 
   test('los archivos no se borran antes de que se vaya el aviso', () => {
     const lote = loteNuevo(['a'], 0)
-    expect(debeBorrarArchivos(lote, 4999, false)).toBe(false)
+    // -ajustes-accesible, 25-10-2026- El aviso dura 6 s: el último milisegundo antes de que se vaya.
+    // Antes: expect(debeBorrarArchivos(lote, 4999, false)).toBe(false)
+    expect(debeBorrarArchivos(lote, 5999, false)).toBe(false)
   })
 
   test('a segundo plano los archivos se borran al tiro', () => {
