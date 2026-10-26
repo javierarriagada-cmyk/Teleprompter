@@ -16,7 +16,13 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
    voz -punto 5-.-
 
 2. TODA BIBLIOTECA NATIVA CON SUS REGLAS DE R8, desde su fuente oficial: MediaPipe, Vosk y JNA, Media3,
-   CameraX. Una biblioteca nativa nueva suma su línea aquí y en el punto 1.
+   CameraX, RevenueCat y Play Billing. Una biblioteca nativa nueva suma su línea aquí y en el punto 1.
+   Antes -cambiado el 26-10-2026, orden 1 del cobro, porque llegan RevenueCat y Play Billing-: «2. TODA
+   BIBLIOTECA NATIVA CON SUS REGLAS DE R8, desde su fuente oficial: MediaPipe, Vosk y JNA, Media3,
+   CameraX. Una biblioteca nativa nueva suma su línea aquí y en el punto 1.»
+   RevenueCat y Play Billing -26-10-2026-: las dos traen sus reglas de consumidor -proguard.txt de
+   purchases-10.29.0.aar y de billing-8.3.0.aar- y su documentación oficial no pide reglas propias
+   -revenuecat.com/docs/getting-started/installation/android, sección Proguard-. No se agregó ninguna.
    Y también lo que cada una trae ADENTRO: conservar MediaPipe entero no alcanzó.
    -18-10-2026: la causa de los gestos rotos de la 0.9.1 fue Flogger, el registro de Google que MediaPipe
    trae. Busca su plataforma por nombre -DefaultPlatform- y R8 se lo cambió a v7.b. Hoy npm run play lo
@@ -100,6 +106,12 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
       procesa solo en el dispositivo no se declara como recopilación: «Acceso y procesamiento en el
       dispositivo». Contenido de la app → Seguridad de los datos: no se toca. Ayuda oficial:
       support.google.com/googleplay/android-developer/answer/10787469.
+
+11. EL COBRO -desde be36177, 26-10-2026-: main trae RevenueCat sin pantallas. A una prueba interna o cerrada,
+   SÍ: es lo que deja crear la suscripción en Play Console. A PRODUCCIÓN, NO, hasta tener: la ficha de
+   seguridad de los datos con «Historial de compras»; la política de privacidad del sitio -es, en y pt- con
+   RevenueCat; y la decisión de Javier sobre qué se hace con los datos de RevenueCat cuando alguien borra su
+   cuenta -se borran con la API de servidor y la clave secreta, no desde la app-.
 
 Conocido y aceptado: la advertencia de símbolos de depuración por las .so de Vosk, que vienen sin
 símbolos. No bloquea.
