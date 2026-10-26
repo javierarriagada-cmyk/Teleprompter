@@ -107,7 +107,7 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
       dispositivo». Contenido de la app → Seguridad de los datos: no se toca. Ayuda oficial:
       support.google.com/googleplay/android-developer/answer/10787469.
 
-11. EL COBRO -desde be36177, 26-10-2026-: main trae RevenueCat sin pantallas. A una prueba interna o cerrada,
+11. EL COBRO -desde ce5ca9d, 26-10-2026; en la rama, be36177-: main trae RevenueCat sin pantallas. A una prueba interna o cerrada,
    SÍ: es lo que deja crear la suscripción en Play Console. A PRODUCCIÓN, NO, hasta tener: la ficha de
    seguridad de los datos con «Historial de compras»; la política de privacidad del sitio -es, en y pt- con
    RevenueCat; y la decisión de Javier sobre qué se hace con los datos de RevenueCat cuando alguien borra su
