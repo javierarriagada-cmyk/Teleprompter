@@ -53,6 +53,8 @@ import { RepositorioMemoria } from './datos/RepositorioMemoria'
 // -orden B- El respaldo de los guiones con la cuenta.
 import { vigilarRespaldo } from './lib/respaldo'
 import { configuracionLista } from './lib/firebaseConfig'
+// -orden 1, los cimientos del cobro, 26-10-2026- RevenueCat, sin nada visible.
+import { vigilarSuscripcion } from './lib/suscripcion'
 import { RepositorioGrabaciones } from './datos/RepositorioGrabaciones'
 import { RepositorioGrabacionesIndexedDB } from './datos/RepositorioGrabacionesIndexedDB'
 import { RepositorioGrabacionesMemoria } from './datos/RepositorioGrabacionesMemoria'
@@ -575,6 +577,14 @@ export default function App({ motor, repoOverride }: AppProps) {
     if (repoOverride || !configuracionLista()) return
     return vigilarRespaldo(() => repoRef.current, (r) => { repoRef.current = r }, () => { void cargarBiblioteca() })
   }, [repoOverride, cargarBiblioteca])
+
+  // -orden 1, los cimientos del cobro, 26-10-2026- RevenueCat: pide si hay suscripción y sigue a la cuenta
+  // de Google -src/lib/suscripcion.ts-. Nadie usa el estado todavía. Con repoOverride -las pruebas- no se
+  // enciende.
+  useEffect(() => {
+    if (repoOverride) return
+    return vigilarSuscripcion()
+  }, [repoOverride])
 
   // Cargar/Migrar al arrancar
   useEffect(() => {
