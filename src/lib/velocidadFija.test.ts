@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import {
   NIVELES_PPM, NIVEL_POR_OMISION, acotarNivel, ppmDeNivel, subirNivel, bajarNivel, segundosConNivel,
   crearMotorFijo, esMotorFijo, modoGuardado, nivelGuardado, fijarModo, fijarNivel, estadoVelocidad,
-  olvidarEstadoVelocidad, pxPorPalabra, pxDePosicion, posicionDePx, renglonDePx
+  olvidarEstadoVelocidad, pxPorPalabra, pxDePosicion, posicionDePx, renglonDePx, ritmoDeLosUltimosSegundos
 } from './velocidadFija'
 import type { Renglon } from './renglones'
 import { crearMotorDeAvance } from './avance'
@@ -116,3 +116,16 @@ describe('Velocidad fija', () => {
     expect(renglonDePx(9999, desparejos)).toBe(3)
   })
 })
+
+  // -orden 2, punto 3- El ritmo al llegar al límite sale del avance de la voz.
+  it('ritmoDeLosUltimosSegundos: ppm de las muestras recientes; sin dos, el respaldo', () => {
+    expect(ritmoDeLosUltimosSegundos([], 10_000, 3000, 148)).toBe(148)
+    expect(ritmoDeLosUltimosSegundos([{ tMs: 9000, token: 10 }], 10_000, 3000, 120)).toBe(120)
+    const m = [{ tMs: 8000, token: 0 }, { tMs: 10000, token: 10 }]
+    expect(ritmoDeLosUltimosSegundos(m, 10_000, 3000, 148)).toBe(300)
+    const motor = crearMotorFijo(1000, 4)
+    motor.seguir(0)
+    motor.cambiarRitmo(300, 1000)
+    expect(motor.estadoEn(2000).posicion).toBeCloseTo(300 * (1000 / 60000) + 148 * (1000 / 60000), 5)
+  })
+

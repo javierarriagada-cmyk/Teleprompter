@@ -1,6 +1,6 @@
 // TAREA 87, PARTE B4 -04-10-2026-: la receta común, pura -src/lib/recetaExportacion.ts-.
 import { describe, test, expect } from 'vitest'
-import { recetaDe, esCopia, validarReceta, type RecetaExportacion } from '../lib/recetaExportacion'
+import { recetaDe, esCopia, validarReceta, caminoDeGuardado, type RecetaExportacion } from '../lib/recetaExportacion'
 import type { Subtitulo } from '../lib/subtitulos'
 
 const UN_SUB: Subtitulo[] = [{ desdeMs: 0, hastaMs: 900, renglones: [[{ texto: 'hola', desdeMs: 0, hastaMs: 400 }]] } as Subtitulo]
@@ -29,3 +29,14 @@ describe('La receta de exportación', () => {
     expect(validarReceta({ ...r, tramos: [{ desdeMs: 1000, hastaMs: 2000 }, { desdeMs: 5000, hastaMs: 9000 }] })).toBeNull()
   })
 })
+
+  // -orden 2, punto 7- Con marca nunca es copia y el camino es 'receta'.
+  test('con marca nunca es copia y el camino es receta', () => {
+    const r = recetaDe({ estilo: 'no', subtitulos: [], marca: true })
+    expect(esCopia(r)).toBe(false)
+    expect(r.marca).toBe(true)
+    expect(caminoDeGuardado({ estilo: 'no', subtitulos: [], marca: true })).toBe('receta')
+    expect(validarReceta(r)).toBeNull()
+    expect(validarReceta({ ...r, marca: 'si' as unknown as boolean })).toBe('marca no es boolean')
+  })
+

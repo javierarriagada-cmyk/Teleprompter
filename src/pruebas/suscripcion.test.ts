@@ -46,8 +46,12 @@ vi.mock('../lib/cuenta', () => ({
 }))
 
 const ID = 'sigo_teleprompter_pro'
-const conDerecho = (vence: string | null) => ({ entitlements: { active: { [ID]: { identifier: ID, expirationDate: vence } }, all: {} } })
-const sinDerecho = () => ({ entitlements: { active: { otro: { identifier: 'otro', expirationDate: null } }, all: {} } })
+// -orden 2- periodType y requestDate van en el derecho / customerInfo.
+const conDerecho = (vence: string | null, periodType: string | null = null, requestDate: string | null = '2026-10-01T00:00:00Z') => ({
+  entitlements: { active: { [ID]: { identifier: ID, expirationDate: vence, periodType } }, all: {} },
+  requestDate
+})
+const sinDerecho = (requestDate: string | null = '2026-10-01T00:00:00Z') => ({ entitlements: { active: { otro: { identifier: 'otro', expirationDate: null } }, all: {} }, requestDate })
 
 // Deja correr las promesas encadenadas.
 const esperar = () => new Promise((r) => setTimeout(r, 0))
@@ -123,7 +127,7 @@ describe('suscripcion: el estado sale de entitlements.active', () => {
     const s = await cargar()
     s.vigilarSuscripcion()
     await esperar()
-    expect(s.estadoSuscripcion()).toEqual({ tipo: 'conSuscripcion', vence: '2026-11-26T00:00:00Z' })
+    expect(s.estadoSuscripcion()).toEqual({ tipo: 'conSuscripcion', vence: '2026-11-26T00:00:00Z', periodo: null, pedidoEn: '2026-10-01T00:00:00Z' })
     expect(s.tieneSuscripcion()).toBe(true)
   })
   it("con ID_DERECHO activo y sin expirationDate, vence es null", async () => {
@@ -131,7 +135,7 @@ describe('suscripcion: el estado sale de entitlements.active', () => {
     const s = await cargar()
     s.vigilarSuscripcion()
     await esperar()
-    expect(s.estadoSuscripcion()).toEqual({ tipo: 'conSuscripcion', vence: null })
+    expect(s.estadoSuscripcion()).toEqual({ tipo: 'conSuscripcion', vence: null, periodo: null, pedidoEn: '2026-10-01T00:00:00Z' })
   })
   it("sin ID_DERECHO activo, 'sinSuscripcion'", async () => {
     const s = await cargar()
@@ -151,7 +155,7 @@ describe('suscripcion: el oyente de RevenueCat', () => {
     await esperar()
     aviso.mockClear()
     sim.oyenteRC!(conDerecho('2027-01-01T00:00:00Z'))
-    expect(s.estadoSuscripcion()).toEqual({ tipo: 'conSuscripcion', vence: '2027-01-01T00:00:00Z' })
+    expect(s.estadoSuscripcion()).toEqual({ tipo: 'conSuscripcion', vence: '2027-01-01T00:00:00Z', periodo: null, pedidoEn: '2026-10-01T00:00:00Z' })
     expect(aviso).toHaveBeenCalled()
   })
   it('al dejar de vigilar se quita el oyente', async () => {
@@ -226,5 +230,34 @@ describe('suscripcion: un error de RevenueCat no rompe nada', () => {
     await esperar()
     expect(s.estadoSuscripcion()).toEqual({ tipo: 'sinDatos' })
     expect(console.warn).toHaveBeenCalledWith('[suscripcion]', expect.anything())
+  })
+})
+
+
+describe('suscripcion: prueba por terminar y sin verificar -orden 2-', () => {
+  it('pruebaPorTerminar: TRIAL con <=2 dias', async () => {
+    const vence = '2026-10-27T12:00:00Z'
+    sim.getCustomerInfo.mockResolvedValue({ customerInfo: conDerecho(vence, 'TRIAL', '2026-10-20T00:00:00Z') })
+    const s = await cargar()
+    s.vigilarSuscripcion()
+    await esperar()
+    const ahora = Date.parse('2026-10-26T12:00:00Z')
+    expect(s.pruebaPorTerminar(ahora)).toEqual({ vence })
+    expect(s.pruebaPorTerminar(Date.parse('2026-10-20T12:00:00Z'))).toBeNull()
+  })
+  it('pruebaPorTerminar: sin TRIAL no sale', async () => {
+    sim.getCustomerInfo.mockResolvedValue({ customerInfo: conDerecho('2026-10-27T12:00:00Z', 'NORMAL') })
+    const s = await cargar()
+    s.vigilarSuscripcion()
+    await esperar()
+    expect(s.pruebaPorTerminar(Date.parse('2026-10-26T12:00:00Z'))).toBeNull()
+  })
+  it('suscripcionSinVerificar: >3 dias desde requestDate', async () => {
+    sim.getCustomerInfo.mockResolvedValue({ customerInfo: conDerecho(null, 'NORMAL', '2026-10-20T00:00:00Z') })
+    const s = await cargar()
+    s.vigilarSuscripcion()
+    await esperar()
+    expect(s.suscripcionSinVerificar(Date.parse('2026-10-24T00:00:01Z'))).toBe(true)
+    expect(s.suscripcionSinVerificar(Date.parse('2026-10-22T00:00:00Z'))).toBe(false)
   })
 })
