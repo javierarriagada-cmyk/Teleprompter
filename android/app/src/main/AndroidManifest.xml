@@ -34,7 +34,9 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBarLaunch"
-            android:launchMode="singleTask"
+            <!-- -orden 2, punto 9, 26-10-2026- Antes: android:launchMode="singleTask". RevenueCat pide
+                singleTop para que una compra no se corte al ir a segundo plano. -->
+            android:launchMode="singleTop"
             android:exported="true">
 
             <intent-filter>
