@@ -2592,8 +2592,10 @@ export default function App({ motor, repoOverride }: AppProps) {
             void despachar({ tipo: 'alternar', tMs: Date.now() })
           }
           mostrarAviso(t('limiteLectura'), {
+            // Antes: abajo, texto cuerpo, 8 s. 27-10-2026: tercio superior, --texto-titulo, 8 s.
             duracionMs: 8000,
             tocable: true,
+            colocacion: 'limite',
             alTocar: () => { void alTocarLimiteLectura() }
           })
           return
@@ -2602,9 +2604,10 @@ export default function App({ motor, repoOverride }: AppProps) {
           if (!avisoLimiteVozRef.current) {
             avisoLimiteVozRef.current = true
             setFaseLimiteVoz('aviso')
+            // Antes: 4000. 27-10-2026 pasada teléfono: avisos de límite 8 s.
             window.setTimeout(() => {
               setFaseLimiteVoz((f) => (f === 'aviso' ? 'queda' : f))
-            }, 4000)
+            }, 8000)
           }
         }
       }
@@ -2617,8 +2620,11 @@ export default function App({ motor, repoOverride }: AppProps) {
             const resumen = await handleStop()
             if (resumen === null) avisarFinDeToma(duracionMs)
             mostrarAviso(t('limiteGrabacion'), {
+              // Antes: abajo. 27-10-2026: tercio superior, --texto-titulo, contraste sobre cámara.
               duracionMs: 8000,
               tocable: true,
+              colocacion: 'limite',
+              contrasteGrabacion: true,
               alTocar: () => { void abrirOferta('limiteGrabacion') }
             })
           })()
@@ -2626,7 +2632,12 @@ export default function App({ motor, repoOverride }: AppProps) {
         }
         if (hayQueAvisar('grabacion', trans, lim) && !avisoLimiteGrabRef.current) {
           avisoLimiteGrabRef.current = true
-          mostrarAviso(t('avisoQuedaMinutoGrabacion'), { duracionMs: 4000 })
+          // Antes: duracionMs: 4000, abajo. 27-10-2026: 8 s, tercio superior, contraste cámara.
+          mostrarAviso(t('avisoQuedaMinutoGrabacion'), {
+            duracionMs: 8000,
+            colocacion: 'limite',
+            contrasteGrabacion: true
+          })
         }
       }
     }, 250)

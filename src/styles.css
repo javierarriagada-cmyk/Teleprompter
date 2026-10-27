@@ -116,6 +116,10 @@
   --aviso-fondo: #ECE6E0;
   --aviso-texto: #1D1B1A;
   --aviso-accion: #C62828;
+  /* -pasada teléfono PR 157, 27-10-2026- Avisos de límite en grabación sobre la cámara: siempre
+     fondo claro / texto oscuro (no siguen el tema). Solo variables; sin hex en el TSX. */
+  --aviso-sobre-camara-fondo: #ECE6E0;
+  --aviso-sobre-camara-texto: #1D1B1A;
   --leer-fondo: linear-gradient(180deg, #F4ECE7, #E2D6CF);
   --leer-texto: #151312;
   --crear-fondo: #E7E1DE;

@@ -52,16 +52,32 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
             // sobre el, visto en el moto g86 el mismo dia.
             // 29-09-2026, tarea 82: en el teléfono de lado va a 16 más el área segura y entre
             // los rieles -columnaHorizontal-; en vertical sigue exactamente como arriba.
-            bottom: sobreDock
-              ? 'calc(var(--aviso-tab-v-abajo) + env(safe-area-inset-bottom, 0px))'
-              : enRieles
-              ? 'calc(16px + env(safe-area-inset-bottom, 0px))'
-              : enLectura
-              ? 'calc(var(--circulo-desde-abajo) + 72px + var(--aire-3) + env(safe-area-inset-bottom, 0px))'
-              : destacado
-              ? 'calc(var(--aviso-accion-abajo) + env(safe-area-inset-bottom, 0px))'
-              // Antes, también con acción: 'calc(var(--aire-5) + env(safe-area-inset-bottom, 0px))'
-              : 'calc(var(--aire-5) + env(safe-area-inset-bottom, 0px))',
+            // -pasada teléfono PR 157, 27-10-2026- colocacion 'limite'/'mitad': top, no bottom.
+            // Antes: siempre bottom según sobreDock / enRieles / enLectura / destacado.
+            ...(avisoInfo.colocacion === 'limite'
+              ? {
+                  // Tercio superior, sin tapar la línea de lectura (~centro).
+                  top: 'calc(16px + env(safe-area-inset-top, 0px) + 12vh)',
+                  bottom: 'auto' as const
+                }
+              : avisoInfo.colocacion === 'mitad'
+              ? {
+                  // Cerca del centro, no abajo.
+                  top: '42%',
+                  bottom: 'auto' as const
+                }
+              : {
+                  bottom: sobreDock
+                    ? 'calc(var(--aviso-tab-v-abajo) + env(safe-area-inset-bottom, 0px))'
+                    : enRieles
+                    ? 'calc(16px + env(safe-area-inset-bottom, 0px))'
+                    : enLectura
+                    ? 'calc(var(--circulo-desde-abajo) + 72px + var(--aire-3) + env(safe-area-inset-bottom, 0px))'
+                    : destacado
+                    ? 'calc(var(--aviso-accion-abajo) + env(safe-area-inset-bottom, 0px))'
+                    // Antes, también con acción: 'calc(var(--aire-5) + env(safe-area-inset-bottom, 0px))'
+                    : 'calc(var(--aire-5) + env(safe-area-inset-bottom, 0px))'
+                }),
             left: enRieles && columnaHorizontal ? columnaHorizontal.izquierda : 0,
             right: enRieles && columnaHorizontal ? columnaHorizontal.derecha : 0,
             marginLeft: 'auto',
@@ -71,14 +87,21 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
             // Tanda 2, 15-10-2026: fondo, canto y sombra en .aviso-breve -styles.css-. Antes:
             // backgroundColor: 'var(--bg-superficie)', border: '1px solid var(--color-borde)',
             // -ajustes-accesible, 25-10-2026, decisión de Javier- Texto sobre la superficie invertida. Antes: color: 'var(--color-texto)',
-            color: 'var(--aviso-texto)',
+            // -pasada teléfono PR 157- contrasteGrabacion: fondo claro legible sobre la cámara.
+            color: avisoInfo.contrasteGrabacion ? 'var(--aviso-sobre-camara-texto)' : 'var(--aviso-texto)',
+            ...(avisoInfo.contrasteGrabacion
+              ? { backgroundColor: 'var(--aviso-sobre-camara-fondo)' }
+              : {}),
             // -mejoras-claridad, 21-10-2026- Destacado: más aire a la izquierda, 56 de alto y letra de 16. Antes, siempre:
             // padding: 'var(--aire-2) var(--aire-3)', fontSize: 'var(--texto-cuerpo)'
+            // -pasada teléfono PR 157- avisos de límite: var(--texto-titulo) = 18.
             padding: destacado ? 'var(--aire-1) var(--aire-2) var(--aire-1) var(--aire-4)' : 'var(--aire-2) var(--aire-3)',
             minHeight: destacado ? 56 : undefined,
             boxSizing: 'border-box',
             borderRadius: 'var(--redondeo-pildora)',
-            fontSize: destacado ? 16 : 'var(--texto-cuerpo)',
+            fontSize: avisoInfo.colocacion === 'limite' || avisoInfo.colocacion === 'mitad'
+              ? 'var(--texto-titulo)'
+              : destacado ? 16 : 'var(--texto-cuerpo)',
             fontWeight: 600,
             zIndex: 999,
             // -orden 2, punto 3- También tocable. Antes: pointerEvents: avisoInfo.accionTexto ? 'auto' : 'none',

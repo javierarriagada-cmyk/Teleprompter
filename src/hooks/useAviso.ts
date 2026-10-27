@@ -20,6 +20,11 @@ export interface AvisoInfo {
   // Los avisos de hoy, con o sin botón de acción, no cambian.
   tocable?: boolean
   alTocar?: () => void
+  // -pasada teléfono PR 157, 27-10-2026- Dónde flota: 'limite' = tercio superior (no tapa la línea de lectura);
+  // 'mitad' = cerca del centro. Sin colocacion, abajo como siempre.
+  colocacion?: 'limite' | 'mitad'
+  // Grabación sobre la cámara: fondo claro de contraste (variables --aviso-sobre-camara-*).
+  contrasteGrabacion?: boolean
 }
 
 // El color de la acción del aviso, solo con variables que ya existen: --color-texto es el del texto del
@@ -42,7 +47,8 @@ export function useAviso() {
     // -portugues-voz, punto 7, 2026-10-22- Antes: opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number }
     // -portugues-voz, 2026-10-22- Suma idioma. Antes: opciones?: { ...; duracionMs?: number; accionNeutra?: boolean }
     // -orden 2, punto 3- Suma tocable y alTocar. Antes: opciones?: { ...; idioma?: string }
-    opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number; accionNeutra?: boolean; idioma?: string; tocable?: boolean; alTocar?: () => void }
+    // -pasada teléfono PR 157- Suma colocacion y contrasteGrabacion.
+    opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number; accionNeutra?: boolean; idioma?: string; tocable?: boolean; alTocar?: () => void; colocacion?: 'limite' | 'mitad'; contrasteGrabacion?: boolean }
   ) => {
     if (timerAvisoRef.current) clearTimeout(timerAvisoRef.current)
     setAvisoInfo({
@@ -52,7 +58,9 @@ export function useAviso() {
       accionNeutra: opciones?.accionNeutra,
       idioma: opciones?.idioma,
       tocable: opciones?.tocable,
-      alTocar: opciones?.alTocar
+      alTocar: opciones?.alTocar,
+      colocacion: opciones?.colocacion,
+      contrasteGrabacion: opciones?.contrasteGrabacion
     })
     const dur = opciones?.duracionMs ?? 2000
     timerAvisoRef.current = setTimeout(() => {
