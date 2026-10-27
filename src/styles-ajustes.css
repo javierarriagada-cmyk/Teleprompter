@@ -1539,6 +1539,41 @@
   border: 0;
   cursor: pointer;
 }
+/* Un reflejo cruza el botón al montar la tarjeta, que ocurre al abrir Ajustes.
+   Antes: el botón no tenía reflejo; la primera versión duraba 1 s. */
+.tarjeta-sigo-mas-boton {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.tarjeta-sigo-mas-boton::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: -35% auto -35% -45%;
+  width: 34%;
+  pointer-events: none;
+  opacity: 0;
+  transform: skewX(-18deg);
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 38%), transparent);
+}
+.tarjeta-sigo-mas-boton-texto {
+  position: relative;
+  z-index: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tarjeta-sigo-mas-boton::after {
+    /* Antes: animation: reflejo-sigo-mas-prueba 1s cubic-bezier(.2, .7, .3, 1) 1 both */
+    animation: reflejo-sigo-mas 1.5s cubic-bezier(.2, .7, .3, 1) 1 both;
+  }
+}
+/* Antes: @keyframes reflejo-sigo-mas-prueba */
+@keyframes reflejo-sigo-mas {
+  0% { opacity: 0; transform: translateX(0) skewX(-18deg); }
+  18% { opacity: .68; }
+  55% { opacity: .42; }
+  100% { opacity: 0; transform: translateX(430%) skewX(-18deg); }
+}
 .fila-sigo-activo-micro {
   font-size: 12px;
   color: var(--color-apagado);

@@ -938,7 +938,8 @@ function TarjetaSigoMas() {
         data-testid="btn-ver-sigo-mas"
         onClick={() => { void abrirOferta('ajustes') }}
       >
-        {t('tarjetaSigoBoton')}
+        {/* El reflejo queda detrás del rótulo para mantenerlo legible. Antes: {t('tarjetaSigoBoton')} */}
+        <span className="tarjeta-sigo-mas-boton-texto">{t('tarjetaSigoBoton')}</span>
       </button>
     </div>
   )
