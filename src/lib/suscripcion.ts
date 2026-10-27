@@ -17,7 +17,9 @@ import { estadoCuenta, sesionActual, suscribirCuenta, type EstadoCuenta } from '
 export type EstadoSuscripcion =
   | { tipo: 'sinDatos' }
   | { tipo: 'sinSuscripcion' }
-  | { tipo: 'conSuscripcion'; vence: string | null }
+  // -orden 2, punto 8- periodo: periodType del derecho -TRIAL, NORMAL…-; pedidoEn: requestDate
+  // de customerInfo, para el aviso sin conexión. Antes: { tipo: 'conSuscripcion'; vence: string | null }
+  | { tipo: 'conSuscripcion'; vence: string | null; periodo: string | null; pedidoEn: string | null }
 
 // EL ESTADO, para useSyncExternalStore -como estadoCuenta y suscribirCuenta en cuenta.ts-.
 // 'sinDatos' mientras RevenueCat no responde.
@@ -46,7 +48,26 @@ export function tieneSuscripcion(): boolean {
 function leerRespuesta(info: CustomerInfo | undefined) {
   if (!info) return
   const derecho = info.entitlements?.active?.[ID_DERECHO]
-  fijarEstado(derecho ? { tipo: 'conSuscripcion', vence: derecho.expirationDate ?? null } : { tipo: 'sinSuscripcion' })
+  // -orden 2, punto 8- Guarda periodType y requestDate. Antes: fijarEstado(derecho ? { tipo: 'conSuscripcion', vence: derecho.expirationDate ?? null } : { tipo: 'sinSuscripcion' })
+  fijarEstado(derecho
+    ? {
+        tipo: 'conSuscripcion',
+        vence: derecho.expirationDate ?? null,
+        periodo: derecho.periodType ?? null,
+        pedidoEn: info.requestDate ?? null
+      }
+    : { tipo: 'sinSuscripcion' })
+  // También sin derecho: el requestDate sirve para saber cuándo fue la última respuesta.
+  if (!derecho && info.requestDate) ultimoPedidoEn = info.requestDate
+  else if (derecho) ultimoPedidoEn = info.requestDate ?? null
+}
+
+// Último requestDate visto, con o sin derecho. Para el aviso sin conexión cuando hay Sigo+.
+let ultimoPedidoEn: string | null = null
+export function fechaUltimoPedido(): string | null {
+  const e = estado
+  if (e.tipo === 'conSuscripcion') return e.pedidoEn
+  return ultimoPedidoEn
 }
 
 function avisar(e: unknown) {
@@ -149,5 +170,66 @@ export function vigilarSuscripcion(): () => void {
         await p.removeCustomerInfoUpdateListener({ listenerToRemove: id }).catch(avisar)
       }
     })
+  }
+}
+
+
+// -orden 2, punto 8- ¿La prueba termina en 2 días o menos? periodType TRIAL -los tipos lo dan en
+// mayúsculas- y expirationDate.
+export function pruebaPorTerminar(ahoraMs: number = Date.now()): { vence: string } | null {
+  const e = estado
+  if (e.tipo !== 'conSuscripcion') return null
+  if (!e.vence) return null
+  const periodo = (e.periodo || '').toUpperCase()
+  if (periodo !== 'TRIAL') return null
+  const venceMs = Date.parse(e.vence)
+  if (!Number.isFinite(venceMs)) return null
+  const quedan = venceMs - ahoraMs
+  if (quedan < 0 || quedan > 2 * 24 * 60 * 60 * 1000) return null
+  return { vence: e.vence }
+}
+
+// -orden 2, punto 8- Sigo+ activo y la última respuesta tiene más de 3 días.
+export function suscripcionSinVerificar(ahoraMs: number = Date.now()): boolean {
+  if (!tieneSuscripcion()) return false
+  const pedido = fechaUltimoPedido()
+  if (!pedido) return false
+  const ms = Date.parse(pedido)
+  if (!Number.isFinite(ms)) return false
+  return ahoraMs - ms > 3 * 24 * 60 * 60 * 1000
+}
+
+// Restaurar compras -Ajustes-. Devuelve si quedó con suscripción.
+export async function restaurarCompras(): Promise<boolean> {
+  try {
+    const p = await cargarPlugin()
+    if (!p) return tieneSuscripcion()
+    await configurar(p)
+    leerRespuesta((await p.restorePurchases()).customerInfo)
+    return tieneSuscripcion()
+  } catch (e) {
+    avisar(e)
+    return tieneSuscripcion()
+  }
+}
+
+// ¿La oferta vigente trae fase gratis? -Android: freePhase del defaultOption del producto actual-.
+// null si no se pudo preguntar.
+export async function ofertaTraePruebaGratis(): Promise<boolean | null> {
+  try {
+    const p = await cargarPlugin()
+    if (!p) return null
+    await configurar(p)
+    const offs = await p.getOfferings()
+    const actual = offs.current
+    if (!actual) return false
+    for (const pkg of actual.availablePackages || []) {
+      const opt = pkg.product?.defaultOption
+      if (opt?.freePhase) return true
+    }
+    return false
+  } catch (e) {
+    avisar(e)
+    return null
   }
 }
