@@ -29,7 +29,7 @@ import { ErrorCuenta, ResultadoCuenta, borrarCuenta, entrar, estadoCuenta, salir
 // -orden B- El estado de la copia de seguridad, para la línea de la tarjeta de la cuenta.
 import { FaseRespaldo, estadoRespaldo, suscribirRespaldo } from '../lib/respaldo'
 // -orden 2, punto 6, 26-10-2026- Tarjeta Sigo+, restaurar compras y fila con Customer Center.
-import { tieneSuscripcion, restaurarCompras, ofertaTraePruebaGratis, suscripcionSinVerificar, suscribirSuscripcion, estadoSuscripcion } from '../lib/suscripcion'
+import { restaurarCompras, ofertaTraePruebaGratis, suscripcionSinVerificar, suscribirSuscripcion, estadoSuscripcion, mostrarFilaSigoActivoEnCuenta } from '../lib/suscripcion'
 import { abrirOferta, abrirCentroDeCliente } from '../lib/oferta'
 import type { ClaveTexto } from '../textos'
 import { t, useTextos, ENDONIMO_IDIOMA } from '../textos'
@@ -969,6 +969,9 @@ function FilaSigoActivo() {
 
 function TarjetaCuenta({ hostMenus }: { hostMenus: HTMLElement | null }) {
   const estado = useSyncExternalStore(suscribirCuenta, estadoCuenta, estadoCuenta)
+  // -arreglo PR 157, 26-10-2026- Antes: tieneSuscripcion() sin suscribirse; tras comprar con
+  // sesión Google la fila no aparecía hasta reabrir Ajustes. Igual que BloqueSigo.
+  const estadoSub = useSyncExternalStore(suscribirSuscripcion, estadoSuscripcion, estadoSuscripcion)
   const respaldo = useSyncExternalStore(suscribirRespaldo, estadoRespaldo, estadoRespaldo)
   // Debajo de la tarjeta, como en la orden A: un error, o el aviso de que se cerró la sesión.
   const [linea, setLinea] = useState<ClaveTexto | null>(null)
@@ -1051,7 +1054,8 @@ function TarjetaCuenta({ hostMenus }: { hostMenus: HTMLElement | null }) {
           </div>
         )}
         {/* -orden 2, punto 6- Con sesión y Sigo+: la fila Administrar va dentro de la tarjeta, bajo el nombre. */}
-        {estado.tipo === 'conSesion' && tieneSuscripcion() && <FilaSigoActivo />}
+        {/* Antes: tieneSuscripcion() — 26-10-2026, arreglo PR 157: estado del store. */}
+        {mostrarFilaSigoActivoEnCuenta(estado.tipo, estadoSub.tipo) && <FilaSigoActivo />}
       </div>
       {/* -corrección del 20-10-2026- La misma causa: .fila-ajuste-explicacion escondida en los paneles; desde la
           orden A no se veía. Antes: <div className="fila-ajuste-explicacion linea-cuenta" ...> */}

@@ -43,6 +43,20 @@ export function tieneSuscripcion(): boolean {
   return estado.tipo === 'conSuscripcion'
 }
 
+// -arreglo PR 157, 26-10-2026- ¿La fila «Sigo+ activo» va dentro de TarjetaCuenta?
+// Antes: TarjetaCuenta llamaba tieneSuscripcion() sin suscribirse y no se redibujaba al comprar.
+export function mostrarFilaSigoActivoEnCuenta(
+  tipoCuenta: EstadoCuenta['tipo'],
+  tipoSub: EstadoSuscripcion['tipo']
+): boolean {
+  return tipoCuenta === 'conSesion' && tipoSub === 'conSuscripcion'
+}
+
+/** Solo pruebas: fija el estado y avisa a los oyentes -useSyncExternalStore-. */
+export function fijarSuscripcionParaPruebas(e: EstadoSuscripcion) {
+  fijarEstado(e)
+}
+
 // Cada respuesta de RevenueCat trae customerInfo: con ID_DERECHO entre los derechos activos hay
 // suscripción, y vence es su expirationDate -null si no tiene-.
 function leerRespuesta(info: CustomerInfo | undefined) {
