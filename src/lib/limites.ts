@@ -19,7 +19,8 @@ export interface Limites {
   avisoAntesSeg: number
 }
 
-export const LIMITES_POR_OMISION: Limites = { lecturaSeg: 300, grabacionSeg: 180, avisoAntesSeg: 60 }
+// Antes: lecturaSeg: 300 (5 min). 27-10-2026, pasada teléfono PR 157: 4 min; aviso sigue 60 s antes (a los 3).
+export const LIMITES_POR_OMISION: Limites = { lecturaSeg: 240, grabacionSeg: 180, avisoAntesSeg: 60 }
 
 export const CLAVES_REMOTAS = {
   lectura: 'limite_lectura_segundos',
@@ -118,4 +119,12 @@ export function llegoAlLimite(tipo: TipoToma, transcurridoSeg: number, l: Limite
 // Lo transcurrido de la toma SIN las pausas -la misma cuenta de BarraDeTiempo-, en segundos.
 export function transcurridoSinPausas(ahoraMs: number, inicioMs: number, pausadoMs: number): number {
   return Math.max(0, ahoraMs - inicioMs - pausadoMs) / 1000
+}
+
+// -pasada teléfono PR 157, 27-10-2026- Al límite de lectura sin Sigo+: pausar (misma pausa de siempre).
+// Antes: App forzaba velocidad fija (lecturaForzadaAFija + ritmoDeLosUltimosSegundos + cambiarRitmo).
+export type AccionAlLimiteLectura = 'pausar' | 'forzarFija'
+export function accionAlLimiteLectura(): AccionAlLimiteLectura {
+  // Antes: el camino era 'forzarFija'. 27-10-2026: se pausa y sale el aviso tocable.
+  return 'pausar'
 }

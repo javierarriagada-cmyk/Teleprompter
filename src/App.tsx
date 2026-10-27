@@ -16,7 +16,8 @@ import BarraDeTiempo from './components/BarraDeTiempo'
 import { useAparecer } from './hooks/useAparecer'
 // -tarea 106- Velocidad fija: el motor que no escucha, el modo elegido y el control al leer.
 // -15-10-2026- y controlesSeVanSolos. Antes: import { crearMotorFijo } from './lib/velocidadFija'
-import { crearMotorFijo, controlesSeVanSolos, ritmoDeLosUltimosSegundos } from './lib/velocidadFija'
+import { crearMotorFijo, controlesSeVanSolos } from './lib/velocidadFija'
+// Antes: también ritmoDeLosUltimosSegundos — 27-10-2026 retirada con la forzada a fija.
 import { useVelocidadFija } from './hooks/useVelocidadFija'
 import { ControlVelocidadLectura } from './components/ControlesVelocidad'
 import { PanelCorpus } from './components/PanelCorpus'
@@ -55,8 +56,9 @@ import { vigilarRespaldo } from './lib/respaldo'
 import { configuracionLista } from './lib/firebaseConfig'
 // -orden 1, los cimientos del cobro, 26-10-2026- RevenueCat, sin nada visible.
 import { vigilarSuscripcion, tieneSuscripcion } from './lib/suscripcion'
-import { cargarLimites, limitesActuales, hayQueAvisar, llegoAlLimite, transcurridoSinPausas } from './lib/limites'
-import { pausaUsaMotorFijo, tokenSeguidorAlVolverAVoz } from './lib/lecturaForzada'
+import { cargarLimites, limitesActuales, hayQueAvisar, llegoAlLimite, transcurridoSinPausas, accionAlLimiteLectura } from './lib/limites'
+// Antes: import { pausaUsaMotorFijo, tokenSeguidorAlVolverAVoz } from './lib/lecturaForzada'
+// 27-10-2026: vía forzada a fija retirada; al límite se pausa (accionAlLimiteLectura).
 import { abrirOferta, abrirOfertaInicialSiCorresponde } from './lib/oferta'
 import { tocaAvisoFinPrueba, marcarAvisoFinPrueba, tocaAvisoSinConexion, marcarAvisoSinConexionHoy, fechaPruebaEnIdioma } from './lib/avisosPortada'
 import { RepositorioGrabaciones } from './datos/RepositorioGrabaciones'
@@ -1148,13 +1150,10 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [estadoModo, setEstadoModo] = useState<'SIGUIENDO' | 'BUSCANDO' | 'DETENIDO'>('SIGUIENDO')
   const [tInicioLecturaMs, setTInicioLecturaMs] = useState<number | null>(null)
   const [cuentaRegresiva, setCuentaRegresiva] = useState<number | null>(null)
-  // -orden 2, puntos 3 y 4- Sin Sigo+: la lectura con voz pasa a fija al límite; la pastilla y los avisos.
-  const [lecturaForzadaAFija, setLecturaForzadaAFija] = useState(false)
-  // -arreglo PR 157, 26-10-2026- Ref fresca para ejecutarAccionPausa (closures / await).
-  // Antes: solo el state; con lectura forzada la pausa miraba `fija` vieja y no detenía el texto.
-  const lecturaForzadaAFijaRef = useRef(false)
-  lecturaForzadaAFijaRef.current = lecturaForzadaAFija
-  const [faseLimiteVoz, setFaseLimiteVoz] = useState<'aviso' | 'queda' | 'fija' | null>(null)
+  // -orden 2, puntos 3 y 4- Sin Sigo+: pastilla y avisos de límite de lectura.
+  // Antes: también lecturaForzadaAFija / Ref — al límite pasaba a velocidad fija. 27-10-2026: se pausa.
+  const [faseLimiteVoz, setFaseLimiteVoz] = useState<'aviso' | 'queda' | null>(null)
+  // Antes: useState<'aviso' | 'queda' | 'fija' | null> — fase 'fija' de la forzada a fija.
   const avisoLimiteVozRef = useRef(false)
   const avisoLimiteGrabRef = useRef(false)
   const limiteAplicadoRef = useRef(false)
@@ -1270,13 +1269,11 @@ export default function App({ motor, repoOverride }: AppProps) {
   const fija = velocidad.modo === 'fija'
   const motorFijo = useMemo(() => crearMotorFijo(totalTokens), [totalTokens])
   useEffect(() => {
-    // -orden 2, punto 3- Con la lectura forzada a fija el ritmo lo puso cambiarRitmo; no pises con el nivel.
-    // Antes: motorFijo.cambiarNivel(velocidad.nivel, performance.now())
-    if (lecturaForzadaAFija) return
+    // Antes: if (lecturaForzadaAFija) return — no pisar el ritmo de cambiarRitmo. 27-10-2026: vía retirada.
     motorFijo.cambiarNivel(velocidad.nivel, performance.now())
-  }, [motorFijo, velocidad.nivel, lecturaForzadaAFija])
-  // -orden 2, punto 3- Al límite, motor fijo SIN tocar fijarModo. Antes: const motorAvance = fija ? motorFijo : motorDeLaVoz
-  const motorAvance = (fija || lecturaForzadaAFija) ? motorFijo : motorDeLaVoz
+  }, [motorFijo, velocidad.nivel])
+  // Antes (orden 2): (fija || lecturaForzadaAFija) ? motorFijo : motorDeLaVoz — forzada al límite.
+  const motorAvance = fija ? motorFijo : motorDeLaVoz
   // -correccion 1- Con Velocidad fija el token del arrastre trae fraccion -la inversa de pxDePosicion-:
   // el seguidor recibe la palabra entera y el motor fijo la fraccion, para seguir sin salto. Con la
   // voz el token ya es entero y floor no cambia nada.
@@ -1576,7 +1573,7 @@ export default function App({ motor, repoOverride }: AppProps) {
         setCuentaRegresiva(null)
         setTInicioLecturaMs(performance.now())
         // -orden 2- Cada toma empieza de cero: límites y forzados se reinician.
-        setLecturaForzadaAFija(false)
+        // Antes: setLecturaForzadaAFija(false)
         setFaseLimiteVoz(null)
         avisoLimiteVozRef.current = false
         avisoLimiteGrabRef.current = false
@@ -2012,7 +2009,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     reiniciarEn(0)
     setEstadoToma('listo')
     setControlesVisibles(false)
-    setLecturaForzadaAFija(false)
+    // Antes: setLecturaForzadaAFija(false)
     setFaseLimiteVoz(null)
     // Si hubo toma, el visor la confirma. El aviso "Grabado" solo queda
     // para la salida SIN archivo: los dos juntos tapaban el mismo hecho.
@@ -2584,19 +2581,16 @@ export default function App({ motor, repoOverride }: AppProps) {
       if (limiteAplicadoRef.current) return
       const lim = limitesActuales()
       const trans = transcurridoSinPausas(performance.now(), tInicioLecturaMs, msPausadoAhora())
-      // Lectura: solo con voz y sin forzar aún.
-      if (!conCamara && !fija && !lecturaForzadaAFija) {
+      // Lectura: solo con voz (Velocidad fija elegida no tiene este límite).
+      // Antes: también !lecturaForzadaAFija y al límite forzaba fija. 27-10-2026: se pausa.
+      if (!conCamara && !fija) {
         if (llegoAlLimite('lectura', trans, lim)) {
           limiteAplicadoRef.current = true
-          if (!motorDeLaVoz) return
-          const est = motorDeLaVoz.leerEstado()
-          const ritmo = ritmoDeLosUltimosSegundos([], performance.now(), 3000, est.ppmEstimadas)
-          motorFijo.irAToken(est.posicion, performance.now())
-          motorFijo.cambiarRitmo(ritmo, performance.now())
-          motorFijo.seguir(performance.now())
-          setLecturaForzadaAFija(true)
-          setFaseLimiteVoz('fija')
-          void stop()
+          // Antes: ritmoDeLosUltimosSegundos + motorFijo.cambiarRitmo + setLecturaForzadaAFija(true)
+          // + setFaseLimiteVoz('fija') + stop(). 27-10-2026: misma pausa de siempre + aviso tocable.
+          if (accionAlLimiteLectura() === 'pausar') {
+            void despachar({ tipo: 'alternar', tMs: Date.now() })
+          }
           mostrarAviso(t('limiteLectura'), {
             duracionMs: 8000,
             tocable: true,
@@ -2639,24 +2633,20 @@ export default function App({ motor, repoOverride }: AppProps) {
     return () => clearInterval(id)
   // handleStop / avisarFinDeToma / stop se leen frescos; no van en deps para no rearmar cada render.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [estadoToma, tInicioLecturaMs, enPausa, conCamara, fija, lecturaForzadaAFija, motorDeLaVoz, motorFijo])
+  // Antes: también lecturaForzadaAFija, motorDeLaVoz, motorFijo en deps.
+  }, [estadoToma, tInicioLecturaMs, enPausa, conCamara, fija])
 
   async function alTocarLimiteLectura() {
-    // Pausa la lectura y abre la oferta. Si se suscribe, vuelve la voz; si no, sigue en pausa.
+    // Abre la oferta. La lectura ya está en pausa al llegar al límite (o se pausa si no lo estaba).
+    // Antes: si no enPausa, despachar pausa aquí; al suscribirse sincronizaba seguidor con
+    // tokenSeguidorAlVolverAVoz, quitaba lecturaForzadaAFija y reanudaba. 27-10-2026: queda en pausa.
     if (!enPausa) await despachar({ tipo: 'alternar', tMs: Date.now() })
     await abrirOferta('limiteLectura')
     if (tieneSuscripcion()) {
-      // -arreglo PR 157, 26-10-2026- Antes: setLecturaForzadaAFija(false) y despachar sin
-      // mover el seguidor; la voz volvía al token del límite y el texto saltaba atrás.
-      const posFija = motorFijo.leerEstado().posicion
-      irATokenSeguidor(tokenSeguidorAlVolverAVoz(posFija))
-      lecturaForzadaAFijaRef.current = false
-      setLecturaForzadaAFija(false)
       setFaseLimiteVoz(null)
       limiteAplicadoRef.current = false
-      if (enPausa || estadoPausaRef.current.tipo !== 'grabando') {
-        await despachar({ tipo: 'alternar', tMs: Date.now() })
-      }
+      // Antes: irATokenSeguidor(...); setLecturaForzadaAFija(false); despachar reanudar.
+      // 27-10-2026: al suscribirse desde el aviso, la lectura queda en pausa como cualquier pausa.
     }
   }
   function describirEntrada(en: EntradaPausa): string {
@@ -2747,9 +2737,8 @@ export default function App({ motor, repoOverride }: AppProps) {
           mostrarSimboloPausa()
         }
         // -tarea 106- Con Velocidad fija la pausa es parar el texto.
-        // -arreglo PR 157, 26-10-2026- Antes: if (fija) — con lecturaForzadaAFija llamaba stop()
-        // y el texto seguía; la ref evita un valor viejo tras await/closures.
-        if (pausaUsaMotorFijo(fija, lecturaForzadaAFijaRef.current)) {
+        // Antes: pausaUsaMotorFijo(fija, lecturaForzadaAFijaRef.current) — 27-10-2026 forzada retirada.
+        if (fija) {
           motorFijo.pausar(performance.now())
           return Promise.resolve()
         }
@@ -2768,8 +2757,8 @@ export default function App({ motor, repoOverride }: AppProps) {
           mostrarAviso(t('grabando'))
         }
         // -tarea 106- Con Velocidad fija, seguir es que el texto vuelva a subir.
-        // -arreglo PR 157, 26-10-2026- Antes: if (fija) — con lectura forzada llamaba start().
-        if (pausaUsaMotorFijo(fija, lecturaForzadaAFijaRef.current)) {
+        // Antes: pausaUsaMotorFijo(fija, lecturaForzadaAFijaRef.current) — 27-10-2026 forzada retirada.
+        if (fija) {
           motorFijo.seguir(performance.now())
           return Promise.resolve()
         }

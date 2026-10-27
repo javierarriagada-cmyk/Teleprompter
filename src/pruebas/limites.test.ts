@@ -2,14 +2,16 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import {
   LIMITES_POR_OMISION, armarLimites, limiteValido,
-  limiteDe, segundosQueQuedan, hayQueAvisar, llegoAlLimite, transcurridoSinPausas, olvidarLimites
+  limiteDe, segundosQueQuedan, hayQueAvisar, llegoAlLimite, transcurridoSinPausas, olvidarLimites,
+  accionAlLimiteLectura
 } from '../lib/limites'
 
 describe('limites', () => {
   beforeEach(() => { olvidarLimites() })
 
   it('valores por omisión', () => {
-    expect(LIMITES_POR_OMISION).toEqual({ lecturaSeg: 300, grabacionSeg: 180, avisoAntesSeg: 60 })
+    // Antes: lecturaSeg: 300 (5 min). 27-10-2026 pasada teléfono: 240 (4 min); aviso 60 → a los 180.
+    expect(LIMITES_POR_OMISION).toEqual({ lecturaSeg: 240, grabacionSeg: 180, avisoAntesSeg: 60 })
   })
 
   it('un valor remoto que no sirve cae al de siempre', () => {
@@ -32,15 +34,21 @@ describe('limites', () => {
   })
 
   it('el aviso y el límite llegan al segundo justo', () => {
-    const l = { lecturaSeg: 300, grabacionSeg: 180, avisoAntesSeg: 60 }
-    expect(hayQueAvisar('lectura', 239, l, false)).toBe(false)
-    expect(hayQueAvisar('lectura', 240, l, false)).toBe(true)
-    expect(hayQueAvisar('lectura', 299, l, false)).toBe(true)
-    expect(hayQueAvisar('lectura', 300, l, false)).toBe(false)
-    expect(llegoAlLimite('lectura', 299, l, false)).toBe(false)
-    expect(llegoAlLimite('lectura', 300, l, false)).toBe(true)
+    // Con omisión 240 / aviso 60: avisa desde 180; límite a los 240.
+    const l = LIMITES_POR_OMISION
+    expect(hayQueAvisar('lectura', 179, l, false)).toBe(false)
+    expect(hayQueAvisar('lectura', 180, l, false)).toBe(true)
+    expect(hayQueAvisar('lectura', 239, l, false)).toBe(true)
+    expect(hayQueAvisar('lectura', 240, l, false)).toBe(false)
+    expect(llegoAlLimite('lectura', 239, l, false)).toBe(false)
+    expect(llegoAlLimite('lectura', 240, l, false)).toBe(true)
     expect(segundosQueQuedan('grabacion', 100, l, false)).toBe(80)
     expect(segundosQueQuedan('grabacion', 200, l, false)).toBe(0)
+  })
+
+  it('al límite de lectura se pausa (no se fuerza velocidad fija)', () => {
+    // Sin el arreglo esto sería 'forzarFija'. 27-10-2026 pasada teléfono PR 157.
+    expect(accionAlLimiteLectura()).toBe('pausar')
   })
 
   it('las pausas no cuentan', () => {

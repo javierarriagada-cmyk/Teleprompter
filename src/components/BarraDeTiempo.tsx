@@ -32,10 +32,11 @@ export interface BarraDeTiempoProps {
   // "Preparando la voz…" con su barra y el porcentaje en lugar del tiempo. No es un error y no tapa nada.
   preparandoVoz?: number | null
   // -orden 2, puntos 3 y 4- Sin Sigo+: en Grabar el total es el límite; en Lectura con voz, las
-  // fases del aviso y el paso a Velocidad fija -sin tocar la preferencia-.
+  // fases del aviso. Antes: también el paso a Velocidad fija forzada ('fija'). 27-10-2026: vía retirada.
   limiteTotalSeg?: number | null
-  // 'aviso' → avisoQuedaMinutoVoz; 'queda' → textoQuedaConVoz; 'fija' → ícono + modoVelocidadFija.
-  faseLimiteVoz?: 'aviso' | 'queda' | 'fija' | null
+  // 'aviso' → avisoQuedaMinutoVoz; 'queda' → textoQuedaConVoz.
+  // Antes: también 'fija' → ícono + modoVelocidadFija. 27-10-2026: retirada.
+  faseLimiteVoz?: 'aviso' | 'queda' | null
   segundosQuedanVoz?: number | null
 }
 
@@ -290,14 +291,13 @@ export default function BarraDeTiempo({
 
   const progresoPct = Math.min(100, Math.max(0, (estado.posicion / totalTokens) * 100))
 
-  // -orden 2, puntos 3 y 4- Pastilla con límite de grabación, aviso de voz o Velocidad fija forzada.
+  // -orden 2, puntos 3 y 4- Pastilla con límite de grabación o aviso de voz.
+  // Antes: también Velocidad fija forzada (faseLimiteVoz === 'fija'). 27-10-2026: vía retirada.
   // Antes: texto={`${formatearTiempo(transcurridoSeg)} / ${formatearTiempo(totalEstimadoSeg)}`}
   let texto: string
   let conIconoFija = false
-  if (faseLimiteVoz === 'fija') {
-    texto = t('modoVelocidadFija')
-    conIconoFija = true
-  } else if (faseLimiteVoz === 'aviso') {
+  // Antes: if (faseLimiteVoz === 'fija') { texto = t('modoVelocidadFija'); conIconoFija = true }
+  if (faseLimiteVoz === 'aviso') {
     texto = t('avisoQuedaMinutoVoz')
   } else if (faseLimiteVoz === 'queda') {
     const queda = segundosQuedanVoz ?? Math.max(0, (limiteTotalSeg ?? 0) - transcurridoSeg)
