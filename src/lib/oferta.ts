@@ -42,13 +42,15 @@ type PluginUI = {
   presentCustomerCenter: () => Promise<void>
 }
 
-let pluginPromesa: Promise<PluginUI | null> | null = null
-function cargarPluginUI(): Promise<PluginUI | null> {
+let pluginPromesa: Promise<{ plugin: PluginUI } | null> | null = null
+function cargarPluginUI(): Promise<{ plugin: PluginUI } | null> {
   if (pluginPromesa) return pluginPromesa
   pluginPromesa = (async () => {
     if (!Capacitor.isNativePlatform() || !Capacitor.isPluginAvailable('RevenueCatUI')) return null
     const mod = await import('@revenuecat/purchases-capacitor-ui')
-    return mod.RevenueCatUI as PluginUI
+    // El proxy de Capacitor expone «then»; el envoltorio impide que async lo asimile.
+    // Antes: return mod.RevenueCatUI as PluginUI
+    return { plugin: mod.RevenueCatUI as PluginUI }
   })()
   pluginPromesa.catch(() => { pluginPromesa = null })
   return pluginPromesa
@@ -70,7 +72,10 @@ export async function abrirOferta(lugar: LugarOferta): Promise<boolean> {
       console.warn('[oferta]', 'Purchases no configurado; no se abre la oferta')
       return false
     }
-    const ui = await cargarPluginUI()
+    // Se extrae tras await: cargarPluginUI devuelve una caja, no el proxy thenable.
+    // Antes: const ui = await cargarPluginUI()
+    const cargado = await cargarPluginUI()
+    const ui = cargado?.plugin
     if (!ui) return false
     // presentPaywall sin offering: la oferta vigente -current- del panel de RevenueCat.
     await ui.presentPaywall()
@@ -105,7 +110,10 @@ export async function abrirCentroDeCliente(): Promise<void> {
       console.warn('[oferta]', 'Purchases no configurado; no se abre el centro de cliente')
       return
     }
-    const ui = await cargarPluginUI()
+    // Se extrae tras await: cargarPluginUI devuelve una caja, no el proxy thenable.
+    // Antes: const ui = await cargarPluginUI()
+    const cargado = await cargarPluginUI()
+    const ui = cargado?.plugin
     if (!ui) return
     await ui.presentCustomerCenter()
   } catch (e) {

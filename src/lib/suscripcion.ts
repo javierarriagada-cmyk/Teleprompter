@@ -89,13 +89,15 @@ function avisar(e: unknown) {
 }
 
 // El plugin, solo en el teléfono y con «Purchases» registrado por cap sync. null si no corre.
-let pluginPromesa: Promise<PurchasesPlugin | null> | null = null
-function cargarPlugin(): Promise<PurchasesPlugin | null> {
+let pluginPromesa: Promise<{ plugin: PurchasesPlugin } | null> | null = null
+function cargarPlugin(): Promise<{ plugin: PurchasesPlugin } | null> {
   if (pluginPromesa) return pluginPromesa
   pluginPromesa = (async () => {
     if (!Capacitor.isNativePlatform() || !Capacitor.isPluginAvailable('Purchases')) return null
     const { Purchases } = await import('@revenuecat/purchases-capacitor')
-    return Purchases
+    // El proxy nativo expone «then»; envolverlo evita que async lo asimile como promesa.
+    // Antes: return Purchases
+    return { plugin: Purchases }
   })()
   pluginPromesa.catch(() => {
     pluginPromesa = null
@@ -123,7 +125,10 @@ function configurar(p: PurchasesPlugin): Promise<void> {
 // vigilarSuscripcion — sin duplicar. Devuelve si quedó listo.
 export async function asegurarConfigurado(): Promise<boolean> {
   try {
-    const p = await cargarPlugin()
+    // Se extrae tras await: cargarPlugin devuelve una caja para no asimilar el proxy.
+    // Antes: const p = await cargarPlugin()
+    const cargado = await cargarPlugin()
+    const p = cargado?.plugin ?? null
     if (!p) return false
     await configurar(p)
     return true
@@ -142,17 +147,25 @@ export function vigilarSuscripcion(): () => void {
   let vivo = true
   let idOyente: string | null = null
   // Una cosa a la vez: configurar, después cada cambio de cuenta en el orden en que llegó.
-  let ocupado: Promise<PurchasesPlugin | null> = (async () => {
-    const p = await cargarPlugin()
+  let ocupado: Promise<{ plugin: PurchasesPlugin } | null> = (async () => {
+    // La caja mantiene el proxy fuera de la resolución de la promesa async.
+    // Antes: const p = await cargarPlugin()
+    const cargado = await cargarPlugin()
+    const p = cargado?.plugin ?? null
     if (!p) return null
     await configurar(p)
-    return p
+    // La promesa de la cola también debe conservar la caja, no resolver con el proxy.
+    // Antes: return p
+    return cargado
   })()
 
   function enCola(paso: (p: PurchasesPlugin) => Promise<void>) {
-    ocupado = ocupado.then(async (p) => {
+    ocupado = ocupado.then(async (cargado) => {
+      const p = cargado?.plugin ?? null
       if (p && vivo) await paso(p).catch(avisar)
-      return p
+      // La cola retiene la caja: resolver con p volvería a asimilar el thenable.
+      // Antes: return p
+      return cargado
     }, (e) => {
       avisar(e)
       return null
@@ -196,7 +209,8 @@ export function vigilarSuscripcion(): () => void {
   return () => {
     vivo = false
     quitarCuenta()
-    void ocupado.then(async (p) => {
+    void ocupado.then(async (cargado) => {
+      const p = cargado?.plugin ?? null
       if (p && idOyente !== null) {
         const id = idOyente
         idOyente = null
@@ -235,7 +249,10 @@ export function suscripcionSinVerificar(ahoraMs: number = Date.now()): boolean {
 // Restaurar compras -Ajustes-. Devuelve si quedó con suscripción.
 export async function restaurarCompras(): Promise<boolean> {
   try {
-    const p = await cargarPlugin()
+    // Se extrae tras await: cargarPlugin devuelve una caja para no asimilar el proxy.
+    // Antes: const p = await cargarPlugin()
+    const cargado = await cargarPlugin()
+    const p = cargado?.plugin ?? null
     if (!p) return tieneSuscripcion()
     await configurar(p)
     leerRespuesta((await p.restorePurchases()).customerInfo)
@@ -250,7 +267,10 @@ export async function restaurarCompras(): Promise<boolean> {
 // null si no se pudo preguntar.
 export async function ofertaTraePruebaGratis(): Promise<boolean | null> {
   try {
-    const p = await cargarPlugin()
+    // Se extrae tras await: cargarPlugin devuelve una caja para no asimilar el proxy.
+    // Antes: const p = await cargarPlugin()
+    const cargado = await cargarPlugin()
+    const p = cargado?.plugin ?? null
     if (!p) return null
     await configurar(p)
     const offs = await p.getOfferings()

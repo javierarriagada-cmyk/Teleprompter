@@ -16,7 +16,8 @@ const sim = vi.hoisted(() => ({
   removeCustomerInfoUpdateListener: vi.fn(),
   logIn: vi.fn(),
   logOut: vi.fn(),
-  isAnonymous: vi.fn()
+  isAnonymous: vi.fn(),
+  then: vi.fn()
 }))
 
 vi.mock('@capacitor/core', () => ({
@@ -27,6 +28,7 @@ vi.mock('@capacitor/core', () => ({
 }))
 vi.mock('@revenuecat/purchases-capacitor', () => ({
   Purchases: {
+    then: sim.then,
     configure: sim.configure,
     getCustomerInfo: sim.getCustomerInfo,
     addCustomerInfoUpdateListener: sim.addCustomerInfoUpdateListener,
@@ -76,6 +78,7 @@ beforeEach(() => {
   sim.logIn.mockReset().mockResolvedValue({ customerInfo: sinDerecho(), created: false })
   sim.logOut.mockReset().mockResolvedValue({ customerInfo: sinDerecho() })
   sim.isAnonymous.mockReset().mockImplementation(async () => ({ isAnonymous: sim.anonimo }))
+  sim.then.mockReset().mockImplementation(() => { throw new Error('no se debe asimilar el proxy') })
   vi.spyOn(console, 'warn').mockImplementation(() => {})
 })
 afterEach(() => {
@@ -83,6 +86,15 @@ afterEach(() => {
 })
 
 describe('suscripcion: sin teléfono o sin plugin no corre', () => {
+  // El proxy falso falla si Promise intenta asimilarlo como thenable.
+  // Antes: se devolvía Purchases directamente desde cargarPlugin.
+  it('cargarPlugin resuelve sin asimilar el then del proxy nativo', async () => {
+    const s = await cargar()
+    expect(await s.asegurarConfigurado()).toBe(true)
+    expect(sim.then).not.toHaveBeenCalled()
+    expect(sim.configure).toHaveBeenCalledTimes(1)
+  })
+
   it('sin plataforma nativa, configure no se llama y no hay suscripción', async () => {
     sim.nativo = false
     sim.getCustomerInfo.mockResolvedValue({ customerInfo: conDerecho(null) })
