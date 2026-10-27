@@ -56,6 +56,7 @@ import { configuracionLista } from './lib/firebaseConfig'
 // -orden 1, los cimientos del cobro, 26-10-2026- RevenueCat, sin nada visible.
 import { vigilarSuscripcion, tieneSuscripcion } from './lib/suscripcion'
 import { cargarLimites, limitesActuales, hayQueAvisar, llegoAlLimite, transcurridoSinPausas } from './lib/limites'
+import { pausaUsaMotorFijo } from './lib/lecturaForzada'
 import { abrirOferta, abrirOfertaInicialSiCorresponde } from './lib/oferta'
 import { tocaAvisoFinPrueba, marcarAvisoFinPrueba, tocaAvisoSinConexion, marcarAvisoSinConexionHoy, fechaPruebaEnIdioma } from './lib/avisosPortada'
 import { RepositorioGrabaciones } from './datos/RepositorioGrabaciones'
@@ -1149,6 +1150,10 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [cuentaRegresiva, setCuentaRegresiva] = useState<number | null>(null)
   // -orden 2, puntos 3 y 4- Sin Sigo+: la lectura con voz pasa a fija al límite; la pastilla y los avisos.
   const [lecturaForzadaAFija, setLecturaForzadaAFija] = useState(false)
+  // -arreglo PR 157, 26-10-2026- Ref fresca para ejecutarAccionPausa (closures / await).
+  // Antes: solo el state; con lectura forzada la pausa miraba `fija` vieja y no detenía el texto.
+  const lecturaForzadaAFijaRef = useRef(false)
+  lecturaForzadaAFijaRef.current = lecturaForzadaAFija
   const [faseLimiteVoz, setFaseLimiteVoz] = useState<'aviso' | 'queda' | 'fija' | null>(null)
   const avisoLimiteVozRef = useRef(false)
   const avisoLimiteGrabRef = useRef(false)
@@ -2737,7 +2742,9 @@ export default function App({ motor, repoOverride }: AppProps) {
           mostrarSimboloPausa()
         }
         // -tarea 106- Con Velocidad fija la pausa es parar el texto.
-        if (fija) {
+        // -arreglo PR 157, 26-10-2026- Antes: if (fija) — con lecturaForzadaAFija llamaba stop()
+        // y el texto seguía; la ref evita un valor viejo tras await/closures.
+        if (pausaUsaMotorFijo(fija, lecturaForzadaAFijaRef.current)) {
           motorFijo.pausar(performance.now())
           return Promise.resolve()
         }
@@ -2756,7 +2763,8 @@ export default function App({ motor, repoOverride }: AppProps) {
           mostrarAviso(t('grabando'))
         }
         // -tarea 106- Con Velocidad fija, seguir es que el texto vuelva a subir.
-        if (fija) {
+        // -arreglo PR 157, 26-10-2026- Antes: if (fija) — con lectura forzada llamaba start().
+        if (pausaUsaMotorFijo(fija, lecturaForzadaAFijaRef.current)) {
           motorFijo.seguir(performance.now())
           return Promise.resolve()
         }
