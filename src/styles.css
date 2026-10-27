@@ -44,6 +44,8 @@
      palabra guiones deberia crecer un poquito". */
   --texto-seccion: 22px;
   --texto-titulo: 18px;
+  /* -corrección teléfono PR 157, 2026-10-27- Aviso «queda 1 minuto»: 20 negrita. */
+  --texto-aviso-limite: 20px;
   --texto-cuerpo: 15px;
   --texto-meta: 13px;
   --texto-etiqueta: 11px;

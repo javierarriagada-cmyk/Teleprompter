@@ -355,7 +355,8 @@ export const es = {
   masLento: 'Más lento',
   masRapido: 'Más rápido',
   // -orden 2 «Sigo+ en la app», 26-10-2026-.
-  avisoQuedaMinutoVoz: 'Te queda 1 minuto con voz.',
+  // Antes 2026-10-27: 'Te queda 1 minuto con voz.'
+  avisoQuedaMinutoVoz: 'Te queda 1 minuto con voz. Con velocidad fija, sin límite.',
   textoQuedaConVoz: '{t} con voz',
   limiteLectura: 'Con Sigo+, Sigo te sigue hasta el final.',
   avisoQuedaMinutoGrabacion: 'Te queda 1 minuto de grabación.',

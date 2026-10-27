@@ -3,6 +3,7 @@ import { MotorDeAvance } from '../lib/avance'
 import { t, useTextos } from '../textos'
 import { PALABRAS_POR_MINUTO, segundosDeLectura } from '../datos/modelo'
 import { IconoVelocimetro } from './IconosApp'
+import { modoTextoPastillaLimite } from '../lib/avisoLimite'
 
 export interface BarraDeTiempoProps {
   motorAvance: MotorDeAvance | null
@@ -31,12 +32,14 @@ export interface BarraDeTiempoProps {
   // -tarea 104, lámina a- La voz bajándose en LISTO -fracción 0..1, o null-: la pastilla dice
   // "Preparando la voz…" con su barra y el porcentaje en lugar del tiempo. No es un error y no tapa nada.
   preparandoVoz?: number | null
-  // -orden 2, puntos 3 y 4- Sin Sigo+: en Grabar el total es el límite; en Lectura con voz, las
-  // fases del aviso. Antes: también el paso a Velocidad fija forzada ('fija'). 27-10-2026: vía retirada.
+  // -orden 2, puntos 3 y 4- Sin Sigo+: en Grabar el total es el límite; en Lectura con voz, tras el
+  // aviso de 1 min el total pasa a ser el límite. Antes: también el paso a Velocidad fija forzada ('fija').
+  // 27-10-2026: vía fija retirada. 2026-10-27: la frase del aviso ya no va en la pastilla.
   limiteTotalSeg?: number | null
-  // 'aviso' → avisoQuedaMinutoVoz; 'queda' → textoQuedaConVoz.
-  // Antes: también 'fija' → ícono + modoVelocidadFija. 27-10-2026: retirada.
+  // Antes: 'aviso' → avisoQuedaMinutoVoz; 'queda' → textoQuedaConVoz; también 'fija'.
+  // 2026-10-27: la pastilla solo muestra el tiempo; fase solo sirve para que App pase el límite.
   faseLimiteVoz?: 'aviso' | 'queda' | null
+  // Antes: segundos para textoQuedaConVoz. 2026-10-27: ya no se usa en el texto de la pastilla.
   segundosQuedanVoz?: number | null
 }
 
@@ -186,8 +189,8 @@ export default function BarraDeTiempo({
   msPausadoAhora,
   preparandoVoz = null,
   limiteTotalSeg = null,
-  faseLimiteVoz = null,
-  segundosQuedanVoz = null
+  faseLimiteVoz = null
+  // Antes 2026-10-27: también segundosQuedanVoz = null (textoQuedaConVoz en la pastilla).
 }: BarraDeTiempoProps) {
   useTextos()
   // -ajustes de pantallas, segunda vuelta- Las palabras de la única estimación; los tokens si no llegan.
@@ -291,17 +294,20 @@ export default function BarraDeTiempo({
 
   const progresoPct = Math.min(100, Math.max(0, (estado.posicion / totalTokens) * 100))
 
-  // -orden 2, puntos 3 y 4- Pastilla con límite de grabación o aviso de voz.
+  // -orden 2, puntos 3 y 4- Pastilla con límite de grabación o total estimado.
   // Antes: también Velocidad fija forzada (faseLimiteVoz === 'fija'). 27-10-2026: vía retirada.
   // Antes: texto={`${formatearTiempo(transcurridoSeg)} / ${formatearTiempo(totalEstimadoSeg)}`}
+  // Antes 2026-10-27: if (faseLimiteVoz === 'aviso') texto = t('avisoQuedaMinutoVoz')
+  //   else if (faseLimiteVoz === 'queda') texto = t('textoQuedaConVoz', { t: formatearTiempo(queda) })
+  // Ahora: la frase sale en AvisoBreve; la pastilla solo el tiempo (modoTextoPastillaLimite → 'tiempo').
   let texto: string
   let conIconoFija = false
   // Antes: if (faseLimiteVoz === 'fija') { texto = t('modoVelocidadFija'); conIconoFija = true }
-  if (faseLimiteVoz === 'aviso') {
-    texto = t('avisoQuedaMinutoVoz')
-  } else if (faseLimiteVoz === 'queda') {
-    const queda = segundosQuedanVoz ?? Math.max(0, (limiteTotalSeg ?? 0) - transcurridoSeg)
-    texto = t('textoQuedaConVoz', { t: formatearTiempo(queda) })
+  // Antes 2026-10-27: ramas fraseAviso / quedaConVoz según faseLimiteVoz y segundosQuedanVoz.
+  // modoTextoPastillaLimite(fase) es siempre 'tiempo': no hay frase en la pastilla.
+  if (modoTextoPastillaLimite(faseLimiteVoz) !== 'tiempo') {
+    // Reservado por si volviera una frase; hoy no corre.
+    texto = ''
   } else if (limiteTotalSeg != null) {
     texto = `${formatearTiempo(transcurridoSeg)} / ${formatearTiempo(limiteTotalSeg)}`
   } else {

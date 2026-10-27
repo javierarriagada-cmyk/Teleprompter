@@ -284,7 +284,8 @@ export const pt: Textos = {
   masLento: 'Mais devagar',
   masRapido: 'Mais rápido',
   // -orden 2 «Sigo+ en la app», 26-10-2026-.
-  avisoQuedaMinutoVoz: 'Falta 1 minuto com voz.',
+  // Antes 2026-10-27: 'Falta 1 minuto com voz.'
+  avisoQuedaMinutoVoz: 'Falta 1 minuto com voz. Com velocidade fixa, sem limite.',
   textoQuedaConVoz: '{t} com voz',
   limiteLectura: 'Com o Sigo+, o Sigo acompanha você até o fim.',
   avisoQuedaMinutoGrabacion: 'Falta 1 minuto de gravação.',

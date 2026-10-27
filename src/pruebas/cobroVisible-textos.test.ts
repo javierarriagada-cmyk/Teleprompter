@@ -21,9 +21,9 @@ describe('cobro-visible textos -orden 2-', () => {
     }
   })
   it('textos exactos del encargo', () => {
-    expect(es.avisoQuedaMinutoVoz).toBe('Te queda 1 minuto con voz.')
-    expect(en.avisoQuedaMinutoVoz).toBe('1 minute left with voice.')
-    expect(pt.avisoQuedaMinutoVoz).toBe('Falta 1 minuto com voz.')
+    expect(es.avisoQuedaMinutoVoz).toBe('Te queda 1 minuto con voz. Con velocidad fija, sin límite.')
+    expect(en.avisoQuedaMinutoVoz).toBe('1 minute left with voice. Fixed speed has no limit.')
+    expect(pt.avisoQuedaMinutoVoz).toBe('Falta 1 minuto com voz. Com velocidade fixa, sem limite.')
     expect(es.textoQuedaConVoz).toBe('{t} con voz')
     expect(en.textoQuedaConVoz).toBe('{t} with voice')
     expect(pt.textoQuedaConVoz).toBe('{t} com voz')

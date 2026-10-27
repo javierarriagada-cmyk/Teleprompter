@@ -20,8 +20,9 @@ export interface AvisoInfo {
   // Los avisos de hoy, con o sin botón de acción, no cambian.
   tocable?: boolean
   alTocar?: () => void
-  // -pasada teléfono PR 157, 27-10-2026- Dónde flota: 'limite' = tercio superior (no tapa la línea de lectura);
-  // 'mitad' = cerca del centro. Sin colocacion, abajo como siempre.
+  // -pasada teléfono PR 157, 27-10-2026- Dónde flota. 'mitad' = cerca del centro.
+  // 'limite': Antes = tercio superior. 2026-10-27 = borde inferior a 1/3 del alto desde abajo
+  // (sobre pastilla/botones, sin tapar la línea leída). Sin colocacion, abajo como siempre.
   colocacion?: 'limite' | 'mitad'
   // Grabación sobre la cámara: fondo claro de contraste (variables --aviso-sobre-camara-*).
   contrasteGrabacion?: boolean

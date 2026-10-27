@@ -60,6 +60,7 @@ import { cargarLimites, limitesActuales, hayQueAvisar, llegoAlLimite, transcurri
 // Antes: import { pausaUsaMotorFijo, tokenSeguidorAlVolverAVoz } from './lib/lecturaForzada'
 // 27-10-2026: vía forzada a fija retirada; al límite se pausa (accionAlLimiteLectura).
 import { abrirOferta, abrirOfertaInicialSiCorresponde, decidirOfertaAlLimite } from './lib/oferta'
+import { opcionesAvisoQuedaMinuto } from './lib/avisoLimite'
 import { tocaAvisoFinPrueba, marcarAvisoFinPrueba, tocaAvisoSinConexion, marcarAvisoSinConexionHoy, fechaPruebaEnIdioma } from './lib/avisosPortada'
 import { RepositorioGrabaciones } from './datos/RepositorioGrabaciones'
 import { RepositorioGrabacionesIndexedDB } from './datos/RepositorioGrabacionesIndexedDB'
@@ -2609,11 +2610,10 @@ export default function App({ motor, repoOverride }: AppProps) {
         if (hayQueAvisar('lectura', trans, lim)) {
           if (!avisoLimiteVozRef.current) {
             avisoLimiteVozRef.current = true
-            setFaseLimiteVoz('aviso')
-            // Antes: 4000. 27-10-2026 pasada teléfono: avisos de límite 8 s.
-            window.setTimeout(() => {
-              setFaseLimiteVoz((f) => (f === 'aviso' ? 'queda' : f))
-            }, 8000)
+            // Antes: setFaseLimiteVoz('aviso') 8 s → 'queda'; la frase iba EN la pastilla
+            // (BarraDeTiempo) y se veía chica/abajo. 2026-10-27: aviso propio 8 s; pastilla solo tiempo.
+            setFaseLimiteVoz('queda')
+            mostrarAviso(t('avisoQuedaMinutoVoz'), opcionesAvisoQuedaMinuto())
           }
         }
       }
@@ -2635,11 +2635,8 @@ export default function App({ motor, repoOverride }: AppProps) {
         if (hayQueAvisar('grabacion', trans, lim) && !avisoLimiteGrabRef.current) {
           avisoLimiteGrabRef.current = true
           // Antes: duracionMs: 4000, abajo. 27-10-2026: 8 s, tercio superior, contraste cámara.
-          mostrarAviso(t('avisoQuedaMinutoGrabacion'), {
-            duracionMs: 8000,
-            colocacion: 'limite',
-            contrasteGrabacion: true
-          })
+          // 2026-10-27: misma colocación/estilo que lectura (borde inferior a 1/3 desde abajo, texto 20).
+          mostrarAviso(t('avisoQuedaMinutoGrabacion'), opcionesAvisoQuedaMinuto())
         }
       }
     }, 250)
@@ -3796,7 +3793,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                 // -orden 2, puntos 3 y 4-
                 limiteTotalSeg={conCamara && !tieneSuscripcion() ? limitesActuales().grabacionSeg : (faseLimiteVoz === 'queda' || faseLimiteVoz === 'aviso' ? limitesActuales().lecturaSeg : null)}
                 faseLimiteVoz={faseLimiteVoz}
-                segundosQuedanVoz={tInicioLecturaMs != null && (faseLimiteVoz === 'queda' || faseLimiteVoz === 'aviso') ? Math.max(0, limitesActuales().lecturaSeg - transcurridoSinPausas(performance.now(), tInicioLecturaMs, msPausadoAhora())) : null}
+                // Antes 2026-10-27: segundosQuedanVoz={...} para textoQuedaConVoz en la pastilla.
               />
             )}
           </div>

@@ -52,13 +52,13 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
             // sobre el, visto en el moto g86 el mismo dia.
             // 29-09-2026, tarea 82: en el teléfono de lado va a 16 más el área segura y entre
             // los rieles -columnaHorizontal-; en vertical sigue exactamente como arriba.
-            // -pasada teléfono PR 157, 27-10-2026- colocacion 'limite'/'mitad': top, no bottom.
+            // -pasada teléfono PR 157, 27-10-2026- colocacion 'limite'/'mitad'.
             // Antes: siempre bottom según sobreDock / enRieles / enLectura / destacado.
+            // 'limite' Antes 2026-10-27: top tercio superior. Ahora: borde inferior a 1/3 desde abajo.
             ...(avisoInfo.colocacion === 'limite'
               ? {
-                  // Tercio superior, sin tapar la línea de lectura (~centro).
-                  top: 'calc(16px + env(safe-area-inset-top, 0px) + 12vh)',
-                  bottom: 'auto' as const
+                  top: 'auto' as const,
+                  bottom: 'calc(100vh / 3)'
                 }
               : avisoInfo.colocacion === 'mitad'
               ? {
@@ -78,36 +78,50 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
                     // Antes, también con acción: 'calc(var(--aire-5) + env(safe-area-inset-bottom, 0px))'
                     : 'calc(var(--aire-5) + env(safe-area-inset-bottom, 0px))'
                 }),
-            left: enRieles && columnaHorizontal ? columnaHorizontal.izquierda : 0,
-            right: enRieles && columnaHorizontal ? columnaHorizontal.derecha : 0,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            width: 'max-content',
-            maxWidth: 'calc(100% - 2 * var(--aire-4))',
+            // 'limite' 2026-10-27: márgenes 16, ancho casi completo. Antes / otros: entre rieles o max-content.
+            ...(avisoInfo.colocacion === 'limite'
+              ? { left: 16, right: 16, width: 'auto' as const, maxWidth: 'none' as const, marginLeft: 0, marginRight: 0 }
+              : {
+                  left: enRieles && columnaHorizontal ? columnaHorizontal.izquierda : 0,
+                  right: enRieles && columnaHorizontal ? columnaHorizontal.derecha : 0,
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                  width: 'max-content',
+                  maxWidth: 'calc(100% - 2 * var(--aire-4))'
+                }),
             // Tanda 2, 15-10-2026: fondo, canto y sombra en .aviso-breve -styles.css-. Antes:
             // backgroundColor: 'var(--bg-superficie)', border: '1px solid var(--color-borde)',
             // -ajustes-accesible, 25-10-2026, decisión de Javier- Texto sobre la superficie invertida. Antes: color: 'var(--color-texto)',
             // -pasada teléfono PR 157- contrasteGrabacion: fondo claro legible sobre la cámara.
-            color: avisoInfo.contrasteGrabacion ? 'var(--aviso-sobre-camara-texto)' : 'var(--aviso-texto)',
-            ...(avisoInfo.contrasteGrabacion
+            // 2026-10-27: 'limite' también usa el contraste claro (lectura y grabación).
+            color: (avisoInfo.contrasteGrabacion || avisoInfo.colocacion === 'limite')
+              ? 'var(--aviso-sobre-camara-texto)'
+              : 'var(--aviso-texto)',
+            ...((avisoInfo.contrasteGrabacion || avisoInfo.colocacion === 'limite')
               ? { backgroundColor: 'var(--aviso-sobre-camara-fondo)' }
               : {}),
             // -mejoras-claridad, 21-10-2026- Destacado: más aire a la izquierda, 56 de alto y letra de 16. Antes, siempre:
             // padding: 'var(--aire-2) var(--aire-3)', fontSize: 'var(--texto-cuerpo)'
             // -pasada teléfono PR 157- avisos de límite: var(--texto-titulo) = 18.
-            padding: destacado ? 'var(--aire-1) var(--aire-2) var(--aire-1) var(--aire-4)' : 'var(--aire-2) var(--aire-3)',
+            // 2026-10-27 'limite': texto 20 negrita, relleno amplio (aire-3 / aire-4).
+            padding: avisoInfo.colocacion === 'limite'
+              ? 'var(--aire-3) var(--aire-4)'
+              : destacado ? 'var(--aire-1) var(--aire-2) var(--aire-1) var(--aire-4)' : 'var(--aire-2) var(--aire-3)',
             minHeight: destacado ? 56 : undefined,
             boxSizing: 'border-box',
             borderRadius: 'var(--redondeo-pildora)',
-            fontSize: avisoInfo.colocacion === 'limite' || avisoInfo.colocacion === 'mitad'
+            fontSize: avisoInfo.colocacion === 'limite'
+              ? 'var(--texto-aviso-limite)'
+              : avisoInfo.colocacion === 'mitad'
               ? 'var(--texto-titulo)'
               : destacado ? 16 : 'var(--texto-cuerpo)',
-            fontWeight: 600,
+            fontWeight: avisoInfo.colocacion === 'limite' ? 700 : 600,
             zIndex: 999,
             // -orden 2, punto 3- También tocable. Antes: pointerEvents: avisoInfo.accionTexto ? 'auto' : 'none',
             pointerEvents: (avisoInfo.accionTexto || avisoInfo.tocable) ? 'auto' : 'none',
             display: 'flex',
             alignItems: 'center',
+            justifyContent: avisoInfo.colocacion === 'limite' ? 'center' : undefined,
             gap: 'var(--aire-3)',
             animation: movimientoApagado() ? 'none' : `panelSube ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
           }}
