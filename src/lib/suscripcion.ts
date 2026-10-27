@@ -107,12 +107,31 @@ function cargarPlugin(): Promise<PurchasesPlugin | null> {
 let configurado: Promise<void> | null = null
 function configurar(p: PurchasesPlugin): Promise<void> {
   if (!configurado) {
-    configurado = p.configure({ apiKey: CLAVE_REVENUECAT_PLAY })
-    configurado.catch(() => {
+    configurado = p.configure({ apiKey: CLAVE_REVENUECAT_PLAY }).then(() => {
+      console.info('[suscripcion] configurado')
+    })
+    configurado.catch((e) => {
+      console.warn('[suscripcion]', e)
       configurado = null
     })
   }
   return configurado
+}
+
+// -pasada teléfono PR 157, 27-10-2026- La UI (paywall / Customer Center) exige Purchases.configure()
+// antes; si no, presentPaywall falla con «Purchases is not configured». Misma configurar() que
+// vigilarSuscripcion — sin duplicar. Devuelve si quedó listo.
+export async function asegurarConfigurado(): Promise<boolean> {
+  try {
+    const p = await cargarPlugin()
+    if (!p) return false
+    await configurar(p)
+    return true
+  } catch (e) {
+    // configurar ya registró el warn; por si cargarPlugin falló sin pasar por ahí.
+    console.warn('[suscripcion]', e)
+    return false
+  }
 }
 
 // EL CICLO, como vigilarRespaldo: pide customerInfo al arrancar, escucha los cambios y sigue a la cuenta

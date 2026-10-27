@@ -1,5 +1,5 @@
 import { Capacitor } from '@capacitor/core'
-import { tieneSuscripcion } from './suscripcion'
+import { tieneSuscripcion, asegurarConfigurado } from './suscripcion'
 
 // LA PANTALLA DE OFERTA -orden 2 «Sigo+ en la app», punto 5, 26-10-2026-. Abre el paywall de
 // RevenueCat -RevenueCatUI.presentPaywall- con la oferta vigente. Si ya hay suscripción, no hace nada.
@@ -50,6 +50,13 @@ export async function abrirOferta(lugar: LugarOferta): Promise<boolean> {
   console.info('[oferta]', lugar)
   if (tieneSuscripcion()) return false
   try {
+    // Antes: presentPaywall sin esperar Purchases.configure() — en el teléfono:
+    // «Purchases is not configured» y {"result":"ERROR"}. 27-10-2026: asegurar primero.
+    const listo = await asegurarConfigurado()
+    if (!listo) {
+      console.warn('[oferta]', 'Purchases no configurado; no se abre la oferta')
+      return false
+    }
     const ui = await cargarPluginUI()
     if (!ui) return false
     // presentPaywall sin offering: la oferta vigente -current- del panel de RevenueCat.
@@ -79,6 +86,12 @@ export async function abrirOfertaInicialSiCorresponde(): Promise<boolean> {
 // El Customer Center -quien paga o está en prueba, Ajustes-.
 export async function abrirCentroDeCliente(): Promise<void> {
   try {
+    // Antes: presentCustomerCenter sin Purchases.configure(). 27-10-2026: asegurar primero.
+    const listo = await asegurarConfigurado()
+    if (!listo) {
+      console.warn('[oferta]', 'Purchases no configurado; no se abre el centro de cliente')
+      return
+    }
     const ui = await cargarPluginUI()
     if (!ui) return
     await ui.presentCustomerCenter()

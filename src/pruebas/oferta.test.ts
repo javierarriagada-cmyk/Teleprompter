@@ -5,6 +5,7 @@ const sim = vi.hoisted(() => ({
   nativo: true,
   plugin: true,
   tiene: false,
+  asegurarConfigurado: vi.fn(),
   presentPaywall: vi.fn(),
   presentCustomerCenter: vi.fn()
 }))
@@ -22,7 +23,8 @@ vi.mock('@revenuecat/purchases-capacitor-ui', () => ({
   }
 }))
 vi.mock('../lib/suscripcion', () => ({
-  tieneSuscripcion: () => sim.tiene
+  tieneSuscripcion: () => sim.tiene,
+  asegurarConfigurado: () => sim.asegurarConfigurado()
 }))
 
 async function cargar() {
@@ -37,6 +39,7 @@ beforeEach(() => {
   sim.tiene = false
   sim.presentPaywall.mockReset().mockResolvedValue({ result: 'PURCHASED' })
   sim.presentCustomerCenter.mockReset().mockResolvedValue(undefined)
+  sim.asegurarConfigurado.mockReset().mockResolvedValue(true)
   vi.spyOn(console, 'info').mockImplementation(() => {})
   vi.spyOn(console, 'warn').mockImplementation(() => {})
 })
@@ -73,5 +76,35 @@ describe('oferta', () => {
     const o = await cargar()
     expect(await o.abrirOfertaInicialSiCorresponde()).toBe(false)
     expect(o.yaSalioOfertaInicial()).toBe(false)
+  })
+
+  it('no llama presentPaywall antes de que termine configurar', async () => {
+    // Sin el arreglo (abrirOferta no await asegurarConfigurado) el orden sería solo 'paywall'
+    // — o presentPaywall correría sin haber llamado a asegurarConfigurado.
+    const orden: string[] = []
+    let liberar!: (v: boolean) => void
+    sim.asegurarConfigurado.mockImplementation(() => new Promise<boolean>((resolve) => {
+      orden.push('config-start')
+      liberar = (v) => { orden.push('config-end'); resolve(v) }
+    }))
+    sim.presentPaywall.mockImplementation(async () => {
+      orden.push('paywall')
+      return { result: 'PURCHASED' }
+    })
+    const o = await cargar()
+    const promesa = o.abrirOferta('ajustes')
+    await vi.waitFor(() => { expect(orden).toContain('config-start') })
+    expect(orden).not.toContain('paywall')
+    expect(sim.presentPaywall).not.toHaveBeenCalled()
+    liberar(true)
+    expect(await promesa).toBe(true)
+    expect(orden).toEqual(['config-start', 'config-end', 'paywall'])
+  })
+
+  it('si Purchases no quedó configurado, no abre la oferta', async () => {
+    sim.asegurarConfigurado.mockResolvedValue(false)
+    const o = await cargar()
+    expect(await o.abrirOferta('ajustes')).toBe(false)
+    expect(sim.presentPaywall).not.toHaveBeenCalled()
   })
 })
