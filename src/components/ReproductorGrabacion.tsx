@@ -20,6 +20,8 @@ import { FILTRO_NATURAL, filtroCss, esNeutro, FiltroToma, TonoFiltro } from '../
 import { cortesDe, aSalidaCercana, aArchivo, duracionFinal, duracionVisible, tramosQueQuedan } from '../lib/tramos'
 // -tomas-largas- Antes: import { recetaDe, TramoMs } from '../lib/recetaExportacion'
 import { recetaDe, caminoDeGuardado, TramoMs } from '../lib/recetaExportacion'
+import { tieneSuscripcion } from '../lib/suscripcion'
+import { abrirOferta } from '../lib/oferta'
 import { t, useTextos } from '../textos'
 import { IconoGuardar, IconoCompartir, IconoRepetir, IconoCerrar, IconoTacho, IconoEmpezar, IconoPausa } from './IconosApp'
 // EL VISOR DE LADO -tarea 90-. Ver lib/visorDeLado.ts y styles-visor-de-lado.css.
@@ -83,7 +85,9 @@ export default function ReproductorGrabacion({
   onRepetir,
   onGuardadoEnGaleria,
   onCambio,
-  guiones
+  guiones,
+  // -orden 2, punto 7- Aviso tocable tras guardar con marca de agua.
+  mostrarAviso
 }: {
   grabacion: ResumenGrabacion
   onCerrar: () => void
@@ -95,6 +99,7 @@ export default function ReproductorGrabacion({
   onCambio?: (g: ResumenGrabacion) => void
   // Para nombrarla por su guion de hoy -nombreDeToma, TiraGrabaciones.tsx-.
   guiones?: ResumenGuion[]
+  mostrarAviso?: (msg: string, opciones?: { duracionMs?: number; tocable?: boolean; alTocar?: () => void }) => void
 }) {
   // Misma regla que en la tira: borrar pregunta una vez. Ver el comentario de
   // TiraGrabaciones. Aca no hace falta el temporizador porque al cerrar el
@@ -539,9 +544,13 @@ export default function ReproductorGrabacion({
       if (conFiltro) console.info('Sigo96', `guardar filtro=${filtro.tono} estilo=${estilo} subtitulos=${conSubtitulos ? subtitulos.length : 0} tramos=${tramos ? tramos.length : 0}`)
       // -tomas-largas- La decisión, en caminoDeGuardado -recetaExportacion.ts-, la misma de antes.
       // Antes: const res = tramos || conFiltro ? await exportarAGaleria(...) : conSubtitulos ? ... : ...
-      const camino = caminoDeGuardado({ estilo, subtitulos, tramos, filtro })
+      // -orden 2, punto 7- marca true sin Sigo+ al guardar. Con Sigo+, como hoy.
+      const marca = !tieneSuscripcion()
+      // Antes: const camino = caminoDeGuardado({ estilo, subtitulos, tramos, filtro })
+      const camino = caminoDeGuardado({ estilo, subtitulos, tramos, filtro, marca })
       const res = camino === 'receta'
-        ? await exportarAGaleria(grabacion.ruta, recetaDe({ estilo, subtitulos: conSubtitulos ? subtitulos : [], tramos, filtro }), (pct) => setAvance(pct))
+        // Antes: recetaDe({ estilo, subtitulos: ..., tramos, filtro })
+        ? await exportarAGaleria(grabacion.ruta, recetaDe({ estilo, subtitulos: conSubtitulos ? subtitulos : [], tramos, filtro, marca }), (pct) => setAvance(pct))
         : camino === 'subtitulos'
         ? await guardarEnGaleriaConSubtitulos(grabacion.ruta, subtitulos, estilo, (pct) => setAvance(pct))
         : await guardarEnGaleria(grabacion.ruta)
@@ -568,7 +577,18 @@ export default function ReproductorGrabacion({
           // -tarea 88- La copia ya va cortada: sin pausas y con la duración final.
           ...(tramos ? { pausas: undefined, duracionMs: duracionFinal(cortes, grabacion.duracionMs) } : {})
         })
-        onGuardadoEnGaleria?.(true, t('galeriaGuardada'))
+        if (marca) {
+          // -orden 2, punto 7- Aviso tocable de la lámina 5A, 8 s. El padre recibe ok sin
+          // texto para la haptica, sin duplicar el aviso de «galeriaGuardada».
+          onGuardadoEnGaleria?.(true, '')
+          mostrarAviso?.(t('avisoGuardarSinMarca'), {
+            duracionMs: 8000,
+            tocable: true,
+            alTocar: () => { void abrirOferta('marca') }
+          })
+        } else {
+          onGuardadoEnGaleria?.(true, t('galeriaGuardada'))
+        }
         return res
       } else {
         onGuardadoEnGaleria?.(false, t('galeriaNoSeGuardo'))

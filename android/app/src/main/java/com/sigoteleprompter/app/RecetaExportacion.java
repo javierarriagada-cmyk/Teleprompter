@@ -27,19 +27,26 @@ final class RecetaExportacion {
     // Antes: "Plan 3: aquí siempre null. Su forma la define el plan 3." y final Object filtro = null.
     final String filtroTono;
     final float[] filtroMatriz;
+    // -orden 2, punto 7, 26-10-2026- Marca de agua. Con marca NUNCA es copia.
+    final boolean marca;
 
     private RecetaExportacion(String estilo, String subtitulosJson, int cantidad, long[][] tramosMs,
-                              String filtroTono, float[] filtroMatriz) {
+                              String filtroTono, float[] filtroMatriz, boolean marca) {
         this.estilo = estilo;
         this.subtitulosJson = subtitulosJson;
         this.cantidadSubtitulos = cantidad;
         this.tramosMs = tramosMs;
         this.filtroTono = filtroTono;
         this.filtroMatriz = filtroMatriz;
+        this.marca = marca;
     }
 
     boolean hayFiltro() {
         return filtroMatriz != null;
+    }
+
+    boolean hayMarca() {
+        return marca;
     }
 
     static RecetaExportacion desdeJson(String json) throws Exception {
@@ -74,15 +81,28 @@ final class RecetaExportacion {
             // Un filtro sin matriz no es "sin filtro": se rechaza.
             if (filtroMatriz == null) filtroMatriz = new float[0];
         }
-        return desdeValores(version, estilo, subs == null ? null : subs.toString(), subs == null ? -1 : subs.length(), tramos, filtroTono, filtroMatriz);
+        // -orden 2, punto 7- marca: si no viene, false. Si viene y no es boolean, desdeValores lo rechaza vía opt.
+        boolean marca = o.optBoolean("marca", false);
+        if (o.has("marca") && !o.isNull("marca") && !(o.opt("marca") instanceof Boolean)) {
+            throw new IllegalArgumentException("marca no es boolean");
+        }
+        return desdeValores(version, estilo, subs == null ? null : subs.toString(), subs == null ? -1 : subs.length(), tramos, filtroTono, filtroMatriz, marca);
     }
 
     // Java puro: lo que valida y decide. Lanza IllegalArgumentException con el motivo, como
     // validarReceta en TypeScript.
     // -tarea 96- Los dos últimos son el filtro: filtroMatriz null = sin filtro -Natural-. Antes el último
     // era boolean hayFiltro, y con true se rechazaba siempre.
+    // Compatibilidad con las pruebas y llamadas de antes -sin marca-.
+    // Antes: static RecetaExportacion desdeValores(..., String filtroTono, float[] filtroMatriz) { ... sin marca }
     static RecetaExportacion desdeValores(int version, String estilo, String subtitulosJson, int cantidad,
                                           long[][] tramos, String filtroTono, float[] filtroMatriz) {
+        return desdeValores(version, estilo, subtitulosJson, cantidad, tramos, filtroTono, filtroMatriz, false);
+    }
+
+    // -orden 2, punto 7- marca al final. Las mismas reglas que validarReceta en TypeScript.
+    static RecetaExportacion desdeValores(int version, String estilo, String subtitulosJson, int cantidad,
+                                          long[][] tramos, String filtroTono, float[] filtroMatriz, boolean marca) {
         if (version != 1) throw new IllegalArgumentException("versión desconocida");
         if (!"no".equals(estilo) && !"amarillo".equals(estilo) && !"rojo".equals(estilo) && !"formal".equals(estilo)) {
             throw new IllegalArgumentException("estilo desconocido");
@@ -107,13 +127,14 @@ final class RecetaExportacion {
                 if (Float.isNaN(n) || Float.isInfinite(n)) throw new IllegalArgumentException("matriz de filtro sin cifras");
             }
         }
-        return new RecetaExportacion(estilo, subtitulosJson, cantidad, tramos, filtroMatriz == null ? null : filtroTono, filtroMatriz);
+        return new RecetaExportacion(estilo, subtitulosJson, cantidad, tramos, filtroMatriz == null ? null : filtroTono, filtroMatriz, marca);
     }
 
     // Nada que dibujar, cortar ni filtrar: se copia la toma tal cual, sin recodificar.
     // -tarea 96- Con filtro, NUNCA es copia. Antes: ... && filtro == null, con filtro siempre null.
+    // -orden 2, punto 7- Con marca NUNCA es copia. Antes: return sinSubtitulos && tramosMs == null && filtroMatriz == null;
     boolean esCopia() {
         boolean sinSubtitulos = "no".equals(estilo) || cantidadSubtitulos == 0;
-        return sinSubtitulos && tramosMs == null && filtroMatriz == null;
+        return sinSubtitulos && tramosMs == null && filtroMatriz == null && !marca;
     }
 }

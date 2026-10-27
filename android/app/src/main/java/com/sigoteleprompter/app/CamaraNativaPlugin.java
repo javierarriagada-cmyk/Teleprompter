@@ -664,7 +664,7 @@ public class CamaraNativaPlugin extends Plugin {
                     androidx.media3.common.MediaItem.fromUri(android.net.Uri.fromFile(origen)))
                     .setEffects(new androidx.media3.transformer.Effects(
                         com.google.common.collect.ImmutableList.of(),
-                        ExportadorDeTomas.efectosDeVideo(receta, capa)))
+                        ExportadorDeTomas.efectosDeVideo(receta, capa, rotacion)))
                     .build();
                 final androidx.media3.transformer.Transformer[] t = new androidx.media3.transformer.Transformer[1];
                 final boolean[] terminado = { false };
@@ -727,7 +727,7 @@ public class CamaraNativaPlugin extends Plugin {
                     .build();
                 // -tarea 88- Con tramos, la Composition de ExportadorDeTomas: un MediaItem por tramo que
                 // queda. Sin tramos, el EditedMediaItem de siempre. Antes: t[0].start(item, ...) a secas.
-                if (receta.tramosMs != null) t[0].start(ExportadorDeTomas.composicionConTramos(origen, receta, capa), salida.getAbsolutePath());
+                if (receta.tramosMs != null) t[0].start(ExportadorDeTomas.composicionConTramos(origen, receta, capa, rotacion), salida.getAbsolutePath());
                 else t[0].start(item, salida.getAbsolutePath());
                 androidx.media3.transformer.ProgressHolder avance = new androidx.media3.transformer.ProgressHolder();
                 hilo.postDelayed(new Runnable() {
