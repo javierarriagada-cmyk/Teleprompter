@@ -4,6 +4,7 @@ import React from 'react'
 import { movimientoApagado, MS_CHICO, CURVA_ENTRA } from './movimiento'
 import { colorAccionAviso } from '../hooks/useAviso'
 import type { AvisoInfo } from '../hooks/useAviso'
+import { IconoChevron } from './IconosApp'
 
 interface AvisoBreveProps {
   avisoInfo: AvisoInfo | null
@@ -80,39 +81,74 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
             fontSize: destacado ? 16 : 'var(--texto-cuerpo)',
             fontWeight: 600,
             zIndex: 999,
-            pointerEvents: avisoInfo.accionTexto ? 'auto' : 'none',
+            // -orden 2, punto 3- También tocable. Antes: pointerEvents: avisoInfo.accionTexto ? 'auto' : 'none',
+            pointerEvents: (avisoInfo.accionTexto || avisoInfo.tocable) ? 'auto' : 'none',
             display: 'flex',
             alignItems: 'center',
             gap: 'var(--aire-3)',
             animation: movimientoApagado() ? 'none' : `panelSube ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
           }}
         >
-          <span>{avisoInfo.texto}</span>
-          {avisoInfo.accionTexto && (
+          {/* -orden 2, punto 3, 26-10-2026- Forma tocable entera con chevron -lámina 2A-. Los avisos
+              con botón de acción o sin nada siguen igual. */}
+          {avisoInfo.tocable ? (
             <button
+              type="button"
+              data-testid="aviso-tocable"
               onClick={() => {
                 cerrarAviso()
-                if (avisoInfo.alEjecutarAccion) avisoInfo.alEjecutarAccion()
+                if (avisoInfo.alTocar) avisoInfo.alTocar()
               }}
               style={{
                 background: 'transparent',
                 border: 'none',
-                // -mejoras-claridad, 21-10-2026- --aviso-accion: en claro, var(--color-acento) -el crema de los botones claros- sobre el aviso blanco daba
-                // 1,3 a 1 y no se leía; ahora 6,0 a 1. En oscuro sigue siendo --color-acento. Antes: color: 'var(--color-acento)',
-                // -portugues-voz, punto 7, 2026-10-22- Si el aviso pide la acción neutra -el del idioma del guion-, el color
-                // del texto del aviso; si no, el rojo de siempre. Antes: color: 'var(--aviso-accion)',
-                color: colorAccionAviso(avisoInfo),
-                fontWeight: 'bold',
+                color: 'inherit',
+                font: 'inherit',
+                fontWeight: 'inherit',
                 cursor: 'pointer',
-                // -mejoras-claridad, 21-10-2026- Destacado: 16 y un área de toque de 48 de alto. Antes: fontSize: 'var(--texto-cuerpo)', padding: 0
-                fontSize: destacado ? 16 : 'var(--texto-cuerpo)',
-                padding: destacado ? '0 var(--aire-3)' : 0,
-                minHeight: destacado ? 48 : undefined,
-                minWidth: destacado ? 48 : undefined
+                display: 'flex',
+                alignItems: 'center',
+                gap: 'var(--aire-2)',
+                padding: 0,
+                margin: 0
               }}
             >
-              {avisoInfo.accionTexto}
+              <span>{avisoInfo.texto}</span>
+              {/* El chevron apunta a la derecha: en IconosApp mira abajo; se gira −90°. */}
+              <span aria-hidden="true" style={{ display: 'inline-flex', transform: 'rotate(-90deg)' }}>
+                <IconoChevron tamano={20} />
+              </span>
             </button>
+          ) : (
+            <>
+              <span>{avisoInfo.texto}</span>
+              {avisoInfo.accionTexto && (
+                <button
+                  onClick={() => {
+                    cerrarAviso()
+                    if (avisoInfo.alEjecutarAccion) avisoInfo.alEjecutarAccion()
+                  }}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    // -mejoras-claridad, 21-10-2026- --aviso-accion: en claro, var(--color-acento) -el crema de los botones claros- sobre el aviso blanco daba
+                    // 1,3 a 1 y no se leía; ahora 6,0 a 1. En oscuro sigue siendo --color-acento. Antes: color: 'var(--color-acento)',
+                    // -portugues-voz, punto 7, 2026-10-22- Si el aviso pide la acción neutra -el del idioma del guion-, el color
+                    // del texto del aviso; si no, el rojo de siempre. Antes: color: 'var(--aviso-accion)',
+                    color: colorAccionAviso(avisoInfo),
+                    fontWeight: 'bold',
+                    cursor: 'pointer',
+                    // -mejoras-claridad, 21-10-2026- Destacado: 16 y un área de toque de 48 de alto. Antes: fontSize: 'var(--texto-cuerpo)', padding: 0
+                    fontSize: destacado ? 16 : 'var(--texto-cuerpo)',
+                    padding: destacado ? '0 var(--aire-3)' : 0,
+                    minHeight: destacado ? 48 : undefined,
+                    minWidth: destacado ? 48 : undefined
+                  }}
+                >
+                  {avisoInfo.accionTexto}
+                </button>
+              )}
+            </>
           )}
         </div>
       )}

@@ -16,7 +16,7 @@ import BarraDeTiempo from './components/BarraDeTiempo'
 import { useAparecer } from './hooks/useAparecer'
 // -tarea 106- Velocidad fija: el motor que no escucha, el modo elegido y el control al leer.
 // -15-10-2026- y controlesSeVanSolos. Antes: import { crearMotorFijo } from './lib/velocidadFija'
-import { crearMotorFijo, controlesSeVanSolos } from './lib/velocidadFija'
+import { crearMotorFijo, controlesSeVanSolos, ritmoDeLosUltimosSegundos } from './lib/velocidadFija'
 import { useVelocidadFija } from './hooks/useVelocidadFija'
 import { ControlVelocidadLectura } from './components/ControlesVelocidad'
 import { PanelCorpus } from './components/PanelCorpus'
@@ -54,7 +54,10 @@ import { RepositorioMemoria } from './datos/RepositorioMemoria'
 import { vigilarRespaldo } from './lib/respaldo'
 import { configuracionLista } from './lib/firebaseConfig'
 // -orden 1, los cimientos del cobro, 26-10-2026- RevenueCat, sin nada visible.
-import { vigilarSuscripcion } from './lib/suscripcion'
+import { vigilarSuscripcion, tieneSuscripcion } from './lib/suscripcion'
+import { cargarLimites, limitesActuales, hayQueAvisar, llegoAlLimite, transcurridoSinPausas } from './lib/limites'
+import { abrirOferta, abrirOfertaInicialSiCorresponde } from './lib/oferta'
+import { tocaAvisoFinPrueba, marcarAvisoFinPrueba, tocaAvisoSinConexion, marcarAvisoSinConexionHoy, fechaPruebaEnIdioma } from './lib/avisosPortada'
 import { RepositorioGrabaciones } from './datos/RepositorioGrabaciones'
 import { RepositorioGrabacionesIndexedDB } from './datos/RepositorioGrabacionesIndexedDB'
 import { RepositorioGrabacionesMemoria } from './datos/RepositorioGrabacionesMemoria'
@@ -584,6 +587,12 @@ export default function App({ motor, repoOverride }: AppProps) {
   useEffect(() => {
     if (repoOverride) return
     return vigilarSuscripcion()
+  }, [repoOverride])
+
+  // -orden 2, punto 2- Los límites desde Remote Config. Con repoOverride -pruebas- no se pide.
+  useEffect(() => {
+    if (repoOverride) return
+    void cargarLimites()
   }, [repoOverride])
 
   // Cargar/Migrar al arrancar
@@ -1138,6 +1147,15 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [estadoModo, setEstadoModo] = useState<'SIGUIENDO' | 'BUSCANDO' | 'DETENIDO'>('SIGUIENDO')
   const [tInicioLecturaMs, setTInicioLecturaMs] = useState<number | null>(null)
   const [cuentaRegresiva, setCuentaRegresiva] = useState<number | null>(null)
+  // -orden 2, puntos 3 y 4- Sin Sigo+: la lectura con voz pasa a fija al límite; la pastilla y los avisos.
+  const [lecturaForzadaAFija, setLecturaForzadaAFija] = useState(false)
+  const [faseLimiteVoz, setFaseLimiteVoz] = useState<'aviso' | 'queda' | 'fija' | null>(null)
+  const avisoLimiteVozRef = useRef(false)
+  const avisoLimiteGrabRef = useRef(false)
+  const limiteAplicadoRef = useRef(false)
+  // Hubo una lectura o toma esta sesión: los avisos de portada -punto 8- solo después de eso.
+  const huboTomaRef = useRef(false)
+  const pendienteAvisosPortadaRef = useRef(false)
   // -tarea 88, 04-10-2026- LA PAUSA ES UNA MÁQUINA -lib/pausaToma.ts-: el botón, el tacho y los gestos
   // entran por despachar() -más abajo- y App ejecuta lo que devuelve. enPausa y confirmandoDescarte se
   // derivan del único estado, con los mismos nombres de antes: los botones y sus testid no cambian.
@@ -1247,9 +1265,13 @@ export default function App({ motor, repoOverride }: AppProps) {
   const fija = velocidad.modo === 'fija'
   const motorFijo = useMemo(() => crearMotorFijo(totalTokens), [totalTokens])
   useEffect(() => {
+    // -orden 2, punto 3- Con la lectura forzada a fija el ritmo lo puso cambiarRitmo; no pises con el nivel.
+    // Antes: motorFijo.cambiarNivel(velocidad.nivel, performance.now())
+    if (lecturaForzadaAFija) return
     motorFijo.cambiarNivel(velocidad.nivel, performance.now())
-  }, [motorFijo, velocidad.nivel])
-  const motorAvance = fija ? motorFijo : motorDeLaVoz
+  }, [motorFijo, velocidad.nivel, lecturaForzadaAFija])
+  // -orden 2, punto 3- Al límite, motor fijo SIN tocar fijarModo. Antes: const motorAvance = fija ? motorFijo : motorDeLaVoz
+  const motorAvance = (fija || lecturaForzadaAFija) ? motorFijo : motorDeLaVoz
   // -correccion 1- Con Velocidad fija el token del arrastre trae fraccion -la inversa de pxDePosicion-:
   // el seguidor recibe la palabra entera y el motor fijo la fraccion, para seguir sin salto. Con la
   // voz el token ya es entero y floor no cambia nada.
@@ -1548,6 +1570,13 @@ export default function App({ motor, repoOverride }: AppProps) {
         }
         setCuentaRegresiva(null)
         setTInicioLecturaMs(performance.now())
+        // -orden 2- Cada toma empieza de cero: límites y forzados se reinician.
+        setLecturaForzadaAFija(false)
+        setFaseLimiteVoz(null)
+        avisoLimiteVozRef.current = false
+        avisoLimiteGrabRef.current = false
+        limiteAplicadoRef.current = false
+        huboTomaRef.current = true
         // -tarea 106- Con Velocidad fija el texto empieza a subir al terminar la cuenta.
         if (fija) motorFijo.seguir(performance.now())
         // start() ya no va aca: arranca al empezar la cuenta -ver arriba, 28-09-2026-.
@@ -1704,7 +1733,35 @@ export default function App({ motor, repoOverride }: AppProps) {
     setConCamara(false)
     setEstadoToma('listo')
     setVista(origenLecturaRef.current)
+    // -orden 2, punto 8- Al volver a la portada después de leer o grabar.
+    if (origenLecturaRef.current === 'biblioteca' && pendienteAvisosPortadaRef.current) {
+      pendienteAvisosPortadaRef.current = false
+      mostrarAvisosDePortada()
+    }
   }
+
+  function mostrarAvisosDePortada() {
+    if (!huboTomaRef.current) return
+    const fin = tocaAvisoFinPrueba()
+    if (fin) {
+      marcarAvisoFinPrueba(fin.vence)
+      const fecha = fechaPruebaEnIdioma(fin.vence, idiomaApp())
+      mostrarAviso(t('avisoFinPrueba', { fecha }), { duracionMs: 6000 })
+      return
+    }
+    if (tocaAvisoSinConexion()) {
+      marcarAvisoSinConexionHoy()
+      mostrarAviso(t('sinConexionVerificar'), { duracionMs: 6000 })
+    }
+  }
+  // -orden 2, punto 8- Avisos de portada al llegar a la biblioteca después de una toma.
+  useEffect(() => {
+    if (vista !== 'biblioteca' || !pendienteAvisosPortadaRef.current) return
+    pendienteAvisosPortadaRef.current = false
+    mostrarAvisosDePortada()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vista])
+
 
   async function handleLeerDirecto(id: string, rect?: DOMRect) {
     try {
@@ -1950,9 +2007,14 @@ export default function App({ motor, repoOverride }: AppProps) {
     reiniciarEn(0)
     setEstadoToma('listo')
     setControlesVisibles(false)
+    setLecturaForzadaAFija(false)
+    setFaseLimiteVoz(null)
     // Si hubo toma, el visor la confirma. El aviso "Grabado" solo queda
     // para la salida SIN archivo: los dos juntos tapaban el mismo hecho.
     if (resumen) setGrabacionAbierta(resumen)
+    // -orden 2, punto 5- Oferta inicial UNA vez, ya de vuelta en LISTO -nunca al abrir la app-.
+    pendienteAvisosPortadaRef.current = true
+    void abrirOfertaInicialSiCorresponde()
     return resumen
   }
 
@@ -2506,6 +2568,86 @@ export default function App({ motor, repoOverride }: AppProps) {
   function msPausadoAhora(): number {
     const abierta = pausaAbiertaDesdeRef.current
     return msPausadoRef.current + (abierta !== null ? Math.max(0, Date.now() - abierta) : 0)
+  }
+
+  // -orden 2, puntos 3 y 4- Mira el tiempo de la toma SIN pausas. Solo «Con la voz» tiene límite de
+  // lectura; Grabar tiene el de grabación. Velocidad fija elegida por la persona no tiene límite.
+  useEffect(() => {
+    if (estadoToma !== 'leyendo' || tInicioLecturaMs === null || enPausa) return
+    if (tieneSuscripcion()) return
+    const id = setInterval(() => {
+      if (limiteAplicadoRef.current) return
+      const lim = limitesActuales()
+      const trans = transcurridoSinPausas(performance.now(), tInicioLecturaMs, msPausadoAhora())
+      // Lectura: solo con voz y sin forzar aún.
+      if (!conCamara && !fija && !lecturaForzadaAFija) {
+        if (llegoAlLimite('lectura', trans, lim)) {
+          limiteAplicadoRef.current = true
+          if (!motorDeLaVoz) return
+          const est = motorDeLaVoz.leerEstado()
+          const ritmo = ritmoDeLosUltimosSegundos([], performance.now(), 3000, est.ppmEstimadas)
+          motorFijo.irAToken(est.posicion, performance.now())
+          motorFijo.cambiarRitmo(ritmo, performance.now())
+          motorFijo.seguir(performance.now())
+          setLecturaForzadaAFija(true)
+          setFaseLimiteVoz('fija')
+          void stop()
+          mostrarAviso(t('limiteLectura'), {
+            duracionMs: 8000,
+            tocable: true,
+            alTocar: () => { void alTocarLimiteLectura() }
+          })
+          return
+        }
+        if (hayQueAvisar('lectura', trans, lim)) {
+          if (!avisoLimiteVozRef.current) {
+            avisoLimiteVozRef.current = true
+            setFaseLimiteVoz('aviso')
+            window.setTimeout(() => {
+              setFaseLimiteVoz((f) => (f === 'aviso' ? 'queda' : f))
+            }, 4000)
+          }
+        }
+      }
+      // Grabación.
+      if (conCamara) {
+        if (llegoAlLimite('grabacion', trans, lim)) {
+          limiteAplicadoRef.current = true
+          void (async () => {
+            const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
+            const resumen = await handleStop()
+            if (resumen === null) avisarFinDeToma(duracionMs)
+            mostrarAviso(t('limiteGrabacion'), {
+              duracionMs: 8000,
+              tocable: true,
+              alTocar: () => { void abrirOferta('limiteGrabacion') }
+            })
+          })()
+          return
+        }
+        if (hayQueAvisar('grabacion', trans, lim) && !avisoLimiteGrabRef.current) {
+          avisoLimiteGrabRef.current = true
+          mostrarAviso(t('avisoQuedaMinutoGrabacion'), { duracionMs: 4000 })
+        }
+      }
+    }, 250)
+    return () => clearInterval(id)
+  // handleStop / avisarFinDeToma / stop se leen frescos; no van en deps para no rearmar cada render.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [estadoToma, tInicioLecturaMs, enPausa, conCamara, fija, lecturaForzadaAFija, motorDeLaVoz, motorFijo])
+
+  async function alTocarLimiteLectura() {
+    // Pausa la lectura y abre la oferta. Si se suscribe, vuelve la voz; si no, sigue en pausa.
+    if (!enPausa) await despachar({ tipo: 'alternar', tMs: Date.now() })
+    await abrirOferta('limiteLectura')
+    if (tieneSuscripcion()) {
+      setLecturaForzadaAFija(false)
+      setFaseLimiteVoz(null)
+      limiteAplicadoRef.current = false
+      if (enPausa || estadoPausaRef.current.tipo !== 'grabando') {
+        await despachar({ tipo: 'alternar', tMs: Date.now() })
+      }
+    }
   }
   function describirEntrada(en: EntradaPausa): string {
     // -tarea 88, segunda vuelta- La palma lleva además la primera vista y el fin de la voz, en el reloj del
@@ -3646,6 +3788,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                 enPausa={enPausa}
                 msPausadoAhora={msPausadoAhora}
                 preparandoVoz={preparandoVoz}
+                // -orden 2, puntos 3 y 4-
+                limiteTotalSeg={conCamara && !tieneSuscripcion() ? limitesActuales().grabacionSeg : (faseLimiteVoz === 'queda' || faseLimiteVoz === 'aviso' ? limitesActuales().lecturaSeg : null)}
+                faseLimiteVoz={faseLimiteVoz}
+                segundosQuedanVoz={tInicioLecturaMs != null && (faseLimiteVoz === 'queda' || faseLimiteVoz === 'aviso') ? Math.max(0, limitesActuales().lecturaSeg - transcurridoSinPausas(performance.now(), tInicioLecturaMs, msPausadoAhora())) : null}
               />
             )}
           </div>
@@ -3765,10 +3911,13 @@ export default function App({ motor, repoOverride }: AppProps) {
             setGrabacionAbierta(null)
             handleEmpezarDesdeListo()
           }}
+          mostrarAviso={mostrarAviso}
           onGuardadoEnGaleria={(ok, detalle) => {
             if (ok) {
               hapticaToqueMedio()
-              mostrarAviso(detalle || t('galeriaGuardada'))
+              // -orden 2- detalle '' = guardó con marca: el aviso tocable lo pone el visor.
+              // Antes: mostrarAviso(detalle || t('galeriaGuardada'))
+              if (detalle !== '') mostrarAviso(detalle || t('galeriaGuardada'))
             } else {
               mostrarAviso(detalle || t('galeriaNoSeGuardo'))
             }
@@ -3884,6 +4033,7 @@ export default function App({ motor, repoOverride }: AppProps) {
           origen={origenAjustes}
           onCerrar={() => setAjustesAbiertos(false)}
           onRegistrarCerrarDentro={(fn) => { cerrarDentroAjustesRef.current = fn }}
+          mostrarAviso={mostrarAviso}
           ajustesLectura={ajustesLectura}
           // La sección Video solo la muestra Grabar -la ficha Más de lado y en tableta-: los mismos datos que
           // recibe la toma.

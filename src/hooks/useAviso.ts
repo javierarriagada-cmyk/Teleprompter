@@ -16,6 +16,10 @@ export interface AvisoInfo {
   // idioma del guion sale en el idioma del GUION -«Your script is in English...» con la app en español-, y
   // TalkBack elige la voz por el lang: sin el, lo leeria con voz española -lib/idioma.ts, reflejarEnDocumento-.
   idioma?: string
+  // -orden 2, punto 3, 26-10-2026- Aviso tocable entero con chevron -lámina 2A-: al tocarlo corre alTocar.
+  // Los avisos de hoy, con o sin botón de acción, no cambian.
+  tocable?: boolean
+  alTocar?: () => void
 }
 
 // El color de la acción del aviso, solo con variables que ya existen: --color-texto es el del texto del
@@ -37,7 +41,8 @@ export function useAviso() {
     msg: string,
     // -portugues-voz, punto 7, 2026-10-22- Antes: opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number }
     // -portugues-voz, 2026-10-22- Suma idioma. Antes: opciones?: { ...; duracionMs?: number; accionNeutra?: boolean }
-    opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number; accionNeutra?: boolean; idioma?: string }
+    // -orden 2, punto 3- Suma tocable y alTocar. Antes: opciones?: { ...; idioma?: string }
+    opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number; accionNeutra?: boolean; idioma?: string; tocable?: boolean; alTocar?: () => void }
   ) => {
     if (timerAvisoRef.current) clearTimeout(timerAvisoRef.current)
     setAvisoInfo({
@@ -45,7 +50,9 @@ export function useAviso() {
       accionTexto: opciones?.accionTexto,
       alEjecutarAccion: opciones?.alEjecutarAccion,
       accionNeutra: opciones?.accionNeutra,
-      idioma: opciones?.idioma
+      idioma: opciones?.idioma,
+      tocable: opciones?.tocable,
+      alTocar: opciones?.alTocar
     })
     const dur = opciones?.duracionMs ?? 2000
     timerAvisoRef.current = setTimeout(() => {
