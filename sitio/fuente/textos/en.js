@@ -11,13 +11,15 @@ export default {
   locale: 'en_US',
   // -sitio-cuenta, 20-10-2026- Suma la página para borrar la cuenta. Antes:
   // rutas: { portada: '/en', privacidad: '/en/privacy', soporte: '/en/support', ayuda: '/en/help' },
-  rutas: { portada: '/en', privacidad: '/en/privacy', soporte: '/en/support', ayuda: '/en/help', borrarCuenta: '/en/delete-account' },
+  rutas: { portada: '/en', privacidad: '/en/privacy', terminos: '/en/terms', soporte: '/en/support', ayuda: '/en/help', borrarCuenta: '/en/delete-account' },
 
   meta: {
     titulo: 'Sigo — The teleprompter that follows your voice',
     descripcion: 'Sigo is the teleprompter that follows your voice: read out loud and the text keeps pace with you. Pause, and it waits. Coming soon to Google Play.',
     ogDescripcion: 'The teleprompter that follows your voice. Coming soon to Google Play.',
     privacidadTitulo: 'Privacy — Sigo',
+    terminosTitulo: 'Terms of Use — Sigo',
+    terminosDescripcion: 'What Sigo Free and Sigo+ include, how billing works and how to cancel.',
     // -sitio-cuenta, 20-10-2026- Ya no todo queda en el teléfono: con sesión, los guiones tienen copia en la nube.
     // Antes: privacidadDescripcion: 'How Sigo handles your scripts, your takes and your voice: everything stays on your phone.',
     privacidadDescripcion: 'How Sigo handles your scripts, your takes, your voice and your account.',
@@ -72,7 +74,7 @@ export default {
 
   // -sitio-cuenta, 20-10-2026- Suma Borrar cuenta. Antes:
   // pie: { privacidad: 'Privacy', soporte: 'Support', ayuda: 'Help' },
-  pie: { privacidad: 'Privacy', soporte: 'Support', ayuda: 'Help', borrarCuenta: 'Delete account' },
+  pie: { privacidad: 'Privacy', terminos: 'Terms', soporte: 'Support', ayuda: 'Help', borrarCuenta: 'Delete account' },
 
   // EL CORREO DE CONTACTO en ingles -Javier, 07-10-2026-: hello@. Antes las paginas en ingles
   // decian hola@, el de espanol. Los dos reciben.
@@ -97,18 +99,43 @@ export default {
       'Sigo uses the microphone to follow your voice.<small>Speech recognition runs on the phone. Your audio is never sent to any server.</small>',
       'Sigo uses the camera when you turn it on to record yourself.<small>The video is saved on your phone and stays there.</small>',
       'Gestures are recognized on the phone.<small>No image leaves it.</small>',
-      'Sigo does not send usage statistics.',
+      // Antes: 'Sigo no envía estadísticas de uso.'
+      'Sigo does not use Firebase Analytics or Firebase Remote Config.<small>Sigo uses Firebase for sign-in and script backups; those services send the technical data needed to work.</small>',
       // -sitio-cuenta, 20-10-2026- Ya no es cierto: hay cuenta, opcional. Antes: 'Sigo has no accounts.',
       'Signing in with Google is optional.<small>Sigo works fully without an account.</small>',
       // -sitio-cuenta, 20-10-2026- El inicio de sesión y la copia de seguridad -órdenes A y B-.
       'If you sign in with Google, Sigo receives your email, your name and an account identifier.<small>Firebase also stores the link to your Google profile photo, which Sigo doesn’t use or show.</small>',
       'The backup of your scripts is stored in Firebase, by Google, in the Santiago de Chile region.<small>Your scripts travel encrypted, and no other account can read them.</small>',
       'Firebase records the IP address to prevent abuse.',
+      'If you buy Sigo+, Google Play processes the payment. Sigo does not receive or see your card details.',
+      'RevenueCat checks whether Sigo+ is active.<small>To do this, it processes purchase history and the identifier used by the app: your Firebase UID if you signed in, or an anonymous RevenueCat identifier if you did not. Sigo does not send it your name or email. RevenueCat may receive currency and locale data to show the offer. <a href="https://www.revenuecat.com/privacy-policy">Read RevenueCat’s privacy policy</a>.</small>',
       'Videos never leave the phone.',
       'To delete your account and the backup of your scripts: <a href="/en/delete-account">sigoteleprompter.com/en/delete-account</a>.',
       'This site uses no tracking cookies and no analytics.'
     ],
     contacto: 'Questions? Write to us.'
+  },
+
+  terminos: {
+    titulo: 'Terms of Use',
+    vigencia: 'Effective &#123;&#123;FECHA&#125;&#125;',
+    secciones: [
+      { titulo: 'Who provides Sigo', parrafos: ['Sigo is an Android teleprompter that follows your voice. Sigo Teleprompter is a service by J. Arriagada, an independent developer in Chile.', 'Contact: <a href="mailto:hello@sigoteleprompter.com">hello@sigoteleprompter.com</a>.'] },
+      { titulo: 'Using Sigo for free', parrafos: ['The free version limits voice-guided reading and recording time. Videos have a watermark. <small>Current limits appear in the app and may change.</small>'] },
+      { titulo: 'Sigo+', parrafos: ['Sigo+ removes time limits on reading and recording and lets you save videos without a watermark. Monthly and yearly plans are available. You pay the price and taxes Google Play shows for your country.'] },
+      { titulo: 'Billing', parrafos: ['Google Play charges your Google account; Sigo does not receive or see your card details. Your subscription renews automatically until canceled: monthly or yearly, depending on your plan.'] },
+      { titulo: '7-day free trial', parrafos: ['Google Play offers 7 days free on both plans to new customers who have not had that subscription. Play checks eligibility and asks for a payment method. Cancel before the 7 days end and you will not pay; otherwise, recurring billing starts at the price and frequency shown at purchase.'] },
+      { titulo: 'Canceling', parrafos: ['Cancel in Google Play → Subscriptions, or in Sigo: Settings → “Sigo+ active · Manage”. This stops renewal. Sigo+ remains available until the paid period ends, unless Google Play says otherwise. Uninstalling does not cancel.'] },
+      { titulo: 'Refunds', parrafos: ['Request a Google Play refund under its policies, which depend on country, date and purchase. <a href="https://support.google.com/googleplay/answer/15574908">Read the policies</a>. If a charge fails or Sigo+ does not activate, email <a href="mailto:hello@sigoteleprompter.com">hello@sigoteleprompter.com</a>.'] },
+      { titulo: 'Price changes', parrafos: ['Google Play manages notices and consent under your country’s rules. If you do not accept an increase when asked, you can cancel. <a href="https://support.google.com/googleplay/android-developer/answer/12154973">Price change rules</a>.'] },
+      { titulo: 'Your scripts and videos', parrafos: ['Your scripts and videos are yours. Sigo does not claim or reuse them. You are responsible for their content and for having the rights to use it.'] },
+      { titulo: 'Acceptable use', parrafos: ['Do not use Sigo illegally, to harm others, or to evade or break billing.'] },
+      { titulo: 'No guarantees', parrafos: ['Speech recognition can make mistakes. Keep the text handy when reading live. Your legal rights remain.'] },
+      { titulo: 'Liability', parrafos: ['We are responsible only as far as the law allows. These terms do not limit or exclude your mandatory consumer rights.'] },
+      { titulo: 'Privacy and account', parrafos: ['Read the <a href="/en/privacy">Privacy Policy</a>. To delete your account and backup, visit <a href="/en/delete-account">Delete account</a>.'] },
+      { titulo: 'Changes to these terms', parrafos: ['We will post changes and dates here, and notify you in the app about important changes. The effective date appears above.'] },
+      { titulo: 'Governing law', parrafos: ['Chilean law applies, without taking away consumer protection rights in your country.'] }
+    ]
   },
 
 

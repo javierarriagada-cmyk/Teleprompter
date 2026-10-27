@@ -23,7 +23,7 @@ export default {
   // og:locale. El hreflang es «pt», sin país: así lo encuentra también Portugal -armar.mjs-.
   locale: 'pt_BR',
   // Las mismas rutas que ya usa la app en portugués.
-  rutas: { portada: '/pt', privacidad: '/pt/privacidade', soporte: '/pt/suporte', ayuda: '/pt/ajuda', borrarCuenta: '/pt/excluir-conta' },
+  rutas: { portada: '/pt', privacidad: '/pt/privacidade', terminos: '/pt/termos', soporte: '/pt/suporte', ayuda: '/pt/ajuda', borrarCuenta: '/pt/excluir-conta' },
 
   meta: {
     // -portugues-sitio, 2026-10-24, decisión de Javier- El nombre del producto es el mismo que en la marca y en la
@@ -33,6 +33,8 @@ export default {
     descripcion: 'O Sigo é o teleprompter que acompanha a sua voz: você lê em voz alta e o texto anda junto. Se você para, ele espera. Em breve no Google Play.',
     ogDescripcion: 'O teleprompter que acompanha a sua voz. Em breve no Google Play.',
     privacidadTitulo: 'Privacidade — Sigo',
+    terminosTitulo: 'Termos de uso — Sigo',
+    terminosDescripcion: 'O que o Sigo grátis e o Sigo+ incluem, como funciona a cobrança e como cancelar.',
     privacidadDescripcion: 'Como o Sigo trata seus roteiros, seus takes, sua voz e sua conta.',
     soporteTitulo: 'Suporte — Sigo',
     soporteDescripcion: 'Como avisar sobre um problema no Sigo, o teleprompter que acompanha a sua voz.',
@@ -82,7 +84,7 @@ export default {
 
   cierre: { frase: 'O teleprompter que acompanha a sua&nbsp;voz.', disponible: 'Em breve no Google Play.' },
 
-  pie: { privacidad: 'Privacidade', soporte: 'Suporte', ayuda: 'Ajuda', borrarCuenta: 'Excluir conta' },
+  pie: { privacidad: 'Privacidade', terminos: 'Termos', soporte: 'Suporte', ayuda: 'Ajuda', borrarCuenta: 'Excluir conta' },
 
   // EL CORREO EN PORTUGUÉS es el del español -Javier, 22-10-2026, P4 de docs/portugues.txt-:
   // «Olá» y «hola» se parecen lo bastante, y no hace falta otro reenvío.
@@ -106,16 +108,41 @@ export default {
       'O Sigo usa o microfone para acompanhar a sua voz.<small>O reconhecimento de voz roda no celular. O áudio não é enviado a nenhum servidor.</small>',
       'O Sigo usa a câmera quando você a liga para se gravar.<small>O vídeo fica salvo no seu celular e não sai de lá.</small>',
       'Os gestos são reconhecidos no celular.<small>Nenhuma imagem sai dele.</small>',
-      'O Sigo não envia estatísticas de uso.',
+      // Antes: 'Sigo no envía estadísticas de uso.'
+      'O Sigo não usa o Firebase Analytics nem o Firebase Remote Config.<small>O Firebase é usado para fazer login e guardar o backup dos roteiros; esses serviços transmitem os dados técnicos necessários para funcionar.</small>',
       'Entrar com o Google é opcional.<small>O Sigo funciona por completo sem conta.</small>',
       'Se você entrar com o Google, o Sigo recebe seu e-mail, seu nome e um identificador da conta.<small>O Firebase também guarda o link da sua foto de perfil do Google, que o Sigo não usa nem mostra.</small>',
       'O backup dos seus roteiros fica no Firebase, do Google, na região de Santiago do Chile.<small>Seus roteiros viajam criptografados, e nenhuma outra conta pode lê-los.</small>',
       'O Firebase registra o endereço IP para impedir abusos.',
+      'Se você assinar o Sigo+, o Google Play processa o pagamento. O Sigo não recebe nem vê os dados do seu cartão.',
+      'O RevenueCat verifica se o Sigo+ está ativo.<small>Para isso, processa o histórico de compras e o identificador usado pelo app: seu UID do Firebase se você entrou na conta, ou um identificador anônimo do RevenueCat se não entrou. O Sigo não envia seu nome nem seu e-mail. O RevenueCat pode receber dados de moeda e localidade para mostrar a oferta. <a href="https://www.revenuecat.com/privacy-policy">Leia a política de privacidade do RevenueCat</a>.</small>',
       'Os vídeos nunca saem do celular.',
       'Para excluir sua conta e o backup dos seus roteiros: <a href="/pt/excluir-conta">sigoteleprompter.com/pt/excluir-conta</a>.',
       'Este site não usa cookies de rastreamento nem ferramentas de análise.'
     ],
     contacto: 'Se tiver alguma dúvida, escreva para a gente.'
+  },
+
+  terminos: {
+    titulo: 'Termos de uso',
+    vigencia: 'Em vigor desde &#123;&#123;FECHA&#125;&#125;',
+    secciones: [
+      { titulo: 'Quem oferece o Sigo', parrafos: ['O Sigo é um teleprompter para Android que acompanha a sua voz. Sigo Teleprompter é um serviço de J. Arriagada, desenvolvedor independente no Chile.', 'Contato: <a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a>.'] },
+      { titulo: 'Usar o Sigo grátis', parrafos: ['A versão grátis limita o tempo de leitura com a voz e de gravação. Os vídeos têm marca-d’água. <small>Os limites atuais aparecem no app e podem mudar.</small>'] },
+      { titulo: 'Sigo+', parrafos: ['O Sigo+ tira os limites de tempo para ler e gravar e permite salvar vídeos sem marca-d’água. Há planos mensal e anual. Você paga o preço e os impostos que o Google Play mostra para seu país.'] },
+      { titulo: 'Cobrança', parrafos: ['O Google Play cobra pela sua conta do Google; o Sigo não recebe nem vê os dados do cartão. A assinatura renova automaticamente até você cancelar: todo mês ou ano, conforme o plano.'] },
+      { titulo: 'Teste grátis de 7 dias', parrafos: ['O Google Play oferece 7 dias grátis nos dois planos a novos clientes que nunca tiveram aquela assinatura. A plataforma verifica se você tem direito e pede uma forma de pagamento. Cancele antes do fim dos 7 dias e não pagará; caso contrário, começa a cobrança recorrente pelo preço e frequência mostrados na compra.'] },
+      { titulo: 'Cancelar', parrafos: ['Cancele no Google Play → Assinaturas ou no Sigo: Configurações → “Sigo+ ativo · Gerenciar”. Isso evita a renovação. O Sigo+ fica ativo até o fim do período pago, salvo indicação diferente do Google Play. Desinstalar não cancela.'] },
+      { titulo: 'Reembolsos', parrafos: ['Peça reembolso ao Google Play conforme políticas que dependem do país, da data e da compra. <a href="https://support.google.com/googleplay/answer/15574908">Consulte as políticas</a>. Se houver erro na cobrança ou o Sigo+ não ativar, escreva para <a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a>.'] },
+      { titulo: 'Mudanças de preço', parrafos: ['O Google Play gerencia avisos e consentimento conforme as regras do seu país. Se você não aceitar um aumento quando solicitado, pode cancelar. <a href="https://support.google.com/googleplay/android-developer/answer/12154973">Regras de mudança de preço</a>.'] },
+      { titulo: 'Seus roteiros e vídeos', parrafos: ['Seus roteiros e vídeos são seus. O Sigo não reivindica nem reutiliza seu conteúdo. Você responde por ele e por ter os direitos necessários.'] },
+      { titulo: 'Uso correto', parrafos: ['Não use o Sigo ilegalmente, para prejudicar outras pessoas nem para burlar ou quebrar a cobrança.'] },
+      { titulo: 'Sem garantias', parrafos: ['O reconhecimento de voz pode errar. Ao ler ao vivo, mantenha o texto por perto. Seus direitos legais continuam valendo.'] },
+      { titulo: 'Responsabilidade', parrafos: ['Respondemos somente até onde a lei permitir. Estes termos não limitam nem excluem seus direitos obrigatórios como consumidor.'] },
+      { titulo: 'Privacidade e conta', parrafos: ['Leia a <a href="/pt/privacidade">Política de privacidade</a>. Para excluir sua conta e o backup, acesse <a href="/pt/excluir-conta">Excluir conta</a>.'] },
+      { titulo: 'Mudanças nestes termos', parrafos: ['Publicaremos as mudanças e datas aqui. Avisaremos você no app sobre mudanças importantes. A vigência aparece no início.'] },
+      { titulo: 'Lei aplicável', parrafos: ['Vale a lei do Chile, sem retirar os direitos do consumidor no seu país.'] }
+    ]
   },
 
   // Las mismas secciones que es.js, en el mismo orden. Sin imagen: ver arriba.
