@@ -2,21 +2,28 @@ ANTES DE ARMAR EL AAB PARA GOOGLE -lista de lo aprendido; se lee ENTERA antes de
 
 Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se escape. Fecha y caso al lado.
 
-1. LO QUE SE PUBLICA NO ES LO QUE SE PRUEBA. La APK de prueba no pasa por R8; el AAB sí. Antes de subir,
-   el paquete de Play -o un build release igual- se instala en el Redmi y se prueba funcionando: voz,
-   gestos -palma y V-, grabar, pausa, guardar, visor, subtítulos y filtro.
+1. LO QUE SE PUBLICA NO ES LO QUE SE PRUEBA. La APK de prueba no pasa por R8; el AAB sí. Lo que va a Play
+   se verifica en el código y en el paquete -el paso a paso A, abajo: npm run play, el mapping con cada
+   clase que se busca por nombre, 16 KB, lo que no viaja, la versión y los permisos-, y la prueba de verdad
+   es la de Javier desde Play, en el g86 -C, abajo-.
    -15-10-2026: la 0.9.1 salió con los gestos rotos. R8 sacó piezas de MediaPipe: «gestos reconocedor
    no arranca: ExceptionInInitializerError» en cada sesión del moto g86. La ficha los anuncia.-
    -18-10-2026, Javier: la versión de Play NO se instala en el Redmi desde el PC. Cada app nueva que no
-   viene de Play abre la pregunta de Play Protect, y Google recibe datos de la app. Por eso va en dos
-   partes. ANTES de subir, el paquete de Play corre en el EMULADOR -con otro applicationId, ver el paso a
-   paso de abajo- para ver que ARRANQUE cada pieza nativa: voz, gestos, grabar con guardar y el visor.
-   Toda falla se investiga en el registro antes de culpar al emulador: el 18-10 una toma no abrió el visor
-   y se dejó pasar. DESPUÉS de publicar, Javier instala desde Play en el g86 y hace la toma larga con su
-   voz -punto 5-.-
+   viene de Play abre la pregunta de Play Protect, y Google recibe datos de la app.-
+   -20-10-2026, con la 0.10.0, Javier descartó el emulador: «no le encuentro sentido y es bastante
+   trabajo… si esto es código».-
+   Antes -hasta el 27-10-2026-: «Antes de subir, el paquete de Play -o un build release igual- se instala
+   en el Redmi y se prueba funcionando: voz, gestos -palma y V-, grabar, pausa, guardar, visor, subtítulos y
+   filtro.» Y del 18-10: «Por eso va en dos partes. ANTES de subir, el paquete de Play corre en el EMULADOR
+   -con otro applicationId, ver el paso a paso de abajo- para ver que ARRANQUE cada pieza nativa: voz,
+   gestos, grabar con guardar y el visor. Toda falla se investiga en el registro antes de culpar al
+   emulador: el 18-10 una toma no abrió el visor y se dejó pasar. DESPUÉS de publicar, Javier instala desde
+   Play en el g86 y hace la toma larga con su voz -punto 5-.»
 
 2. TODA BIBLIOTECA NATIVA CON SUS REGLAS DE R8, desde su fuente oficial: MediaPipe, Vosk y JNA, Media3,
-   CameraX, RevenueCat y Play Billing. Una biblioteca nativa nueva suma su línea aquí y en el punto 1.
+   CameraX, RevenueCat y Play Billing. Una biblioteca nativa nueva suma su línea aquí y, si algo suyo se
+   busca por nombre, en la revisión del mapping del paso A3 -27-10-2026: el punto 1 ya no lista piezas;
+   antes decía «aquí y en el punto 1»-.
    Antes -cambiado el 26-10-2026, orden 1 del cobro, porque llegan RevenueCat y Play Billing-: «2. TODA
    BIBLIOTECA NATIVA CON SUS REGLAS DE R8, desde su fuente oficial: MediaPipe, Vosk y JNA, Media3,
    CameraX. Una biblioteca nativa nueva suma su línea aquí y en el punto 1.»
@@ -43,6 +50,8 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
    propio LOAD y cumplen. libjnidispatch.so sí comparte, y con la 5.18.1 termina en 16 KB exactos.
    -15-10-2026: Play avisó por libjnidispatch.so. JNA 5.13 tenía la alineación bien y el RELRO mal; se
    subió a 5.18.1, la que pide Vosk.-
+   SE MIDE CON scripts/elf16k.mjs -27-10-2026-: las dos condiciones, .so por .so, sin readelf, que en el PC
+   de Javier no está. Da OK o FALLA por archivo y sale con código 1 si una falla o si la carpeta está vacía.
 
 5. UNA TOMA LARGA ANTES DE SUBIR: más de 25 minutos a 1080p -más de 2 GB-. El motor tiene que seguir
    hasta el final, el visor tiene que reproducirla y guardarla sin filtro ni subtítulos tiene que copiar,
@@ -52,7 +61,15 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
 
 6. EN LA CONSOLA, ANTES DE SUBIR: mirar si la publicación administrada está encendida o apagada -cambia
    cómo se sube la ficha: apagada, `npm run ficha -- subir --directo`-. La prueba cerrada: Activo, sus
-   testers y el mismo correo, antes y después. Nunca «Crear pista», «Pausar» ni tocar Verificadores.
+   testers y el mismo correo, antes y después. Nunca «Crear segmento» ni «Pausar segmento», y la pestaña
+   «Verificadores» solo para sumar a alguien que Javier decidió.
+   LA FICHA SE LEE ANTES Y DESPUÉS DE SUBIRLA -27-10-2026-: `node scripts/leerFicha.mjs` abre una edición,
+   solo lee, la borra comprobando que ya no existe y compara cada texto y la huella de cada imagen con
+   docs/play/ficha. npm run ficha -- subir vuelve a subir TODOS los idiomas: si algo de es-419 o en-US
+   difiere de lo publicado, se le muestra a Javier antes. -25-10-2026: así subió la ficha en pt-BR; en
+   es-419 y en-US solo cambió la línea del portugués de la descripción larga.-
+   Antes -hasta el 27-10-2026-: «Nunca «Crear pista», «Pausar» ni tocar Verificadores.» Son los nombres
+   de la Ayuda de Play Console en español: «Crear segmento» y «Pausar segmento» -answer/9845334-.
 
 7. versionCode mayor que el último subido; notas de la versión en docs/play/notas-version.txt.
 
@@ -118,52 +135,103 @@ símbolos. No bloquea.
 
 
 EL PASO A PASO DE UNA SUBIDA -como salió la 0.9.2 a la prueba cerrada, 18-10-2026; Google la publicó en
-minutos-. Javier: «para que con ese doc lo tengamos clarísimo».
+minutos-. Javier: «para que con ese doc lo tengamos clarísimo». Al día el 27-10-2026, con lo aprendido en
+la 0.11.0 y la 0.11.1.
 
 A. EN EL PC -Claude-
   1. La versión: versionName a mano en android/app/build.gradle, con su comentario y su «Antes:». El
-     versionCode sube solo -cantidad de commits-. Las notas en docs/play/notas-version.txt, un bloque
-     <es-419> y otro <en-US>, con 500 caracteres como máximo cada uno: se cuentan. Javier las aprueba.
-     Commit en main con su correo y se sube.
+     versionCode sube solo -cantidad de commits-. Las notas en docs/play/notas-version.txt, tres bloques,
+     <es-419>, <en-US> y <pt-BR>, con 500 caracteres como máximo cada uno: se cuentan. Javier las aprueba.
+     Commit en main con el correo noreply -git -c user.email=javierarriagada-cmyk@users.noreply.github.com-,
+     sin coautor, y se sube con su sí.
+     Antes -hasta el 27-10-2026-: «un bloque <es-419> y otro <en-US>» y «Commit en main con su correo y se
+     sube.»
   2. `npm run play` en la CARPETA DEL REPO, sin «subir». No se corre en una copia del scratchpad: ahí npm ls
      tapa la ruta con *** y la comprobación de licencias da FALLA. Deja Escritorio\Sigo-play.aab, firmado
      con la llave de subida. Todas sus comprobaciones tienen que salir en OK.
-  3. Las revisiones a mano, sobre ese mismo AAB -los archivos se sacan del .aab con unzip-:
-     - 16 KB en cada .so de base/lib/arm64-v8a, con las dos condiciones del punto 4.
-     - Lo que no viaja -punto 3-: en base/assets/public/assets/*.js no tienen que estar panel-corpus,
+     Antes de armar: main al día -git pull --ff-only-; `npm ci` si cambió package-lock.json -el 20-10
+     faltaba firebase, el 26-10 llegó RevenueCat-; y las tres voces en android/app/src/main/assets
+     -`npm run modelo` baja la que falte; sin model-pt, play.mjs se para-.
+  3. Las revisiones a mano, sobre ese mismo AAB, copiado antes fuera del Escritorio con su SHA-256 junto con
+     su mapping.txt -Sigo-play.aab se pisa en cada armado-. Los archivos se sacan del .aab con `tar -xf`, que
+     Windows trae:
+     - 16 KB: `node scripts/elf16k.mjs <carpeta>\base\lib\arm64-v8a`, con las dos condiciones del punto 4.
+     - Lo que no viaja -punto 3-: en base/assets/public/assets/ no tienen que estar panel-corpus,
        panel-mediciones, btn-abrir-mediciones, btn-abrir-corpus ni btn-borrar-copias-medicion. CON
        CONTRAPRUEBA: ahí mismo SÍ tiene que estar guardando-toma. El 18-10 la primera búsqueda miraba una
-       carpeta vacía, daba 0 en todo y parecía bien.
-     - Sin service worker: ni registerSW ni sw.js en el .aab.
-     - versionName: `bundletool dump manifest --xpath=/manifest/@android:versionName`.
-     - Flogger con su nombre en android/app/build/outputs/mapping/release/mapping.txt -punto 2-.
-  4. Antes de subir, el emulador con el paquete de Play -punto 1-: otro applicationId y
-     webContentsDebuggingEnabled, SOLO en una copia del scratchpad y nunca en el commit; `bundletool
-     build-apks --local-testing` e `install-apks` al emulador, una sola vez. El emulador motog86 no tiene
-     cuenta de Google, así que Play Protect no pregunta. Con -no-snapshot-save, lo instalado se pierde al
-     apagarlo.
+       carpeta vacía, daba 0 en todo y parecía bien. SE BUSCA CON NODE -indexOf sobre cada archivo leído en
+       utf8-: el 25-10 Select-String de PowerShell dio 0 en todo sobre los .js minificados, guardando-toma
+       incluido. Un .motor.txt en el código es normal: el visor lo lee en tomas viejas y se borra al borrar
+       una toma; no se escribe -src/lib/tomaVideo.ts, src/lib/diagnostico.ts-.
+     - Sin service worker: ni sw.js ni registerSW en el .aab. Que aparezca «serviceWorker» es normal -lo
+       trae firebase-; lo que no puede estar es serviceWorker.register(.
+     - La versión: `bundletool dump manifest --bundle=<aab> --xpath=/manifest/@android:versionName`, y con
+       @android:versionCode el número. bundletool está en .herramientas/.
+     - Los permisos: `bundletool dump manifest --bundle=<aab> --xpath=/manifest/uses-permission/@android:name`,
+       comparados con los del AAB anterior. Cada permiso nuevo se explica antes de subir. Tiene que estar
+       com.android.vending.BILLING y NO com.google.android.gms.permission.AD_ID: si AD_ID aparece, se para
+       y se le avisa a Javier, porque cambia la ficha de seguridad de los datos -26-10-2026, la 0.11.1-.
+     - Con su nombre en android/app/build/outputs/mapping/release/mapping.txt -la línea «X -> X:»-, lo que
+       se busca por nombre y revisarR8.mjs no mira: com.sigoteleprompter.app.CuentaGooglePlugin,
+       GestosPlugin y VoskNativoPlugin, com.revenuecat.purchases.capacitor.PurchasesPlugin, y de Play
+       Billing ProxyBillingActivity y ProxyBillingActivityV2, como piden las reglas de billing-8.3.0.aar.
+       Flogger -punto 2- y CredentialProviderPlayServicesImpl ya los revisa npm run play.
+     Antes -hasta el 27-10-2026-: «Las revisiones a mano, sobre ese mismo AAB -los archivos se sacan del
+     .aab con unzip-: - 16 KB en cada .so de base/lib/arm64-v8a, con las dos condiciones del punto 4. […]
+     - Sin service worker: ni registerSW ni sw.js en el .aab. - versionName: `bundletool dump manifest
+     --xpath=/manifest/@android:versionName`. - Flogger con su nombre en android/app/build/outputs/mapping/
+     release/mapping.txt -punto 2-.»
+  4. LA APK GEMELA -26-10-2026, Javier: «cada armado deja las dos»-. Enseguida después del AAB, sin commits
+     en medio y SIN TELÉFONOS CONECTADOS -`adb devices` vacío: con uno conectado, scripts/apk.mjs sube el
+     número a lo instalado + 1-, `npm run apk` y una copia en Escritorio\Sigo-<versión>-<versionCode>.apk.
+     Es la que Javier sube a Firebase para la batería del agente de pruebas: App Distribution no acepta el
+     AAB. Antes de dársela: versión, número, firma de depuración y las voces es, en y pt adentro. No se
+     reparte con `npm run apk -- distribuir`: avisa a los probadores.
+     Antes -hasta el 27-10-2026-: «4. Antes de subir, el emulador con el paquete de Play -punto 1-: otro
+     applicationId y webContentsDebuggingEnabled, SOLO en una copia del scratchpad y nunca en el commit;
+     `bundletool build-apks --local-testing` e `install-apks` al emulador, una sola vez. El emulador motog86
+     no tiene cuenta de Google, así que Play Protect no pregunta. Con -no-snapshot-save, lo instalado se
+     pierde al apagarlo.» Javier lo descartó el 20-10 -punto 1-.
+  5. EL ESCRITORIO -26-10-2026, Javier: «cuando dejamos en escritorio versiones nuevas las anteriores que
+     esten en escritorio se borran»-. Con el AAB y la APK nuevos ya revisados, cada AAB o APK anterior del
+     Escritorio va a la Papelera de Windows, nunca borrado para siempre: `Add-Type -AssemblyName
+     Microsoft.VisualBasic; [Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile(<ruta>, 'OnlyErrorDialogs',
+     'SendToRecycleBin')`. También Sigo.apk, la copia que npm run apk deja siempre. Quedan solo Sigo-play.aab
+     y Sigo-<versión>-<versionCode>.apk.
 
 B. EN LA CONSOLA -Javier-. `npm run play -- subir` solo sabe la PRUEBA INTERNA y se niega a las demás
-   pistas: la prueba cerrada se sube a mano. Ayuda oficial: support.google.com/googleplay/android-developer/
-   answer/9859348.
-  1. Antes: ver si la publicación administrada está encendida o apagada -con la 0.9.1 y la 0.9.2,
-     apagada-. Ver que la prueba cerrada esté Activa y cuántos testers tiene.
-  2. Probar y publicar > Pruebas > Prueba cerrada > «Gestionar canal» en el canal que YA EXISTE. Nunca
-     «Crear pista».
-  3. «Crear nueva versión». Así se actualiza: cada entrega es una versión del mismo canal, y a los testers
-     les llega como actualización porque es la misma app con un versionCode mayor.
-  4. En app bundles, subir Escritorio\Sigo-play.aab y esperar a que muestre su versionCode y su versión.
-     El nombre de la versión, como venga.
-  5. Notas de la versión: pegar tal cual el bloque <es-419>...</es-419> <en-US>...</en-US> de
-     notas-version.txt.
-  6. «Guardar como borrador» y «Siguiente». En la revisión no puede haber errores. La advertencia de
-     símbolos de Vosk es conocida; cualquier otra se le muestra a Claude antes de seguir. Si pide un
-     porcentaje de lanzamiento, se decide antes de elegir.
-  7. El botón final -«Iniciar lanzamiento», «Guardar» o «Publicar», según la consola-.
-  8. Opcional: si Play avisa que no hay archivo de desofuscación, se sube el mapping.txt de arriba. Sirve
-     para leer los informes de fallas.
-  9. Después: la prueba cerrada sigue Activa, con los mismos testers. Nunca «Pausar» ni tocar
-     Verificadores.
+   pistas: la prueba cerrada se sube a mano. Los nombres son los de la Ayuda de Play Console en español,
+   leída el 25-10-2026: support.google.com/googleplay/android-developer/answer/9859348 -preparar y lanzar-,
+   answer/9859654 -publicación administrada- y answer/9845334 -pruebas cerradas-. La Ayuda avisa que puede
+   venir traducida con IA: si la pantalla dice otra cosa, una foto a Claude antes de seguir.
+  1. Antes: en Descripción general de la publicación, la sección «Estado de la publicación administrada»
+     -apagada de la 0.9.1 a la 0.11.1-. Ver que la prueba cerrada esté Activa y cuántos testers tiene.
+  2. Prueba y lanza > Pruebas > Prueba cerrada > «Administrar segmento» en el segmento que YA EXISTE. Nunca
+     «Crear segmento».
+  3. «Crear una versión nueva», arriba a la derecha. Así se actualiza: cada entrega es una versión del mismo
+     segmento, y a los testers les llega como actualización porque es la misma app con un versionCode mayor.
+     Si está inhabilitada, faltan tareas en la página Panel; con otra versión pendiente no se puede crear.
+  4. En los paquetes de aplicación, «Subir» y elegir Escritorio\Sigo-play.aab; esperar a que muestre su
+     versionCode y su versión. El nombre de la versión, como venga.
+  5. Notas de la versión: pegar tal cual los tres bloques de notas-version.txt, cada etiqueta en su propia
+     línea. La consola muestra el idioma de cada ficha: pt-BR está desde el 25-10-2026.
+  6. «Guardar como borrador» y «Siguiente», a «Obtener vista previa y confirmar». Si sale «Resumen de
+     errores», «Mostrar más». Con errores no se publica. La advertencia de símbolos de Vosk es conocida;
+     cualquier otra se le muestra a Claude antes de seguir. Si pide un porcentaje de lanzamiento, se decide
+     antes de elegir.
+  7. «Iniciar lanzamiento». Si después aparece «Guardar», en Descripción general de la publicación va
+     «Enviar para revisión». Con la publicación administrada apagada, Google la publica apenas la aprueba.
+  8. El mapping no se sube: con un app bundle y el complemento de Gradle 4.1 o posterior -el nuestro es el
+     8.13.0, android/build.gradle-, Play toma solo el archivo de desofuscación del paquete -answer/9848633-.
+  9. Después: el estado se ve en Prueba y lanza > Versiones y paquetes más recientes. La prueba cerrada
+     sigue Activa, con los mismos testers. Nunca «Pausar segmento».
+  Antes -hasta el 27-10-2026-: «2. Probar y publicar > Pruebas > Prueba cerrada > «Gestionar canal» en el
+  canal que YA EXISTE. Nunca «Crear pista».», «3. «Crear nueva versión».», «5. […] pegar tal cual el bloque
+  <es-419>...</es-419> <en-US>...</en-US>», «7. El botón final -«Iniciar lanzamiento», «Guardar» o
+  «Publicar», según la consola-.», «8. Opcional: si Play avisa que no hay archivo de desofuscación, se sube
+  el mapping.txt de arriba. Sirve para leer los informes de fallas.» y «9. […] Nunca «Pausar» ni tocar
+  Verificadores.»
 
 C. DESPUÉS DE PUBLICADA -Javier-: instalar desde Play en el g86 y hacer la toma larga del punto 5, con
-   voz, gestos, pausa, guardar, visor, subtítulos y filtro. Lo que falle va a la próxima versión.
+   voz, gestos, pausa, guardar, visor, subtítulos y filtro. Lo que falle va a la próxima versión. Si el g86
+   tiene una APK de prueba, primero se desinstala: la firma es otra.
