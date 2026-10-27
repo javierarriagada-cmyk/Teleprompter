@@ -615,6 +615,26 @@ export function IconoDocumento(props: PropsIcono) {
   )
 }
 
+/** ESTRELLA DE SIGO+ ACTIVO -orden 2, punto 6, 26-10-2026-. La misma de la lámina 4A. */
+export function IconoEstrella({ tamano = 22, ...props }: { tamano?: number } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width={tamano}
+      height={tamano}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="M12 3l2.4 5 5.6.8-4 3.9.9 5.5L12 15.6 7.1 18.2l.9-5.5-4-3.9 5.6-.8z" />
+    </svg>
+  )
+}
+
 /** SIN VIDEOS -tarea 76, 28-09-2026-. Un visor de cámara: cuatro esquinas en L en el rojo de
  * grabar y, adentro, una filmadora de líneas con el triángulo de reproducir. Javier lo eligió
  * de la imagen de una auditoría; está hecho con las piezas de este archivo.
