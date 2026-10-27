@@ -100,7 +100,8 @@ export default {
       'Sigo uses the camera when you turn it on to record yourself.<small>The video is saved on your phone and stays there.</small>',
       'Gestures are recognized on the phone.<small>No image leaves it.</small>',
       // Antes: 'Sigo no envía estadísticas de uso.'
-      'Sigo does not use Firebase Analytics or Firebase Remote Config.<small>Sigo uses Firebase for sign-in and script backups; those services send the technical data needed to work.</small>',
+      // Antes: 'Sigo does not use Firebase Analytics or Firebase Remote Config. Sigo uses Firebase for sign-in and script backups; those services send the technical data needed to work.'
+      'Sigo does not use Firebase Analytics. It uses Firebase Remote Config to fetch the free version’s time limits.<small>Firebase receives a Firebase installation ID (FID) to choose which configuration values to return to Sigo. The ID identifies an installation; by itself, it does not identify a person or a physical device. <a href="https://firebase.google.com/support/privacy">More about Firebase privacy</a>.</small>',
       // -sitio-cuenta, 20-10-2026- Ya no es cierto: hay cuenta, opcional. Antes: 'Sigo has no accounts.',
       'Signing in with Google is optional.<small>Sigo works fully without an account.</small>',
       // -sitio-cuenta, 20-10-2026- El inicio de sesión y la copia de seguridad -órdenes A y B-.

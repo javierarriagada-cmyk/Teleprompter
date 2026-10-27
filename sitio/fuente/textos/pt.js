@@ -109,7 +109,8 @@ export default {
       'O Sigo usa a câmera quando você a liga para se gravar.<small>O vídeo fica salvo no seu celular e não sai de lá.</small>',
       'Os gestos são reconhecidos no celular.<small>Nenhuma imagem sai dele.</small>',
       // Antes: 'Sigo no envía estadísticas de uso.'
-      'O Sigo não usa o Firebase Analytics nem o Firebase Remote Config.<small>O Firebase é usado para fazer login e guardar o backup dos roteiros; esses serviços transmitem os dados técnicos necessários para funcionar.</small>',
+      // Antes: 'O Sigo não usa o Firebase Analytics nem o Firebase Remote Config. O Firebase é usado para fazer login e guardar o backup dos roteiros; esses serviços transmitem os dados técnicos necessários para funcionar.'
+      'O Sigo não usa o Firebase Analytics. Usa o Firebase Remote Config para receber os limites de tempo da versão grátis.<small>O Firebase recebe um ID de instalação (FID) para escolher quais valores de configuração enviar ao Sigo. O ID identifica uma instalação e, por si só, não identifica uma pessoa nem um aparelho físico. <a href="https://firebase.google.com/support/privacy">Saiba mais sobre privacidade no Firebase</a>.</small>',
       'Entrar com o Google é opcional.<small>O Sigo funciona por completo sem conta.</small>',
       'Se você entrar com o Google, o Sigo recebe seu e-mail, seu nome e um identificador da conta.<small>O Firebase também guarda o link da sua foto de perfil do Google, que o Sigo não usa nem mostra.</small>',
       'O backup dos seus roteiros fica no Firebase, do Google, na região de Santiago do Chile.<small>Seus roteiros viajam criptografados, e nenhuma outra conta pode lê-los.</small>',

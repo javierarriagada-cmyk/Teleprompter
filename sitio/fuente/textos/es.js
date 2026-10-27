@@ -111,7 +111,8 @@ export default {
       'Sigo usa la cámara cuando la enciendes para grabarte.<small>El video se guarda en tu teléfono y no sale de ahí.</small>',
       'Los gestos se reconocen en el teléfono.<small>Ninguna imagen sale de él.</small>',
       // Antes: 'Sigo no envía estadísticas de uso.'
-      'Sigo no usa Firebase Analytics ni Firebase Remote Config.<small>Firebase se usa para iniciar sesión y guardar la copia de tus guiones; esos servicios transmiten los datos técnicos necesarios para funcionar.</small>',
+      // Antes: 'Sigo no usa Firebase Analytics ni Firebase Remote Config. Firebase se usa para iniciar sesión y guardar la copia de tus guiones; esos servicios transmiten los datos técnicos necesarios para funcionar.'
+      'Sigo no usa Firebase Analytics. Usa Firebase Remote Config para recibir los límites de tiempo de la versión gratis.<small>Firebase recibe un ID de instalación (FID) para elegir qué valores de configuración devuelve a Sigo. Ese ID distingue una instalación y, por sí solo, no identifica a una persona ni a un dispositivo físico. <a href="https://firebase.google.com/support/privacy">Más información sobre privacidad en Firebase</a>.</small>',
       // -sitio-cuenta, 20-10-2026- Ya no es cierto: hay cuenta, opcional. Antes: 'Sigo no tiene cuentas.',
       'Iniciar sesión con Google es opcional.<small>Sigo funciona completo sin cuenta.</small>',
       // -sitio-cuenta, 20-10-2026- El inicio de sesión y la copia de seguridad -órdenes A y B-.
