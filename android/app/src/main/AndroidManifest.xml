@@ -29,13 +29,13 @@
         <!-- layoutDirection -27-09-2026-: cambiar el idioma de la app -IdiomaAppPlugin- trae
              locale Y layoutDirection. Sin el segundo, Android reinicia la actividad y la
              pagina se recarga en medio de lo que se estaba haciendo. -->
+        <!-- -orden 2, punto 9, 26-10-2026- Antes: android:launchMode="singleTask". RevenueCat pide
+             singleTop para que una compra no se corte al ir a segundo plano. -->
         <activity
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|smallestScreenSize|screenLayout|uiMode|navigation|density"
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBarLaunch"
-            <!-- -orden 2, punto 9, 26-10-2026- Antes: android:launchMode="singleTask". RevenueCat pide
-                singleTop para que una compra no se corte al ir a segundo plano. -->
             android:launchMode="singleTop"
             android:exported="true">
 
