@@ -28,6 +28,28 @@ export function ppmDeNivel(nivel: number): number {
   return NIVELES_PPM[acotarNivel(nivel) - 1]
 }
 
+// EL RITMO DE LA VOZ EN LOS ÚLTIMOS SEGUNDOS -orden 2, punto 3, 26-10-2026-. Al llegar al límite
+// sin Sigo+, la lectura pasa al motor fijo con este ritmo, desde la palabra donde iba, sin salto.
+// muestras: pares {tMs, token} del avance reciente; ventanaMs es la ventana, 3 s como el motor de
+// la voz. Sin dos muestras en la ventana, vale el respaldo -ppmEstimadas del estado, o el nivel 4-.
+export function ritmoDeLosUltimosSegundos(
+  muestras: ReadonlyArray<{ tMs: number; token: number }>,
+  ahoraMs: number,
+  ventanaMs: number = 3000,
+  respaldoPpm: number = ppmDeNivel(NIVEL_POR_OMISION)
+): number {
+  const desde = ahoraMs - ventanaMs
+  const recientes = muestras.filter((m) => m.tMs >= desde && Number.isFinite(m.tMs) && Number.isFinite(m.token))
+  if (recientes.length < 2) return Math.max(1, respaldoPpm)
+  const a = recientes[0]
+  const b = recientes[recientes.length - 1]
+  const dt = b.tMs - a.tMs
+  if (dt <= 0) return Math.max(1, respaldoPpm)
+  const ppm = ((b.token - a.token) / dt) * 60000
+  return Number.isFinite(ppm) && ppm > 0 ? ppm : Math.max(1, respaldoPpm)
+}
+
+
 // Un toque: un nivel arriba o abajo, sin salirse de 1..7.
 export function subirNivel(nivel: number): number { return acotarNivel(nivel + 1) }
 export function bajarNivel(nivel: number): number { return acotarNivel(nivel - 1) }
@@ -89,6 +111,9 @@ export interface MotorFijo extends MotorDeAvance {
   seguir(tMs: number): void
   pausar(tMs: number): void
   cambiarNivel(nivel: number, tMs: number): void
+  // -orden 2, punto 3- Ritmo exacto en palabras por minuto, sin pasar por los siete niveles.
+  // Lo que ya hace cambiarNivel con los niveles no cambia.
+  cambiarRitmo(ppm: number, tMs: number): void
   corriendo(): boolean
 }
 
@@ -162,6 +187,11 @@ export function crearMotorFijo(totalTokens: number, nivel: number = NIVEL_POR_OM
       // Lo andado hasta ahora va al ritmo de antes; desde aqui, al nuevo.
       avanzarHasta(tMs)
       ppm = ppmDeNivel(n)
+    },
+    // -orden 2, punto 3- El ritmo exacto de la voz al llegar al límite. Antes solo había cambiarNivel.
+    cambiarRitmo(ppmExacto: number, tMs: number) {
+      avanzarHasta(tMs)
+      ppm = Number.isFinite(ppmExacto) && ppmExacto > 0 ? ppmExacto : ppmDeNivel(NIVEL_POR_OMISION)
     },
     corriendo() {
       return corre
