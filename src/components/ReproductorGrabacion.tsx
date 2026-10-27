@@ -545,7 +545,8 @@ export default function ReproductorGrabacion({
       // -tomas-largas- La decisión, en caminoDeGuardado -recetaExportacion.ts-, la misma de antes.
       // Antes: const res = tramos || conFiltro ? await exportarAGaleria(...) : conSubtitulos ? ... : ...
       // -orden 2, punto 7- marca true sin Sigo+ al guardar. Con Sigo+, como hoy.
-      const marca = !tieneSuscripcion()
+      // -orden 2, punto 7- La marca solo aplica en el export nativo -CapaDeMarca-. En web no hay OverlayEffect.
+      const marca = Capacitor.isNativePlatform() && !tieneSuscripcion()
       // Antes: const camino = caminoDeGuardado({ estilo, subtitulos, tramos, filtro })
       const camino = caminoDeGuardado({ estilo, subtitulos, tramos, filtro, marca })
       const res = camino === 'receta'

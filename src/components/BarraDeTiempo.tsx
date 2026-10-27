@@ -141,7 +141,7 @@ function Pastilla({
           userSelect: 'none'
         }}
       >
-        <div style={porcentaje ? { letterSpacing: 0, whiteSpace: 'normal' } : conIconoFija ? { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 } : undefined}>
+        <div style={porcentaje ? { letterSpacing: 0, whiteSpace: 'normal' } : conIconoFija ? { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 } : undefined}>
           {conIconoFija && <IconoVelocimetro tamano={16} />}
           <span>{texto}</span>
         </div>

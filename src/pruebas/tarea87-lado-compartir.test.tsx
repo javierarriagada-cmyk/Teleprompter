@@ -23,6 +23,8 @@ const m = vi.hoisted(() => ({
   soltar: [] as Array<() => void>,
   avanzar: null as null | ((n: number) => void)
 }))
+// -orden 2- Con Sigo+ no hay marca: estas pruebas miran el camino de subtítulos quemados, no el de la marca.
+vi.mock('../lib/suscripcion', () => ({ tieneSuscripcion: () => true }))
 vi.mock('@capacitor/core', async (importOriginal) => {
   const actual: any = await importOriginal()
   return {
