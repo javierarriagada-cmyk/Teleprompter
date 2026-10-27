@@ -70,8 +70,9 @@ export async function abrirOfertaInicialSiCorresponde(): Promise<boolean> {
     return false
   }
   const ok = await abrirOferta('inicial')
-  // Se marca al intentar: aunque falle el plugin, no insistimos cada vez.
-  marcarOfertaInicialVista()
+  // Antes: marcarOfertaInicialVista() siempre — se perdía si presentPaywall fallaba
+  // o la oferta aún no estaba publicada. 26-10-2026, arreglo PR 157: solo si ok.
+  if (ok) marcarOfertaInicialVista()
   return ok
 }
 

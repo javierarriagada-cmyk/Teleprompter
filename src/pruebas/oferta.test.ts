@@ -59,4 +59,19 @@ describe('oferta', () => {
     expect(await o.abrirOfertaInicialSiCorresponde()).toBe(false)
     expect(sim.presentPaywall).toHaveBeenCalledTimes(1)
   })
+
+  it("si presentPaywall falla, no marca la inicial como vista", async () => {
+    // Antes: se marcaba siempre; se perdía la única oferta si el plugin fallaba o no estaba publicada.
+    sim.presentPaywall.mockRejectedValue(new Error('paywall no publicada'))
+    const o = await cargar()
+    expect(await o.abrirOfertaInicialSiCorresponde()).toBe(false)
+    expect(o.yaSalioOfertaInicial()).toBe(false)
+  })
+
+  it("si no hay plugin nativo, no marca la inicial como vista", async () => {
+    sim.plugin = false
+    const o = await cargar()
+    expect(await o.abrirOfertaInicialSiCorresponde()).toBe(false)
+    expect(o.yaSalioOfertaInicial()).toBe(false)
+  })
 })
