@@ -99,7 +99,8 @@ export default function ReproductorGrabacion({
   onCambio?: (g: ResumenGrabacion) => void
   // Para nombrarla por su guion de hoy -nombreDeToma, TiraGrabaciones.tsx-.
   guiones?: ResumenGuion[]
-  mostrarAviso?: (msg: string, opciones?: { duracionMs?: number; tocable?: boolean; alTocar?: () => void }) => void
+  // -pasada teléfono PR 157- Suma colocacion. Antes: opciones?: { duracionMs?; tocable?; alTocar? }
+  mostrarAviso?: (msg: string, opciones?: { duracionMs?: number; tocable?: boolean; alTocar?: () => void; colocacion?: 'limite' | 'mitad' }) => void
 }) {
   // Misma regla que en la tira: borrar pregunta una vez. Ver el comentario de
   // TiraGrabaciones. Aca no hace falta el temporizador porque al cerrar el
@@ -583,8 +584,10 @@ export default function ReproductorGrabacion({
           // texto para la haptica, sin duplicar el aviso de «galeriaGuardada».
           onGuardadoEnGaleria?.(true, '')
           mostrarAviso?.(t('avisoGuardarSinMarca'), {
+            // Antes: abajo. 27-10-2026 pasada teléfono: cerca del centro (colocacion 'mitad').
             duracionMs: 8000,
             tocable: true,
+            colocacion: 'mitad',
             alTocar: () => { void abrirOferta('marca') }
           })
         } else {
