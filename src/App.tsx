@@ -56,7 +56,7 @@ import { configuracionLista } from './lib/firebaseConfig'
 // -orden 1, los cimientos del cobro, 26-10-2026- RevenueCat, sin nada visible.
 import { vigilarSuscripcion, tieneSuscripcion } from './lib/suscripcion'
 import { cargarLimites, limitesActuales, hayQueAvisar, llegoAlLimite, transcurridoSinPausas } from './lib/limites'
-import { pausaUsaMotorFijo } from './lib/lecturaForzada'
+import { pausaUsaMotorFijo, tokenSeguidorAlVolverAVoz } from './lib/lecturaForzada'
 import { abrirOferta, abrirOfertaInicialSiCorresponde } from './lib/oferta'
 import { tocaAvisoFinPrueba, marcarAvisoFinPrueba, tocaAvisoSinConexion, marcarAvisoSinConexionHoy, fechaPruebaEnIdioma } from './lib/avisosPortada'
 import { RepositorioGrabaciones } from './datos/RepositorioGrabaciones'
@@ -2646,6 +2646,11 @@ export default function App({ motor, repoOverride }: AppProps) {
     if (!enPausa) await despachar({ tipo: 'alternar', tMs: Date.now() })
     await abrirOferta('limiteLectura')
     if (tieneSuscripcion()) {
+      // -arreglo PR 157, 26-10-2026- Antes: setLecturaForzadaAFija(false) y despachar sin
+      // mover el seguidor; la voz volvía al token del límite y el texto saltaba atrás.
+      const posFija = motorFijo.leerEstado().posicion
+      irATokenSeguidor(tokenSeguidorAlVolverAVoz(posFija))
+      lecturaForzadaAFijaRef.current = false
       setLecturaForzadaAFija(false)
       setFaseLimiteVoz(null)
       limiteAplicadoRef.current = false

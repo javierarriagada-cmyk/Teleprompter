@@ -6,3 +6,13 @@ export function pausaUsaMotorFijo(fija: boolean, lecturaForzadaAFija: boolean): 
   // Antes (bug): return fija — con lectura forzada el texto seguía corriendo al pausar.
   return fija || lecturaForzadaAFija
 }
+
+/**
+ * Token entero al que llevar el seguidor antes de volver a la voz si la persona
+ * se suscribe desde el aviso del límite. El motor fijo ya avanzó; sin esto la
+ * voz reanudaba donde estaba al cortar.
+ */
+export function tokenSeguidorAlVolverAVoz(posicionMotorFijo: number): number {
+  // Antes (bug): no se movía el seguidor; la voz partía del token del límite.
+  return Math.floor(posicionMotorFijo)
+}
