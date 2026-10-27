@@ -108,3 +108,15 @@ describe('oferta', () => {
     expect(sim.presentPaywall).not.toHaveBeenCalled()
   })
 })
+
+describe('decidirOfertaAlLimite', () => {
+  // -pasada teléfono PR 157, 27-10-2026- Al llegar a cada límite, la oferta se pide una sola vez.
+  // Sin el cambio (devolver siempre null / no abrir sola) esta prueba falla.
+  it('al llegar a cada límite, la oferta se pide una sola vez', async () => {
+    const o = await cargar()
+    expect(o.decidirOfertaAlLimite('lectura', false)).toBe('limiteLectura')
+    expect(o.decidirOfertaAlLimite('lectura', true)).toBeNull()
+    expect(o.decidirOfertaAlLimite('grabacion', false)).toBe('limiteGrabacion')
+    expect(o.decidirOfertaAlLimite('grabacion', true)).toBeNull()
+  })
+})

@@ -125,6 +125,6 @@ export function transcurridoSinPausas(ahoraMs: number, inicioMs: number, pausado
 // Antes: App forzaba velocidad fija (lecturaForzadaAFija + ritmoDeLosUltimosSegundos + cambiarRitmo).
 export type AccionAlLimiteLectura = 'pausar' | 'forzarFija'
 export function accionAlLimiteLectura(): AccionAlLimiteLectura {
-  // Antes: el camino era 'forzarFija'. 27-10-2026: se pausa y sale el aviso tocable.
+  // Antes: el camino era 'forzarFija'. 27-10-2026: se pausa; la oferta se abre sola (oferta.ts).
   return 'pausar'
 }

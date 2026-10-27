@@ -59,7 +59,7 @@ import { vigilarSuscripcion, tieneSuscripcion } from './lib/suscripcion'
 import { cargarLimites, limitesActuales, hayQueAvisar, llegoAlLimite, transcurridoSinPausas, accionAlLimiteLectura } from './lib/limites'
 // Antes: import { pausaUsaMotorFijo, tokenSeguidorAlVolverAVoz } from './lib/lecturaForzada'
 // 27-10-2026: vía forzada a fija retirada; al límite se pausa (accionAlLimiteLectura).
-import { abrirOferta, abrirOfertaInicialSiCorresponde } from './lib/oferta'
+import { abrirOferta, abrirOfertaInicialSiCorresponde, decidirOfertaAlLimite } from './lib/oferta'
 import { tocaAvisoFinPrueba, marcarAvisoFinPrueba, tocaAvisoSinConexion, marcarAvisoSinConexionHoy, fechaPruebaEnIdioma } from './lib/avisosPortada'
 import { RepositorioGrabaciones } from './datos/RepositorioGrabaciones'
 import { RepositorioGrabacionesIndexedDB } from './datos/RepositorioGrabacionesIndexedDB'
@@ -2587,17 +2587,23 @@ export default function App({ motor, repoOverride }: AppProps) {
         if (llegoAlLimite('lectura', trans, lim)) {
           limiteAplicadoRef.current = true
           // Antes: ritmoDeLosUltimosSegundos + motorFijo.cambiarRitmo + setLecturaForzadaAFija(true)
-          // + setFaseLimiteVoz('fija') + stop(). 27-10-2026: misma pausa de siempre + aviso tocable.
+          // + setFaseLimiteVoz('fija') + stop(). 27-10-2026: misma pausa de siempre.
+          // Antes (mismo día, punto 2): aviso tocable limiteLectura (colocacion 'limite', 8 s) →
+          // alTocarLimiteLectura. Ahora: la oferta se abre SOLA una vez.
           if (accionAlLimiteLectura() === 'pausar') {
             void despachar({ tipo: 'alternar', tMs: Date.now() })
           }
-          mostrarAviso(t('limiteLectura'), {
-            // Antes: abajo, texto cuerpo, 8 s. 27-10-2026: tercio superior, --texto-titulo, 8 s.
-            duracionMs: 8000,
-            tocable: true,
-            colocacion: 'limite',
-            alTocar: () => { void alTocarLimiteLectura() }
-          })
+          const lugarLectura = decidirOfertaAlLimite('lectura', false)
+          if (lugarLectura) {
+            void (async () => {
+              await abrirOferta(lugarLectura)
+              // Si se suscribe ahí, al reanudar ya no hay límite.
+              if (tieneSuscripcion()) {
+                setFaseLimiteVoz(null)
+                limiteAplicadoRef.current = false
+              }
+            })()
+          }
           return
         }
         if (hayQueAvisar('lectura', trans, lim)) {
@@ -2619,14 +2625,10 @@ export default function App({ motor, repoOverride }: AppProps) {
             const duracionMs = tInicioLecturaMs ? performance.now() - tInicioLecturaMs : null
             const resumen = await handleStop()
             if (resumen === null) avisarFinDeToma(duracionMs)
-            mostrarAviso(t('limiteGrabacion'), {
-              // Antes: abajo. 27-10-2026: tercio superior, --texto-titulo, contraste sobre cámara.
-              duracionMs: 8000,
-              tocable: true,
-              colocacion: 'limite',
-              contrasteGrabacion: true,
-              alTocar: () => { void abrirOferta('limiteGrabacion') }
-            })
+            // Antes: mostrarAviso tocable limiteGrabacion (colocacion 'limite', contraste cámara, 8 s)
+            // → abrirOferta al tocar. 27-10-2026: con la toma ya guardada, la oferta se abre SOLA una vez.
+            const lugarGrab = decidirOfertaAlLimite('grabacion', false)
+            if (lugarGrab) await abrirOferta(lugarGrab)
           })()
           return
         }
@@ -2647,19 +2649,9 @@ export default function App({ motor, repoOverride }: AppProps) {
   // Antes: también lecturaForzadaAFija, motorDeLaVoz, motorFijo en deps.
   }, [estadoToma, tInicioLecturaMs, enPausa, conCamara, fija])
 
-  async function alTocarLimiteLectura() {
-    // Abre la oferta. La lectura ya está en pausa al llegar al límite (o se pausa si no lo estaba).
-    // Antes: si no enPausa, despachar pausa aquí; al suscribirse sincronizaba seguidor con
-    // tokenSeguidorAlVolverAVoz, quitaba lecturaForzadaAFija y reanudaba. 27-10-2026: queda en pausa.
-    if (!enPausa) await despachar({ tipo: 'alternar', tMs: Date.now() })
-    await abrirOferta('limiteLectura')
-    if (tieneSuscripcion()) {
-      setFaseLimiteVoz(null)
-      limiteAplicadoRef.current = false
-      // Antes: irATokenSeguidor(...); setLecturaForzadaAFija(false); despachar reanudar.
-      // 27-10-2026: al suscribirse desde el aviso, la lectura queda en pausa como cualquier pausa.
-    }
-  }
+  // Antes: alTocarLimiteLectura — pausaba si hacía falta, abría oferta al tocar el aviso, y al
+  // suscribirse limpiaba fase/límite (antes aún reanudaba con tokenSeguidorAlVolverAVoz).
+  // 27-10-2026: el aviso tocable salió; la oferta se abre sola al límite (ver efecto arriba).
   function describirEntrada(en: EntradaPausa): string {
     // -tarea 88, segunda vuelta- La palma lleva además la primera vista y el fin de la voz, en el reloj del
     // video, para que Claude vea de dónde salió el corte. Antes: if (en.tipo === 'gesto') return `gesto:${en.gesto}`

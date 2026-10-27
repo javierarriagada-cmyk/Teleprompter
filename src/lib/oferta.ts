@@ -3,13 +3,26 @@ import { tieneSuscripcion, asegurarConfigurado } from './suscripcion'
 
 // LA PANTALLA DE OFERTA -orden 2 «Sigo+ en la app», punto 5, 26-10-2026-. Abre el paywall de
 // RevenueCat -RevenueCatUI.presentPaywall- con la oferta vigente. Si ya hay suscripción, no hace nada.
-// Nunca se abre sola encima de una lectura o una grabación: solo al tocar.
+// Antes: nunca sola encima de una lectura o grabación — solo al tocar. 27-10-2026 pasada teléfono:
+// al llegar al límite de lectura o de grabación se abre sola UNA vez (limiteLectura / limiteGrabacion);
+// marca, Ajustes e 'inicial' siguen como antes.
 //
 // El plugin -@revenuecat/purchases-capacitor-ui- se carga con import() la primera vez, y solo si
 // Capacitor.isNativePlatform() y Capacitor.isPluginAvailable('RevenueCatUI'), como Purchases en
 // suscripcion.ts. Un fallo se registra con console.warn('[oferta]', ...) y Sigo sigue igual.
 
 export type LugarOferta = 'inicial' | 'limiteLectura' | 'limiteGrabacion' | 'marca' | 'ajustes'
+
+// -pasada teléfono PR 157, 27-10-2026- Al llegar al límite, la oferta se pide SOLA una vez.
+// Antes: aviso tocable (limiteLectura / limiteGrabacion) y abrirOferta solo al tocar.
+// Devuelve el lugar a abrir, o null si ya se pidió en este alcance del límite.
+export function decidirOfertaAlLimite(
+  tipo: 'lectura' | 'grabacion',
+  yaPedidaEnEsteLimite: boolean
+): 'limiteLectura' | 'limiteGrabacion' | null {
+  if (yaPedidaEnEsteLimite) return null
+  return tipo === 'lectura' ? 'limiteLectura' : 'limiteGrabacion'
+}
 
 const CLAVE_INICIAL = 'sigo_oferta_inicial_vista'
 
