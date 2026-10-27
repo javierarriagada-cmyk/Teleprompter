@@ -927,11 +927,13 @@ html:not(.js) .telefonos, html:not(.js) .pildora, html:not(.js) .tarjetas, html:
     <li>O Sigo usa o microfone para acompanhar a sua voz.<small>O reconhecimento de voz roda no celular. O áudio não é enviado a nenhum servidor.</small></li>
     <li>O Sigo usa a câmera quando você a liga para se gravar.<small>O vídeo fica salvo no seu celular e não sai de lá.</small></li>
     <li>Os gestos são reconhecidos no celular.<small>Nenhuma imagem sai dele.</small></li>
-    <li>O Sigo não envia estatísticas de uso.</li>
+    <li>O Sigo não usa o Firebase Analytics. Usa o Firebase Remote Config para receber os limites de tempo da versão grátis.<small>O Firebase recebe um ID de instalação (FID) para escolher quais valores de configuração enviar ao Sigo. O ID identifica uma instalação e, por si só, não identifica uma pessoa nem um aparelho físico. <a href="https://firebase.google.com/support/privacy">Saiba mais sobre privacidade no Firebase</a>.</small></li>
     <li>Entrar com o Google é opcional.<small>O Sigo funciona por completo sem conta.</small></li>
     <li>Se você entrar com o Google, o Sigo recebe seu e-mail, seu nome e um identificador da conta.<small>O Firebase também guarda o link da sua foto de perfil do Google, que o Sigo não usa nem mostra.</small></li>
     <li>O backup dos seus roteiros fica no Firebase, do Google, na região de Santiago do Chile.<small>Seus roteiros viajam criptografados, e nenhuma outra conta pode lê-los.</small></li>
     <li>O Firebase registra o endereço IP para impedir abusos.</li>
+    <li>Se você assinar o Sigo+, o Google Play processa o pagamento. O Sigo não recebe nem vê os dados do seu cartão.</li>
+    <li>O RevenueCat verifica se o Sigo+ está ativo.<small>Para isso, processa o histórico de compras e o identificador usado pelo app: seu UID do Firebase se você entrou na conta, ou um identificador anônimo do RevenueCat se não entrou. O Sigo não envia seu nome nem seu e-mail. O RevenueCat pode receber dados de moeda e localidade para mostrar a oferta. <a href="https://www.revenuecat.com/privacy-policy">Leia a política de privacidade do RevenueCat</a>.</small></li>
     <li>Os vídeos nunca saem do celular.</li>
     <li>Para excluir sua conta e o backup dos seus roteiros: <a href="/pt/excluir-conta">sigoteleprompter.com/pt/excluir-conta</a>.</li>
     <li>Este site não usa cookies de rastreamento nem ferramentas de análise.</li>
@@ -942,7 +944,7 @@ html:not(.js) .telefonos, html:not(.js) .pildora, html:not(.js) .tarjetas, html:
 </main>
 <footer class="pie">
   <ul>
-    <li><span><a href="/pt/privacidade">Privacidade</a></span><span><a href="/pt/suporte">Suporte</a></span><span><a href="/pt/ajuda">Ajuda</a></span><span><a href="/pt/excluir-conta">Excluir conta</a></span></li>
+    <li><span><a href="/pt/privacidade">Privacidade</a></span><span><a href="/pt/termos">Termos</a></span><span><a href="/pt/suporte">Suporte</a></span><span><a href="/pt/ajuda">Ajuda</a></span><span><a href="/pt/excluir-conta">Excluir conta</a></span></li>
     <li><span><a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a></span><span>© Sigo</span></li>
   </ul>
   <nav class="idioma idioma-pie" aria-label="Idioma"><a href="/privacidad" lang="es" hreflang="es" data-idioma="es">ES</a><span aria-hidden="true">·</span><a href="/en/privacy" lang="en" hreflang="en" data-idioma="en">EN</a><span aria-hidden="true">·</span><a href="/pt/privacidade" lang="pt" hreflang="pt" data-idioma="pt" aria-current="page">PT</a></nav>

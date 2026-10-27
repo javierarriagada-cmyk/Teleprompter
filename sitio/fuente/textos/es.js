@@ -16,13 +16,15 @@ export default {
   // se sirve de privacidad.html.
   // -sitio-cuenta, 20-10-2026- Suma la página para borrar la cuenta. Antes:
   // rutas: { portada: '/', privacidad: '/privacidad', soporte: '/soporte', ayuda: '/ayuda' },
-  rutas: { portada: '/', privacidad: '/privacidad', soporte: '/soporte', ayuda: '/ayuda', borrarCuenta: '/borrar-cuenta' },
+  rutas: { portada: '/', privacidad: '/privacidad', terminos: '/terminos', soporte: '/soporte', ayuda: '/ayuda', borrarCuenta: '/borrar-cuenta' },
 
   meta: {
     titulo: 'Sigo — Teleprompter de voz',
     descripcion: 'Sigo es el teleprompter que sigue tu voz: lees en voz alta y el texto avanza contigo. Si te detienes, te espera. Pronto en Google Play.',
     ogDescripcion: 'El teleprompter que sigue tu voz. Pronto en Google Play.',
     privacidadTitulo: 'Privacidad — Sigo',
+    terminosTitulo: 'Términos de uso — Sigo',
+    terminosDescripcion: 'Qué incluye Sigo gratis y Sigo+, cómo se cobra y cómo cancelar.',
     // -sitio-cuenta, 20-10-2026- Ya no todo queda en el teléfono: con sesión, los guiones tienen copia en la nube.
     // Antes: privacidadDescripcion: 'Cómo trata Sigo tus guiones, tus tomas y tu voz: todo queda en tu teléfono.',
     privacidadDescripcion: 'Cómo trata Sigo tus guiones, tus tomas, tu voz y tu cuenta.',
@@ -80,7 +82,7 @@ export default {
 
   // -sitio-cuenta, 20-10-2026- Suma Borrar cuenta. Antes:
   // pie: { privacidad: 'Privacidad', soporte: 'Soporte', ayuda: 'Ayuda' },
-  pie: { privacidad: 'Privacidad', soporte: 'Soporte', ayuda: 'Ayuda', borrarCuenta: 'Borrar cuenta' },
+  pie: { privacidad: 'Privacidad', terminos: 'Términos', soporte: 'Soporte', ayuda: 'Ayuda', borrarCuenta: 'Borrar cuenta' },
 
   // EL CORREO DE CONTACTO de cada idioma -Javier, 07-10-2026-: en espanol hola@, en ingles
   // hello@. Los dos reciben. Lo usan el pie, privacidad, soporte y la invitacion a probar.
@@ -108,18 +110,45 @@ export default {
       'Sigo usa el micrófono para seguir tu voz.<small>El reconocimiento de voz corre en el teléfono. El audio no se manda a ningún servidor.</small>',
       'Sigo usa la cámara cuando la enciendes para grabarte.<small>El video se guarda en tu teléfono y no sale de ahí.</small>',
       'Los gestos se reconocen en el teléfono.<small>Ninguna imagen sale de él.</small>',
-      'Sigo no envía estadísticas de uso.',
+      // Antes: 'Sigo no envía estadísticas de uso.'
+      // Antes: 'Sigo no usa Firebase Analytics ni Firebase Remote Config. Firebase se usa para iniciar sesión y guardar la copia de tus guiones; esos servicios transmiten los datos técnicos necesarios para funcionar.'
+      'Sigo no usa Firebase Analytics. Usa Firebase Remote Config para recibir los límites de tiempo de la versión gratis.<small>Firebase recibe un ID de instalación (FID) para elegir qué valores de configuración devuelve a Sigo. Ese ID distingue una instalación y, por sí solo, no identifica a una persona ni a un dispositivo físico. <a href="https://firebase.google.com/support/privacy">Más información sobre privacidad en Firebase</a>.</small>',
       // -sitio-cuenta, 20-10-2026- Ya no es cierto: hay cuenta, opcional. Antes: 'Sigo no tiene cuentas.',
       'Iniciar sesión con Google es opcional.<small>Sigo funciona completo sin cuenta.</small>',
       // -sitio-cuenta, 20-10-2026- El inicio de sesión y la copia de seguridad -órdenes A y B-.
       'Si inicias sesión con Google, Sigo recibe tu correo, tu nombre y un identificador de cuenta.<small>Firebase guarda también el enlace a tu foto de perfil de Google, que Sigo no usa ni muestra.</small>',
       'La copia de seguridad de tus guiones se guarda en Firebase, de Google, en la región de Santiago de Chile.<small>Tus guiones viajan cifrados, y ninguna otra cuenta puede leerlos.</small>',
       'Firebase registra la dirección IP para frenar abusos.',
+      'Si compras Sigo+, Google Play procesa el pago. Sigo no recibe ni ve los datos de tu tarjeta.',
+      'RevenueCat comprueba si Sigo+ está activa.<small>Para hacerlo, procesa el historial de compras y el identificador que usa la app: el UID de Firebase si iniciaste sesión, o un identificador anónimo de RevenueCat si no. Sigo no le envía tu nombre ni tu correo. RevenueCat puede recibir datos de moneda y configuración regional para mostrar la oferta. <a href="https://www.revenuecat.com/privacy-policy">Lee la política de privacidad de RevenueCat</a>.</small>',
       'Los videos nunca salen del teléfono.',
       'Para borrar tu cuenta y la copia de seguridad de tus guiones: <a href="/borrar-cuenta">sigoteleprompter.com/borrar-cuenta</a>.',
       'Este sitio no usa cookies de seguimiento ni analítica.'
     ],
     contacto: 'Si tienes una pregunta, escríbenos.'
+  },
+
+  terminos: {
+    titulo: 'Términos de uso',
+    // -publicado el 26-10-2026, con el sí de Javier- Antes: vigencia: 'Vigentes desde el &#123;&#123;FECHA&#125;&#125;',
+    vigencia: 'Vigentes desde el 26 de octubre de 2026',
+    secciones: [
+      { titulo: 'Quién ofrece Sigo', parrafos: ['Sigo es un teleprompter para Android que sigue tu voz. Sigo Teleprompter es un servicio de J. Arriagada, desarrollador independiente en Chile.', 'Contacto: <a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a>.'] },
+      { titulo: 'Usar Sigo gratis', parrafos: ['La versión gratis limita el tiempo de lectura por voz y grabación. Sus videos llevan marca de agua. <small>En la app ves los límites vigentes; pueden cambiar.</small>'] },
+      { titulo: 'Sigo+', parrafos: ['Sigo+ permite leer y grabar sin límites de tiempo y guardar videos sin marca de agua. Hay planes mensual y anual. Pagas el precio e impuestos que Google Play muestra para tu país.'] },
+      { titulo: 'El cobro', parrafos: ['Google Play cobra en tu cuenta de Google; Sigo no recibe ni ve los datos de tu tarjeta. La suscripción se renueva automáticamente hasta cancelar: cada mes o año, según el plan.'] },
+      { titulo: 'Prueba gratis de 7 días', parrafos: ['Google Play ofrece 7 días gratis en ambos planes a clientes nuevos sin esa suscripción, según su verificación de elegibilidad. Pide un medio de pago. Si cancelas antes de terminar los 7 días, no pagas; si no, empieza el cobro recurrente al precio y frecuencia mostrados al comprar.'] },
+      { titulo: 'Cancelar', parrafos: ['Cancela en Google Play → Suscripciones o en Sigo: Ajustes → «Sigo+ activo · Administrar». Evitas la renovación y mantienes Sigo+ hasta terminar lo pagado, salvo indicación de Google Play. Desinstalar no cancela.'] },
+      { titulo: 'Reembolsos', parrafos: ['Solicita reembolso a Google Play según sus políticas, que dependen del país, fecha y compra. <a href="https://support.google.com/googleplay/answer/15574908">Consulta las políticas</a>. Si falla el cobro o Sigo+ no se activa, escribe a <a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a>.'] },
+      { titulo: 'Cambios de precio', parrafos: ['Google Play gestiona avisos y consentimiento según las reglas de tu país. Si no aceptas un aumento cuando te lo solicite, puedes cancelar. <a href="https://support.google.com/googleplay/android-developer/answer/12154973">Reglas de cambios de precio</a>.'] },
+      { titulo: 'Tus guiones y videos', parrafos: ['Tus guiones y videos son tuyos. Sigo no los reclama ni reutiliza. Tú respondes por lo que lees, grabas y publicas y por tener los derechos necesarios.'] },
+      { titulo: 'Uso correcto', parrafos: ['No uses Sigo para fines ilegales, dañar a otros ni evadir o romper el cobro.'] },
+      { titulo: 'Sin garantías', parrafos: ['El reconocimiento de voz puede equivocarse. Al leer en vivo, ten el texto a mano. Esto no limita tus derechos legales.'] },
+      { titulo: 'Responsabilidad', parrafos: ['Respondemos hasta donde lo permita la ley. Estos términos no limitan ni excluyen tus derechos obligatorios como consumidor.'] },
+      { titulo: 'Privacidad y cuenta', parrafos: ['Lee la <a href="/privacidad">Política de privacidad</a>. Para borrar tu cuenta y la copia de seguridad, visita <a href="/borrar-cuenta">Borrar cuenta</a>.'] },
+      { titulo: 'Cambios a estos términos', parrafos: ['Publicaremos aquí cada cambio con fecha. Avisaremos en la app sobre cambios importantes. La vigencia aparece al inicio.'] },
+      { titulo: 'Ley aplicable', parrafos: ['Rige la ley de Chile, sin quitarte los derechos de protección al consumidor de tu país.'] }
+    ]
   },
 
 

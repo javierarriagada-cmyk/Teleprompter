@@ -105,7 +105,7 @@ const hojas = (o, pre = '') => Object.entries(o).flatMap(([k, v]) => (v && typeo
 
 const DOMINIO = 'https://sigoteleprompter.com'
 // -sitio-cuenta, 20-10-2026- Suma borrarCuenta. Antes: const PAGINAS = ['portada', 'privacidad', 'soporte', 'ayuda']
-const PAGINAS = ['portada', 'privacidad', 'soporte', 'ayuda', 'borrarCuenta']
+const PAGINAS = ['portada', 'privacidad', 'terminos', 'soporte', 'ayuda', 'borrarCuenta']
 // La ruta publica -/en/privacy- al archivo que la sirve con cleanUrls -en/privacy.html-. La
 // portada en ingles es en.html y no en/index.html: asi /en se sirve sin redirigir a /en/.
 const archivoDe = (ruta) => (ruta === '/' ? 'index.html' : `${ruta.slice(1)}.html`)
@@ -200,7 +200,7 @@ function selector(t, pagina, lugar) {
 function pie(t, pagina) {
   return `<footer class="pie">
   <ul>
-    <li><span><a href="${t.rutas.privacidad}">${t.pie.privacidad}</a></span><span><a href="${t.rutas.soporte}">${t.pie.soporte}</a></span><span><a href="${t.rutas.ayuda}">${t.pie.ayuda}</a></span><span><a href="${t.rutas.borrarCuenta}">${t.pie.borrarCuenta}</a></span></li>
+    <li><span><a href="${t.rutas.privacidad}">${t.pie.privacidad}</a></span><span><a href="${t.rutas.terminos}">${t.pie.terminos}</a></span><span><a href="${t.rutas.soporte}">${t.pie.soporte}</a></span><span><a href="${t.rutas.ayuda}">${t.pie.ayuda}</a></span><span><a href="${t.rutas.borrarCuenta}">${t.pie.borrarCuenta}</a></span></li>
     <li><span><a href="mailto:${t.correo}">${t.correo}</a></span><span>© Sigo</span></li>
   </ul>
   ${selector(t, pagina, 'pie')}
@@ -212,6 +212,7 @@ function pie(t, pagina) {
 function textos(html, t, donde) {
   const derivados = {
     'privacidad.lista': t.privacidad.puntos.map((x) => `<li>${x}</li>`).join('\n    '),
+    'terminos.secciones': t.terminos.secciones.map((s) => `<h2>${s.titulo}</h2>\n  ${s.parrafos.map((x) => `<p>${x}</p>`).join('\n  ')}`).join('\n  '),
     'soporte.lista': t.soporte.puntos.map((x) => `<li>${x}</li>`).join('\n    '),
     // -18-10-2026- LAS FOTOS VAN DESPUÉS -Javier-: el manual sale primero solo con texto, para que Ayuda
     // de la app deje de abrir una página inexistente. s.captura dice qué foto va en cada sección: queda
@@ -328,6 +329,7 @@ for (const [idioma, t] of Object.entries(IDIOMAS)) {
     '/*@datos*/': JSON.stringify({ ...lectura.datos, estilos: t.estilos })
   }, `portada.html (${idioma})`)
   paginas[archivoDe(t.rutas.privacidad)] = llenar(textos(leer('sitio/fuente/privacidad.html'), t, 'privacidad.html'), { ...comunes('privacidad'), '<!--@marca-->': marcaInterior }, `privacidad.html (${idioma})`)
+  paginas[archivoDe(t.rutas.terminos)] = llenar(textos(leer('sitio/fuente/terminos.html'), t, 'terminos.html'), { ...comunes('terminos'), '<!--@marca-->': marcaInterior }, `terminos.html (${idioma})`)
   paginas[archivoDe(t.rutas.soporte)] = llenar(textos(leer('sitio/fuente/soporte.html'), t, 'soporte.html'), { ...comunes('soporte'), '<!--@marca-->': marcaInterior }, `soporte.html (${idioma})`)
   // -18-10-2026- LA PÁGINA DE AYUDA -#134-: el PR la sumó a PAGINAS, al pie y a los textos, pero no la
   // escribía. Faltaba esta línea, y sitio/public quedaba sin ayuda.html ni en/help.html, mientras el
