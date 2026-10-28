@@ -5,6 +5,7 @@ import { movimientoApagado, MS_CHICO, CURVA_ENTRA } from './movimiento'
 import { colorAccionAviso } from '../hooks/useAviso'
 import type { AvisoInfo } from '../hooks/useAviso'
 import { IconoChevron } from './IconosApp'
+import { partirResalteSigo } from '../lib/partirResalteSigo'
 
 interface AvisoBreveProps {
   avisoInfo: AvisoInfo | null
@@ -26,6 +27,9 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
   // borde-, un poco más grande, y la acción con 48 de alto. Javier: «a veces uno se demora más en
   // encontrarlo que en apretarlo». En la lectura, de lado y sobre el dock sigue como estaba.
   const destacado = !!avisoInfo?.accionTexto && !enLectura && !enRieles && !sobreDock
+  // -cobro-visible avisos, 2026-10-28- Caja compartida: minuto 2 ('limite') e invitación marca ('mitad').
+  const cajaM3 = avisoInfo?.colocacion === 'limite' || avisoInfo?.colocacion === 'mitad'
+  const partesSigo = avisoInfo?.tocable ? partirResalteSigo(avisoInfo.texto) : null
   return (
     /* EL LECTOR DE PANTALLA ANUNCIA EL AVISO -tarea 84, G1, 29-09-2026-. role="status" con
        aria-live="polite": TalkBack lo lee cuando termina lo que estaba diciendo, sin cortar a la
@@ -38,8 +42,8 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
       {avisoInfo && (
         <div
           data-testid="aviso-flotante"
-          /* -cobro-visible avisos, 2026-10-28- 'limite': caja M3 medium + elev 1. Antes: cápsula. */
-          className={`aviso-breve${avisoInfo.colocacion === 'limite' ? ' aviso-caja-m3' : ''}`}
+          /* -cobro-visible avisos, 2026-10-28- 'limite' y 'mitad': caja M3 medium + elev 1. Antes: cápsula. */
+          className={`aviso-breve${cajaM3 ? ' aviso-caja-m3' : ''}`}
           // -portugues-voz, 2026-10-22- El idioma del aviso si no es el de la app -useAviso, idioma-: TalkBack lo lee
           // con la voz de ese idioma. Sin idioma no lleva lang y vale el de la página, como antes.
           lang={avisoInfo.idioma}
@@ -80,8 +84,9 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
                     : 'calc(var(--aire-5) + env(safe-area-inset-bottom, 0px))'
                 }),
             // 'limite' Antes 2026-10-27: left/right 16, maxWidth none.
-            // 2026-10-28: márgenes 32 (vertical), max 480 centrado. Sin transform (panelSube).
-            ...(avisoInfo.colocacion === 'limite'
+            // 2026-10-28: márgenes 32, max 480 centrado (también 'mitad' / invitación marca).
+            // Sin transform (panelSube).
+            ...(cajaM3
               ? {
                   left: 32,
                   right: 32,
@@ -103,41 +108,44 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
             // -ajustes-accesible, 25-10-2026, decisión de Javier- Texto sobre la superficie invertida. Antes: color: 'var(--color-texto)',
             // -pasada teléfono PR 157- contrasteGrabacion: fondo claro legible sobre la cámara.
             // 2026-10-27: 'limite' también usa el contraste claro (lectura y grabación).
-            color: (avisoInfo.contrasteGrabacion || avisoInfo.colocacion === 'limite')
+            // Antes 2026-10-28 'mitad': color --aviso-texto y fondo de .aviso-breve (tema).
+            // Ahora caja cobro: mismo fondo claro cálido que el aviso del minuto 2.
+            color: (avisoInfo.contrasteGrabacion || cajaM3)
               ? 'var(--aviso-sobre-camara-texto)'
               : 'var(--aviso-texto)',
-            ...((avisoInfo.contrasteGrabacion || avisoInfo.colocacion === 'limite')
+            ...((avisoInfo.contrasteGrabacion || cajaM3)
               ? { backgroundColor: 'var(--aviso-sobre-camara-fondo)' }
               : {}),
             // -mejoras-claridad, 21-10-2026- Destacado: más aire a la izquierda, 56 de alto y letra de 16. Antes, siempre:
             // padding: 'var(--aire-2) var(--aire-3)', fontSize: 'var(--texto-cuerpo)'
             // -pasada teléfono PR 157- avisos de límite: var(--texto-titulo) = 18.
             // 2026-10-27 'limite': texto 20 negrita, relleno aire-3 / aire-4.
-            // 2026-10-28 'limite': relleno parejo 4 lados (aire-3); sin alto fijo.
-            padding: avisoInfo.colocacion === 'limite'
+            // 2026-10-28 caja cobro: relleno parejo 4 lados (aire-3); sin alto fijo.
+            padding: cajaM3
               ? 'var(--aire-3)'
               : destacado ? 'var(--aire-1) var(--aire-2) var(--aire-1) var(--aire-4)' : 'var(--aire-2) var(--aire-3)',
             minHeight: destacado ? 56 : undefined,
             boxSizing: 'border-box',
-            // Antes 2026-10-28: siempre --redondeo-pildora. 'limite' → --forma-media (clase .aviso-caja-m3).
-            borderRadius: avisoInfo.colocacion === 'limite' ? 'var(--forma-media)' : 'var(--redondeo-pildora)',
+            // Antes 2026-10-28: siempre --redondeo-pildora. Caja cobro → --forma-media.
+            borderRadius: cajaM3 ? 'var(--forma-media)' : 'var(--redondeo-pildora)',
             fontSize: avisoInfo.colocacion === 'limite'
               ? 'var(--texto-aviso-limite)'
               : avisoInfo.colocacion === 'mitad'
               ? 'var(--texto-titulo)'
               : destacado ? 16 : 'var(--texto-cuerpo)',
-            fontWeight: avisoInfo.colocacion === 'limite' ? 700 : 600,
+            // 'mitad' Antes: 600 todo el texto. 2026-10-28: base 400; «Sigo+» en negrita adentro.
+            fontWeight: avisoInfo.colocacion === 'limite' ? 700 : avisoInfo.colocacion === 'mitad' ? 400 : 600,
             zIndex: 999,
             // -orden 2, punto 3- También tocable. Antes: pointerEvents: avisoInfo.accionTexto ? 'auto' : 'none',
             pointerEvents: (avisoInfo.accionTexto || avisoInfo.tocable) ? 'auto' : 'none',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: avisoInfo.colocacion === 'limite' ? 'center' : undefined,
+            justifyContent: cajaM3 ? 'center' : undefined,
             gap: 'var(--aire-3)',
             // Sin alto fijo ni recorte: crece con pantalla chica o texto del sistema ampliado.
-            height: avisoInfo.colocacion === 'limite' ? 'auto' : undefined,
-            overflow: avisoInfo.colocacion === 'limite' ? 'visible' : undefined,
-            whiteSpace: avisoInfo.colocacion === 'limite' ? 'normal' : undefined,
+            height: cajaM3 ? 'auto' : undefined,
+            overflow: cajaM3 ? 'visible' : undefined,
+            whiteSpace: cajaM3 ? 'normal' : undefined,
             animation: movimientoApagado() ? 'none' : `panelSube ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
           }}
         >
@@ -162,12 +170,38 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
                 alignItems: 'center',
                 gap: 'var(--aire-2)',
                 padding: 0,
-                margin: 0
+                margin: 0,
+                // -cobro-visible avisos, 2026-10-28- Ancho completo de la caja; flecha con espacio propio.
+                width: '100%',
+                minWidth: 0,
+                textAlign: 'center'
               }}
             >
-              <span>{avisoInfo.texto}</span>
-              {/* El chevron apunta a la derecha: en IconosApp mira abajo; se gira −90°. */}
-              <span aria-hidden="true" style={{ display: 'inline-flex', transform: 'rotate(-90deg)' }}>
+              {/* Texto centrado; «Sigo+» negrita. flex 1 para que la flecha no quede debajo. */}
+              <span
+                style={{
+                  flex: 1,
+                  minWidth: 0,
+                  textAlign: 'center',
+                  fontWeight: 400
+                }}
+              >
+                {partesSigo ? (
+                  <>
+                    {partesSigo.antes}
+                    <span style={{ fontWeight: 700 }}>{partesSigo.resalte}</span>
+                    {partesSigo.despues}
+                  </>
+                ) : (
+                  avisoInfo.texto
+                )}
+              </span>
+              {/* El chevron apunta a la derecha: en IconosApp mira abajo; se gira −90°.
+                  flexShrink 0: su propio espacio; el texto no pasa por debajo. */}
+              <span
+                aria-hidden="true"
+                style={{ display: 'inline-flex', flexShrink: 0, transform: 'rotate(-90deg)' }}
+              >
                 <IconoChevron tamano={20} />
               </span>
             </button>
