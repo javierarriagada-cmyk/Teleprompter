@@ -1351,7 +1351,23 @@
 .linea-modo-lectura { display: flex; align-items: center; gap: 8px; padding: 0 0 10px; }
 .dock-lugar-voltear:has(.ficha-modo-lectura) { gap: 8px; align-items: flex-start; }
 .control-velocidad-lectura { display: flex; flex-direction: column; align-items: center; gap: 4px; pointer-events: auto; }
-.control-velocidad-lectura.de-pie { position: fixed; right: 12px; bottom: calc(var(--circulo-desde-abajo, 40px) - 40px); }
+/* -cobro-visible avisos, 2026-10-28- Antes: bottom sin safe-area; el «−» quedaba bajo la barra
+   de navegación de Android (gestos ≠ botones). Suma env(safe-area-inset-bottom); posición
+   horizontal (right: 12px) sin cambio. */
+.control-velocidad-lectura.de-pie {
+  position: fixed;
+  right: 12px;
+  bottom: calc(var(--circulo-desde-abajo, 40px) - 40px + env(safe-area-inset-bottom, 0px));
+}
+/* Zona de toque ≥ 48×48 dp: el botón mide 48 (antes 40 + ::before -4, que se salía debajo
+   de la barra). inset 0 = la zona no desborda bajo el inset del sistema. */
+.control-velocidad-lectura .boton-nivel {
+  width: 48px;
+  height: 48px;
+}
+.control-velocidad-lectura .boton-nivel::before {
+  inset: 0;
+}
 .riel-control-velocidad { position: absolute; top: 50%; left: 0; right: 0; transform: translateY(-50%); display: flex; justify-content: center; z-index: 100; }
 /* La franja de foco de Velocidad fija la pinta TeleprompterView token por token -opacidad 0.45 fuera del
    renglon de arriba-; no lleva estilos aqui. */
