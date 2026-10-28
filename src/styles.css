@@ -126,6 +126,9 @@
      fondo claro / texto oscuro (no siguen el tema). Solo variables; sin hex en el TSX. */
   --aviso-sobre-camara-fondo: #ECE6E0;
   --aviso-sobre-camara-texto: #1D1B1A;
+  /* -menu-elegida, 2026-10-28- Fondo cálido suave detrás de la opción elegida en
+     .fila-menu-adjunto.elegida. Boceto aprobado: #ECE6E0 al 11 %. */
+  --menu-elegida-fondo: color-mix(in srgb, #ECE6E0 11%, transparent);
   --leer-fondo: linear-gradient(180deg, #F4ECE7, #E2D6CF);
   --leer-texto: #151312;
   --crear-fondo: #E7E1DE;
@@ -210,6 +213,9 @@
   --grabar-brillo: 0 4px 18px rgba(225, 29, 46, 0.20);
   --ajustes-vidrio: rgba(255, 255, 255, 0.7);
   --ajustes-borde: rgba(26, 24, 21, 0.08);
+  /* -menu-elegida, 2026-10-28- En claro el crema al 11 % casi no se ve sobre el menú
+     blanco; tono cálido del dato al 11 %. */
+  --menu-elegida-fondo: color-mix(in srgb, #A4471E 11%, transparent);
 }
 
 [data-tema="oscuro"] {

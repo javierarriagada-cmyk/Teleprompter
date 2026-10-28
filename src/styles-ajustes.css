@@ -595,8 +595,23 @@
   line-height: 1;
   color: var(--color-texto);
 }
+/* -menu-elegida, 2026-10-28- Resaltado de la opción elegida: fondo cálido suave
+   detrás, conservando el ✓. El ::before dibuja el fondo con inset lateral 6 dp
+   y radio --forma-chica (8 dp), sin cambiar padding, ancho ni zona táctil de la
+   fila. Antes: background: transparent; solo el ✓ marcaba la elección. */
 .fila-menu-adjunto.elegida {
   background: transparent;
+  position: relative;
+  isolation: isolate;
+}
+.fila-menu-adjunto.elegida::before {
+  content: "";
+  position: absolute;
+  inset: 0 6px;
+  border-radius: var(--forma-chica);
+  background: var(--menu-elegida-fondo);
+  z-index: -1;
+  pointer-events: none;
 }
 
 /* Antes: .capa-dialogo-ajustes era el envoltorio de la hoja inferior con scrim
