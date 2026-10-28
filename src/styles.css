@@ -286,6 +286,10 @@
   --grabar-brillo: 0 4px 18px rgba(225, 29, 46, 0.28);
   --ajustes-vidrio: rgba(255, 255, 255, 0.04);
   --ajustes-borde: rgba(255, 255, 255, 0.08);
+  /* -menu-elegida, 2026-10-28- Los menús de Ajustes viven en data-tema="oscuro"
+     aunque la app esté en claro (menus-dock / panel). Sin esta variable heredaban
+     el marrón de [data-tema="claro"]. Antes: sin --menu-elegida-fondo aquí. */
+  --menu-elegida-fondo: color-mix(in srgb, #ECE6E0 11%, transparent);
 }
 
 body {
