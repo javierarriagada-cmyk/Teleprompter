@@ -117,7 +117,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
     await p.waitForSelector('[data-testid="dialogo-modo-lectura"] .fila-menu-adjunto.elegida', { timeout: 8000 })
   })
 
-  // Tema claro: tipografía (para verificar el resaltado en claro)
+  // Tema claro: tipografía — menús de Ajustes siguen en data-tema=oscuro (crema, no marrón)
   await paso('8-tipografia-claro', async () => {
     await p.evaluate(() => {
       document.documentElement.setAttribute('data-tema', 'claro')
@@ -128,13 +128,48 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
       } catch {}
     })
     await abrirAjustes()
-    // Forzar tema claro desde el menú si hace falta
-    const temaFila = await p.$('[data-testid="fila-tema"]')
-    if (temaFila) {
-      // Ya estamos en claro vía localStorage + reload-like attribute; reopen tipografía
-    }
     await p.click('[data-testid="fila-tipo-letra"]')
     await p.waitForSelector('.fila-menu-adjunto.elegida', { timeout: 6000 })
+  })
+
+  // Idioma del guion (editor): hereda el tema de la pantalla (no fuerza oscuro)
+  await paso('10-idioma-guion', async () => {
+    await p.evaluate(() => {
+      document.documentElement.setAttribute('data-tema', 'oscuro')
+      try {
+        const a = JSON.parse(localStorage.getItem('teleprompter_ajustes') || '{}')
+        a.tema = 'oscuro'
+        localStorage.setItem('teleprompter_ajustes', JSON.stringify(a))
+      } catch {}
+    })
+    const crear = await p.$('[data-testid="btn-crear-guion"]')
+    if (!crear) throw new Error('sin btn-crear-guion')
+    await crear.click()
+    await p.waitForSelector('[data-testid="btn-idioma-guion"]', { timeout: 15000 })
+    await sleep(1200)
+    await p.click('[data-testid="btn-idioma-guion"]')
+    await p.waitForSelector('[data-testid="menu-idioma-guion"] .fila-menu-adjunto.elegida', { timeout: 8000 })
+  })
+
+  await paso('11-idioma-guion-claro', async () => {
+    await p.evaluate(() => {
+      document.documentElement.setAttribute('data-tema', 'claro')
+      try {
+        const a = JSON.parse(localStorage.getItem('teleprompter_ajustes') || '{}')
+        a.tema = 'claro'
+        localStorage.setItem('teleprompter_ajustes', JSON.stringify(a))
+      } catch {}
+    })
+    const crear = await p.$('[data-testid="btn-crear-guion"]')
+    if (!crear) throw new Error('sin btn-crear-guion')
+    await crear.click()
+    await p.waitForSelector('[data-testid="btn-idioma-guion"]', { timeout: 15000 })
+    await sleep(1200)
+    await p.evaluate(() => {
+      document.documentElement.setAttribute('data-tema', 'claro')
+    })
+    await p.click('[data-testid="btn-idioma-guion"]')
+    await p.waitForSelector('[data-testid="menu-idioma-guion"] .fila-menu-adjunto.elegida', { timeout: 8000 })
   })
 
   await b.close()
