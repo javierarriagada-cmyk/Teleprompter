@@ -1,0 +1,16 @@
+Avisos y caja cobro-visible — PR 157, 28-10-2026.
+
+Capturas de navegador (Chrome sin cabeza, 412×915) de una vista previa estática
+que reproduce la caja del aviso del minuto 2 y la invitación de marca, antes
+(cápsula / márgenes 16 / una línea) y después (M3 medium 12, elevación 1,
+márgenes 32, máx 480, dos líneas / Sigo+ negrita).
+
+No son pantallas vivas de la app: el aviso del minuto y la invitación dependen
+de temporizadores y de guardar con marca; en el navegador no se dispararon.
+El control de velocidad fija (punto 3) usa safe-area-inset-bottom: en Chrome
+de escritorio el inset suele ser 0; hay que revisarlo en el teléfono.
+
+  antes/1-aviso-minuto-antes.png
+  despues/1-aviso-minuto-despues.png
+  antes/2-invitacion-marca-antes.png
+  despues/2-invitacion-marca-despues.png
