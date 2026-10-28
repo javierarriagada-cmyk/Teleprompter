@@ -26,6 +26,9 @@ export interface AvisoInfo {
   colocacion?: 'limite' | 'mitad'
   // Grabación sobre la cámara: fondo claro de contraste (variables --aviso-sobre-camara-*).
   contrasteGrabacion?: boolean
+  // -cobro-visible avisos, 2026-10-28- Segunda línea (peso 400). Lectura del minuto 2;
+  // grabación no la pasa. Antes: el aviso de lectura iba en una sola cadena.
+  textoSecundario?: string
 }
 
 // El color de la acción del aviso, solo con variables que ya existen: --color-texto es el del texto del
@@ -49,7 +52,8 @@ export function useAviso() {
     // -portugues-voz, 2026-10-22- Suma idioma. Antes: opciones?: { ...; duracionMs?: number; accionNeutra?: boolean }
     // -orden 2, punto 3- Suma tocable y alTocar. Antes: opciones?: { ...; idioma?: string }
     // -pasada teléfono PR 157- Suma colocacion y contrasteGrabacion.
-    opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number; accionNeutra?: boolean; idioma?: string; tocable?: boolean; alTocar?: () => void; colocacion?: 'limite' | 'mitad'; contrasteGrabacion?: boolean }
+    // -cobro-visible avisos, 2026-10-28- Suma textoSecundario.
+    opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number; accionNeutra?: boolean; idioma?: string; tocable?: boolean; alTocar?: () => void; colocacion?: 'limite' | 'mitad'; contrasteGrabacion?: boolean; textoSecundario?: string }
   ) => {
     if (timerAvisoRef.current) clearTimeout(timerAvisoRef.current)
     setAvisoInfo({
@@ -61,7 +65,8 @@ export function useAviso() {
       tocable: opciones?.tocable,
       alTocar: opciones?.alTocar,
       colocacion: opciones?.colocacion,
-      contrasteGrabacion: opciones?.contrasteGrabacion
+      contrasteGrabacion: opciones?.contrasteGrabacion,
+      textoSecundario: opciones?.textoSecundario
     })
     const dur = opciones?.duracionMs ?? 2000
     timerAvisoRef.current = setTimeout(() => {

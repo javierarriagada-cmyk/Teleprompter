@@ -38,7 +38,8 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
       {avisoInfo && (
         <div
           data-testid="aviso-flotante"
-          className="aviso-breve"
+          /* -cobro-visible avisos, 2026-10-28- 'limite': caja M3 medium + elev 1. Antes: cápsula. */
+          className={`aviso-breve${avisoInfo.colocacion === 'limite' ? ' aviso-caja-m3' : ''}`}
           // -portugues-voz, 2026-10-22- El idioma del aviso si no es el de la app -useAviso, idioma-: TalkBack lo lee
           // con la voz de ese idioma. Sin idioma no lleva lang y vale el de la página, como antes.
           lang={avisoInfo.idioma}
@@ -78,9 +79,17 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
                     // Antes, también con acción: 'calc(var(--aire-5) + env(safe-area-inset-bottom, 0px))'
                     : 'calc(var(--aire-5) + env(safe-area-inset-bottom, 0px))'
                 }),
-            // 'limite' 2026-10-27: márgenes 16, ancho casi completo. Antes / otros: entre rieles o max-content.
+            // 'limite' Antes 2026-10-27: left/right 16, maxWidth none.
+            // 2026-10-28: márgenes 32 (vertical), max 480 centrado. Sin transform (panelSube).
             ...(avisoInfo.colocacion === 'limite'
-              ? { left: 16, right: 16, width: 'auto' as const, maxWidth: 'none' as const, marginLeft: 0, marginRight: 0 }
+              ? {
+                  left: 32,
+                  right: 32,
+                  width: 'auto' as const,
+                  maxWidth: 480,
+                  marginLeft: 'auto',
+                  marginRight: 'auto'
+                }
               : {
                   left: enRieles && columnaHorizontal ? columnaHorizontal.izquierda : 0,
                   right: enRieles && columnaHorizontal ? columnaHorizontal.derecha : 0,
@@ -103,13 +112,15 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
             // -mejoras-claridad, 21-10-2026- Destacado: más aire a la izquierda, 56 de alto y letra de 16. Antes, siempre:
             // padding: 'var(--aire-2) var(--aire-3)', fontSize: 'var(--texto-cuerpo)'
             // -pasada teléfono PR 157- avisos de límite: var(--texto-titulo) = 18.
-            // 2026-10-27 'limite': texto 20 negrita, relleno amplio (aire-3 / aire-4).
+            // 2026-10-27 'limite': texto 20 negrita, relleno aire-3 / aire-4.
+            // 2026-10-28 'limite': relleno parejo 4 lados (aire-3); sin alto fijo.
             padding: avisoInfo.colocacion === 'limite'
-              ? 'var(--aire-3) var(--aire-4)'
+              ? 'var(--aire-3)'
               : destacado ? 'var(--aire-1) var(--aire-2) var(--aire-1) var(--aire-4)' : 'var(--aire-2) var(--aire-3)',
             minHeight: destacado ? 56 : undefined,
             boxSizing: 'border-box',
-            borderRadius: 'var(--redondeo-pildora)',
+            // Antes 2026-10-28: siempre --redondeo-pildora. 'limite' → --forma-media (clase .aviso-caja-m3).
+            borderRadius: avisoInfo.colocacion === 'limite' ? 'var(--forma-media)' : 'var(--redondeo-pildora)',
             fontSize: avisoInfo.colocacion === 'limite'
               ? 'var(--texto-aviso-limite)'
               : avisoInfo.colocacion === 'mitad'
@@ -123,6 +134,10 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
             alignItems: 'center',
             justifyContent: avisoInfo.colocacion === 'limite' ? 'center' : undefined,
             gap: 'var(--aire-3)',
+            // Sin alto fijo ni recorte: crece con pantalla chica o texto del sistema ampliado.
+            height: avisoInfo.colocacion === 'limite' ? 'auto' : undefined,
+            overflow: avisoInfo.colocacion === 'limite' ? 'visible' : undefined,
+            whiteSpace: avisoInfo.colocacion === 'limite' ? 'normal' : undefined,
             animation: movimientoApagado() ? 'none' : `panelSube ${MS_CHICO}ms ${CURVA_ENTRA} forwards`
           }}
         >
@@ -158,7 +173,26 @@ export function AvisoBreve({ avisoInfo, enLectura, cerrarAviso, columnaHorizonta
             </button>
           ) : (
             <>
-              <span>{avisoInfo.texto}</span>
+              {/* -cobro-visible avisos, 2026-10-28- Lectura: dos líneas (negrita + peso 400).
+                  Grabación: solo texto. Frases enteras; bajan de línea sin cortarse. */}
+              {avisoInfo.textoSecundario ? (
+                <span
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    textAlign: 'center',
+                    gap: 0,
+                    minWidth: 0,
+                    maxWidth: '100%'
+                  }}
+                >
+                  <span style={{ fontWeight: 700 }}>{avisoInfo.texto}</span>
+                  <span style={{ fontWeight: 400 }}>{avisoInfo.textoSecundario}</span>
+                </span>
+              ) : (
+                <span>{avisoInfo.texto}</span>
+              )}
               {avisoInfo.accionTexto && (
                 <button
                   onClick={() => {

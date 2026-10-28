@@ -2613,7 +2613,11 @@ export default function App({ motor, repoOverride }: AppProps) {
             // Antes: setFaseLimiteVoz('aviso') 8 s → 'queda'; la frase iba EN la pastilla
             // (BarraDeTiempo) y se veía chica/abajo. 2026-10-27: aviso propio 8 s; pastilla solo tiempo.
             setFaseLimiteVoz('queda')
-            mostrarAviso(t('avisoQuedaMinutoVoz'), opcionesAvisoQuedaMinuto())
+            mostrarAviso(t('avisoQuedaMinutoVoz'), {
+              ...opcionesAvisoQuedaMinuto(),
+              // -cobro-visible avisos, 2026-10-28- Segunda línea peso 400. Antes: todo en avisoQuedaMinutoVoz.
+              textoSecundario: t('avisoQuedaMinutoVozNota'),
+            })
           }
         }
       }

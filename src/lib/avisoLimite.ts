@@ -2,7 +2,8 @@
 // Antes: la frase de lectura iba DENTRO de la pastilla (BarraDeTiempo, faseLimiteVoz === 'aviso')
 // y se veía chica y abajo; la de grabación ya era AvisoBreve pero en el tercio superior.
 
-/** Opciones del aviso flotante «queda 1 minuto». Misma forma en lectura y grabación. */
+/** Opciones del aviso flotante «queda 1 minuto». Misma forma en lectura y grabación.
+ *  La nota de velocidad fija (segunda línea) la pasa solo lectura vía textoSecundario. */
 export function opcionesAvisoQuedaMinuto(): {
   duracionMs: number
   colocacion: 'limite'

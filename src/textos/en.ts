@@ -332,7 +332,9 @@ export const en: Textos = {
   masRapido: 'Faster',
   // -orden 2 «Sigo+ en la app», 26-10-2026-.
   // Antes 2026-10-27: '1 minute left with voice.'
-  avisoQuedaMinutoVoz: '1 minute left with voice. Fixed speed has no limit.',
+  // Antes 2026-10-28: '1 minute left with voice. Fixed speed has no limit.' (one line).
+  avisoQuedaMinutoVoz: '1 minute left with voice.',
+  avisoQuedaMinutoVozNota: 'Fixed speed has no limit.',
   textoQuedaConVoz: '{t} with voice',
   limiteLectura: 'With Sigo+, Sigo follows you to the end.',
   avisoQuedaMinutoGrabacion: '1 minute of recording left.',
