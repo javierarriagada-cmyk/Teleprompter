@@ -9,13 +9,17 @@
 // diferencia se siente igual subiendo de 1 a 2 que de 6 a 7-. Las palabras por minuto solo mueven el
 // texto y calculan la duracion: NUNCA se muestran. En pantalla hay una barra de siete tramos y TalkBack
 // dice «Velocidad, nivel N de 7».
+// -2026-10-28, Javier- Baja un nivel toda la escala: el piso pasa de 100 a 88 y el techo de 220 a
+// 193. Siguen siete tramos al ~14 %; el nivel inicial 4 queda en 130 palabras/minuto. No se migra
+// el número guardado: quien tenía nivel 4 sigue en 4 (ahora más lento). Antes: [100, 114, 130, 148,
+// 169, 193, 220].
 import type { EstadoAvance, MotorDeAvance } from './avance'
 import { segundosDeLectura } from '../datos/modelo'
 import type { Renglon } from './renglones'
 
 export type ModoLectura = 'voz' | 'fija'
 
-export const NIVELES_PPM = [100, 114, 130, 148, 169, 193, 220]
+export const NIVELES_PPM = [88, 100, 114, 130, 148, 169, 193]
 export const NIVELES = NIVELES_PPM.length
 export const NIVEL_POR_OMISION = 4
 
