@@ -131,6 +131,44 @@ describe('oferta', () => {
     await o.abrirCentroDeCliente()
     expect(orden).toEqual(['config', 'override', 'center'])
   })
+
+  // -corrección pruebas, 2026-10-29- Promesa diferida: sin await del sync, present* se adelanta.
+  // Las pruebas de orden con mock async inmediato siguen verdes aunque se quite el await.
+  it('no llama presentPaywall hasta que termine la sincronización del idioma', async () => {
+    let liberarSync!: () => void
+    sim.sincronizarLocaleUiPurchases.mockImplementation(
+      () => new Promise<void>((resolve) => {
+        liberarSync = () => resolve()
+      })
+    )
+    const o = await cargar()
+    const promesa = o.abrirOferta('ajustes')
+    await vi.waitFor(() => {
+      expect(sim.sincronizarLocaleUiPurchases).toHaveBeenCalled()
+    })
+    expect(sim.presentPaywall).not.toHaveBeenCalled()
+    liberarSync()
+    expect(await promesa).toBe(true)
+    expect(sim.presentPaywall).toHaveBeenCalledTimes(1)
+  })
+
+  it('no llama presentCustomerCenter hasta que termine la sincronización del idioma', async () => {
+    let liberarSync!: () => void
+    sim.sincronizarLocaleUiPurchases.mockImplementation(
+      () => new Promise<void>((resolve) => {
+        liberarSync = () => resolve()
+      })
+    )
+    const o = await cargar()
+    const promesa = o.abrirCentroDeCliente()
+    await vi.waitFor(() => {
+      expect(sim.sincronizarLocaleUiPurchases).toHaveBeenCalled()
+    })
+    expect(sim.presentCustomerCenter).not.toHaveBeenCalled()
+    liberarSync()
+    await promesa
+    expect(sim.presentCustomerCenter).toHaveBeenCalledTimes(1)
+  })
 })
 
 describe('decidirOfertaAlLimite', () => {
