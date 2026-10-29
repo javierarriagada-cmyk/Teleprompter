@@ -2,6 +2,7 @@ import { Capacitor } from '@capacitor/core'
 import type { CustomerInfo, PurchasesPlugin } from '@revenuecat/purchases-capacitor'
 import { CLAVE_REVENUECAT_PLAY, ID_DERECHO } from './revenuecatConfig'
 import { estadoCuenta, sesionActual, suscribirCuenta, type EstadoCuenta } from './cuenta'
+import { idiomaApp, suscribirIdioma, type IdiomaApp } from './idioma'
 
 // LA SUSCRIPCIÓN DE SIGO -orden 1 «Los cimientos del cobro», 26-10-2026-. El único lugar del código que
 // dice si la persona tiene la suscripción. Todavía no hay pantallas, avisos, topes ni botones: en esta
@@ -137,6 +138,36 @@ export async function asegurarConfigurado(): Promise<boolean> {
     console.warn('[suscripcion]', e)
     return false
   }
+}
+
+
+// -idioma RevenueCat UI, 2026-10-29- El idioma de la APP (idioma.ts), no el del guion.
+// Purchases.overridePreferredUILocale: es→'es', en→'en', pt→'pt-BR'.
+export function localeUiDeIdiomaApp(idioma: IdiomaApp): string {
+  if (idioma === 'es') return 'es'
+  if (idioma === 'pt') return 'pt-BR'
+  return 'en'
+}
+
+// Aplica el locale a la UI de RevenueCat (paywall / Customer Center). Hay que haber
+// configurado Purchases antes; si no, el SDK rechaza. Fallos: console.warn, Sigo sigue.
+export async function sincronizarLocaleUiPurchases(idioma: IdiomaApp = idiomaApp()): Promise<void> {
+  try {
+    const cargado = await cargarPlugin()
+    const p = cargado?.plugin ?? null
+    if (!p) return
+    await configurar(p)
+    await p.overridePreferredUILocale({ locale: localeUiDeIdiomaApp(idioma) })
+  } catch (e) {
+    console.warn('[suscripcion]', 'overridePreferredUILocale:', e)
+  }
+}
+
+// Cada cambio del idioma de la app vuelve a sincronizar. Devuelve con qué dejar de escuchar.
+export function vigilarLocaleUiPurchases(): () => void {
+  return suscribirIdioma(() => {
+    void sincronizarLocaleUiPurchases()
+  })
 }
 
 // EL CICLO, como vigilarRespaldo: pide customerInfo al arrancar, escucha los cambios y sigue a la cuenta

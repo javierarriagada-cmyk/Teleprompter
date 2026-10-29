@@ -6,6 +6,7 @@ const sim = vi.hoisted(() => ({
   plugin: true,
   tiene: false,
   asegurarConfigurado: vi.fn(),
+  sincronizarLocaleUiPurchases: vi.fn(),
   presentPaywall: vi.fn(),
   presentCustomerCenter: vi.fn()
 }))
@@ -24,7 +25,8 @@ vi.mock('@revenuecat/purchases-capacitor-ui', () => ({
 }))
 vi.mock('../lib/suscripcion', () => ({
   tieneSuscripcion: () => sim.tiene,
-  asegurarConfigurado: () => sim.asegurarConfigurado()
+  asegurarConfigurado: () => sim.asegurarConfigurado(),
+  sincronizarLocaleUiPurchases: () => sim.sincronizarLocaleUiPurchases()
 }))
 
 async function cargar() {
@@ -40,6 +42,7 @@ beforeEach(() => {
   sim.presentPaywall.mockReset().mockResolvedValue({ result: 'PURCHASED' })
   sim.presentCustomerCenter.mockReset().mockResolvedValue(undefined)
   sim.asegurarConfigurado.mockReset().mockResolvedValue(true)
+  sim.sincronizarLocaleUiPurchases.mockReset().mockResolvedValue(undefined)
   vi.spyOn(console, 'info').mockImplementation(() => {})
   vi.spyOn(console, 'warn').mockImplementation(() => {})
 })
@@ -87,6 +90,9 @@ describe('oferta', () => {
       orden.push('config-start')
       liberar = (v) => { orden.push('config-end'); resolve(v) }
     }))
+    sim.sincronizarLocaleUiPurchases.mockImplementation(async () => {
+      orden.push('override')
+    })
     sim.presentPaywall.mockImplementation(async () => {
       orden.push('paywall')
       return { result: 'PURCHASED' }
@@ -98,7 +104,8 @@ describe('oferta', () => {
     expect(sim.presentPaywall).not.toHaveBeenCalled()
     liberar(true)
     expect(await promesa).toBe(true)
-    expect(orden).toEqual(['config-start', 'config-end', 'paywall'])
+    // -idioma RevenueCat UI, 2026-10-29- configure → override → present.
+    expect(orden).toEqual(['config-start', 'config-end', 'override', 'paywall'])
   })
 
   it('si Purchases no quedó configurado, no abre la oferta', async () => {
@@ -106,6 +113,23 @@ describe('oferta', () => {
     const o = await cargar()
     expect(await o.abrirOferta('ajustes')).toBe(false)
     expect(sim.presentPaywall).not.toHaveBeenCalled()
+  })
+
+  it('abrirCentroDeCliente: configure → override → presentCustomerCenter', async () => {
+    const orden: string[] = []
+    sim.asegurarConfigurado.mockImplementation(async () => {
+      orden.push('config')
+      return true
+    })
+    sim.sincronizarLocaleUiPurchases.mockImplementation(async () => {
+      orden.push('override')
+    })
+    sim.presentCustomerCenter.mockImplementation(async () => {
+      orden.push('center')
+    })
+    const o = await cargar()
+    await o.abrirCentroDeCliente()
+    expect(orden).toEqual(['config', 'override', 'center'])
   })
 })
 

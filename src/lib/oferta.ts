@@ -1,5 +1,5 @@
 import { Capacitor } from '@capacitor/core'
-import { tieneSuscripcion, asegurarConfigurado } from './suscripcion'
+import { tieneSuscripcion, asegurarConfigurado, sincronizarLocaleUiPurchases } from './suscripcion'
 
 // LA PANTALLA DE OFERTA -orden 2 «Sigo+ en la app», punto 5, 26-10-2026-. Abre el paywall de
 // RevenueCat -RevenueCatUI.presentPaywall- con la oferta vigente. Si ya hay suscripción, no hace nada.
@@ -77,6 +77,9 @@ export async function abrirOferta(lugar: LugarOferta): Promise<boolean> {
     const cargado = await cargarPluginUI()
     const ui = cargado?.plugin
     if (!ui) return false
+    // -idioma RevenueCat UI, 2026-10-29- Locale de la app antes de abrir, por si el SDK
+    // aún no lo aplicó. Await: no abrir con el idioma anterior.
+    await sincronizarLocaleUiPurchases()
     // presentPaywall sin offering: la oferta vigente -current- del panel de RevenueCat.
     await ui.presentPaywall()
     return true
@@ -115,6 +118,8 @@ export async function abrirCentroDeCliente(): Promise<void> {
     const cargado = await cargarPluginUI()
     const ui = cargado?.plugin
     if (!ui) return
+    // -idioma RevenueCat UI, 2026-10-29- Locale de la app antes de abrir. Await.
+    await sincronizarLocaleUiPurchases()
     await ui.presentCustomerCenter()
   } catch (e) {
     avisar(e)

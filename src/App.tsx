@@ -55,7 +55,7 @@ import { RepositorioMemoria } from './datos/RepositorioMemoria'
 import { vigilarRespaldo } from './lib/respaldo'
 import { configuracionLista } from './lib/firebaseConfig'
 // -orden 1, los cimientos del cobro, 26-10-2026- RevenueCat, sin nada visible.
-import { vigilarSuscripcion, tieneSuscripcion } from './lib/suscripcion'
+import { vigilarSuscripcion, tieneSuscripcion, sincronizarLocaleUiPurchases, vigilarLocaleUiPurchases } from './lib/suscripcion'
 import { cargarLimites, limitesActuales, hayQueAvisar, llegoAlLimite, transcurridoSinPausas, accionAlLimiteLectura } from './lib/limites'
 // Antes: import { pausaUsaMotorFijo, tokenSeguidorAlVolverAVoz } from './lib/lecturaForzada'
 // 27-10-2026: vía forzada a fija retirada; al límite se pausa (accionAlLimiteLectura).
@@ -593,6 +593,13 @@ export default function App({ motor, repoOverride }: AppProps) {
     return vigilarSuscripcion()
   }, [repoOverride])
 
+  // -idioma RevenueCat UI, 2026-10-29- Cada cambio del idioma de la app vuelve a
+  // sincronizar el locale de la UI de RevenueCat. Con repoOverride -pruebas- no se enciende.
+  useEffect(() => {
+    if (repoOverride) return
+    return vigilarLocaleUiPurchases()
+  }, [repoOverride])
+
   // -orden 2, punto 2- Los límites desde Remote Config. Con repoOverride -pruebas- no se pide.
   useEffect(() => {
     if (repoOverride) return
@@ -606,6 +613,9 @@ export default function App({ motor, repoOverride }: AppProps) {
       // de mas abajo se crea en ese idioma.
       await leerIdiomaDelTelefono()
       if (!montadoRef.current) return
+      // -idioma RevenueCat UI, 2026-10-29- Tras conocer el idioma efectivo de Android,
+      // sincronizar Purchases.overridePreferredUILocale con el de la app.
+      void sincronizarLocaleUiPurchases()
       // -tarea 104- Recién ahora se sabe qué voz pedir en silencio.
       setIdiomaLeido(true)
       // Verificar si el repositorio funciona o caer a fallback si no está disponible
