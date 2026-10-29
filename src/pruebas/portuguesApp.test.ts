@@ -34,8 +34,11 @@ const IGUALES_PERMITIDOS: Record<string, string> = {
   modoVozCorto: '«Voz» se escribe igual en portugues',
   // -orden 2- Sigo+ y Restaurar compras son iguales en pt y es / los tres.
   tarjetaSigoTitulo: '«Sigo+» es el nombre del producto, igual en los tres',
-  restaurarCompras: '«Restaurar compras» se escribe igual en portugues'
+  restaurarCompras: '«Restaurar compras» se escribe igual en portugues',
+  // -idioma/ubicación Sigo+, 2026-10-29-
+  seccionSigo: '«Sigo+» es el nombre del producto, igual en los tres'
 }
+
 
 describe('portugues-app punto 2 - pt.ts', () => {
   test('pt.ts tiene las mismas claves que es.ts', () => {

@@ -29,7 +29,7 @@ import { ErrorCuenta, ResultadoCuenta, borrarCuenta, entrar, estadoCuenta, salir
 // -orden B- El estado de la copia de seguridad, para la línea de la tarjeta de la cuenta.
 import { FaseRespaldo, estadoRespaldo, suscribirRespaldo } from '../lib/respaldo'
 // -orden 2, punto 6, 26-10-2026- Tarjeta Sigo+, restaurar compras y fila con Customer Center.
-import { restaurarCompras, ofertaTraePruebaGratis, suscripcionSinVerificar, suscribirSuscripcion, estadoSuscripcion, mostrarFilaSigoActivoEnCuenta } from '../lib/suscripcion'
+import { restaurarCompras, ofertaTraePruebaGratis, suscripcionSinVerificar, suscribirSuscripcion, estadoSuscripcion } from '../lib/suscripcion'
 import { abrirOferta, abrirCentroDeCliente } from '../lib/oferta'
 import type { ClaveTexto } from '../textos'
 import { t, useTextos, ENDONIMO_IDIOMA } from '../textos'
@@ -191,6 +191,14 @@ export function PanelAjustes({
   const conCuenta = conAcerca && configuracionLista()
   // -orden 2, punto 6- Sigo+ se ve en las mismas puertas que Acerca -portada-, aunque Firebase no esté listo.
   const conSigo = conAcerca
+  // -ubicación Sigo+, 2026-10-29- Sección Sigo+ / restaurar según suscripción.
+  const estadoSub = useSyncExternalStore(suscribirSuscripcion, estadoSuscripcion, estadoSuscripcion)
+  const sinVerificarSigo = useSyncExternalStore(
+    suscribirSuscripcion,
+    () => suscripcionSinVerificar(),
+    () => suscripcionSinVerificar()
+  )
+  const conSuscripcion = estadoSub.tipo === 'conSuscripcion'
   const [version, setVersion] = useState<string | null>(null)
   useEffect(() => {
     // Solo en el telefono: en el navegador -y en las pruebas- el plugin no trae getInfo.
@@ -631,6 +639,28 @@ export function PanelAjustes({
               {/* -orden B, 20-10-2026, decisión de Javier: «está oculta»- La cuenta sube arriba de todo, como
                   una tarjeta sin título, justo debajo de «Ajustes» -TarjetaCuenta, al comienzo del cuerpo-.
                   Antes: {conAcerca && configuracionLista() && <SeccionCuenta />} */}
+              {/* -ubicación Sigo+, 2026-10-29- Con Sigo+ activo: sección antes de Ayuda
+                  (Administrar + estado Activa). Antes: fila «Sigo+ activo · Administrar» arriba /
+                  dentro de TarjetaCuenta. Motivo: administración junto a Ayuda, no en la tarjeta. */}
+              {conAcerca && conSuscripcion && (
+                <>
+                  <h3 className="dock-seccion">{t('seccionSigo')}</h3>
+                  <div className="tarjeta-seccion-ajustes" data-testid="seccion-sigo-mas">
+                    <FilaAjuste
+                      testid="fila-administrar-suscripcion"
+                      icono={<IconoEstrella tamano={22} />}
+                      nombre={t('administrarSuscripcion')}
+                      valor={t('sigoEstadoActiva')}
+                      onClick={() => { void abrirCentroDeCliente() }}
+                    />
+                    {sinVerificarSigo && (
+                      <div className="fila-sigo-activo-micro" data-testid="sigo-sin-conexion">
+                        {t('sinConexionVerificar')}
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
               {/* -guia-sigo- Ayuda y comentarios, arriba de Acerca. */}
               {conAcerca && (
                 <>
@@ -898,22 +928,16 @@ const TEXTO_FASE: Record<FaseRespaldo, ClaveTexto> = {
 }
 
 
-// -orden 2, punto 6, 26-10-2026- Quien no paga: tarjeta Sigo+. Quien paga sin sesión Google: fila en
-// su propia tarjeta. Quien paga con sesión: la fila va dentro de TarjetaCuenta -abajo-.
+// -orden 2, punto 6, 26-10-2026- Quien no paga: tarjeta Sigo+.
+// -ubicación Sigo+, 2026-10-29- Antes: quien paga sin sesión veía fila Administrar arriba
+// (tarjeta-sigo-activo); quien paga con sesión, la fila dentro de TarjetaCuenta.
+// Motivo: administración pasa a la sección Sigo+ antes de Ayuda; arriba solo la invitación
+// para quien no tiene suscripción.
 function BloqueSigo({ mostrarAviso: _mostrarAviso }: { mostrarAviso?: (msg: string, opciones?: { duracionMs?: number }) => void }) {
   void _mostrarAviso
   const estadoSub = useSyncExternalStore(suscribirSuscripcion, estadoSuscripcion, estadoSuscripcion)
-  const estadoCue = useSyncExternalStore(suscribirCuenta, estadoCuenta, estadoCuenta)
   const paga = estadoSub.tipo === 'conSuscripcion'
-  const conSesion = estadoCue.tipo === 'conSesion'
-  if (paga && conSesion) return null
-  if (paga) {
-    return (
-      <div className="tarjeta-seccion-ajustes" data-testid="tarjeta-sigo-activo">
-        <FilaSigoActivo />
-      </div>
-    )
-  }
+  if (paga) return null
   return <TarjetaSigoMas />
 }
 
@@ -945,34 +969,14 @@ function TarjetaSigoMas() {
   )
 }
 
-function FilaSigoActivo() {
-  const sinVerificar = useSyncExternalStore(
-    suscribirSuscripcion,
-    () => suscripcionSinVerificar(),
-    () => suscripcionSinVerificar()
-  )
-  return (
-    <>
-      <FilaAjuste
-        testid="fila-sigo-activo"
-        icono={<IconoEstrella tamano={22} />}
-        nombre={t('sigoActivo')}
-        onClick={() => { void abrirCentroDeCliente() }}
-      />
-      {sinVerificar && (
-        <div className="fila-sigo-activo-micro" data-testid="sigo-sin-conexion">
-          {t('sinConexionVerificar')}
-        </div>
-      )}
-    </>
-  )
-}
+// Antes 2026-10-29: FilaSigoActivo (testid fila-sigo-activo, texto sigoActivo «Sigo+ activo · Administrar»).
+// Motivo: administración y estado «Activa» viven en la sección Sigo+ antes de Ayuda.
+// function FilaSigoActivo() { ... }
 
 function TarjetaCuenta({ hostMenus }: { hostMenus: HTMLElement | null }) {
   const estado = useSyncExternalStore(suscribirCuenta, estadoCuenta, estadoCuenta)
-  // -arreglo PR 157, 26-10-2026- Antes: tieneSuscripcion() sin suscribirse; tras comprar con
-  // sesión Google la fila no aparecía hasta reabrir Ajustes. Igual que BloqueSigo.
-  const estadoSub = useSyncExternalStore(suscribirSuscripcion, estadoSuscripcion, estadoSuscripcion)
+  // Antes 2026-10-29: const estadoSub = useSyncExternalStore(suscribirSuscripcion, ...)
+  // para mostrarFilaSigoActivoEnCuenta. Motivo: la fila salió de la tarjeta.
   const respaldo = useSyncExternalStore(suscribirRespaldo, estadoRespaldo, estadoRespaldo)
   // Debajo de la tarjeta, como en la orden A: un error, o el aviso de que se cerró la sesión.
   const [linea, setLinea] = useState<ClaveTexto | null>(null)
@@ -1054,9 +1058,9 @@ function TarjetaCuenta({ hostMenus }: { hostMenus: HTMLElement | null }) {
             />
           </div>
         )}
-        {/* -orden 2, punto 6- Con sesión y Sigo+: la fila Administrar va dentro de la tarjeta, bajo el nombre. */}
-        {/* Antes: tieneSuscripcion() — 26-10-2026, arreglo PR 157: estado del store. */}
-        {mostrarFilaSigoActivoEnCuenta(estado.tipo, estadoSub.tipo) && <FilaSigoActivo />}
+        {/* Antes 2026-10-29: {mostrarFilaSigoActivoEnCuenta(estado.tipo, estadoSub.tipo) && <FilaSigoActivo />}
+            Motivo: administración de Sigo+ pasa a la sección Sigo+ antes de Ayuda; la cuenta
+            de Google conserva ubicación y funcionamiento. */}
       </div>
       {/* -corrección del 20-10-2026- La misma causa: .fila-ajuste-explicacion escondida en los paneles; desde la
           orden A no se veía. Antes: <div className="fila-ajuste-explicacion linea-cuenta" ...> */}

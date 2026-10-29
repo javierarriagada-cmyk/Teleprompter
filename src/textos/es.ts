@@ -371,6 +371,10 @@ export const es = {
   restaurarListo: 'Sigo+ está activo.',
   restaurarNada: 'No encontramos compras de Sigo+ en esta cuenta de Google.',
   sigoActivo: 'Sigo+ activo · Administrar',
+  // -idioma/ubicación Sigo+, 2026-10-29- Sección Sigo+ antes de Ayuda (estado y administrar por separado).
+  seccionSigo: 'Sigo+',
+  administrarSuscripcion: 'Administrar suscripción',
+  sigoEstadoActiva: 'Activa',
   avisoGuardarSinMarca: 'Con Sigo+, tus videos sin marca de agua.',
   avisoFinPrueba: 'Tu prueba termina el {fecha}.',
   sinConexionVerificar: 'Conéctate un momento para verificar Sigo+.',
