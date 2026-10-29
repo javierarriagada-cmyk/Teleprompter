@@ -680,17 +680,21 @@ export function PanelAjustes({
                       // -portugues-app, punto 3, 2026-10-22- Antes: onClick={() => abrirEnlace('mailto:' + (idioma === 'es' ? 'hola@sigoteleprompter.com' : 'hello@sigoteleprompter.com'))}
                       onClick={() => abrirEnlace('mailto:' + enlaces.correo)}
                     />
-                    {/* -orden 2, punto 6- Restaurar compras. */}
-                    <FilaAjuste
-                      testid="fila-restaurar-compras"
-                      nombre={t('restaurarCompras')}
-                      icono={<IconoRepetir tamano={22} />}
-                      onClick={() => {
-                        void restaurarCompras().then((ok) => {
-                          mostrarAviso?.(t(ok ? 'restaurarListo' : 'restaurarNada'), { duracionMs: 4000 })
-                        })
-                      }}
-                    />
+                    {/* -restauración, 2026-10-29- Con suscripción activa la restauración queda
+                        en el Customer Center; se quita el botón duplicado. Sin suscripción se
+                        conserva. Antes: FilaAjuste fila-restaurar-compras siempre visible. */}
+                    {!conSuscripcion && (
+                      <FilaAjuste
+                        testid="fila-restaurar-compras"
+                        nombre={t('restaurarCompras')}
+                        icono={<IconoRepetir tamano={22} />}
+                        onClick={() => {
+                          void restaurarCompras().then((ok) => {
+                            mostrarAviso?.(t(ok ? 'restaurarListo' : 'restaurarNada'), { duracionMs: 4000 })
+                          })
+                        }}
+                      />
+                    )}
                   </div>
                 </>
               )}
