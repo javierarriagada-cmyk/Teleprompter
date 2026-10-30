@@ -63,13 +63,16 @@ describe('Tarea 89, defecto 1: el registro muestra lo que hoy no se ve', () => {
   // El caso de la medición: el motor en 0 y el seguidor ya en los corchetes. El calce del 60 se
   // anota -como hoy- y luego queda dicho que cayó fuera de la ventana, con dónde estaba el seguidor.
   // Esa última parte es la que hoy falta: con ella se ve el desfase entre los dos.
+  // -2026-10-29, bienvenida-nueva- El Hola cambió el párrafo de corchetes; el token y las frases
+  // dichas se mueven con el texto. Antes: irAToken(55) y «lo que escribes entre corchetes es una
+  // nota» / «…nota solo para ti» (guion viejo).
   test('un calce fuera de la ventana anota "ventana FUERA" y el motor no se mueve', () => {
     const c = conduccionDe(guionHola)
     activarDiagnostico(true)
-    c.seguidor.irAToken(55)
+    c.seguidor.irAToken(108)
     const t = 1000
-    procesarParcial(c, 'lo que escribes entre corchetes es una nota', t)
-    procesarFinal(c, 'lo que escribes entre corchetes es una nota solo para ti', t + 400)
+    procesarParcial(c, 'las notas entre corchetes como la que acabas de ver son solo para ti', t)
+    procesarFinal(c, 'las notas entre corchetes como la que acabas de ver son solo para ti no hace falta leerlas', t + 400)
     const txt = comoTexto()
     expect(txt).toMatch(/calce/)
     expect(txt).toMatch(/ventana\tFUERA (parcial|FINAL) token=\d+ ref=0 desde=0 hasta=40 seguidor=\d+/)

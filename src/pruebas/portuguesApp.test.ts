@@ -118,21 +118,21 @@ describe('portugues-app punto 4 - el Hola en portugues', () => {
     const pintado = (b.tramos || []).map((t) => [b.texto.slice(t.desde, t.hasta), t.negrita ? 'negrita' : t.destacado ? 'destacado' : t.color])
     expect(tituloDeBienvenida('pt')).toBe('Olá')
     expect(b.texto.startsWith('Olá. Leia isto em voz alta')).toBe(true)
+    expect(b.texto).toContain('[Respire e sorria.]')
+    // -bienvenida-nueva, 2026-10-29- Antes: âmbar/azul-claro/verde nombrados y extras de grabación vieja.
     expect(pintado).toEqual([
-      ['sem você tocar em nada', 'negrita'],
+      ['no ritmo da sua fala', 'ambar'],
       ['o texto espera por você', 'celeste'],
       ['negrito', 'negrita'],
-      ['âmbar', 'ambar'],
-      ['azul-claro', 'celeste'],
-      ['verde', 'salvia'],
+      ['cores', 'salvia'],
       ['destaque amarelo', 'destacado'],
-      ['para que seu olhar vá para a câmera', 'ambar'],
-      ['não fica no vídeo', 'negrita'],
+      ['Esse tempo fica fora do vídeo', 'negrita'],
       ['Controle por gestos', 'ambar'],
-      ['O que você vê é o que fica salvo', 'salvia'],
-      ['Você não precisa decorar nada.', 'negrita'],
-      ['na hora que quiser', 'destacado'],
-      ['hola@sigoteleprompter.com', 'celeste']
+      ['no ritmo da sua voz', 'celeste'],
+      ['sem limite de tempo', 'salvia'],
+      ["sem marca d'água", 'destacado'],
+      ['hola@sigoteleprompter.com', 'celeste'],
+      ['O Sigo acompanha', 'negrita']
     ])
     const t = b.tramos || []
     for (let i = 1; i < t.length; i++) expect(t[i].desde).toBeGreaterThanOrEqual(t[i - 1].hasta)
@@ -144,7 +144,8 @@ describe('portugues-app punto 4 - el Hola en portugues', () => {
     // const doc = readFileSync(resolve(__dirname, '../../docs/portugues.txt'), 'utf8')
     const doc = readFileSync(resolve(__dirname, '../../docs/portugues.txt'), 'utf8').replace(/\r\n/g, '\n')
     const desde = doc.indexOf('Olá. Leia isto em voz alta')
-    const fin = 'Tudo de bom!'
+    // Antes: fin = 'Tudo de bom!'
+    const fin = 'Você fala. O Sigo acompanha.'
     expect(desde).toBeGreaterThan(0)
     expect(b.texto).toBe(doc.slice(desde, doc.indexOf(fin, desde) + fin.length))
   })
