@@ -1,3 +1,6 @@
+// 30-10-2026: comando histórico bloqueado; la fuente vigente es armar_ficha.py.
+throw new Error('Comando histórico: usa python docs/play/ficha/herramientas/armar_ficha.py --salida <carpeta-temporal> y verificar_ficha.py.');
+// Antes: generador hasta el 25-10-2026, conservado abajo como historia.
 // LA LÁMINA DE REVISIÓN DE LA FICHA -tarea 86-. node lamina.cjs -> ../lamina-ficha.png
 // Todo en una imagen, para que Javier elija sin abrir veinte archivos: los gráficos, las capturas
 // de teléfono por idioma en su orden -escenas.cjs-, los textos con sus conteos, las tabletas, las

@@ -1,0 +1,2 @@
+# Solo herramientas de la ficha; no es una dependencia de la app.
+Pillow==12.0.0

@@ -1,3 +1,6 @@
+// 30-10-2026: comando histórico bloqueado; la fuente vigente es armar_ficha.py.
+throw new Error('Comando histórico: usa python docs/play/ficha/herramientas/armar_ficha.py --salida <carpeta-temporal> y verificar_ficha.py.');
+// Antes: generador hasta el 25-10-2026, conservado abajo como historia.
 // ARMA ../textos-es-419.txt y ../textos-en-US.txt desde textos.cjs -tarea 86-. node armar-textos.cjs
 // Cuenta caracteres como Play: por carácter visible -code point-, no por byte; "—" y "á" valen 1.
 // comprobar.cjs vuelve a contar desde los .txt, así que un texto editado a mano también se revisa.

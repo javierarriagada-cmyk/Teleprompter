@@ -1,3 +1,6 @@
+// 30-10-2026: comando histórico bloqueado; la fuente vigente es armar_ficha.py.
+throw new Error('Comando histórico: usa python docs/play/ficha/herramientas/armar_ficha.py --salida <carpeta-temporal> y verificar_ficha.py.');
+// Antes: generador hasta el 25-10-2026, conservado abajo como historia.
 // EL MARCO DE CADA CAPTURA Y EL GRÁFICO DE FUNCIONES -tarea 86-. node componer.cjs
 //
 // Toma las pantallas de crudas/ -las saca capturar.cjs de la app real- y arma, en ../:

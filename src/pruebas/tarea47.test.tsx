@@ -1,5 +1,5 @@
 import React from 'react'
-import { describe, test, expect, beforeEach } from 'vitest'
+import { describe, test, expect, beforeEach, vi } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import fs from 'fs'
 import path from 'path'
@@ -7,6 +7,10 @@ import 'fake-indexeddb/auto'
 import App from '../App'
 import { resetearPrimerMontajeBiblioteca } from '../components/BibliotecaView'
 import { CURVA_RESORTE } from '../components/movimiento'
+
+// Antes: montar App abría Remote Config real y dejaba solicitudes de Firebase tras cerrar jsdom.
+// Esta tanda comprueba pantalla/contraste; la red queda fuera, sin cambiar los límites de la app.
+vi.mock('firebase/remote-config', () => ({ isSupported: async () => false }))
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } {
   let clean = hex.replace('#', '').trim()

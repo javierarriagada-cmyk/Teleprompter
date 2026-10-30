@@ -1,0 +1,62 @@
+{
+  "es-419": {
+    "capturas": "es",
+    "titulo": "Sigo — Teleprompter de voz",
+    "breve": "Teleprompter que sigue tu voz: el texto avanza mientras lees en voz alta.",
+    "grafico": ["Tu voz.", "Tu ritmo.", "Teleprompter de voz"],
+    "laminas": [
+      [["Tú hablas.", "El texto te sigue."], "Para tus videos, clases y presentaciones.", "Teleprompter de voz"],
+      [["Tu guion.", "Tu imagen."], "Detrás del texto, en recuadro u oculta.", "Vista de cámara"],
+      [["Tu video,", "con subtítulos."], "Del guion al video, al ritmo de tu voz.", "Subtítulos en tres estilos"],
+      [["Pausa", "con un gesto."], "Las pausas de grabación quedan fuera del video.", "Control por gestos"],
+      [["Elige cómo se ve", "tu video."], "Seis filtros, con vista previa.", "El resultado, a tu gusto"],
+      [["También,", "a velocidad fija."], "Elige un ritmo constante.", "Dos formas de leer"],
+      [["Tus guiones,", "contigo."], "Respaldo opcional con tu cuenta de Google.", "Tus guiones a salvo"],
+      [["De pie o de lado."], "Graba en vertical y horizontal.", "También en tabletas"]
+    ],
+    "gestos": ["Palma", "Pausar o seguir", "V en pausa", "Terminar la toma", "Con la cámara frontal"],
+    "guiones": ["Respaldo opcional", "Tu guion, a tu manera"],
+    "alts": ["Sigo preparado para leer un guion con seguimiento de voz.", "Guion de Sigo con la vista de cámara en un recuadro.", "Video subtitulado y selector de estilo de subtítulos de Sigo.", "Control por gestos: palma para pausar o seguir y V para terminar estando en pausa.", "Vista previa del video con el filtro B/N y la tira de filtros de Sigo.", "Velocidad fija seleccionada con control de velocidad y vista previa del texto.", "Editor de guiones y tarjeta de respaldo opcional con Google.", "Grabación en horizontal con el guion sobre la imagen de cámara."],
+    "completa": "Tú hablas. Sigo te sigue.\n\nLee tu guion a tu ritmo mientras grabas un video, preparas una clase o ensayas una presentación. Sigo sigue tu voz: el texto avanza contigo y te espera cuando haces una pausa.\n\nTU GUION Y TU IMAGEN\nGraba con la cámara frontal o trasera, en vertical o en horizontal. Elige ver tu imagen detrás del texto, en un recuadro que puedes mover, u ocultarla mientras grabas. También puedes leer sin grabar.\n\nDEL GUION AL VIDEO, CON SUBTÍTULOS\nLos subtítulos se crean con las palabras de tu guion y el tiempo de tu voz. Elige entre tres estilos, revisa el resultado y guarda el video en tu galería o compártelo. Puedes aplicar seis filtros viendo cómo quedará tu video.\n\nCONTROLA LA TOMA A TU RITMO\nPausa y continúa cuando lo necesites: las pausas de grabación quedan fuera del video. Con el control por gestos y la cámara frontal, muestra la palma para pausar o seguir; estando en pausa, haz la V para terminar.\n\nLEE A TU MANERA\nAjusta el tamaño de letra, la tipografía, el ancho y los colores. Usa negrita, colores y destacados en tu guion. Las notas entre corchetes o paréntesis quedan fuera de la lectura y de los subtítulos. También tienes modo espejo y lectura a velocidad fija.\n\nTUS GUIONES, CONTIGO\nEscribe, pega texto o importa archivos .txt, .md y .docx. Puedes usar Sigo sin iniciar sesión. Si quieres respaldar tus guiones y recuperarlos en otro teléfono, entra con Google.\n\nEMPIEZA A TU RITMO\nSin suscripción puedes leer con seguimiento de voz y grabar con límites de tiempo por sesión; los videos se guardan con marca de agua. La lectura sin cámara a velocidad fija no tiene límite de tiempo. Con Sigo+ lees con seguimiento de voz y grabas sin límite de tiempo, y guardas tus videos sin marca de agua. Hay planes mensual y anual; las condiciones se muestran antes de contratar.\n\nEN TU IDIOMA\nInterfaz y seguimiento de voz en español, inglés y portugués. El reconocimiento de voz y de gestos se procesa en el teléfono. Una vez descargado el reconocimiento de tu idioma, puedes usar esas funciones sin conexión. El respaldo y la gestión de la suscripción requieren conexión.\n\nPara tus videos, clases, charlas y presentaciones. Sigo te sigue."
+  },
+  "en-US": {
+    "capturas": "en",
+    "titulo": "Sigo — Voice Teleprompter",
+    "breve": "A teleprompter that follows your voice: the script moves as you read aloud.",
+    "grafico": ["Your voice.", "Your pace.", "Voice teleprompter"],
+    "laminas": [
+      [["You speak.", "The script follows."], "For videos, classes and presentations.", "Voice teleprompter"],
+      [["See yourself.", "Stay on script."], "Behind the text, in a window or hidden.", "Your camera view"],
+      [["Your video,", "with captions."], "From your script, timed to your voice.", "Captions in three styles"],
+      [["Pause", "with a gesture."], "Recording pauses stay out of your video.", "Gesture control"],
+      [["Choose your", "video’s look."], "Six filters. Preview before saving.", "Make it your own"],
+      [["Fixed speed,", "too."], "Choose a steady pace.", "Two ways to read"],
+      [["Keep your scripts", "with you."], "Optional backup with your Google account.", "Your scripts, backed up"],
+      [["Portrait or landscape."], "Record in either orientation.", "On tablets, too"]
+    ],
+    "gestos": ["Open palm", "Pause or resume", "V while paused", "End the take", "With the front camera"],
+    "guiones": ["Optional backup", "Your script, your way"],
+    "alts": ["Sigo ready to read a script with voice following.", "Sigo script with the camera view in a small window.", "Captioned video and caption-style selector in Sigo.", "Gesture control: palm to pause or resume, and V to end while paused.", "Video preview with the B&W filter and Sigo’s filter strip.", "Fixed speed selected, with speed control and text preview.", "Script editor and optional Google backup card.", "Landscape recording with the script over the camera image."],
+    "completa": "You speak. Sigo follows.\n\nRead your script at your own pace while recording a video, preparing a class or rehearsing a presentation. Sigo follows your voice: the text moves with you and waits when you pause.\n\nYOUR SCRIPT AND YOUR CAMERA\nRecord with the front or rear camera, in portrait or landscape. See yourself behind the text, in a movable window, or keep the camera view hidden while recording. You can also read without recording.\n\nFROM SCRIPT TO VIDEO, WITH CAPTIONS\nCaptions use the words in your script and the timing of your voice. Choose from three styles, preview the result, then save your video to your gallery or share it. Try six filters and see how your video will look before saving.\n\nCONTROL THE TAKE AT YOUR PACE\nPause and resume whenever you need to: recording pauses stay out of the video. With gesture control and the front camera, show your palm to pause or resume. While paused, make a V sign to end the take.\n\nREAD YOUR WAY\nAdjust text size, font, width and colors. Add bold text, colors and highlights to your script. Notes in brackets or parentheses are excluded from the reading and captions. Mirror mode and fixed-speed reading are available, too.\n\nKEEP YOUR SCRIPTS WITH YOU\nWrite, paste text or import .txt, .md and .docx files. You can use Sigo without signing in. To back up your scripts and recover them on another phone, sign in with Google.\n\nGET STARTED AT YOUR PACE\nWithout a subscription, voice-following reading and recording have time limits per session, and saved videos include a watermark. Fixed-speed reading without the camera has no time limit. With Sigo+, voice-following reading and recording have no time limit, and saved videos have no watermark. Monthly and yearly plans are available; terms are shown before you subscribe.\n\nIN YOUR LANGUAGE\nInterface and voice following in English, Spanish and Portuguese. Voice and gesture recognition run on your phone. Once recognition for your language has downloaded, you can use those features offline. Backup and subscription management require an internet connection.\n\nFor your videos, classes, talks and presentations. Sigo follows."
+  },
+  "pt-BR": {
+    "capturas": "pt-BR",
+    "titulo": "Sigo — Teleprompter de voz",
+    "breve": "Teleprompter que segue sua voz: o texto anda enquanto você lê em voz alta.",
+    "grafico": ["Sua voz.", "Seu ritmo.", "Teleprompter de voz"],
+    "laminas": [
+      [["Você fala.", "O texto segue você."], "Para seus vídeos, aulas e apresentações.", "Teleprompter de voz"],
+      [["Seu roteiro.", "Sua imagem."], "Atrás do texto, em uma janela ou oculta.", "Imagem da câmera"],
+      [["Seu vídeo,", "com legendas."], "Do roteiro ao vídeo, no ritmo da sua voz.", "Legendas em três estilos"],
+      [["Pause", "com um gesto."], "As pausas da gravação ficam fora do vídeo.", "Controle por gestos"],
+      [["Escolha o visual", "do seu vídeo."], "Seis filtros para ver antes de salvar.", "Do seu jeito"],
+      [["Também com", "velocidade fixa."], "Escolha um ritmo constante.", "Duas formas de ler"],
+      [["Seus roteiros,", "com você."], "Backup opcional com sua conta do Google.", "Seus roteiros protegidos"],
+      [["Na vertical ou na horizontal."], "Grave nas duas orientações.", "Também no tablet"]
+    ],
+    "gestos": ["Palma da mão", "Pausar ou continuar", "V em pausa", "Encerrar o take", "Com a câmera frontal"],
+    "guiones": ["Backup opcional", "Seu roteiro, do seu jeito"],
+    "alts": ["Sigo pronto para ler um roteiro com acompanhamento de voz.", "Roteiro no Sigo com a imagem da câmera em uma janela pequena.", "Vídeo com legendas e seletor de estilo de legendas do Sigo.", "Controle por gestos: palma para pausar ou continuar e V para encerrar em pausa.", "Prévia do vídeo com o filtro P&B e a faixa de filtros do Sigo.", "Velocidade fixa selecionada, com controle de velocidade e prévia do texto.", "Editor de roteiros e cartão de backup opcional com o Google.", "Gravação na horizontal com o roteiro sobre a imagem da câmera."],
+    "completa": "Você fala. O Sigo segue você.\n\nLeia seu roteiro no seu ritmo enquanto grava um vídeo, prepara uma aula ou ensaia uma apresentação. O Sigo acompanha sua voz: o texto avança com você e espera quando você faz uma pausa.\n\nSEU ROTEIRO E SUA IMAGEM\nGrave com a câmera frontal ou traseira, na vertical ou na horizontal. Veja sua imagem atrás do texto, em uma janela que você pode mover, ou deixe a imagem oculta enquanto grava. Você também pode ler sem gravar.\n\nDO ROTEIRO AO VÍDEO, COM LEGENDAS\nAs legendas usam as palavras do seu roteiro e o tempo da sua voz. Escolha entre três estilos, confira o resultado e salve o vídeo na galeria ou compartilhe. Experimente seis filtros e veja como seu vídeo vai ficar antes de salvar.\n\nCONTROLE O TAKE NO SEU RITMO\nPause e continue quando precisar: as pausas da gravação ficam fora do vídeo. Com o controle por gestos e a câmera frontal, mostre a palma da mão para pausar ou continuar. Durante a pausa, faça o V para encerrar o take.\n\nLEIA DO SEU JEITO\nAjuste o tamanho do texto, a fonte, a largura e as cores. Use negrito, cores e destaques no roteiro. As anotações entre colchetes ou parênteses ficam fora da leitura e das legendas. Você também tem modo espelho e leitura com velocidade fixa.\n\nSEUS ROTEIROS, COM VOCÊ\nEscreva, cole um texto ou importe arquivos .txt, .md e .docx. Você pode usar o Sigo sem entrar em uma conta. Para fazer backup dos roteiros e recuperá-los em outro celular, entre com o Google.\n\nCOMECE NO SEU RITMO\nSem assinatura, a leitura com acompanhamento de voz e a gravação têm limites de tempo por sessão, e os vídeos salvos incluem marca d’água. A leitura com velocidade fixa sem câmera não tem limite de tempo. Com o Sigo+, você lê com acompanhamento de voz e grava sem limite de tempo, e salva os vídeos sem marca d’água. Há planos mensal e anual; as condições são mostradas antes da contratação.\n\nNO SEU IDIOMA\nInterface e acompanhamento de voz em português, espanhol e inglês. O reconhecimento de voz e de gestos acontece no celular. Depois de baixar o reconhecimento do seu idioma, você pode usar essas funções sem conexão. O backup e o gerenciamento da assinatura precisam de internet.\n\nPara seus vídeos, aulas, palestras e apresentações. O Sigo segue você."
+  }
+}

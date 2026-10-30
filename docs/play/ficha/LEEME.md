@@ -1,149 +1,50 @@
-# La ficha de Sigo en Google Play — tarea 86
+# Ficha de Sigo aprobada el 30-10-2026
 
-Todo lo que se sube a Play Console, listo para revisar. Nada de esto toca la app.
+Javier aprobó ocho imágenes de teléfono, un gráfico y los textos de cada idioma: es-419, en-US y pt-BR. Se conservan el ícono y las 24 imágenes de tabletas. Esta entrega está preparada para revisión final: no está publicada.
 
-| Qué | Archivo | Para Play |
-|---|---|---|
-| Nombre, descripción breve y completa, con conteos | `textos-es-419.txt`, `textos-en-US.txt`, `textos-pt-BR.txt` | se copia lo que va entre dobles corchetes |
-| Gráfico de funciones | `grafico-1024x500-es.png`, `grafico-1024x500-en.png`, `grafico-1024x500-pt.png` | uno por idioma |
-| 8 capturas de teléfono por idioma, en orden | `capturas/es-419/01..08.png`, `capturas/en-US/01..08.png`, `capturas/pt-BR/01..08.png` | en ese orden |
-| Tabletas de 7" y 10", 4 por idioma | `capturas/tableta/{es-419,en-US,pt-BR}/{7,10}/01..04-*.png` | en ese orden, ver abajo |
-| La lámina para elegir | `lamina-ficha.png` | no se sube |
-| De dónde sale cada cosa que se dice | `evidencia.md` | no se sube |
+## Material para Play
 
-<!-- -portugues-ficha, 2026-10-25- Antes, las cuatro primeras filas de la tabla, sin pt-BR:
-| Nombre, descripción breve y completa, con conteos | `textos-es-419.txt`, `textos-en-US.txt` | se copia lo que va entre dobles corchetes |
-| Gráfico de funciones | `grafico-1024x500-es.png`, `grafico-1024x500-en.png` | uno por idioma |
-| 8 capturas de teléfono por idioma, en orden | `capturas/es-419/01..08.png`, `capturas/en-US/01..08.png` | en ese orden |
-| Tabletas de 7" y 10", 4 por idioma | `capturas/tableta/{es-419,en-US}/{7,10}/01..04-*.png` | en ese orden, ver abajo |
--->
+- `capturas/<idioma>/01.png` a `08.png`: teléfono, en ese orden.
+- `grafico-1024x500-{es,en,pt}.png`: gráfico de cada idioma.
+- `textos-<idioma>.txt`: nombre, descripción breve y completa entre `[[ ]]`.
+- `Descripciones de las imagenes.csv`: textos alternativos aprobados.
+- `capturas/tableta/<idioma>/{7,10}/`: las imágenes conservadas, cuatro por tamaño e idioma.
+- Ícono conservado: `android/app/src/main/ic_launcher-playstore.png`.
+- `video-youtube.json`: enlace de español entregado por Javier. Inglés y portugués en pausa; no asignarles el video español.
 
-Ícono: `android/app/src/main/ic_launcher-playstore.png` -512 x 512-. `docs/ic-play-512.png` es viejo.
+Orden del teléfono: voz, cámara, subtítulos, gestos, filtros, velocidad fija, guiones y respaldo opcional, horizontal/tabletas. Las fuentes de textos y titulares son `herramientas/contenidos.json`; los medios exactos, `herramientas/entradas/`.
 
-## Las capturas, en orden
+## Regeneración reproducible
 
-Puesta al día del 05-10-2026, con la app de hoy -main beb2522- y las escenas que pidió Javier:
-1. leer siguiendo la voz -Tú hablas. El texto te sigue.- · 2. el guion con formatos -Lo importante,
-a la vista- · 3. grabar con la cámara detrás -Mira a la cámara, sin memorizar- · 4. la pausa -Las
-pausas no quedan en tu video- · 5. los subtítulos en el visor -Tu video sale con subtítulos- · 6. la
-tira de filtros abierta -Elige el filtro mirando tu video- · 7. de lado -¿Grabas de lado? También
-funciona.- · 8. grabar con la cámara en el recuadro -Mírate en un recuadro-, sumada el mismo día. El orden y los archivos están en `herramientas/escenas.cjs`; los titulares, en
-`herramientas/titulares.cjs`.
+Requiere Python 3.12 y Pillow **12.0.0**, en un entorno de herramientas separado. No se agregan dependencias de la app. La versión 13 de Pillow cambia algunos píxeles al reducir las capturas nativas y no reproduce las huellas aprobadas.
 
-Antes -29-09-2026-, ocho, empezando por la persona y lo que le cuesta: 1. Tú hablas. El texto te
-sigue. · 2. Mira a la cámara, sin memorizar · 3. Mírate sin perder el hilo · 4. ¿Grabas de lado?
-También funciona. · 5. Lo importante, a la vista · 6. Tu video sale con subtítulos · 7. Todos tus
-guiones, a mano · 8. Letra y colores, a tu manera. El recuadro, la portada y los ajustes salieron.
+Desde la raíz del repositorio, por ejemplo en PowerShell:
 
-## La puesta al día -Javier, 25-10-2026, portugués de Brasil-
+```powershell
+python -m venv .herramientas/ficha-python
+.herramientas/ficha-python/Scripts/python.exe -m pip install -r docs/play/ficha/herramientas/requirements.txt
+.herramientas/ficha-python/Scripts/python.exe docs/play/ficha/herramientas/armar_ficha.py --salida .herramientas/ficha-revision
+.herramientas/ficha-python/Scripts/python.exe docs/play/ficha/herramientas/verificar_ficha.py --generada .herramientas/ficha-revision
+```
 
-- Tercer idioma, pt-BR: textos, 8 capturas de teléfono, 4 de tableta de 7" y 4 de 10" y el gráfico
-  `grafico-1024x500-pt.png` -bajada: Teleprompter de voz para seus vídeos-.
-- Mismas escenas, orden y personas que es/en -`herramientas/escenas.cjs`-; la app y el guion del pão
-  -`herramientas/guiones.ts`- en portugués; los titulares en `herramientas/titulares.cjs`.
-- Los idiomas salen de una sola lista, `IDIOMAS` de `scripts/playApi.mjs`: capturar, componer,
-  comprobar, lámina y `scripts/playSubir.mjs` la usan.
-- Los textos en portugués quedan para que los revise el papá de Javier: sin verificar por un nativo.
+El generador produce un paquete de revisión; no sobreescribe la ficha canónica. El comprobador exige igualdad SHA-256 de los 31 archivos aprobados: 24 capturas, tres gráficos, tres textos y el CSV alternativo; también verifica los originales utilizados, las tabletas y el ícono. El mapeo entre el paquete de aprobación y el repositorio está en `aprobacion-20261030/manifiesto-repositorio.json`.
 
-## Lo elegido -Javier, 29-09-2026-
+Se reprodujeron los 31 archivos idénticos por huella con Pillow 12.0.0. Informe: `aprobacion-20261030/reproduccion-pillow12.json`. Antes de reemplazar material, generar aparte y comparar. Nunca recalcular la lista de aprobación para dar por válido un cambio no aprobado.
 
-- Nombre: se queda igual en los dos idiomas.
-- Descripción breve: la A. En es-419 se le sacó "sin internet": el uso sin conexión es una
-  posibilidad y va al final de la completa, no en el titular.
-- Gráfico: el A, en ámbar -Javier lo dejó a criterio-. La bajada ya no dice "sin internet".
-- Las propuestas que no quedaron están en la historia del PR #60.
+## Procedencia y fuentes
 
-## La puesta al día -Javier, 15-10-2026, la 0.9.1-
+`aprobacion-20261030/` conserva la aprobación, validación y manifiesto originales del paquete; sus rutas absolutas son evidencia histórica. `procedencia-relativa.json` identifica las fuentes guardadas en el repositorio. La copia del Escritorio presenta una discrepancia en `comprobacion-recorte-cuenta.jpg`, un auxiliar fuera de la aprobación: los 31 archivos aprobados coinciden en ambas copias. Se usó el paquete del espacio de estética, cuyo SHA256SUMS completo coincide.
 
-- Capturas rehechas con la app de hoy -main a1ac592, JNA 5.18.1-: las mismas escenas, en el mismo
-  orden, con las mismas personas y titulares. Los controles de la lectura ahora se desvanecen solos a
-  los 2,5 s -MS_CONTROLES_A_LA_VISTA, src/hooks/useAparecer.ts-.
-- La descripción completa: "Si te detienes, el texto se detiene." sin "No hay velocidades que
-  ajustar", y A TU MANERA suma Velocidad fija al final. Lo mismo en en-US.
+Las entradas de la ficha anterior usadas en recortes se conservaron antes de reemplazar la serie, en `herramientas/entradas/anteriores/`. Son entradas fijas, no la salida actual. Eso evita que regenerar recorte una composición nueva en lugar de la anterior. Se guardaron solo los originales utilizados, capturas nativas, logos, cuadro de video, palma y fuentes tipográficas necesarias, con sus licencias.
 
-Antes:
+Voz, ajustes y guiones usan capturas nativas del Motorola. Cámara en español usa un cuadro del video real aprobado. Cámara en inglés/portugués, subtítulos, filtros y horizontal reutilizan composiciones anteriores con personas generadas; no son capturas nuevas del teléfono. La captura nueva de subtítulos quedó pendiente y no bloquea esta entrega.
 
-## La puesta al día -Javier, 05-10-2026-
+## Video y medios externos
 
-- La descripción completa suma la tableta, la pausa, los gestos, los seis filtros, las cinco
-  combinaciones de colores y que los gestos se reconocen en el teléfono y Sigo no envía
-  estadísticas. Lo demás quedó igual. Con eso pasa de 2500 -lo ideal del encargo-: 2813 en es-419 y
-  2779 en en-US, de 4000. `comprobar.cjs` lo marca como AVISO, no como falla.
-- Capturas nuevas con la app de hoy: 8 de teléfono -la 8, el recuadro, se sumó después- y 4 por
-  tableta, ya con el diseño de tableta. Antes de sumar el recuadro eran 7.
-- Las capturas se toman de la versión de Play -`vite --mode play`-: sin panel de diagnóstico.
+El MP4 publicitario no forma parte del repositorio ni de la app. Los originales permanecen en `C:/Users/56990/Desktop/Sigo - material aprobado para fichas` y en el paquete de revisión del Escritorio. El único video propuesto para la ficha es el español: https://www.youtube.com/watch?v=dleH1xz_024 (36 segundos). No reemplazarlo ni volver a subirlo. Antes de publicar falta confirmar la aceptación de Play, la inserción y las restricciones en YouTube Studio.
 
-## Cómo se rehace
+## Historia de las herramientas
 
-    bash docs/play/ficha/herramientas/todo.sh
+Antes: `todo.sh`, `componer.cjs`, `armar-textos.cjs` y `lamina.cjs` capturaban o componían la ficha de 2026-10-25 y podían reemplazar la nueva con textos y escenas anteriores. Sus implementaciones se conservan identificadas como historia; los comandos que escribían están bloqueados, y `todo.sh` ahora llama al generador vigente sobre una salida de revisión. `comprobar.cjs` redirige al comprobador actual (variable `PYTHON` para elegir el entorno).
 
-Levanta vite si no está andando -en modo play-, captura la app real con Chrome sin ventana, compone,
-arma los textos y la lámina, y termina con `comprobar.cjs`, que imprime OK o FALLA de cada imagen
--tamaño, proporción, lados, sin alfa, peso, que no sobre ninguna, y el aire entre los renglones del
-titular, medido en los píxeles con `herramientas/aire.cjs`- y de cada texto -conteos, emojis,
-puntuación, palabras que Play no quiere-. Si algo falla, el guion sale con error. Se necesitan
-Node 22, ffmpeg, Chrome o Chromium y puppeteer-core -variables CHROME y PUPPETEER si no están donde
-el guion las busca-. Sin Chrome, usa el Chromium que instala Playwright -/opt/pw-browsers-; ese no
-trae H.264 y por eso la toma de ejemplo va en VP9. Si vite ya está andando en el puerto 5186, tiene
-que ser con `--mode play`.
-
-Para cambiar un texto: `herramientas/textos.cjs` y `node herramientas/armar-textos.cjs`. Para cambiar
-un titular: `herramientas/titulares.cjs` y `node herramientas/componer.cjs tel`.
-
-## Las tabletas
-
-La tarea 83 está en main: `src/hooks/useLayout.ts` devuelve 'tab-v' y 'tab-h' desde 600 dp de
-ancho. Las capturas van en `capturas/tableta/`, con el diseño de tableta: el 7" en 612 x 1088 dp y
-el 10" en 810 x 1440 dp, los dos en 9:16 justo -1440 x 2560 y 2160 x 3840-; de lado, girados. La
-letra la pone la app: 32 en tableta. A pantalla completa y sin titulares: para pantallas grandes
-Play pide no agregar texto que no sea de la app.
-
-Cuatro por tamaño: de pie, leer, grabar con la cámara detrás y el visor con la tira de filtros; de
-lado, grabar con la cámara detrás. Se probaron y quedaron fuera leer de lado -casi igual a leer de
-pie-, el editor -la barra de formato tapa la cabecera y Leer y Grabar tapan el final del texto- y
-el visor de lado -con la toma vertical la tarjeta queda chica junto al video-.
-
-Antes -29-09-2026-, PROVISIONALES en `capturas/tableta-provisional/`: la 83 no estaba en main y se
-mostraba el diseño de teléfono más grande, en 576 x 1024 y 720 x 1280 dp, con la letra en 32 a mano.
-Eran Leer, Grabar con la cámara detrás, de lado y el editor.
-
-## Lo que no es de la app en las capturas
-
-La imagen de la cámara -una imagen puesta donde el teléfono pone la vista previa-, la toma del
-visor -una imagen quieta con un registro de voz sintético- y la voz, que es guiada. En la pausa no
-sale el punto rojo que parpadea: lo enciende el grabador nativo, que el navegador no tiene. Las
-miniaturas de la tira de filtros son la miniatura de la toma: en el teléfono las saca el nativo del
-mismo cuadro. Detalle en `evidencia.md`.
-
-## Las personas de las capturas: generadas, no fotos
-
-Javier pidió imágenes aptas para publicidad, con licencia comercial y autorización de modelo
-cuando la persona se reconoce. Los bancos gratuitos -Unsplash, Pexels, Burst, Wikimedia- no
-garantizan esa autorización, y las fotos CC0 de la primera versión se descartaron. La herramienta
-GenerateImage no estaba disponible en esta sesión, así que las cinco se generaron en la box con
-**FLUX.1 [schnell]** -Black Forest Labs, licencia Apache 2.0, que permite el uso comercial de lo
-generado-, cuantizado por city96 -Apache 2.0-, con stable-diffusion.cpp -MIT-. No son personas
-reales, así que no hay a quién pedirle una autorización de modelo.
-
-| | Quién | Dónde sale |
-|---|---|---|
-| A | mujer de unos 30, pelo oscuro largo, suéter crema | captura 3 -Grabar, cámara detrás- |
-| B | hombre de unos 60, barba gris, lentes | captura 4 -la pausa- y tableta 7" Grabar |
-| C | hombre de unos 25, pelo negro, polera verde oliva | captura 8 -el recuadro- y tabletas de lado, 7" y 10" |
-| D | mujer de unos 55, pelo gris corto, delantal, en la cocina | capturas 5 y 6 -el visor-, tableta 10" Grabar y el visor de las dos tabletas |
-| E | mujer de unos 40, polera mostaza, en el sofá | captura 7 -de lado- |
-
-Antes del 05-10-2026: A en la 2, B en la 3 -recuadro-, D en la 6 y E en la 4.
-
-Se revisó cada una: manos, ojos, dientes, orejas y el fondo, que no tuviera texto. Se rehicieron
-dos -la C, dos veces, y la E-, y se recortaron tres -A y C por manos mal dibujadas, E por un
-borde que distraía-. La C recortada es la más blanda: en las tabletas de lado se nota un poco. El modelo, la semilla y el prompt de cada una, y
-qué se rehizo, están en `herramientas/fuente/LICENCIA-personas.txt`. Para cambiar una persona, se
-reemplaza `fuente/persona-X.png`, con el mismo tamaño, y se corre `todo.sh`.
-
-## Video de YouTube -opcional, no se hizo-
-
-Treinta segundos, grabados con Sigo en un teléfono de verdad: alguien abre el guion del pan, da
-Grabar y habla mirando a la cámara; se ve el texto avanzar con su voz, detenerse cuando hace una
-pausa y seguir cuando retoma. Corte a la toma guardada, con los subtítulos en Amarillo. Cierre con
-la marca Sig●. Sin música encima de la voz: lo que vende es que el texto la sigue.
+El LEEME y la evidencia anteriores se conservan en `historial/`. `lamina-ficha.png` pertenece a aquella serie y es histórica; no es la revisión de esta entrega. No usar `escenas.cjs`, `titulares.cjs` ni `textos.cjs` históricos como fuentes actuales del teléfono.

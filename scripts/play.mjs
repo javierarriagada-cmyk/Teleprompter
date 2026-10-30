@@ -96,6 +96,12 @@ console.log('\n[1/4] Armando el paquete web para Play...')
 // --mode play: sin motor web, sin herramientas de prueba, sin service worker -.env.play, vite.config.ts-.
 correr('npx', ['vite', 'build', '--mode', 'play'], RAIZ)
 
+// -30-10-2026, entrega 0.11.2- El AudioWorklet solo sirve al motor web, que Play no incluye.
+// Antes: Vite copiaba public/vad-processor.js a dist y cap sync lo empaquetaba sin usarlo.
+// Se excluye solo la salida generada de Play: el original y la APK de diagnóstico lo conservan.
+fs.rmSync(path.join(RAIZ, 'dist', 'vad-processor.js'), { force: true })
+console.log('Play: vad-processor.js excluido de la salida generada.')
+
 console.log('\n[2/4] Copiandolo adentro del proyecto Android...')
 correr('npx', ['cap', 'sync', 'android'], RAIZ)
 

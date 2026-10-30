@@ -1,0 +1,137 @@
+{
+  "fecha_local": "2026-10-30",
+  "zona": "America/Santiago",
+  "aprobado_por": "Javier",
+  "mensaje": "si aprobado",
+  "alcance": "Ocho imágenes, gráfico y textos por idioma: es-419, en-US y pt-BR. Ícono y tabletas conservados.",
+  "publicado": false,
+  "enviado_al_taller": false,
+  "videos_en_pt": "En pausa",
+  "video_es": "Original aprobado conservado. Javier entregó https://www.youtube.com/watch?v=dleH1xz_024; reproducción verificada, aceptación por Play pendiente.",
+  "archivos": [
+    {
+      "archivo": "capturas/en-US/01.png",
+      "sha256": "580ba978b4727bab990fda20ba5104a0d2aaf0c9a11caec0b4e592bdaeeb22c1"
+    },
+    {
+      "archivo": "capturas/en-US/02.png",
+      "sha256": "7ac40e22c103693fee9e8720ea25b78cc457470aac969dd0593b16b71f059b7f"
+    },
+    {
+      "archivo": "capturas/en-US/03.png",
+      "sha256": "ead1ef5f18ab32a9d40a3717b325abd55bce85c05831460e4e6c0c1b0d3f7a36"
+    },
+    {
+      "archivo": "capturas/en-US/04.png",
+      "sha256": "d0deb5a20b1f4c29fd9d279ac7783b8f1c2949dd2b89f8c260c87f0500d73350"
+    },
+    {
+      "archivo": "capturas/en-US/05.png",
+      "sha256": "b3b049d572b68841ca718f55f671d126589f5624e0f2fbb16e8e3e7ffdff40d5"
+    },
+    {
+      "archivo": "capturas/en-US/06.png",
+      "sha256": "a6b4233c926a0ad1efe079ec7fb570972d5da8b7a1c6f1df6b5937fa9aad42af"
+    },
+    {
+      "archivo": "capturas/en-US/07.png",
+      "sha256": "c1e3b02f6b4f99140e69bdab85c1b09bef23bd7834bddc3a499a7a88e8be6f18"
+    },
+    {
+      "archivo": "capturas/en-US/08.png",
+      "sha256": "71f0fa88660a1d53587d3b4910f24259105f639d19aae70ce9bd7c144747bd2b"
+    },
+    {
+      "archivo": "capturas/es-419/01.png",
+      "sha256": "5dcec632a255ca56a43ec2301a19e6f6ae56b98e9f15aed8f76caa6299a75731"
+    },
+    {
+      "archivo": "capturas/es-419/02.png",
+      "sha256": "1215a4ef3af8bb115a93ba607b4c6f3ddb43faeedf86a3b9357b164f42eb2b90"
+    },
+    {
+      "archivo": "capturas/es-419/03.png",
+      "sha256": "537ddf9e4056bfd71e4fe4d2e5aed6bff46dd45b458196c38687ec5948ac01f4"
+    },
+    {
+      "archivo": "capturas/es-419/04.png",
+      "sha256": "99dcc763d782524efff66479c2d268de024e5fe50940dbf70f4c46749c781ce9"
+    },
+    {
+      "archivo": "capturas/es-419/05.png",
+      "sha256": "ed23feb81d3aedf10f32b973086ac253af83fa4e45ecdae5226edcf77b9e81e9"
+    },
+    {
+      "archivo": "capturas/es-419/06.png",
+      "sha256": "d2cdac465c8a4c63521625ebebdd2fa7d277fd49340899e4c27116ac1b97162e"
+    },
+    {
+      "archivo": "capturas/es-419/07.png",
+      "sha256": "555515b4485840a71faf6f6f53b61af25106aa65ee3fd8ce678b6f38531a4e16"
+    },
+    {
+      "archivo": "capturas/es-419/08.png",
+      "sha256": "55f8097eb6ad0bed2341977f9a0a28cf95b15f49f5d33309b9b42ee784109d87"
+    },
+    {
+      "archivo": "capturas/pt-BR/01.png",
+      "sha256": "70cfa7eb2e28dca857d7a2e91c492ff37469bd9bbdd9c14bb7972fa06c3bd16f"
+    },
+    {
+      "archivo": "capturas/pt-BR/02.png",
+      "sha256": "3421385058062edb70a641fe929e3cf05ac0cfe3d3e344d9897207fb08e44c90"
+    },
+    {
+      "archivo": "capturas/pt-BR/03.png",
+      "sha256": "f12e9409e20ea099ed3a88edc7b3049867acfd6e27f6e0f91a5c8a5e65d07729"
+    },
+    {
+      "archivo": "capturas/pt-BR/04.png",
+      "sha256": "2890c2f0a8a8304fdde5ee608a681927892ac20dff8bb8cdc73ce5ddbd58ff35"
+    },
+    {
+      "archivo": "capturas/pt-BR/05.png",
+      "sha256": "e52c9f673bfff7e5278d513696a92625023e60577ea1250fe01f59384b3dff09"
+    },
+    {
+      "archivo": "capturas/pt-BR/06.png",
+      "sha256": "f8ec03277a8855e258cd2928d7c24e3713026a7f4a721c628fa0759d21942bfd"
+    },
+    {
+      "archivo": "capturas/pt-BR/07.png",
+      "sha256": "be3d9b24f81f009ea2accd01f624e2dd14154a936492455d4976cb26f3a072aa"
+    },
+    {
+      "archivo": "capturas/pt-BR/08.png",
+      "sha256": "d756d4a0fe800df966c9c61de252328aa027667f1c5214aabe347632a5d27bcc"
+    },
+    {
+      "archivo": "graficos/en-US.png",
+      "sha256": "8bf8e29c8ed6910824340aa6a0e96020d95078fda3fec559c79b78ba35811887"
+    },
+    {
+      "archivo": "graficos/es-419.png",
+      "sha256": "40f87d56fd7c54344db489e9f3928b90917393bb4517e354fb01f0befa86c68a"
+    },
+    {
+      "archivo": "graficos/pt-BR.png",
+      "sha256": "a141d3bdaab7d973ebc1404f063a0dcb0c59866fa8a2e7c3f81ed68a073ecba4"
+    },
+    {
+      "archivo": "textos/Descripciones de las imagenes.csv",
+      "sha256": "305668e44e5e4036b64e8a4102516c27549605b82586d6e3254642b4ce98a739"
+    },
+    {
+      "archivo": "textos/textos-en-US.txt",
+      "sha256": "3cf1fcd43bfd34061e711bb3bb4bf91537772916a9e1746ae65b2de886ddef36"
+    },
+    {
+      "archivo": "textos/textos-es-419.txt",
+      "sha256": "2c1e1505800686153930fb36abd9a8134dcbeb48729e506b2206e2cd091a96c2"
+    },
+    {
+      "archivo": "textos/textos-pt-BR.txt",
+      "sha256": "22e823c1b720b85262978321576c48c637208bf655b3a0b91e0dd348dedb88f2"
+    }
+  ]
+}

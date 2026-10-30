@@ -1,3 +1,4 @@
+// HISTORIA hasta el 25-10-2026. Fuente canónica de teléfono/textos: contenidos.json y armar_ficha.py.
 // LOS TEXTOS DE LA FICHA -tarea 86-. De aquí salen ../textos-es-419.txt y ../textos-en-US.txt
 // -node armar-textos.cjs-, con los conteos hechos por la máquina y no a mano: Play cuenta
 // caracteres -answer/9859152: nombre 30, breve 80, completa 4000- y un conteo a ojo se equivoca.
