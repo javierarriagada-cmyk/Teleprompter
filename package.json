@@ -8,7 +8,7 @@
     "build": "vite build",
     "build:android": "vite build --mode android",
     "preview": "vite preview",
-    "test": "vitest run",
+    "test": "node --test scripts/pruebas/parcharCamara.test.mjs && vitest run",
     "cap:sync": "cap sync",
     "cap:open": "cap open android",
     "cap:build": "cap build android",

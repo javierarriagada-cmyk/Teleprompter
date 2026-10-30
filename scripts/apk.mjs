@@ -90,7 +90,7 @@ correr('npx', ['vite', 'build', '--mode', 'android'], RAIZ)
 console.log('\n[2/3] Copiandolo adentro del proyecto Android...')
 correr('npx', ['cap', 'sync', 'android'], RAIZ)
 
-// -18-10-2026- La grabación a 14 Mbps: una línea en el plugin de la cámara, que vive en node_modules y cada
+// -30-10-2026- La grabación a 12 Mbps -antes 14, desde el 18-10-2026-: una línea en el plugin de la cámara, que vive en node_modules y cada
 // npm install trae limpio -scripts/parcharCamara.mjs-. Si no encuentra dónde ponerla, para aquí.
 parcharCamara()
 

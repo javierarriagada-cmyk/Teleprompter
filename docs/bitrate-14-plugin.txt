@@ -1,3 +1,11 @@
+ACTUALIZACIÓN -30-10-2026, decisión de Javier-: ahora son 12 Mbps tanto en grabación como
+en recodificación. scripts/parcharCamara.mjs usa BITRATE_GRABACION = 12_000_000 y
+reemplaza la línea del parche anterior si ya estaba a 14 Mbps, sin duplicarla. En
+CamaraNativaPlugin.java, BITRATE_EXPORTACION = 12_000_000 lo usan los dos exportadores.
+No cambia resolución, cuadros por segundo ni códec. El nombre de este documento se
+conserva como referencia histórica del ajuste anterior.
+
+Antes:
 COMO QUEDO -18-10-2026, Claude-: lo aplica scripts/parcharCamara.mjs antes de cada compilacion -npm run apk
 y npm run play-, porque el plugin vive en node_modules y cada npm install lo trae limpio. En la 8.11.4 el
 Recorder se arma en dos pasos -CameraXView.java:1153 y 1158-, no en una cadena como dice abajo: la linea
