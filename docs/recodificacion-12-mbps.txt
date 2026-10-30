@@ -1,0 +1,64 @@
+VIDEO A 12 Mbps Y CAPAS DE EXPORTACIÓN -30-10-2026-
+
+Decisión de Javier: grabación y recodificación a 12 Mbps; reutilizar el bitmap
+de subtítulos si el código de Media3 lo permite; reunir las capas en un OverlayEffect.
+
+QUÉ CAMBIÓ
+
+- scripts/parcharCamara.mjs: BITRATE_GRABACION = 12_000_000. Sustituye el parche
+  anterior de 14 Mbps, sin añadir otra orden. Se detiene si el ancla del plugin
+  cambió o hay parches duplicados. Lo llaman tanto apk.mjs como play.mjs.
+- CamaraNativaPlugin.java: BITRATE_EXPORTACION = 12_000_000 para los dos caminos,
+  guardarConSubtitulos y exportarToma. Se mantienen resolución, cuadros por segundo
+  y la selección de códec de Media3. Es un objetivo de bitrate, no un peso garantizado.
+- CapaDeSubtitulos.java: conserva el bitmap mutable entre cambios de palabra. Lo
+  limpia a transparente y crea un Canvas nuevo antes de redibujar, para no dejar
+  píxeles ni acumular la rotación. Si la clave no cambió, devuelve sin tocar nada.
+  Se conserva la imagen vacía separada para los intervalos sin subtítulos y se
+  reinician ambas imágenes al configurar otro tamaño.
+- ExportadorDeTomas.java: el filtro sigue primero; un OverlayEffect recibe luego
+  subtítulos y marca, en ese orden. Si no hay capas, no se agrega un efecto vacío.
+  No cambia el diseño visual de CapaDeMarca: el boceto aprobado de dos marcas es
+  otro pendiente. Esta tarea solo cambia cómo se agrupan las capas existentes.
+
+POR QUÉ LA REUTILIZACIÓN ES VÁLIDA EN LA VERSIÓN UTILIZADA
+
+Media3 1.9.0, BitmapOverlay.getTextureId, líneas 142-157, comprueba tanto la identidad
+del bitmap como bitmap.getGenerationId(). Android actualiza esa generación al modificar
+sus píxeles. La limpieza y el dibujo se hacen desde getBitmap, antes de que BitmapOverlay
+suba la textura en ese mismo recorrido gráfico. No se recicla el objeto mientras Media3
+lo conserva. Se corrigió el comentario anterior que solo consideraba otro objeto.
+
+https://github.com/androidx/media/blob/1.9.0/libraries/effect/src/main/java/androidx/media3/effect/BitmapOverlay.java
+https://github.com/androidx/media/blob/1.9.0/libraries/effect/src/main/java/androidx/media3/effect/OverlayEffect.java
+
+Lo que ya ocurría: si el texto no cambiaba, se reutilizaba la imagen y no se volvía
+a subir la textura. Eso sigue igual. La mejora es evitar una nueva asignación de
+unos 7,9 MiB por cambio en 1080p. Cuando el contenido cambia, se sigue subiendo la
+textura completa: esta tarea no implementa actualizaciones parciales de la GPU.
+
+COMPROBACIÓN ACOTADA DEL PARCHE
+
+Tres pruebas de Node, incorporadas a npm test: instalación limpia; migración desde
+14 Mbps con saltos CRLF e idempotencia; rechazo del plugin cambiado o duplicado.
+No hay pruebas nuevas de posiciones o tamaños ni dependencias nuevas.
+
+Contraprueba: en una copia temporal fuera del repo se quitó el mecanismo que
+reconoce y sustituye el parche anterior, manteniendo el objetivo a 12 Mbps. Salida:
+
+  ✖ migra el parche anterior sin dejar dos órdenes y conserva los saltos de Windows
+  ✔ aplica el parche también a una instalación limpia del plugin
+  ✖ detiene el parche si el plugin cambió o ya tiene órdenes duplicadas
+  tests 3, pass 1, fail 2; código de salida 1
+
+La primera falla deja la línea vieja de 14000000 junto a la nueva de 12000000.
+La segunda informa «Missing expected exception» al aceptar órdenes duplicadas.
+El código del repo nunca se rompió para esta contraprueba; se usó una copia externa.
+
+QUÉ NO SE COMPROBÓ AQUÍ
+
+No se exportó en el Motorola ni en el Redmi. La compilación de Java no demuestra
+el resultado gráfico de una textura mutable en un dispositivo. Falta comprobar
+subtítulos que cambian, se acortan, desaparecen y vuelven; marca por encima; y giro.
+No se midió reducción del tiempo de guardado ni la diferencia perceptual a 12 Mbps.
+No se promete una mejora porcentual de tiempo. No se armó ni instaló APK/AAB.

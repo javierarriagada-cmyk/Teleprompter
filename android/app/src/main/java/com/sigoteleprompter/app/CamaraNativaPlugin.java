@@ -29,6 +29,10 @@ import java.io.File;
 @CapacitorPlugin(name = "CamaraNativa")
 public class CamaraNativaPlugin extends Plugin {
 
+    // 30-10-2026, Javier: grabación y recodificación a 12 Mbps. Antes: 14 Mbps en
+    // los dos exportadores. La cámara se fija en scripts/parcharCamara.mjs.
+    private static final int BITRATE_EXPORTACION = 12_000_000;
+
     @PluginMethod
     public void fijarModoSuperficie(PluginCall call) {
         String modo = call.getString("modo", "sistema");
@@ -488,8 +492,10 @@ public class CamaraNativaPlugin extends Plugin {
                 // comprimir. 30 minutos: unos 2,7 GB.
                 // 14 Mbps -18-10-2026-. La grabacion tambien se fija a 14, para que la toma
                 // nazca mas liviana y, si se recodifica, se quede en el mismo numero.
+                // Antes, hasta el 30-10-2026: lo anterior. Ahora 12 Mbps por decisión de Javier,
+                // tanto al grabar como al exportar, sin cambiar resolución ni fluidez.
                 androidx.media3.transformer.DefaultEncoderFactory codificador = new androidx.media3.transformer.DefaultEncoderFactory.Builder(getContext())
-                    .setRequestedVideoEncoderSettings(new androidx.media3.transformer.VideoEncoderSettings.Builder().setBitrate(14_000_000).build())
+                    .setRequestedVideoEncoderSettings(new androidx.media3.transformer.VideoEncoderSettings.Builder().setBitrate(BITRATE_EXPORTACION).build())
                     .build();
                 t[0] = new androidx.media3.transformer.Transformer.Builder(getContext())
                     .setEncoderFactory(codificador)
@@ -669,8 +675,9 @@ public class CamaraNativaPlugin extends Plugin {
                 final androidx.media3.transformer.Transformer[] t = new androidx.media3.transformer.Transformer[1];
                 final boolean[] terminado = { false };
                 // 14 Mbps, como guardarConSubtitulos -ver allá por qué-. -18-10-2026- Antes: 12 Mbps, como guardarConSubtitulos -ver allá por qué-.
+                // Antes, hasta el 30-10-2026: 14 Mbps. Ahora ambos exportadores usan BITRATE_EXPORTACION.
                 androidx.media3.transformer.DefaultEncoderFactory codificador = new androidx.media3.transformer.DefaultEncoderFactory.Builder(getContext())
-                    .setRequestedVideoEncoderSettings(new androidx.media3.transformer.VideoEncoderSettings.Builder().setBitrate(14_000_000).build())
+                    .setRequestedVideoEncoderSettings(new androidx.media3.transformer.VideoEncoderSettings.Builder().setBitrate(BITRATE_EXPORTACION).build())
                     .build();
                 t[0] = new androidx.media3.transformer.Transformer.Builder(getContext())
                     .setEncoderFactory(codificador)

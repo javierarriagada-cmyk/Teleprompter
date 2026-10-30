@@ -30,9 +30,15 @@ import java.util.List;
  * app, Source Sans 3, viene solo como woff2, que Android no puede cargar: si
  * cada lado usara la suya, lo guardado no se veria como lo elegido.
  *
- * Un bitmap nuevo solo cuando cambia lo que se ve -otro subtitulo u otra
+ * Antes -hasta el 30-10-2026-: Un bitmap nuevo solo cuando cambia lo que se ve -otro subtitulo u otra
  * palabra-: Media3 sube el bitmap a la GPU cuando getBitmap devuelve OTRO objeto,
  * asi que no se reusa el mismo pintandolo de nuevo.
+ *
+ * Media3 1.9.0, BitmapOverlay.getTextureId, también compara getGenerationId():
+ * limpiar y dibujar el mismo bitmap actualiza la textura cuando cambia el contenido.
+ * Se conserva el bitmap y solo se redibuja al cambiar la clave; sin cambios no se toca.
+ * getBitmap y la subida de textura se hacen en el hilo gráfico de Media3. Se crea
+ * un Canvas nuevo por dibujo para no arrastrar las transformaciones de la rotación.
  */
 @UnstableApi
 final class CapaDeSubtitulos extends BitmapOverlay {
@@ -171,12 +177,12 @@ final class CapaDeSubtitulos extends BitmapOverlay {
         }
         String k = clave.toString();
         if (actual != null && k.equals(claveActual)) return actual;
-        Bitmap b = Bitmap.createBitmap(anchoCuadro, altoCuadro, Bitmap.Config.ARGB_8888);
-        dibujar(new Canvas(b), s, ms);
-        if (anotador != null && renglonesMedidos.add(s.renglones.size())) medirCapa(b);
-        actual = b;
+        if (actual == null) actual = Bitmap.createBitmap(anchoCuadro, altoCuadro, Bitmap.Config.ARGB_8888);
+        else actual.eraseColor(Color.TRANSPARENT);
+        dibujar(new Canvas(actual), s, ms);
+        if (anotador != null && renglonesMedidos.add(s.renglones.size())) medirCapa(actual);
         claveActual = k;
-        return b;
+        return actual;
     }
 
     // 0 por decir, 1 diciendose, 2 dicha -como data-estado en el visor-.

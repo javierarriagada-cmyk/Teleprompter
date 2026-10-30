@@ -7,6 +7,8 @@ import com.google.common.collect.ImmutableList;
 // -tarea 96, 05-10-2026- El filtro ya va: [MatrizDeColor] -> [OverlayEffect(CapaDeSubtitulos)].
 // -orden 2, punto 7, 26-10-2026- La marca va encima de todo, después de los subtítulos:
 // [MatrizDeColor?] -> [OverlayEffect(subtitulos?)] -> [OverlayEffect(CapaDeMarca?)].
+// Antes, hasta el 30-10-2026: dos OverlayEffect. Ahora un solo OverlayEffect recibe
+// subtítulos y marca, en ese orden. La marca sigue encima y el filtro se aplica antes.
 // Lo usa CamaraNativaPlugin.exportarToma.
 @androidx.annotation.OptIn(markerClass = androidx.media3.common.util.UnstableApi.class)
 final class ExportadorDeTomas {
@@ -88,11 +90,15 @@ final class ExportadorDeTomas {
         // -tarea 96, 05-10-2026- Ya no está vacío: el filtro de la receta, ANTES de la capa, para que los
         // subtítulos no se tiñan -en B/N siguen amarillos-. Sin filtro, nada: el camino de hoy.
         if (receta.hayFiltro()) efectos.add(new MatrizDeColor(receta.filtroMatriz));
-        // 2. Subtítulos.
+        // 2. Capas en una sola pasada gráfica; OverlayEffect conserva su orden FIFO.
+        ImmutableList.Builder<androidx.media3.effect.TextureOverlay> capas = ImmutableList.builder();
+        // Antes: subtítulos y marca tenían cada uno su OverlayEffect.
         // Antes: if (capa != null) efectos.add(...); // «encima de todo»
-        if (capa != null) efectos.add(new androidx.media3.effect.OverlayEffect(ImmutableList.of(capa)));
+        if (capa != null) capas.add(capa);
         // 3. -orden 2, punto 7- Marca de agua, encima de todo, después de los subtítulos.
-        if (receta.hayMarca()) efectos.add(new androidx.media3.effect.OverlayEffect(ImmutableList.of(new CapaDeMarca(rotacion))));
+        if (receta.hayMarca()) capas.add(new CapaDeMarca(rotacion));
+        ImmutableList<androidx.media3.effect.TextureOverlay> capasOrdenadas = capas.build();
+        if (!capasOrdenadas.isEmpty()) efectos.add(new androidx.media3.effect.OverlayEffect(capasOrdenadas));
         return efectos.build();
     }
 }

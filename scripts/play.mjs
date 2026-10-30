@@ -99,7 +99,7 @@ correr('npx', ['vite', 'build', '--mode', 'play'], RAIZ)
 console.log('\n[2/4] Copiandolo adentro del proyecto Android...')
 correr('npx', ['cap', 'sync', 'android'], RAIZ)
 
-// -18-10-2026- La grabación a 14 Mbps, igual que en la APK de prueba -scripts/parcharCamara.mjs-.
+// -30-10-2026- La grabación a 12 Mbps, igual que en la APK de prueba -scripts/parcharCamara.mjs-. Antes: 14 Mbps desde el 18-10-2026.
 parcharCamara()
 
 console.log('\n[3/4] Compilando el AAB...')
