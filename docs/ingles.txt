@@ -233,39 +233,42 @@ nivel". Punto I1 de docs/decisiones-de-diseno.txt.
 5. EL GUION HOLA EN INGLES -escrito por Claude; la traductora lo revisa-
 ==============================================================================
 
-  Mismos formatos que el espanol, sobre las palabras que los nombran: bold, amber, light
-  blue, green, yellow highlight. Y los extra de la grabacion de prueba: "without you
-  touching anything" en negrita, "the text waits for you" celeste, "so your eyes go to the
-  camera" ambar, "You don't have to memorize anything." negrita,
-  "whenever you want" destacado, el correo celeste.
-  Antes: "just as you see it" verde.
-  -tarea 97, 05-10-2026- Entran "stays out of the video" negrita, "Gesture control" ambar
-  y "What you see is what gets saved" verde.
+  -bienvenida-nueva, 2026-10-29- Texto propuesto para revisión lingüística (Javier
+  aprobó el español; este inglés es adaptación). Mismos formatos que el español:
+  bold sobre la palabra que lo nombra; colors/yellow highlight y frases clave con
+  ámbar, celeste, verde y destacado; el correo en celeste. Va letra por letra a
+  src/app/bienvenida.ts -bienvenidaIngles-.
+  Antes: formatos sobre amber/light blue/green nombrados y extras "without you
+  touching anything", "so your eyes go to the camera", "stays out of the video",
+  "What you see is what gets saved", "You don't have to memorize anything.",
+  "whenever you want", etc.
 
-Hi. Read this out loud, as slowly or as quickly as you like.
+Hi. Read this out loud, at your own pace, as if you were telling someone a story.
 
-Now look at the text. It's moving on its own, at the pace you speak, without you touching anything. The soft line under the words shows you where you are.
+Watch the text: it moves at the pace you speak. You don't have to memorize anything or rush to keep up.
 
-If you stop to think, the text waits for you. When you start talking again, it picks up right where you left off.
+If you stop to think, the text waits for you. [Breathe and smile.] When you start speaking again, it follows along.
 
-Anything you write in square brackets is a note just for you. It shows on the screen, but you don't need to read it out loud. [Like this one: breathe, and smile.]
+That's what Sigo is for: helping you focus on what you want to say, whether you're recording a video, teaching a class, rehearsing a presentation or preparing for an interview.
 
-Your script can also help you read better. Use bold for what you want to say with more force. Color words in amber, light blue or green to set apart ideas or shifts in tone. And use the yellow highlight for what you can't afford to miss. Just select the text in the editor and pick one.
+Your script can help you express yourself, too. Use bold to give an idea more weight, colors to mark a change in tone and the yellow highlight to remember something important. Notes in square brackets, like the one you just saw, are just for you: you don't need to read them out loud, and they won't appear in the captions.
 
-Aa changes the text size. The typeface, the column width and the screen colors are in Settings. Set it up however feels most comfortable.
+Aa changes the text size. In Settings, you can choose the typeface, text width and reading colors.
 
-When you want to record yourself, tap Record. The camera films while you read, and the text sits right under the lens, so your eyes go to the camera and not to the screen. You can see yourself full screen, behind the text, or in a small window. Record in portrait or landscape, whichever you need.
+To record yourself, tap Record. You can use the front or rear camera, in portrait or landscape, and position the text near the lens to keep your eyes toward the camera.
 
-If you need to stop for a moment, tap the screen and then pause. Whatever happens during the pause stays out of the video: when you resume, the take carries on as if you never stopped.
+If you need a break, tap the screen and then pause. That time stays out of the video. With the front camera, you can also turn on Gesture control: show your palm to pause or resume and, while paused, make a V sign to finish.
 
-And if you're recording away from the phone, turn on Gesture control in the camera panel. Show your palm to pause or resume and, while paused, make a V sign to finish.
+After recording, you can choose captions and a filter before saving. The captions come from your script, in time with your voice. Check how it looks, then save the video to your gallery or share it.
 
-When you're done, your video can have captions, which come from your script in time with your voice, and a filter to give it the look you want. What you see is what gets saved: save it to your gallery or share it right away. Captions and the filter are chosen before you save.
+If you prefer the text to move at a steady pace, choose Fixed speed and adjust it to suit you.
 
-Sigo is here to give you the comfort and the calm you need. We want all your focus to be where it belongs. You don't have to memorize anything. You don't have to rush to keep up with the text. You can bring whatever emotion you want, whenever you want.
+You can use Sigo without signing in. If you'd like to back up your scripts and recover them on another phone, sign in with Google in Settings.
 
-It works for recording a video, teaching a class or getting ready for an interview.
+You can start for free. With Sigo+, you can read with voice tracking and record without a time limit, and save your videos without a watermark.
 
-When you're done, tap + in your scripts to write your own or paste one you already have.
+Whenever you're ready, tap + in your scripts to write your own, paste some text or open a file.
 
-And if there's something you like, something that bugs you, or an idea to make it better, let us know. Your feedback means a lot to us. Write to hello@sigoteleprompter.com. All the best.
+And if you have an idea or something doesn't work as you expected, let us know at hello@sigoteleprompter.com.
+
+You speak. Sigo follows.

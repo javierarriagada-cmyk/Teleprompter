@@ -45,10 +45,14 @@ describe('Cómo enseña Sigo', () => {
     const es = JSON.stringify(bloqueDeBienvenida('es'))
     const en = JSON.stringify(bloqueDeBienvenida('en'))
     expect(es).toContain('toca la pantalla y luego pausa')
-    expect(es).toContain('Los subtítulos y el filtro se eligen antes de guardar')
+    // Antes: 'Los subtítulos y el filtro se eligen antes de guardar'
+    expect(es).toContain('elegir subtítulos y un filtro antes de guardar')
     expect(es).toContain('toca + en tus guiones')
+    expect(es).toContain('[Respira y sonríe.]')
     expect(en).toContain('tap the screen and then pause')
-    expect(en).toContain('Captions and the filter are chosen before you save')
+    // Antes: 'Captions and the filter are chosen before you save'
+    expect(en).toContain('choose captions and a filter before saving')
     expect(en).toContain('tap + in your scripts')
+    expect(en).toContain('[Breathe and smile.]')
   })
 })
