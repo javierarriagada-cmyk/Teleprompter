@@ -185,7 +185,9 @@ export function PanelAjustes({
   const mostrarCalidad = !!video && hayCalidad(video.conCamara, video.calidadesSoportadas)
   const conMovimiento = animar && !movimientoApagado()
 
-  // La version real, la del paquete -1.0 (457)-. Solo con Acerca de Sigo.
+  // La versión visible del paquete, solo con Acerca de Sigo. El número de
+  // compilación queda para control interno -Javier, 30-10-2026-.
+  // Antes: se mostraban ambos, por ejemplo «1.0 (457)».
   const conAcerca = con('acerca')
   // -orden B, segunda corrección del 20-10-2026- Las puertas donde aparece la tarjeta de la cuenta.
   const conCuenta = conAcerca && configuracionLista()
@@ -205,7 +207,7 @@ export function PanelAjustes({
     if (!conAcerca || typeof (CapacitorApp as any).getInfo !== 'function') return
     try {
       CapacitorApp.getInfo()
-        .then((i) => setVersion(`${i.version} (${i.build})`))
+        .then((i) => setVersion(i.version))
         .catch(() => setVersion(null))
     } catch {
       setVersion(null)
