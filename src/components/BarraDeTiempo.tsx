@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { MotorDeAvance } from '../lib/avance'
 import { t, useTextos } from '../textos'
 import { PALABRAS_POR_MINUTO, segundosDeLectura } from '../datos/modelo'
+import { IconoVelocimetro } from './IconosApp'
+import { modoTextoPastillaLimite } from '../lib/avisoLimite'
 
 export interface BarraDeTiempoProps {
   motorAvance: MotorDeAvance | null
@@ -30,6 +32,15 @@ export interface BarraDeTiempoProps {
   // -tarea 104, lámina a- La voz bajándose en LISTO -fracción 0..1, o null-: la pastilla dice
   // "Preparando la voz…" con su barra y el porcentaje en lugar del tiempo. No es un error y no tapa nada.
   preparandoVoz?: number | null
+  // -orden 2, puntos 3 y 4- Sin Sigo+: en Grabar el total es el límite; en Lectura con voz, tras el
+  // aviso de 1 min el total pasa a ser el límite. Antes: también el paso a Velocidad fija forzada ('fija').
+  // 27-10-2026: vía fija retirada. 2026-10-27: la frase del aviso ya no va en la pastilla.
+  limiteTotalSeg?: number | null
+  // Antes: 'aviso' → avisoQuedaMinutoVoz; 'queda' → textoQuedaConVoz; también 'fija'.
+  // 2026-10-27: la pastilla solo muestra el tiempo; fase solo sirve para que App pase el límite.
+  faseLimiteVoz?: 'aviso' | 'queda' | null
+  // Antes: segundos para textoQuedaConVoz. 2026-10-27: ya no se usa en el texto de la pastilla.
+  segundosQuedanVoz?: number | null
 }
 
 // El mismo ritmo que usa el editor para decir "1 min", y el que usa esta
@@ -69,7 +80,8 @@ function Pastilla({
   conTestidsDeProgreso,
   enRiel = false,
   encimaDeLaFila = false,
-  porcentaje
+  porcentaje,
+  conIconoFija = false
 }: {
   // -tarea 104- Con porcentaje, el número va a la derecha de la barra -segundo renglón-.
   porcentaje?: string
@@ -80,6 +92,8 @@ function Pastilla({
   conTestidsDeProgreso: boolean
   enRiel?: boolean
   encimaDeLaFila?: boolean
+  // -orden 2, punto 3- Ícono de velocímetro + «Velocidad fija» al llegar al límite con la voz.
+  conIconoFija?: boolean
 }) {
   return (
     <div
@@ -131,7 +145,10 @@ function Pastilla({
           userSelect: 'none'
         }}
       >
-        <div style={porcentaje ? { letterSpacing: 0, whiteSpace: 'normal' } : undefined}>{texto}</div>
+        <div style={porcentaje ? { letterSpacing: 0, whiteSpace: 'normal' } : conIconoFija ? { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 } : undefined}>
+          {conIconoFija && <IconoVelocimetro tamano={16} />}
+          <span>{texto}</span>
+        </div>
         <div style={porcentaje ? { display: 'flex', alignItems: 'center', gap: 8 } : { display: 'contents' }}>
         <div
           data-testid={conTestidsDeProgreso ? 'barra-progreso-pista' : undefined}
@@ -170,7 +187,10 @@ export default function BarraDeTiempo({
   encimaDeLaFila = false,
   enPausa = false,
   msPausadoAhora,
-  preparandoVoz = null
+  preparandoVoz = null,
+  limiteTotalSeg = null,
+  faseLimiteVoz = null
+  // Antes 2026-10-27: también segundosQuedanVoz = null (textoQuedaConVoz en la pastilla).
 }: BarraDeTiempoProps) {
   useTextos()
   // -ajustes de pantallas, segunda vuelta- Las palabras de la única estimación; los tokens si no llegan.
@@ -274,14 +294,35 @@ export default function BarraDeTiempo({
 
   const progresoPct = Math.min(100, Math.max(0, (estado.posicion / totalTokens) * 100))
 
+  // -orden 2, puntos 3 y 4- Pastilla con límite de grabación o total estimado.
+  // Antes: también Velocidad fija forzada (faseLimiteVoz === 'fija'). 27-10-2026: vía retirada.
+  // Antes: texto={`${formatearTiempo(transcurridoSeg)} / ${formatearTiempo(totalEstimadoSeg)}`}
+  // Antes 2026-10-27: if (faseLimiteVoz === 'aviso') texto = t('avisoQuedaMinutoVoz')
+  //   else if (faseLimiteVoz === 'queda') texto = t('textoQuedaConVoz', { t: formatearTiempo(queda) })
+  // Ahora: la frase sale en AvisoBreve; la pastilla solo el tiempo (modoTextoPastillaLimite → 'tiempo').
+  let texto: string
+  let conIconoFija = false
+  // Antes: if (faseLimiteVoz === 'fija') { texto = t('modoVelocidadFija'); conIconoFija = true }
+  // Antes 2026-10-27: ramas fraseAviso / quedaConVoz según faseLimiteVoz y segundosQuedanVoz.
+  // modoTextoPastillaLimite(fase) es siempre 'tiempo': no hay frase en la pastilla.
+  if (modoTextoPastillaLimite(faseLimiteVoz) !== 'tiempo') {
+    // Reservado por si volviera una frase; hoy no corre.
+    texto = ''
+  } else if (limiteTotalSeg != null) {
+    texto = `${formatearTiempo(transcurridoSeg)} / ${formatearTiempo(limiteTotalSeg)}`
+  } else {
+    texto = `${formatearTiempo(transcurridoSeg)} / ${formatearTiempo(totalEstimadoSeg)}`
+  }
+
   return (
     <Pastilla
-      texto={`${formatearTiempo(transcurridoSeg)} / ${formatearTiempo(totalEstimadoSeg)}`}
+      texto={texto}
       progresoPct={progresoPct}
       etiqueta={t('tiempoTranscurrido')}
       conTestidsDeProgreso={true}
       enRiel={enRiel}
       encimaDeLaFila={encimaDeLaFila}
+      conIconoFija={conIconoFija}
     />
   )
 }

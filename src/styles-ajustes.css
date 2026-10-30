@@ -595,8 +595,23 @@
   line-height: 1;
   color: var(--color-texto);
 }
+/* -menu-elegida, 2026-10-28- Resaltado de la opción elegida: fondo cálido suave
+   detrás, conservando el ✓. El ::before dibuja el fondo con inset lateral 6 dp
+   y radio --forma-chica (8 dp), sin cambiar padding, ancho ni zona táctil de la
+   fila. Antes: background: transparent; solo el ✓ marcaba la elección. */
 .fila-menu-adjunto.elegida {
   background: transparent;
+  position: relative;
+  isolation: isolate;
+}
+.fila-menu-adjunto.elegida::before {
+  content: "";
+  position: absolute;
+  inset: 0 6px;
+  border-radius: var(--forma-chica);
+  background: var(--menu-elegida-fondo);
+  z-index: -1;
+  pointer-events: none;
 }
 
 /* Antes: .capa-dialogo-ajustes era el envoltorio de la hoja inferior con scrim
@@ -1351,7 +1366,23 @@
 .linea-modo-lectura { display: flex; align-items: center; gap: 8px; padding: 0 0 10px; }
 .dock-lugar-voltear:has(.ficha-modo-lectura) { gap: 8px; align-items: flex-start; }
 .control-velocidad-lectura { display: flex; flex-direction: column; align-items: center; gap: 4px; pointer-events: auto; }
-.control-velocidad-lectura.de-pie { position: fixed; right: 12px; bottom: calc(var(--circulo-desde-abajo, 40px) - 40px); }
+/* -cobro-visible avisos, 2026-10-28- Antes: bottom sin safe-area; el «−» quedaba bajo la barra
+   de navegación de Android (gestos ≠ botones). Suma env(safe-area-inset-bottom); posición
+   horizontal (right: 12px) sin cambio. */
+.control-velocidad-lectura.de-pie {
+  position: fixed;
+  right: 12px;
+  bottom: calc(var(--circulo-desde-abajo, 40px) - 40px + env(safe-area-inset-bottom, 0px));
+}
+/* Zona de toque ≥ 48×48 dp: el botón mide 48 (antes 40 + ::before -4, que se salía debajo
+   de la barra). inset 0 = la zona no desborda bajo el inset del sistema. */
+.control-velocidad-lectura .boton-nivel {
+  width: 48px;
+  height: 48px;
+}
+.control-velocidad-lectura .boton-nivel::before {
+  inset: 0;
+}
 .riel-control-velocidad { position: absolute; top: 50%; left: 0; right: 0; transform: translateY(-50%); display: flex; justify-content: center; z-index: 100; }
 /* La franja de foco de Velocidad fija la pinta TeleprompterView token por token -opacidad 0.45 fuera del
    renglon de arriba-; no lleva estilos aqui. */
@@ -1490,4 +1521,93 @@
    sin el margen de los lados, pegada al recuadro. */
 .etiqueta-vista-previa {
   margin: 4px 0 6px;
+}
+
+/* -orden 2, punto 6, 26-10-2026- Tarjeta Sigo+ -lámina 4A-: encima de TarjetaCuenta. Colores solo
+   con variables ya existentes ---sup-fondo, --prot-canto, --dato-fondo, --color-grabando-. */
+.tarjeta-sigo-mas {
+  position: relative;
+  border-radius: var(--forma-grande, 20px);
+  padding: 14px 16px 12px;
+  margin: 0 0 10px;
+  border: 1px solid transparent;
+  background-image: linear-gradient(var(--sup-fondo), var(--sup-fondo)), var(--prot-canto);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+.tarjeta-sigo-mas-cab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--color-texto);
+}
+.tarjeta-sigo-mas-punto {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-grabando);
+  display: inline-block;
+  flex-shrink: 0;
+}
+.tarjeta-sigo-mas-texto {
+  font-size: 13px;
+  color: var(--color-apagado);
+  margin: 4px 0 10px;
+  line-height: 1.35;
+}
+.tarjeta-sigo-mas-boton {
+  height: 40px;
+  border-radius: 20px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-texto);
+  background: var(--dato-fondo);
+  border: 0;
+  cursor: pointer;
+}
+/* Un reflejo cruza el botón al montar la tarjeta, que ocurre al abrir Ajustes.
+   Antes: el botón no tenía reflejo; la primera versión duraba 1 s. */
+.tarjeta-sigo-mas-boton {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.tarjeta-sigo-mas-boton::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: -35% auto -35% -45%;
+  width: 34%;
+  pointer-events: none;
+  opacity: 0;
+  transform: skewX(-18deg);
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 38%), transparent);
+}
+.tarjeta-sigo-mas-boton-texto {
+  position: relative;
+  z-index: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tarjeta-sigo-mas-boton::after {
+    /* Antes: animation: reflejo-sigo-mas-prueba 1s cubic-bezier(.2, .7, .3, 1) 1 both */
+    animation: reflejo-sigo-mas 1.5s cubic-bezier(.2, .7, .3, 1) 1 both;
+  }
+}
+/* Antes: @keyframes reflejo-sigo-mas-prueba */
+@keyframes reflejo-sigo-mas {
+  0% { opacity: 0; transform: translateX(0) skewX(-18deg); }
+  18% { opacity: .68; }
+  55% { opacity: .42; }
+  100% { opacity: 0; transform: translateX(430%) skewX(-18deg); }
+}
+.fila-sigo-activo-micro {
+  font-size: 12px;
+  color: var(--color-apagado);
+  line-height: 1.3;
+  padding: 0 16px 10px 54px;
 }

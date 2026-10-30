@@ -5,6 +5,8 @@ import com.google.common.collect.ImmutableList;
 // LOS EFECTOS DE VIDEO DE UNA RECETA -tarea 87, parte B, 04-10-2026-. ORDEN FIJO:
 // [filtros -plan 3, vacío aquí-] -> [OverlayEffect(CapaDeSubtitulos)]. Sin recorte: no hay fase B.
 // -tarea 96, 05-10-2026- El filtro ya va: [MatrizDeColor] -> [OverlayEffect(CapaDeSubtitulos)].
+// -orden 2, punto 7, 26-10-2026- La marca va encima de todo, después de los subtítulos:
+// [MatrizDeColor?] -> [OverlayEffect(subtitulos?)] -> [OverlayEffect(CapaDeMarca?)].
 // Lo usa CamaraNativaPlugin.exportarToma.
 @androidx.annotation.OptIn(markerClass = androidx.media3.common.util.UnstableApi.class)
 final class ExportadorDeTomas {
@@ -37,7 +39,8 @@ final class ExportadorDeTomas {
     // Se elige la Composition: una sola capa con los subtítulos de la receta, que ya vienen en el reloj
     // de la salida -subtitulosConCortes-. Claude lo comprueba con la línea Sigo88 "capa tramo=".
     @androidx.annotation.OptIn(markerClass = androidx.media3.common.util.UnstableApi.class)
-    static androidx.media3.transformer.Composition composicionConTramos(java.io.File origen, RecetaExportacion receta, CapaDeSubtitulos capa) {
+    // -orden 2- Antes: composicionConTramos(..., CapaDeSubtitulos capa) sin rotacion -la marca la pide-.
+    static androidx.media3.transformer.Composition composicionConTramos(java.io.File origen, RecetaExportacion receta, CapaDeSubtitulos capa, int rotacion) {
         java.util.List<androidx.media3.transformer.EditedMediaItem> items = new java.util.ArrayList<>();
         for (long[] t : receta.tramosMs) {
             androidx.media3.common.MediaItem mi = new androidx.media3.common.MediaItem.Builder()
@@ -52,7 +55,7 @@ final class ExportadorDeTomas {
         androidx.media3.transformer.EditedMediaItemSequence secuencia =
             new androidx.media3.transformer.EditedMediaItemSequence.Builder(items).build();
         return new androidx.media3.transformer.Composition.Builder(secuencia)
-            .setEffects(new androidx.media3.transformer.Effects(ImmutableList.of(), efectosDeVideo(receta, capa)))
+            .setEffects(new androidx.media3.transformer.Effects(ImmutableList.of(), efectosDeVideo(receta, capa, rotacion)))
             .build();
     }
 
@@ -78,14 +81,18 @@ final class ExportadorDeTomas {
         return b.toString();
     }
 
-    static ImmutableList<androidx.media3.common.Effect> efectosDeVideo(RecetaExportacion receta, CapaDeSubtitulos capa) {
+    // -orden 2- Antes: efectosDeVideo(receta, capa) sin rotacion.
+    static ImmutableList<androidx.media3.common.Effect> efectosDeVideo(RecetaExportacion receta, CapaDeSubtitulos capa, int rotacion) {
         ImmutableList.Builder<androidx.media3.common.Effect> efectos = ImmutableList.builder();
         // 1. Filtros -plan 3-: vacío en esta tarea -receta.filtro es siempre null-.
         // -tarea 96, 05-10-2026- Ya no está vacío: el filtro de la receta, ANTES de la capa, para que los
         // subtítulos no se tiñan -en B/N siguen amarillos-. Sin filtro, nada: el camino de hoy.
         if (receta.hayFiltro()) efectos.add(new MatrizDeColor(receta.filtroMatriz));
-        // 2. Subtítulos, encima de todo.
+        // 2. Subtítulos.
+        // Antes: if (capa != null) efectos.add(...); // «encima de todo»
         if (capa != null) efectos.add(new androidx.media3.effect.OverlayEffect(ImmutableList.of(capa)));
+        // 3. -orden 2, punto 7- Marca de agua, encima de todo, después de los subtítulos.
+        if (receta.hayMarca()) efectos.add(new androidx.media3.effect.OverlayEffect(ImmutableList.of(new CapaDeMarca(rotacion))));
         return efectos.build();
     }
 }

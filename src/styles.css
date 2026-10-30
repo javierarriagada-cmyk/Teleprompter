@@ -12,8 +12,12 @@
 
   /* Escala de formas de Material 3 (https://m3.material.io/styles/shape/corner-radius-scale) */
   --forma-chica: 8px;
+  /* -cobro-visible avisos, 2026-10-28- medium = 12 dp. Antes: avisos cobro usaban --redondeo-pildora. */
+  --forma-media: 12px;
   --forma-grande: 16px;
   --forma-extra-grande: 28px;
+  /* Elevación 1 de Material 3 (https://m3.material.io/styles/elevation/tokens). */
+  --sombra-elevacion-1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
   --bg-suelo: #151312;
   --bg-fila: #1E1B19;
   --bg-superficie: #221F1D;
@@ -44,6 +48,8 @@
      palabra guiones deberia crecer un poquito". */
   --texto-seccion: 22px;
   --texto-titulo: 18px;
+  /* -corrección teléfono PR 157, 2026-10-27- Aviso «queda 1 minuto»: 20 negrita. */
+  --texto-aviso-limite: 20px;
   --texto-cuerpo: 15px;
   --texto-meta: 13px;
   --texto-etiqueta: 11px;
@@ -116,6 +122,13 @@
   --aviso-fondo: #ECE6E0;
   --aviso-texto: #1D1B1A;
   --aviso-accion: #C62828;
+  /* -pasada teléfono PR 157, 27-10-2026- Avisos de límite en grabación sobre la cámara: siempre
+     fondo claro / texto oscuro (no siguen el tema). Solo variables; sin hex en el TSX. */
+  --aviso-sobre-camara-fondo: #ECE6E0;
+  --aviso-sobre-camara-texto: #1D1B1A;
+  /* -menu-elegida, 2026-10-28- Fondo cálido suave detrás de la opción elegida en
+     .fila-menu-adjunto.elegida. Boceto aprobado: #ECE6E0 al 11 %. */
+  --menu-elegida-fondo: color-mix(in srgb, #ECE6E0 11%, transparent);
   --leer-fondo: linear-gradient(180deg, #F4ECE7, #E2D6CF);
   --leer-texto: #151312;
   --crear-fondo: #E7E1DE;
@@ -200,6 +213,9 @@
   --grabar-brillo: 0 4px 18px rgba(225, 29, 46, 0.20);
   --ajustes-vidrio: rgba(255, 255, 255, 0.7);
   --ajustes-borde: rgba(26, 24, 21, 0.08);
+  /* -menu-elegida, 2026-10-28- En claro el crema al 11 % casi no se ve sobre el menú
+     blanco; tono cálido del dato al 11 %. */
+  --menu-elegida-fondo: color-mix(in srgb, #A4471E 11%, transparent);
 }
 
 [data-tema="oscuro"] {
@@ -270,6 +286,10 @@
   --grabar-brillo: 0 4px 18px rgba(225, 29, 46, 0.28);
   --ajustes-vidrio: rgba(255, 255, 255, 0.04);
   --ajustes-borde: rgba(255, 255, 255, 0.08);
+  /* -menu-elegida, 2026-10-28- Los menús de Ajustes viven en data-tema="oscuro"
+     aunque la app esté en claro (menus-dock / panel). Sin esta variable heredaban
+     el marrón de [data-tema="claro"]. Antes: sin --menu-elegida-fondo aquí. */
+  --menu-elegida-fondo: color-mix(in srgb, #ECE6E0 11%, transparent);
 }
 
 body {
@@ -2846,6 +2866,18 @@ button.btn-deformable.miniatura-banda:not(:active) {
   background-color: var(--aviso-fondo);
   background-clip: padding-box;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+/* -cobro-visible avisos, 2026-10-28- Caja M3 medium (12) + elevación 1. Antes: cápsula
+   (--redondeo-pildora) y sombra 0 6px 18px del .aviso-breve. Sin alto fijo: crece con el texto. */
+.aviso-breve.aviso-caja-m3 {
+  border-radius: var(--forma-media);
+  box-shadow: var(--sombra-elevacion-1);
+  /* Relleno parejo; el inline de AvisoBreve lo refuerza. */
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+  white-space: normal;
 }
 
 /* EL VELO DE LA MINIATURA: el 45 % de abajo -no 40px fijos, sirve en telefono y tableta-, debajo de

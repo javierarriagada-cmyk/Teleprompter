@@ -42,6 +42,14 @@ public class RecetaExportacionTest {
         assertFalse(RecetaExportacion.desdeValores(1, "amarillo", DOS_SUBS, 2, null, null, null).esCopia());
     }
 
+    // -orden 2, punto 7, 26-10-2026- Con marca NUNCA es copia.
+    @Test
+    public void conMarcaNuncaEsCopia() {
+        RecetaExportacion r = RecetaExportacion.desdeValores(1, "no", "[]", 0, null, null, null, true);
+        assertTrue(r.hayMarca());
+        assertFalse(r.esCopia());
+    }
+
     @Test
     public void rechazaTramosDesordenados() {
         try {

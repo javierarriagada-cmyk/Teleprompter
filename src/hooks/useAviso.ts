@@ -16,6 +16,19 @@ export interface AvisoInfo {
   // idioma del guion sale en el idioma del GUION -«Your script is in English...» con la app en español-, y
   // TalkBack elige la voz por el lang: sin el, lo leeria con voz española -lib/idioma.ts, reflejarEnDocumento-.
   idioma?: string
+  // -orden 2, punto 3, 26-10-2026- Aviso tocable entero con chevron -lámina 2A-: al tocarlo corre alTocar.
+  // Los avisos de hoy, con o sin botón de acción, no cambian.
+  tocable?: boolean
+  alTocar?: () => void
+  // -pasada teléfono PR 157, 27-10-2026- Dónde flota. 'mitad' = cerca del centro.
+  // 'limite': Antes = tercio superior. 2026-10-27 = borde inferior a 1/3 del alto desde abajo
+  // (sobre pastilla/botones, sin tapar la línea leída). Sin colocacion, abajo como siempre.
+  colocacion?: 'limite' | 'mitad'
+  // Grabación sobre la cámara: fondo claro de contraste (variables --aviso-sobre-camara-*).
+  contrasteGrabacion?: boolean
+  // -cobro-visible avisos, 2026-10-28- Segunda línea (peso 400). Lectura del minuto 2;
+  // grabación no la pasa. Antes: el aviso de lectura iba en una sola cadena.
+  textoSecundario?: string
 }
 
 // El color de la acción del aviso, solo con variables que ya existen: --color-texto es el del texto del
@@ -37,7 +50,10 @@ export function useAviso() {
     msg: string,
     // -portugues-voz, punto 7, 2026-10-22- Antes: opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number }
     // -portugues-voz, 2026-10-22- Suma idioma. Antes: opciones?: { ...; duracionMs?: number; accionNeutra?: boolean }
-    opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number; accionNeutra?: boolean; idioma?: string }
+    // -orden 2, punto 3- Suma tocable y alTocar. Antes: opciones?: { ...; idioma?: string }
+    // -pasada teléfono PR 157- Suma colocacion y contrasteGrabacion.
+    // -cobro-visible avisos, 2026-10-28- Suma textoSecundario.
+    opciones?: { accionTexto?: string; alEjecutarAccion?: () => void; duracionMs?: number; accionNeutra?: boolean; idioma?: string; tocable?: boolean; alTocar?: () => void; colocacion?: 'limite' | 'mitad'; contrasteGrabacion?: boolean; textoSecundario?: string }
   ) => {
     if (timerAvisoRef.current) clearTimeout(timerAvisoRef.current)
     setAvisoInfo({
@@ -45,7 +61,12 @@ export function useAviso() {
       accionTexto: opciones?.accionTexto,
       alEjecutarAccion: opciones?.alEjecutarAccion,
       accionNeutra: opciones?.accionNeutra,
-      idioma: opciones?.idioma
+      idioma: opciones?.idioma,
+      tocable: opciones?.tocable,
+      alTocar: opciones?.alTocar,
+      colocacion: opciones?.colocacion,
+      contrasteGrabacion: opciones?.contrasteGrabacion,
+      textoSecundario: opciones?.textoSecundario
     })
     const dur = opciones?.duracionMs ?? 2000
     timerAvisoRef.current = setTimeout(() => {

@@ -130,6 +130,12 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
    RevenueCat; y la decisión de Javier sobre qué se hace con los datos de RevenueCat cuando alguien borra su
    cuenta -se borran con la API de servidor y la clave secreta, no desde la app-.
 
+   Con la orden 2 -cobro-visible-: la app abre la pantalla de oferta de RevenueCat y el Customer Center.
+   Antes de probar la compra en el teléfono, la pantalla de oferta tiene que estar PUBLICADA en RevenueCat,
+   y para publicarla pide las URL de Términos y de Privacidad. Los límites -limite_lectura_segundos,
+   limite_grabacion_segundos, aviso_antes_segundos- se mueven en Firebase Remote Config sin sacar versión.
+   El launchMode pasó a singleTop: probar los accesos directos.
+
 Conocido y aceptado: la advertencia de símbolos de depuración por las .so de Vosk, que vienen sin
 símbolos. No bloquea.
 

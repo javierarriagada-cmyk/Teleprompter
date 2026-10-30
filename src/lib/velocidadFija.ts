@@ -9,13 +9,17 @@
 // diferencia se siente igual subiendo de 1 a 2 que de 6 a 7-. Las palabras por minuto solo mueven el
 // texto y calculan la duracion: NUNCA se muestran. En pantalla hay una barra de siete tramos y TalkBack
 // dice «Velocidad, nivel N de 7».
+// -2026-10-28, Javier- Baja un nivel toda la escala: el piso pasa de 100 a 88 y el techo de 220 a
+// 193. Siguen siete tramos al ~14 %; el nivel inicial 4 queda en 130 palabras/minuto. No se migra
+// el número guardado: quien tenía nivel 4 sigue en 4 (ahora más lento). Antes: [100, 114, 130, 148,
+// 169, 193, 220].
 import type { EstadoAvance, MotorDeAvance } from './avance'
 import { segundosDeLectura } from '../datos/modelo'
 import type { Renglon } from './renglones'
 
 export type ModoLectura = 'voz' | 'fija'
 
-export const NIVELES_PPM = [100, 114, 130, 148, 169, 193, 220]
+export const NIVELES_PPM = [88, 100, 114, 130, 148, 169, 193]
 export const NIVELES = NIVELES_PPM.length
 export const NIVEL_POR_OMISION = 4
 
@@ -27,6 +31,11 @@ export function acotarNivel(nivel: number): number {
 export function ppmDeNivel(nivel: number): number {
   return NIVELES_PPM[acotarNivel(nivel) - 1]
 }
+
+// Antes: ritmoDeLosUltimosSegundos -orden 2, punto 3, 26-10-2026- calculaba el ppm de la voz
+// al pasar al motor fijo al límite. 27-10-2026, pasada teléfono PR 157: al límite se pausa;
+// ya no hay forzada a fija ni esta función (Javier autorizó quitarla y su prueba).
+
 
 // Un toque: un nivel arriba o abajo, sin salirse de 1..7.
 export function subirNivel(nivel: number): number { return acotarNivel(nivel + 1) }
@@ -89,6 +98,8 @@ export interface MotorFijo extends MotorDeAvance {
   seguir(tMs: number): void
   pausar(tMs: number): void
   cambiarNivel(nivel: number, tMs: number): void
+  // Antes: cambiarRitmo(ppm, tMs) — ritmo exacto al forzar fija al límite (orden 2, 26-10-2026).
+  // 27-10-2026: vía retirada; al límite se pausa. Javier autorizó quitar cambiarRitmo.
   corriendo(): boolean
 }
 
@@ -163,6 +174,7 @@ export function crearMotorFijo(totalTokens: number, nivel: number = NIVEL_POR_OM
       avanzarHasta(tMs)
       ppm = ppmDeNivel(n)
     },
+    // Antes: cambiarRitmo(ppmExacto, tMs) — 27-10-2026 retirada con la forzada a fija.
     corriendo() {
       return corre
     }

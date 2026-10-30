@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Avisos cobro-visible — preview</title>
+<style>
+  :root {
+    --aviso-sobre-camara-fondo: #ECE6E0;
+    --aviso-sobre-camara-texto: #1D1B1A;
+    --forma-media: 12px;
+    --redondeo-pildora: 999px;
+    --sombra-elevacion-1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+    --sombra-vieja: 0 6px 18px rgba(0, 0, 0, 0.45);
+    --texto-aviso-limite: 20px;
+    --texto-titulo: 18px;
+    --aire-3: 12px;
+    --aire-4: 20px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: system-ui, sans-serif;
+    background: #1a1816; color: #eee;
+  }
+  .pantalla {
+    position: relative; width: 412px; height: 915px; margin: 0 auto;
+    background: linear-gradient(180deg, #2a2420 0%, #151312 60%);
+    overflow: hidden;
+  }
+  .etiqueta {
+    position: absolute; top: 12px; left: 12px; right: 12px;
+    font-size: 12px; opacity: 0.7; z-index: 2;
+  }
+  .guia-tercio {
+    position: absolute; left: 0; right: 0; bottom: calc(100% / 3);
+    border-top: 1px dashed rgba(255,255,255,0.25); z-index: 1;
+  }
+  .aviso {
+    position: absolute;
+    left: 16px; right: 16px;
+    bottom: calc(100% / 3);
+    background: var(--aviso-sobre-camara-fondo);
+    color: var(--aviso-sobre-camara-texto);
+    font-size: var(--texto-aviso-limite);
+    font-weight: 700;
+    padding: var(--aire-3) var(--aire-4);
+    border-radius: var(--redondeo-pildora);
+    box-shadow: var(--sombra-vieja);
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .aviso.despues {
+    left: 32px; right: 32px; max-width: 480px;
+    margin-left: auto; margin-right: auto;
+    padding: var(--aire-3);
+    border-radius: var(--forma-media);
+    box-shadow: var(--sombra-elevacion-1);
+    height: auto; overflow: visible; white-space: normal;
+  }
+  .aviso .l2 { font-weight: 400; }
+  .marca {
+    position: absolute; top: 42%; left: 0; right: 0;
+    margin: 0 auto; width: max-content; max-width: calc(100% - 40px);
+    background: var(--aviso-sobre-camara-fondo);
+    color: var(--aviso-sobre-camara-texto);
+    font-size: var(--texto-titulo); font-weight: 600;
+    padding: 8px 12px; border-radius: var(--redondeo-pildora);
+    box-shadow: var(--sombra-vieja);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .marca.despues {
+    left: 32px; right: 32px; width: auto; max-width: 480px;
+    padding: var(--aire-3); border-radius: var(--forma-media);
+    box-shadow: var(--sombra-elevacion-1); font-weight: 400;
+  }
+  .marca .texto { flex: 1; text-align: center; min-width: 0; }
+  .marca .bold { font-weight: 700; }
+  .marca .flecha { flex-shrink: 0; transform: rotate(-90deg); font-size: 18px; }
+  .video-falso {
+    position: absolute; inset: 18% 8% 28%; background: #0d3d2e;
+    border-radius: 8px; opacity: 0.85;
+  }
+</style>
+</head>
+<body>
+<!-- pages switched via ?v= -->
+<script>
+  const v = new URLSearchParams(location.search).get('v') || 'antes-limite';
+  const pantallas = {
+    'antes-limite': () => `
+      <div class="pantalla" id="cap">
+        <div class="etiqueta">ANTES — aviso minuto 2 (cápsula, márgenes 16)</div>
+        <div class="guia-tercio"></div>
+        <div class="aviso">Te queda 1 minuto con voz. Con velocidad fija, sin límite.</div>
+      </div>`,
+    'despues-limite': () => `
+      <div class="pantalla" id="cap">
+        <div class="etiqueta">DESPUÉS — aviso minuto 2 (M3 medium, márgenes 32, dos líneas)</div>
+        <div class="guia-tercio"></div>
+        <div class="aviso despues">
+          <span>Te queda 1 minuto con voz.</span>
+          <span class="l2">Con velocidad fija, sin límite.</span>
+        </div>
+      </div>`,
+    'antes-marca': () => `
+      <div class="pantalla" id="cap">
+        <div class="etiqueta">ANTES — invitación marca (cápsula)</div>
+        <div class="video-falso"></div>
+        <div class="marca">
+          <span>Con Sigo+, tus videos sin marca de agua.</span>
+          <span class="flecha">⌃</span>
+        </div>
+      </div>`,
+    'despues-marca': () => `
+      <div class="pantalla" id="cap">
+        <div class="etiqueta">DESPUÉS — invitación marca (caja M3; Sigo+ negrita; flecha aparte)</div>
+        <div class="video-falso"></div>
+        <div class="marca despues">
+          <span class="texto">Con <span class="bold">Sigo+</span>, tus videos sin marca de agua.</span>
+          <span class="flecha">⌃</span>
+        </div>
+      </div>`
+  };
+  document.body.innerHTML = (pantallas[v] || pantallas['antes-limite'])();
+</script>
+</body>
+</html>

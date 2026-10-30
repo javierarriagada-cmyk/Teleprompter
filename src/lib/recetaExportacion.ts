@@ -21,6 +21,8 @@ export type RecetaExportacion = {
   estilo: EstiloSubtitulo // de subtitulos.ts
   subtitulos: Subtitulo[] // [] si no lleva
   tramos: TramoMs[] | null // plan 2; null = la toma entera
+  // -orden 2, punto 7, 26-10-2026- Marca de agua Sigo. Con marca la receta NUNCA es copia y el camino es 'receta'.
+  marca?: boolean
   // -tarea 96, 05-10-2026- La forma del plan 3, 4.4, sin pielSuave -queda para su tarea-: el tono va
   // para el registro del nativo -Sigo96- y la matriz son los 16 números de RgbMatrix, por columnas. El
   // nativo no conoce los nombres: aplica los números. null = Natural, sin filtro.
@@ -34,7 +36,7 @@ export type FiltroReceta = { tono: TonoFiltro; matriz: number[] }
 // receta lleva null, como hasta hoy: el camino de guardado es el de siempre. Con tramos la receta
 // NUNCA es copia, aunque el estilo sea "No" -esCopia, abajo-.
 // -tarea 96- filtro: el elegido en el visor. Natural -o sin filtro- deja null, como hasta hoy.
-export function recetaDe(o: { estilo: EstiloSubtitulo; subtitulos: Subtitulo[]; tramos?: TramoMs[] | null; filtro?: FiltroToma | null }): RecetaExportacion {
+export function recetaDe(o: { estilo: EstiloSubtitulo; subtitulos: Subtitulo[]; tramos?: TramoMs[] | null; filtro?: FiltroToma | null; marca?: boolean }): RecetaExportacion {
   const lleva = o.estilo !== 'no' && Array.isArray(o.subtitulos) && o.subtitulos.length > 0
   return {
     version: 1,
@@ -43,7 +45,9 @@ export function recetaDe(o: { estilo: EstiloSubtitulo; subtitulos: Subtitulo[]; 
     // Antes: tramos: null, siempre.
     tramos: o.tramos && o.tramos.length > 0 ? o.tramos : null,
     // Antes: filtro: null, siempre.
-    filtro: o.filtro && !esNeutro(o.filtro) ? { tono: o.filtro.tono, matriz: matrizParaMedia3(matrizDeTono(o.filtro.tono)) } : null
+    filtro: o.filtro && !esNeutro(o.filtro) ? { tono: o.filtro.tono, matriz: matrizParaMedia3(matrizDeTono(o.filtro.tono)) } : null,
+    // -orden 2, punto 7- Solo si true; si no, no va el campo -compatibilidad con recetas viejas-.
+    ...(o.marca ? { marca: true } : {})
   }
 }
 
@@ -51,7 +55,8 @@ export function recetaDe(o: { estilo: EstiloSubtitulo; subtitulos: Subtitulo[]; 
 // -tarea 96- Con filtro, NUNCA es copia: el color se cambia recodificando.
 export function esCopia(r: RecetaExportacion): boolean {
   const sinSubtitulos = r.estilo === 'no' || !r.subtitulos || r.subtitulos.length === 0
-  return sinSubtitulos && r.tramos === null && r.filtro === null
+  // -orden 2, punto 7- Con marca NUNCA es copia. Antes: return sinSubtitulos && r.tramos === null && r.filtro === null
+  return sinSubtitulos && r.tramos === null && r.filtro === null && !r.marca
 }
 
 // POR DÓNDE SE GUARDA UNA TOMA -tomas-largas, 15-10-2026-. La decisión de guardarToma
@@ -62,10 +67,11 @@ export function esCopia(r: RecetaExportacion): boolean {
 //                 Media3 Transformer. Una toma de 25 min sin nada que cambiarle tardaba 6,5 min en
 //                 guardarse porque el filtro recordado de otra toma la mandaba a recodificar.
 export type CaminoDeGuardado = 'receta' | 'subtitulos' | 'copia'
-export function caminoDeGuardado(o: { estilo: EstiloSubtitulo; subtitulos: Subtitulo[]; tramos?: TramoMs[] | null; filtro?: FiltroToma | null }): CaminoDeGuardado {
+export function caminoDeGuardado(o: { estilo: EstiloSubtitulo; subtitulos: Subtitulo[]; tramos?: TramoMs[] | null; filtro?: FiltroToma | null; marca?: boolean }): CaminoDeGuardado {
   const conSubtitulos = o.estilo !== 'no' && Array.isArray(o.subtitulos) && o.subtitulos.length > 0
   const conTramos = !!o.tramos && o.tramos.length > 0
-  if (conTramos || !esNeutro(o.filtro)) return 'receta'
+  // -orden 2, punto 7- Con marca el camino es 'receta'. Antes: if (conTramos || !esNeutro(o.filtro)) return 'receta'
+  if (conTramos || !esNeutro(o.filtro) || o.marca) return 'receta'
   return conSubtitulos ? 'subtitulos' : 'copia'
 }
 
@@ -95,5 +101,8 @@ export function validarReceta(r: RecetaExportacion): string | null {
     if (!Array.isArray(f.matriz) || f.matriz.length !== 16) return 'matriz de filtro sin 16 números'
     if (!f.matriz.every((n: unknown) => typeof n === 'number' && Number.isFinite(n))) return 'matriz de filtro sin cifras'
   }
+  // -orden 2, punto 7- marca, si viene, es boolean.
+  if ('marca' in r && r.marca !== undefined && typeof (r as { marca?: unknown }).marca !== 'boolean') return 'marca no es boolean'
   return null
 }
+

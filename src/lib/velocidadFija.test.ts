@@ -15,14 +15,14 @@ describe('Velocidad fija', () => {
   })
 
   it('siete niveles, cada uno ~14 % mas rapido; por omision el 4; los toques no salen de 1..7', () => {
-    expect(NIVELES_PPM).toEqual([100, 114, 130, 148, 169, 193, 220])
+    expect(NIVELES_PPM).toEqual([88, 100, 114, 130, 148, 169, 193])
     for (let i = 1; i < NIVELES_PPM.length; i++) {
       const r = NIVELES_PPM[i] / NIVELES_PPM[i - 1]
       expect(r).toBeGreaterThan(1.12)
       expect(r).toBeLessThan(1.16)
     }
     expect(NIVEL_POR_OMISION).toBe(4)
-    expect(ppmDeNivel(4)).toBe(148)
+    expect(ppmDeNivel(4)).toBe(130)
     expect(subirNivel(7)).toBe(7)
     expect(bajarNivel(1)).toBe(1)
     expect(subirNivel(3)).toBe(4)
@@ -32,9 +32,9 @@ describe('Velocidad fija', () => {
   })
 
   it('la duracion es palabras ÷ palabras por minuto del nivel', () => {
-    expect(segundosConNivel(421, 1)).toBe(Math.round((421 / 100) * 60))
-    expect(segundosConNivel(421, 4)).toBe(Math.round((421 / 148) * 60))
-    expect(segundosConNivel(421, 7)).toBe(Math.round((421 / 220) * 60))
+    expect(segundosConNivel(421, 1)).toBe(Math.round((421 / 88) * 60))
+    expect(segundosConNivel(421, 4)).toBe(Math.round((421 / 130) * 60))
+    expect(segundosConNivel(421, 7)).toBe(Math.round((421 / 193) * 60))
     expect(segundosConNivel(0, 4)).toBe(0)
   })
 
@@ -55,13 +55,13 @@ describe('Velocidad fija', () => {
     expect(m.estadoEn(0).posicion).toBe(0)
     expect(m.estadoEn(60000).posicion).toBe(0) // no corre todavia
     m.seguir(60000)
-    expect(m.estadoEn(120000).posicion).toBeCloseTo(148, 6)
-    expect(m.leerEstado().posicion).toBeCloseTo(148, 6) // leer no avanza
+    expect(m.estadoEn(120000).posicion).toBeCloseTo(130, 6)
+    expect(m.leerEstado().posicion).toBeCloseTo(130, 6) // leer no avanza
     m.pausar(150000)
-    expect(m.estadoEn(500000).posicion).toBeCloseTo(148 * 1.5, 6)
+    expect(m.estadoEn(500000).posicion).toBeCloseTo(130 * 1.5, 6)
     m.seguir(500000)
-    m.cambiarNivel(7, 530000) // medio minuto a 148 y despues a 220
-    expect(m.estadoEn(560000).posicion).toBeCloseTo(148 * 2 + 110, 6)
+    m.cambiarNivel(7, 530000) // medio minuto a 130 y despues a 193
+    expect(m.estadoEn(560000).posicion).toBeCloseTo(130 * 2 + 193 / 2, 6)
     m.irAToken(10, 560000)
     expect(m.estadoEn(560000).posicion).toBe(10)
     expect(m.estadoEn(10 ** 9).posicion).toBe(999)
@@ -116,3 +116,6 @@ describe('Velocidad fija', () => {
     expect(renglonDePx(9999, desparejos)).toBe(3)
   })
 })
+
+// Antes: prueba de ritmoDeLosUltimosSegundos (orden 2). 27-10-2026: retirada con la función.
+

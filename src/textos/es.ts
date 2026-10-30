@@ -354,6 +354,30 @@ export const es = {
   velocidadFijaNivel: 'Velocidad fija, nivel {n} de 7',
   masLento: 'Más lento',
   masRapido: 'Más rápido',
+  // -orden 2 «Sigo+ en la app», 26-10-2026-.
+  // Antes 2026-10-27: 'Te queda 1 minuto con voz.'
+  // Antes 2026-10-28: 'Te queda 1 minuto con voz. Con velocidad fija, sin límite.' (una sola línea).
+  avisoQuedaMinutoVoz: 'Te queda 1 minuto con voz.',
+  avisoQuedaMinutoVozNota: 'Con velocidad fija, sin límite.',
+  textoQuedaConVoz: '{t} con voz',
+  limiteLectura: 'Con Sigo+, Sigo te sigue hasta el final.',
+  avisoQuedaMinutoGrabacion: 'Te queda 1 minuto de grabación.',
+  limiteGrabacion: 'Con Sigo+, graba tomas completas, sin cortes.',
+  tarjetaSigoTitulo: 'Sigo+',
+  tarjetaSigoTexto: 'Lee y graba sin cortes. 7 días gratis.',
+  tarjetaSigoTextoSinPrueba: 'Lee y graba sin cortes.',
+  tarjetaSigoBoton: 'Ver Sigo+',
+  restaurarCompras: 'Restaurar compras',
+  restaurarListo: 'Sigo+ está activo.',
+  restaurarNada: 'No encontramos compras de Sigo+ en esta cuenta de Google.',
+  sigoActivo: 'Sigo+ activo · Administrar',
+  // -idioma/ubicación Sigo+, 2026-10-29- Sección Sigo+ antes de Ayuda (estado y administrar por separado).
+  seccionSigo: 'Sigo+',
+  administrarSuscripcion: 'Administrar suscripción',
+  sigoEstadoActiva: 'Activa',
+  avisoGuardarSinMarca: 'Con Sigo+, tus videos sin marca de agua.',
+  avisoFinPrueba: 'Tu prueba termina el {fecha}.',
+  sinConexionVerificar: 'Conéctate un momento para verificar Sigo+.',
   // Arreglos chicos de uso -estudio 1-.
   nadaCopiado: 'No hay texto copiado',
   abrirEnEditor: 'Abrir en el editor',
