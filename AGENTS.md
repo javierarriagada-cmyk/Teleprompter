@@ -157,3 +157,7 @@ cuenta.
 
 Comentarios en castellano, con tildes. Explican POR QUE, no que. Lo que se probo y no
 funciono queda como comentario para que no se vuelva a intentar.
+
+## Taller de armado APK y AAB
+
+Para cualquier tarea de empaquetado, lee `TALLER-ARMADO.md` además de estas reglas. Usa el script del formato solicitado y el checklist de Play vigente en la revisión de código indicada; no infieras que compilar autoriza instalar, distribuir o publicar.

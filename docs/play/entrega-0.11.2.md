@@ -1,50 +1,34 @@
-# Propuesta 0.11.2 para la prueba cerrada existente
+# Entrega 0.11.2 — 30-10-2026
 
-Preparada el 30-10-2026 desde main `7a47b554f437de39dc30987056728c14f4c6b267`.
-Los PR #157, #159, #160 y #161 ya están integrados. Esta entrega conserva esos cambios.
+## Artefacto y código
 
-## Estado consultado, sin publicar cambios
+- AAB armado desde `930408924ff59612e5942ca00ce615eaf534e110`, basado en main `7a47b554f437de39dc30987056728c14f4c6b267`. Incluye los PR #157, #159, #160 y #161.
+- Nombre visible 0.11.2; versionCode interno 780. Archivo entregado: `Sigo-0.11.2.aab`, 151.306.876 bytes.
+- SHA-256: `7d93c394dcfc02fe660f31ef55bb475e294ff22ac51128b3d0ae06efe5faaba4`.
+- Firma verificada, R8 y clases protegidas conservadas, permisos revisados (BILLING presente, AD_ID ausente), modelos es/en/pt on-demand y LOAD/RELRO de 16 KB comprobados en las seis bibliotecas arm64.
+- El contenido real excluye paneles de diagnóstico, registro nuevo del motor, audio de diagnóstico, motor web, VAD y service worker; conserva el guardado y las palabras de subtítulos. El AAB anterior sirvió de contraprueba del detector de VAD.
 
-- Play: segmento **Prueba cerrada - Alpha**, activo; versión **730 (0.11.1)**, disponible para verificadores específicos. ID del segmento: `4699753757475321939`; API: `alpha`.
-- Mayor versionCode subido, consultando bundles y APK: **730**. El número propuesto se obtiene del commit de armado y debe superar ese valor; no procede de una APK de diagnóstico instalada.
-- Publicación administrada: **desactivada**. Última publicación: 26-10-2026.
-- Verificadores: lista **Grupo Int.**, **19** usuarios, seleccionada; correo de comentarios `hola@sigoteleprompter.com`. No modificar listas, verificadores, países ni segmentos.
-- Ficha publicada: es-419, en-US y pt-BR. El diff de aprobación está en `ficha/aprobacion-20261030/`; ícono y 24 imágenes de tabletas conservados.
-- Las ediciones de consulta de API se borraron con HTTP 204; una consulta posterior respondió HTTP 400, edición inexistente. Los informes completos se conservan localmente junto a la entrega, sin credenciales.
+Javier subió el AAB manualmente a la prueba cerrada Alpha. La lectura de API posterior al envío de las fichas conserva `alpha` con 0.11.2 / 780 y estado `completed`. Ese valor de la pista no certifica por sí solo la aprobación ni disponibilidad en el teléfono. No se modificaron pistas al cargar las fichas.
 
-## Contenido y comprobación del paquete
+Antes: la propuesta exigía una APK gemela y decía que el AAB aún no estaba subido. Javier canceló la APK y realizó la subida manual. Esta consolidación no reconstruye ni instala paquetes.
 
-`scripts/play.mjs` excluye `dist/vad-processor.js` después de Vite y antes de cap sync. Antes: ese sobrante entraba al AAB aunque no viaja el motor web. `public/vad-processor.js` y la APK de diagnóstico lo conservan.
+## Fichas enviadas a revisión
 
-Después de `npm run play`, revisar el AAB real:
+Con autorización expresa de Javier, el 30-10-2026 a las 21:18 de America/Santiago (2026-10-31T00:18:27Z) se confirmó la carga por API de las fichas aprobadas:
 
-```powershell
-node scripts/revisarContenidoPlay.mjs android/app/build/outputs/bundle/release/app-release.aab .herramientas/revision-0112
-```
+- es-419, en-US y pt-BR: descripción completa, ocho imágenes de teléfono por idioma en orden 01–08 y gráfico correspondiente.
+- Video español: https://www.youtube.com/watch?v=dleH1xz_024. Inglés y portugués permanecen sin video.
+- Nombres, descripciones breves, íconos, 24 imágenes de tabletas y pistas conservados.
+- Validación de Google antes de confirmar; lectura nueva posterior con igualdad de texto, video y SHA-256 de cada imagen en su orden.
 
-Exige JavaScript no vacío, ausencia de los cinco identificadores de paneles, trabajador del motor web, VAD y service worker, y presencia de `guardando-toma`. Verifica el audio de diagnóstico apagado, la ausencia de la cabecera del registro nuevo y LOAD/RELRO de cada biblioteca arm64 con `elf16k.mjs`. El lector y los datos de palabras de subtítulos se conservan. La lectura de `.motor.txt` antiguos no implica escribir medición nueva.
+Evidencia verificable en `ficha/envio-20261030.json`. El estado documentado es enviado a revisión; aprobación y publicación de Google no se han comprobado. La API utilizada no ofrece el campo de texto alternativo: el CSV aprobado permanece como material para una edición futura en la consola. No se verificaron inserción ni restricciones en YouTube Studio; Play aceptó el campo de video.
 
-Además: firma de subida, R8, clases protegidas del checklist, permisos (BILLING presente y AD_ID ausente), modelos on-demand y medidas de bundletool. Ningún medio de la ficha, video, documento ni banco se copia a los assets de la app.
+## Herramientas y documentación
 
-Se conserva como contraprueba el AAB anterior: el nuevo comprobador lo rechaza por `base/assets/public/vad-processor.js`, con `guardando-toma` presente y audio de diagnóstico apagado. El informe del nuevo AAB debe quedar correcto antes de aprobar la subida.
+- `scripts/play.mjs` excluye únicamente `dist/vad-processor.js` antes de cap sync; el original y la APK de diagnóstico se conservan.
+- `scripts/revisarContenidoPlay.mjs` revisa el AAB real con control positivo y 16 KB.
+- `src/pruebas/tarea47.test.tsx` aísla Remote Config para evitar solicitudes de Firebase fuera de jsdom, sin cambiar el código de la app.
+- Las fuentes reproducibles, los medios aprobados y sus licencias se guardan en `ficha/`; `.gitattributes` conserva sus bytes para respetar las huellas aprobadas.
+- Los generadores de la serie anterior están bloqueados o redirigidos para que no sobrescriban la serie vigente.
 
-## Archivos de revisión
-
-- Fuentes y huellas de la ficha: `ficha/LEEME.md` y `ficha/aprobacion-20261030/`.
-- Notas propuestas: `notas-version.txt`, tres bloques menores de 500 caracteres. Describen Sigo+, gestión e idioma de oferta, avisos/menús, bienvenida y guardado. Javier revisa el texto final.
-- AAB, APK gemela debug y mapping: se preservan juntos en una carpeta de entrega identificada por versión y commit, con SHA-256 y logs. Ambos paquetes salen del mismo commit, sin teléfonos conectados al armar la APK. No limpiar los paquetes anteriores del Escritorio.
-- La suite detectó una petición real de Firebase que sobrevivía al entorno de una prueba antigua. Se aisló únicamente Remote Config en `tarea47.test.tsx`, manteniendo sus comprobaciones y sin cambiar el código de la app.
-
-Las pruebas Motorola de #160 fueron conformes para marca y subtítulos vertical/horizontal. No hubo comparación controlada de la misma toma: no se atribuye porcentaje de mejora ni se exige repetirlas para preparar esta entrega.
-
-## Plan exacto tras la autorización final de Javier
-
-1. Revisar y mezclar el PR de esta entrega; si hay cambios de código posteriores, volver a identificar qué commit y artefactos se van a subir.
-2. Confirmar otra vez Alpha activo, 19 verificadores y la misma lista/correo; confirmar publicación administrada y ausencia de otra entrega pendiente. No crear ni pausar segmentos.
-3. Confirmar en YouTube Studio que el video español permite inserción y no tiene restricciones incompatibles. Enlace aprobado: `https://www.youtube.com/watch?v=dleH1xz_024`, 36 segundos. Mantener inglés y portugués sin ese video. Falta verificar aceptación final de Play; no reemplazar ni volver a subir el video.
-4. **Ficha principal, por separado del AAB:** en Fichas de Play Store, cargar los tres textos aprobados, los ocho PNG de teléfono en orden y su gráfico por idioma. Conservar ícono y tabletas. Añadir el enlace de video solo a es-419 y las descripciones alternativas aprobadas donde la consola las admita. Revisar el diff contra las huellas antes de guardar/enviar. Con publicación administrada apagada, guardar/enviar puede llevar a revisión y publicar al aprobarse: esperar la autorización final. No ejecutar `npm run ficha -- subir --directo` durante preparación; ese script envía la ficha a revisión y no incorpora por sí solo video y textos alternativos.
-5. **AAB:** Probar y lanzar → Pruebas → Prueba cerrada → Administrar segmento **Alpha** → Crear una versión nueva. Subir el AAB verificado y confirmar 0.11.2 y un código mayor que 730. Pegar exactamente los tres bloques de notas aprobados. Guardar como borrador y revisar el resumen. Cualquier advertencia nueva se revisa; la falta de símbolos de Vosk es conocida. El mapping viaja en el AAB.
-6. Con autorización sobre la entrega concreta, iniciar lanzamiento/enviar para revisión según la consola. No usar `npm run play -- subir`: solo conoce la prueba interna.
-7. Verificar la aprobación/publicación de ficha y app por separado; confirmar Alpha activo y los mismos verificadores. Javier instala desde Play y realiza la comprobación del paquete con R8, incluida cuenta Google, compra/restauración/gestión y la toma larga del checklist. La APK gemela debug no sustituye esa comprobación.
-
-Esta propuesta no autoriza merge ni publicación. No cambia precios, países ni RevenueCat.
+La revisión Motorola del PR #160 fue conforme en marca y subtítulos vertical/horizontal; no hubo comparación controlada para atribuir un porcentaje de mejora. No corresponde repetirla para consolidar archivos. Las mediciones locales de banco-largo se conservan.

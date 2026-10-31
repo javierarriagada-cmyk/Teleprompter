@@ -1,0 +1,7 @@
+# Las huellas aprobadas incluyen los saltos de línea. Antes: autocrlf los cambiaba al versionar.
+# Estos medios y textos deben conservar sus bytes en Git y en cualquier copia de trabajo.
+docs/play/ficha/textos-*.txt -text
+"docs/play/ficha/Descripciones de las imagenes.csv" -text
+docs/play/ficha/herramientas/entradas/** -text
+docs/play/ficha/herramientas/contenidos.json -text
+docs/play/ficha/aprobacion-20261030/** -text

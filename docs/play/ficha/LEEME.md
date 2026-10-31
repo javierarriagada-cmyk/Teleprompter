@@ -1,6 +1,6 @@
 # Ficha de Sigo aprobada el 30-10-2026
 
-Javier aprobó ocho imágenes de teléfono, un gráfico y los textos de cada idioma: es-419, en-US y pt-BR. Se conservan el ícono y las 24 imágenes de tabletas. Esta entrega está preparada para revisión final: no está publicada.
+Javier aprobó ocho imágenes de teléfono, un gráfico y los textos de cada idioma: es-419, en-US y pt-BR. Se conservan el ícono y las 24 imágenes de tabletas. Esta entrega se envió a revisión por API el 30-10-2026 con autorización de Javier; aún no se ha confirmado su aprobación ni publicación. Evidencia: `envio-20261030.json`.
 
 ## Material para Play
 
@@ -41,7 +41,7 @@ Voz, ajustes y guiones usan capturas nativas del Motorola. Cámara en español u
 
 ## Video y medios externos
 
-El MP4 publicitario no forma parte del repositorio ni de la app. Los originales permanecen en `C:/Users/56990/Desktop/Sigo - material aprobado para fichas` y en el paquete de revisión del Escritorio. El único video propuesto para la ficha es el español: https://www.youtube.com/watch?v=dleH1xz_024 (36 segundos). No reemplazarlo ni volver a subirlo. Antes de publicar falta confirmar la aceptación de Play, la inserción y las restricciones en YouTube Studio.
+El MP4 publicitario no forma parte del repositorio ni de la app. Los originales permanecen en `C:/Users/56990/Desktop/Sigo - material aprobado para fichas` y en el paquete de revisión del Escritorio. El único video enviado para la ficha es el español: https://www.youtube.com/watch?v=dleH1xz_024 (36 segundos). No reemplazarlo ni volver a subirlo. Play aceptó el campo de video en el envío. No se comprobaron por separado la inserción ni las restricciones en YouTube Studio. El CSV de textos alternativos no fue cargado: la API utilizada no ofrece ese campo.
 
 ## Historia de las herramientas
 
