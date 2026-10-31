@@ -1,3 +1,4 @@
+// HISTORIA hasta el 25-10-2026. Fuente canónica de teléfono/textos: contenidos.json y armar_ficha.py.
 // LO COMÚN DE LAS IMÁGENES DE LA FICHA -tarea 86-: la paleta, las letras y la marca Sig●.
 // Lo usan componer.cjs y lamina.cjs; va aparte porque componer.cjs, al cargarse, ya dibuja.
 //

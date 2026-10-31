@@ -76,7 +76,8 @@ android {
         // -la voz, la app y el aviso del idioma del guion- y las mejoras de claridad. Antes: versionName "0.10.0"
         // -26-10-2026- 0.11.1: Ajustes accesible, el aviso invertido y el de tomas a 6 s -#155-, y el cobro sin nada
         // visible -#156-, que Google pide publicado antes de crear la suscripción. Antes: versionName "0.11.0"
-        versionName "0.11.1"
+        // -30-10-2026- Propuesta 0.11.2: Sigo+, avisos, bienvenida y guardado. Antes: versionName "0.11.1"
+        versionName "0.11.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         // SOLO LOS PROCESADORES DE LOS TELEFONOS -24-09-2026-. Las bibliotecas nativas -Vosk,
         // la camara- venian para seis arquitecturas, y las x86 son solo de emuladores: 21 MB

@@ -1,3 +1,4 @@
+// HISTORIA hasta el 25-10-2026. Fuente canónica de teléfono/textos: contenidos.json y armar_ficha.py.
 // LOS TITULARES DE LAS CAPTURAS -tarea 86-. Los usan componer.cjs -el marco de cada captura- y
 // lamina.cjs. Están en un solo lugar para que la lámina muestre exactamente lo que va a Play.
 // Van por el nombre de la escena -escenas.cjs-, no por su número: el orden lo dice escenas.cjs, y

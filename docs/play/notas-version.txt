@@ -1,19 +1,23 @@
-Prueba cerrada de Sigo, 0.11.1.
+Propuesta para la misma prueba cerrada de Sigo, 0.11.2. Pendiente de aprobación final.
+Antes: las notas de 0.11.1 trataban contraste de avisos, borrado de tomas y accesibilidad de Ajustes.
 <es-419>
-• Los avisos se distinguen mejor: son claros en el tema oscuro y oscuros en el claro.
-• El aviso de borrar tomas dura lo mismo que el de guiones.
-• Ajustes funciona mejor con lectores de pantalla.
-• Mejoras internas.
+• Sigo+: suscripción mensual o anual para leer y grabar sin límites y guardar sin marca de agua. Restaura y administra tus compras desde Ajustes.
+• Avisos más claros y mejoras en los menús y el control de velocidad fija.
+• Bienvenida renovada en español, inglés y portugués.
+• Nueva marca de agua y mejoras al guardar videos con subtítulos.
+• La oferta de Sigo+ sigue el idioma de la app.
 </es-419>
 <en-US>
-• Notices stand out better: light in the dark theme and dark in the light theme.
-• The notice for deleting takes lasts as long as the one for scripts.
-• Settings works better with screen readers.
-• Internal improvements.
+• Sigo+: a monthly or annual subscription for unlimited reading and recording, and saving without a watermark. Restore and manage purchases in Settings.
+• Clearer notices and improvements to menus and the fixed-speed control.
+• Refreshed welcome scripts in Spanish, English and Portuguese.
+• Updated watermark and improvements when saving captioned videos.
+• The Sigo+ offer follows the app language.
 </en-US>
 <pt-BR>
-• Os avisos se destacam melhor: claros no tema escuro e escuros no tema claro.
-• O aviso de excluir takes dura o mesmo que o de roteiros.
-• As Configurações funcionam melhor com leitores de tela.
-• Melhorias internas.
+• Sigo+: assinatura mensal ou anual para ler e gravar sem limites e salvar sem marca-d'água. Restaure e gerencie suas compras nas Configurações.
+• Avisos mais claros e melhorias nos menus e no controle de velocidade fixa.
+• Boas-vindas renovadas em espanhol, inglês e português.
+• Nova marca-d'água e melhorias ao salvar vídeos com legendas.
+• A oferta do Sigo+ segue o idioma do app.
 </pt-BR>

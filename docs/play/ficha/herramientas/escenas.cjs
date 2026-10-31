@@ -1,3 +1,4 @@
+// HISTORIA hasta el 25-10-2026. Fuente canónica de teléfono/textos: contenidos.json y armar_ficha.py.
 // LAS CAPTURAS DE LA FICHA, EN SU ORDEN -tarea 86, puesta al día del 05-10-2026-. Un solo lugar
 // para qué se captura, en qué pantalla, con qué persona y cómo se llama el archivo: lo leen
 // capturar.cjs, componer.cjs, lamina.cjs y comprobar.cjs. Antes el orden estaba repetido en los

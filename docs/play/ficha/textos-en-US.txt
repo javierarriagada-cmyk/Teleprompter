@@ -1,64 +1,33 @@
-FICHA DE SIGO EN GOOGLE PLAY — English (United States) — en-US
-Generado por herramientas/armar-textos.cjs desde herramientas/textos.cjs. Los conteos son de la máquina.
-Lo que va entre dobles corchetes se copia tal cual a Play Console; lo demás son notas.
-
-==============================================================================
-NOMBRE (máximo 30) — 25 caracteres
-==============================================================================
+NOMBRE (25/30)
 [[Sigo — Voice Teleprompter]]
-El que fija docs/tarea86.txt. Se queda igual -Javier, 29-09-2026-.
 
-==============================================================================
-DESCRIPCIÓN BREVE (máximo 80) — 75 caracteres
-==============================================================================
+DESCRIPCIÓN BREVE (75/80)
 [[A teleprompter that follows your voice: the script moves as you read aloud.]]
-La A, elegida por Javier, sin cambios: nunca dijo "offline".
 
-==============================================================================
-DESCRIPCIÓN COMPLETA (máximo 4000; ideal 1500 a 2500) — 2909 caracteres
-==============================================================================
-[[Forget your lines the moment you hit record? With Sigo you read aloud and the script moves with you, at your pace. Pause, and it waits.
+DESCRIPCIÓN COMPLETA (2128/4000)
+[[You speak. Sigo follows.
 
-Look at the camera and relax. No memorizing, and no redoing a take because you lost your place.
+Read your script at your own pace while recording a video, preparing a class or rehearsing a presentation. Sigo follows your voice: the text moves with you and waits when you pause.
 
-IT IS FOR YOU IF
-- You record videos for social media, classes or work, and talking to the camera feels hard.
-- You forget what comes next or lose your place mid-sentence.
-- You end up redoing the same take again and again.
-- You rehearse a talk, a speech or a reading, and need a prompter that never runs ahead or falls behind.
+YOUR SCRIPT AND YOUR CAMERA
+Record with the front or rear camera, in portrait or landscape. See yourself behind the text, in a movable window, or keep the camera view hidden while recording. You can also read without recording.
 
-WHAT CHANGES WHEN THE SCRIPT FOLLOWS YOU
-- You speak at your own pace. Sigo listens and underlines the line you are reading.
-- Stop, and the text stops.
-- Read at the top, close to the camera, or in the middle of the screen.
+FROM SCRIPT TO VIDEO, WITH CAPTIONS
+Captions use the words in your script and the timing of your voice. Choose from three styles, preview the result, then save your video to your gallery or share it. Try six filters and see how your video will look before saving.
 
-RECORD YOUR VIDEO RIGHT THERE
-- Your camera image goes behind the text, in a small frame you can drag anywhere, or stays hidden while you record.
-- Front or back camera, in 1080p, 720p or 480p. Portrait or landscape, on a phone or a tablet.
-- Pause whenever you want: nothing that happens during the pause ends up in the video.
-- Gesture control with the front camera: away from the phone, show your palm to pause or resume and, while paused, a V sign to finish.
-- Captions in three styles: Yellow, Red and Formal. They come from your script and the timing of your voice, and are burned into the video when you save it.
-- Six filters—Natural, Warm, Cool, Vivid, Soft and B&W—that you choose while watching your video. What you see is what gets saved.
-- Save your video to the gallery or share it.
+CONTROL THE TAKE AT YOUR PACE
+Pause and resume whenever you need to: recording pauses stay out of the video. With gesture control and the front camera, show your palm to pause or resume. While paused, make a V sign to end the take.
 
-YOUR SCRIPT, CLEAR AT A GLANCE
-- Bold, three colors and highlight, so what matters stands out.
-- Notes in [brackets] or (parentheses) that are not read aloud and do not appear in captions.
-- Paste your text or open a .txt, .md or .docx file.
-- All your scripts in one place, with their estimated length.
+READ YOUR WAY
+Adjust text size, font, width and colors. Add bold text, colors and highlights to your script. Notes in brackets or parentheses are excluded from the reading and captions. Mirror mode and fixed-speed reading are available, too.
 
-YOUR WAY
-- Font size, typeface, text width and five reading color combinations.
-- Mirror mode, for use with teleprompter glass.
-- Light or dark theme. The app is in English, Spanish and Portuguese, and follows your voice in all three.
-- Prefer not to use your voice? With Fixed speed the script scrolls on its own, at the pace you choose.
+KEEP YOUR SCRIPTS WITH YOU
+Write, paste text or import .txt, .md and .docx files. You can use Sigo without signing in. To back up your scripts and recover them on another phone, sign in with Google.
 
-TRUST AND PRIVACY
-- No account, no sign-up.
-- Your voice is recognized on your phone. The audio is not sent to any server.
-- Gestures are recognized on your phone, and no image leaves it. Sigo does not send usage statistics.
-- Your scripts and videos stay on your phone until you share them.
-- Your scripts and settings are included in Android backup: if you reinstall Sigo with Google backup turned on, they come back. Videos are not part of that backup.
-- You can also use it offline. The voice for your language downloads on its own the first time you open Sigo; after that it works without internet.
+GET STARTED AT YOUR PACE
+Without a subscription, voice-following reading and recording have time limits per session, and saved videos include a watermark. Fixed-speed reading without the camera has no time limit. With Sigo+, voice-following reading and recording have no time limit, and saved videos have no watermark. Monthly and yearly plans are available; terms are shown before you subscribe.
 
-Write your script, tap Read or Record, and start talking. Sigo follows.]]
+IN YOUR LANGUAGE
+Interface and voice following in English, Spanish and Portuguese. Voice and gesture recognition run on your phone. Once recognition for your language has downloaded, you can use those features offline. Backup and subscription management require an internet connection.
+
+For your videos, classes, talks and presentations. Sigo follows.]]

@@ -1,0 +1,537 @@
+{
+  "imagenes": [
+    {
+      "archivo": "capturas/en-US/01.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 281118
+    },
+    {
+      "archivo": "capturas/en-US/02.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 413647
+    },
+    {
+      "archivo": "capturas/en-US/03.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 767454
+    },
+    {
+      "archivo": "capturas/en-US/04.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 181832
+    },
+    {
+      "archivo": "capturas/en-US/05.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 592427
+    },
+    {
+      "archivo": "capturas/en-US/06.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 370410
+    },
+    {
+      "archivo": "capturas/en-US/07.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 326958
+    },
+    {
+      "archivo": "capturas/en-US/08.png",
+      "medidas": [
+        1920,
+        1080
+      ],
+      "modo": "RGB",
+      "bytes": 939433
+    },
+    {
+      "archivo": "capturas/es-419/01.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 299616
+    },
+    {
+      "archivo": "capturas/es-419/02.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 432232
+    },
+    {
+      "archivo": "capturas/es-419/03.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 781082
+    },
+    {
+      "archivo": "capturas/es-419/04.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 173009
+    },
+    {
+      "archivo": "capturas/es-419/05.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 610029
+    },
+    {
+      "archivo": "capturas/es-419/06.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 378335
+    },
+    {
+      "archivo": "capturas/es-419/07.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 353383
+    },
+    {
+      "archivo": "capturas/es-419/08.png",
+      "medidas": [
+        1920,
+        1080
+      ],
+      "modo": "RGB",
+      "bytes": 931147
+    },
+    {
+      "archivo": "capturas/pt-BR/01.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 290541
+    },
+    {
+      "archivo": "capturas/pt-BR/02.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 424344
+    },
+    {
+      "archivo": "capturas/pt-BR/03.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 792254
+    },
+    {
+      "archivo": "capturas/pt-BR/04.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 185057
+    },
+    {
+      "archivo": "capturas/pt-BR/05.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 614133
+    },
+    {
+      "archivo": "capturas/pt-BR/06.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 387798
+    },
+    {
+      "archivo": "capturas/pt-BR/07.png",
+      "medidas": [
+        1080,
+        1920
+      ],
+      "modo": "RGB",
+      "bytes": 351874
+    },
+    {
+      "archivo": "capturas/pt-BR/08.png",
+      "medidas": [
+        1920,
+        1080
+      ],
+      "modo": "RGB",
+      "bytes": 963050
+    },
+    {
+      "archivo": "graficos/en-US.png",
+      "medidas": [
+        1024,
+        500
+      ],
+      "modo": "RGB",
+      "bytes": 30845
+    },
+    {
+      "archivo": "graficos/es-419.png",
+      "medidas": [
+        1024,
+        500
+      ],
+      "modo": "RGB",
+      "bytes": 24532
+    },
+    {
+      "archivo": "graficos/pt-BR.png",
+      "medidas": [
+        1024,
+        500
+      ],
+      "modo": "RGB",
+      "bytes": 30351
+    },
+    {
+      "archivo": "tabletas-conservadas/en-US/10/01-leer.png",
+      "medidas": [
+        2160,
+        3840
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/en-US/10/02-grabar-detras.png",
+      "medidas": [
+        2160,
+        3840
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/en-US/10/03-de-lado.png",
+      "medidas": [
+        3840,
+        2160
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/en-US/10/04-filtros.png",
+      "medidas": [
+        2160,
+        3840
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/en-US/7/01-leer.png",
+      "medidas": [
+        1440,
+        2560
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/en-US/7/02-grabar-detras.png",
+      "medidas": [
+        1440,
+        2560
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/en-US/7/03-de-lado.png",
+      "medidas": [
+        2560,
+        1440
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/en-US/7/04-filtros.png",
+      "medidas": [
+        1440,
+        2560
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/es-419/10/01-leer.png",
+      "medidas": [
+        2160,
+        3840
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/es-419/10/02-grabar-detras.png",
+      "medidas": [
+        2160,
+        3840
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/es-419/10/03-de-lado.png",
+      "medidas": [
+        3840,
+        2160
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/es-419/10/04-filtros.png",
+      "medidas": [
+        2160,
+        3840
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/es-419/7/01-leer.png",
+      "medidas": [
+        1440,
+        2560
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/es-419/7/02-grabar-detras.png",
+      "medidas": [
+        1440,
+        2560
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/es-419/7/03-de-lado.png",
+      "medidas": [
+        2560,
+        1440
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/es-419/7/04-filtros.png",
+      "medidas": [
+        1440,
+        2560
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/pt-BR/10/01-leer.png",
+      "medidas": [
+        2160,
+        3840
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/pt-BR/10/02-grabar-detras.png",
+      "medidas": [
+        2160,
+        3840
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/pt-BR/10/03-de-lado.png",
+      "medidas": [
+        3840,
+        2160
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/pt-BR/10/04-filtros.png",
+      "medidas": [
+        2160,
+        3840
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/pt-BR/7/01-leer.png",
+      "medidas": [
+        1440,
+        2560
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/pt-BR/7/02-grabar-detras.png",
+      "medidas": [
+        1440,
+        2560
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/pt-BR/7/03-de-lado.png",
+      "medidas": [
+        2560,
+        1440
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    },
+    {
+      "archivo": "tabletas-conservadas/pt-BR/7/04-filtros.png",
+      "medidas": [
+        1440,
+        2560
+      ],
+      "modo": "RGB",
+      "sin_cambios": true
+    }
+  ],
+  "textos": [
+    {
+      "idioma": "es-419",
+      "nombre": 26,
+      "breve": 73,
+      "completa": 2170,
+      "imagenes": 8
+    },
+    {
+      "idioma": "en-US",
+      "nombre": 25,
+      "breve": 75,
+      "completa": 2128,
+      "imagenes": 8
+    },
+    {
+      "idioma": "pt-BR",
+      "nombre": 26,
+      "breve": 74,
+      "completa": 2225,
+      "imagenes": 8
+    }
+  ],
+  "errores": [],
+  "videos": [
+    {
+      "archivo": "Sigo - original aprobado.mp4",
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "width": 1080,
+          "height": 1920,
+          "r_frame_rate": "60/1"
+        },
+        {
+          "codec_name": "aac",
+          "sample_rate": "48000",
+          "r_frame_rate": "0/0"
+        }
+      ],
+      "format": {
+        "duration": "35.932000"
+      },
+      "sha256": "9e1c370bc991020d2f435a201d989970c102fa0ae7c4ac33944c8ce244c71703",
+      "huella_audio": "SHA256=79a0811262b28e3da46ff0a6c9e745ccab64d6ec635b322b57c70798c89b9c92"
+    },
+    {
+      "archivo": "Sigo - version Google Play - es.mp4",
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "width": 1080,
+          "height": 1920,
+          "r_frame_rate": "60/1"
+        },
+        {
+          "codec_name": "aac",
+          "sample_rate": "48000",
+          "r_frame_rate": "0/0"
+        }
+      ],
+      "format": {
+        "duration": "35.932000"
+      },
+      "sha256": "f0906830e90196d61692e1051bdd406b3ca953c71ba98e36f19196114383f171",
+      "huella_audio": "SHA256=79a0811262b28e3da46ff0a6c9e745ccab64d6ec635b322b57c70798c89b9c92"
+    }
+  ],
+  "audio_identico": true,
+  "original_aprobado_intacto": true
+}

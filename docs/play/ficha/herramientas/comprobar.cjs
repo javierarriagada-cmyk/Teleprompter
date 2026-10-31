@@ -1,3 +1,9 @@
+// 30-10-2026: las huellas y el formato se verifican contra la aprobación vigente.
+const { spawnSync } = require('node:child_process');
+const resultadoFicha = spawnSync(process.env.PYTHON || 'python', [require('node:path').join(__dirname, 'verificar_ficha.py'), ...process.argv.slice(2)], {stdio:'inherit'});
+if(resultadoFicha.error) console.error('No se pudo abrir Python: '+resultadoFicha.error.message);
+process.exit(resultadoFicha.status ?? 1);
+// Antes: comprobador de escenas hasta el 25-10-2026, conservado como historia.
 // COMPRUEBA LA FICHA ANTES DE SUBIRLA -tarea 86-. node comprobar.cjs
 // Imprime una línea OK o FALLA por cada cosa, y sale con código 1 si algo falla.
 //

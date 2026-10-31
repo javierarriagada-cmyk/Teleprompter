@@ -1,0 +1,200 @@
+[
+  {
+    "idioma": "es-419",
+    "imagen": "capturas/es-419/01.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/motorola/es/23-leer-listo-voz.png"
+    ],
+    "tratamiento": "Captura nativa preparada para leer. Solo se recortan las barras del sistema; el video demuestra el avance y la espera."
+  },
+  {
+    "idioma": "es-419",
+    "imagen": "capturas/es-419/02.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/composicion/lectura-real-video.png"
+    ],
+    "tratamiento": "Español: cuadro de video real aprobado. Inglés y portugués: interfaz y persona de la ficha vigente, con cada idioma. Se conserva la imagen original, sin retoque facial."
+  },
+  {
+    "idioma": "es-419",
+    "imagen": "capturas/es-419/03.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/anteriores/capturas/es-419/05.png"
+    ],
+    "tratamiento": "Dos recortes de la lámina de subtítulos vigente: resultado y selector. Persona generada del material anterior; no se presenta como captura nueva del Motorola."
+  },
+  {
+    "idioma": "es-419",
+    "imagen": "capturas/es-419/04.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/motorola/es/34-panel-camara.png",
+      "src/components/MarcaGuia.tsx"
+    ],
+    "tratamiento": "Recorte del panel nativo más leyenda gráfica con la misma palma Material Symbols que usa Sigo. El interruptor muestra el estado fotografiado; no se falsifica una activación ni un gesto reconocido."
+  },
+  {
+    "idioma": "es-419",
+    "imagen": "capturas/es-419/05.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/anteriores/capturas/es-419/06.png"
+    ],
+    "tratamiento": "Resultado B/N y tira de filtros de la lámina vigente. No se aplica ningún filtro inventado ni retoque de cara. La tira es desplazable: Natural queda parcialmente fuera del encuadre original."
+  },
+  {
+    "idioma": "es-419",
+    "imagen": "capturas/es-419/06.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/motorola/es/29-velocidad-fija-ajustes.png"
+    ],
+    "tratamiento": "Panel real de velocidad fija con estado y control de siete niveles. Solo recorte y escala proporcional."
+  },
+  {
+    "idioma": "es-419",
+    "imagen": "capturas/es-419/07.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/motorola/es/03-ajustes-con-la-voz.png",
+      "docs/play/ficha/herramientas/entradas/motorola/es/22-editor-sin-teclado.png"
+    ],
+    "tratamiento": "Dos recortes de pantallas nativas: tarjeta de respaldo opcional y editor. Se excluyen las miniaturas de tomas para no usar encuadres personales descartados. No afirma una prueba nueva de sincronización."
+  },
+  {
+    "idioma": "es-419",
+    "imagen": "capturas/es-419/08.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/anteriores/capturas/es-419/07.png"
+    ],
+    "tratamiento": "Pantalla horizontal de la ficha vigente, sin deformación. Interfaz y persona compuestas del material anterior."
+  },
+  {
+    "idioma": "en-US",
+    "imagen": "capturas/en-US/01.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/motorola/en/22-leer-listo-voz.png"
+    ],
+    "tratamiento": "Captura nativa preparada para leer. Solo se recortan las barras del sistema; el video demuestra el avance y la espera."
+  },
+  {
+    "idioma": "en-US",
+    "imagen": "capturas/en-US/02.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/anteriores/capturas/en-US/08.png"
+    ],
+    "tratamiento": "Español: cuadro de video real aprobado. Inglés y portugués: interfaz y persona de la ficha vigente, con cada idioma. Se conserva la imagen original, sin retoque facial."
+  },
+  {
+    "idioma": "en-US",
+    "imagen": "capturas/en-US/03.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/anteriores/capturas/en-US/05.png"
+    ],
+    "tratamiento": "Dos recortes de la lámina de subtítulos vigente: resultado y selector. Persona generada del material anterior; no se presenta como captura nueva del Motorola."
+  },
+  {
+    "idioma": "en-US",
+    "imagen": "capturas/en-US/04.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/motorola/en/34-panel-camara.png",
+      "src/components/MarcaGuia.tsx"
+    ],
+    "tratamiento": "Recorte del panel nativo más leyenda gráfica con la misma palma Material Symbols que usa Sigo. El interruptor muestra el estado fotografiado; no se falsifica una activación ni un gesto reconocido."
+  },
+  {
+    "idioma": "en-US",
+    "imagen": "capturas/en-US/05.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/anteriores/capturas/en-US/06.png"
+    ],
+    "tratamiento": "Resultado B/N y tira de filtros de la lámina vigente. No se aplica ningún filtro inventado ni retoque de cara. La tira es desplazable: Natural queda parcialmente fuera del encuadre original."
+  },
+  {
+    "idioma": "en-US",
+    "imagen": "capturas/en-US/06.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/motorola/en/28-velocidad-fija-ajustes.png"
+    ],
+    "tratamiento": "Panel real de velocidad fija con estado y control de siete niveles. Solo recorte y escala proporcional."
+  },
+  {
+    "idioma": "en-US",
+    "imagen": "capturas/en-US/07.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/motorola/en/02-ajustes-portada.png",
+      "docs/play/ficha/herramientas/entradas/motorola/en/16-editor-guion.png"
+    ],
+    "tratamiento": "Dos recortes de pantallas nativas: tarjeta de respaldo opcional y editor. Se excluyen las miniaturas de tomas para no usar encuadres personales descartados. No afirma una prueba nueva de sincronización."
+  },
+  {
+    "idioma": "en-US",
+    "imagen": "capturas/en-US/08.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/anteriores/capturas/en-US/07.png"
+    ],
+    "tratamiento": "Pantalla horizontal de la ficha vigente, sin deformación. Interfaz y persona compuestas del material anterior."
+  },
+  {
+    "idioma": "pt-BR",
+    "imagen": "capturas/pt-BR/01.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/motorola/pt-BR/22-leer-listo-voz.png"
+    ],
+    "tratamiento": "Captura nativa preparada para leer. Solo se recortan las barras del sistema; el video demuestra el avance y la espera."
+  },
+  {
+    "idioma": "pt-BR",
+    "imagen": "capturas/pt-BR/02.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/anteriores/capturas/pt-BR/08.png"
+    ],
+    "tratamiento": "Español: cuadro de video real aprobado. Inglés y portugués: interfaz y persona de la ficha vigente, con cada idioma. Se conserva la imagen original, sin retoque facial."
+  },
+  {
+    "idioma": "pt-BR",
+    "imagen": "capturas/pt-BR/03.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/anteriores/capturas/pt-BR/05.png"
+    ],
+    "tratamiento": "Dos recortes de la lámina de subtítulos vigente: resultado y selector. Persona generada del material anterior; no se presenta como captura nueva del Motorola."
+  },
+  {
+    "idioma": "pt-BR",
+    "imagen": "capturas/pt-BR/04.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/motorola/pt-BR/34-panel-camara.png",
+      "src/components/MarcaGuia.tsx"
+    ],
+    "tratamiento": "Recorte del panel nativo más leyenda gráfica con la misma palma Material Symbols que usa Sigo. El interruptor muestra el estado fotografiado; no se falsifica una activación ni un gesto reconocido."
+  },
+  {
+    "idioma": "pt-BR",
+    "imagen": "capturas/pt-BR/05.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/anteriores/capturas/pt-BR/06.png"
+    ],
+    "tratamiento": "Resultado B/N y tira de filtros de la lámina vigente. No se aplica ningún filtro inventado ni retoque de cara. La tira es desplazable: Natural queda parcialmente fuera del encuadre original."
+  },
+  {
+    "idioma": "pt-BR",
+    "imagen": "capturas/pt-BR/06.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/motorola/pt-BR/28-velocidad-fija-ajustes.png"
+    ],
+    "tratamiento": "Panel real de velocidad fija con estado y control de siete niveles. Solo recorte y escala proporcional."
+  },
+  {
+    "idioma": "pt-BR",
+    "imagen": "capturas/pt-BR/07.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/motorola/pt-BR/02-ajustes-portada.png",
+      "docs/play/ficha/herramientas/entradas/motorola/pt-BR/16-editor-guion.png"
+    ],
+    "tratamiento": "Dos recortes de pantallas nativas: tarjeta de respaldo opcional y editor. Se excluyen las miniaturas de tomas para no usar encuadres personales descartados. No afirma una prueba nueva de sincronización."
+  },
+  {
+    "idioma": "pt-BR",
+    "imagen": "capturas/pt-BR/08.png",
+    "fuentes": [
+      "docs/play/ficha/herramientas/entradas/anteriores/capturas/pt-BR/07.png"
+    ],
+    "tratamiento": "Pantalla horizontal de la ficha vigente, sin deformación. Interfaz y persona compuestas del material anterior."
+  }
+]

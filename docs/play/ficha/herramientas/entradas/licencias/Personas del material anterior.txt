@@ -1,0 +1,80 @@
+LAS PERSONAS DE LAS CAPTURAS -tarea 86, revisión de Javier, 29-09-2026-
+
+NO SON FOTOS. Las cinco imágenes -persona-A.png a persona-E.png- las generó un computador en la
+box. No muestran a personas reales, así que no hay a quién pedirle una autorización de modelo. Esa
+autorización era lo que faltaba en las fotos CC0 de Wikimedia de la primera versión, que se
+descartaron: una traía además aviso de derechos de la personalidad.
+
+Por qué generadas y no de un banco. Javier pidió licencia de uso comercial y autorización de modelo
+cuando la persona se reconoce. Los bancos gratuitos no garantizan esa autorización: Unsplash,
+Pexels, Burst y Wikimedia lo dicen en sus propios términos o no lo documentan. La herramienta
+GenerateImage no estaba disponible en esta sesión, así que se usó un modelo abierto con licencia
+comercial, corriendo en la box.
+
+Cómo se generaron
+  Modelo:     FLUX.1 [schnell], de Black Forest Labs
+              https://huggingface.co/black-forest-labs/FLUX.1-schnell
+              Licencia Apache 2.0: permite el uso comercial, también de las imágenes generadas.
+  Pesos:      flux1-schnell-Q4_K_S.gguf, cuantizado por city96 -Apache 2.0-
+              https://huggingface.co/city96/FLUX.1-schnell-gguf
+              Codificadores: t5-v1_1-xxl-encoder-Q5_K_M.gguf, de city96 -Apache 2.0-, y clip_l, de
+              comfyanonymous/flux_text_encoders. VAE: el ae.safetensors de FLUX.1 [schnell], de la
+              copia de second-state/FLUX.1-schnell-GGUF -Apache 2.0-.
+  Programa:   stable-diffusion.cpp master-929-3f8527a -MIT-, https://github.com/leejet/stable-diffusion.cpp
+  Ajustes:    4 pasos, euler, cfg 1.0, en CPU. 576 x 1024 las verticales y 1024 x 576 las horizontales.
+
+Prompt común -a cada una se le suma su descripción-:
+  "Photorealistic portrait photograph, eye-level medium close-up as seen from a front-facing
+  camera, the person looks straight into the lens while speaking, natural relaxed expression,
+  realistic skin texture, soft warm amber lamp light, shallow depth of field, calm understated
+  style, documentary photo, arms relaxed and hands out of frame"
+  C y E llevan además "with a friendly warm smile, approachable and relaxed": la primera vez
+  salieron serias, lejos del tono cálido de Sigo.
+
+  A  semilla 11  vertical     "A Latina woman in her early 30s with long dark wavy hair, cream knit
+                             sweater, in a cozy home office with a warm lamp and plants softly
+                             blurred behind her."
+                             Captura 3 -antes del 05-10-2026, la 2-. Se recorta en
+                             preparar-medios.sh: el generador dibujó abajo
+                             a la derecha una mano que no calzaba.
+  B  semilla 22  vertical     "A man in his early 60s with short grey hair, trimmed grey beard and
+                             thin glasses, dark navy cardigan over a white shirt, in a warm study
+                             with wooden bookshelves softly blurred behind him."
+                             Captura 4 -la pausa- y tableta 7" Grabar. Antes del 05-10-2026, la 3
+                             -recuadro-. Su mano, abajo a la
+                             izquierda, se revisó y está bien dibujada.
+  C  semilla 47  horizontal   un hombre de unos 25, pelo negro crespo, polera verde oliva, en un
+                             departamento de noche. Prompt completo en PROMPT-C, abajo.
+                             Captura 8 -el recuadro, desde el 05-10-2026- y tabletas de lado.
+                             Tercera vuelta: la primera -semilla 44- salió seria
+                             y sin el pelo crespo; la segunda -semilla 45- traía un computador
+                             portátil delante. En la tercera abre las manos hacia la cámara y la
+                             izquierda no salió bien: se recorta justo sobre las manos, 747 x 420,
+                             así que en las tabletas esta imagen se ve más blanda que las demás.
+  D  semilla 33  vertical     "A woman in her mid 50s with short grey hair, linen apron over a
+                             rust-colored shirt, in a warm home kitchen with a wooden counter, a
+                             bowl of flour and a loaf of bread softly blurred behind her."
+                             Capturas 5 y 6 -la toma del visor, que calza con el guion del pan-,
+                             tableta 10" Grabar y el visor de las dos tabletas. Antes del
+                             05-10-2026, la 6 y la tableta 10" Grabar.
+  E  semilla 56  horizontal   "A Black woman around 40 with natural hair tied back, mustard yellow
+                             blouse, sitting on a sofa in a warm living room in the evening, lamp
+                             light and a framed print softly blurred behind her, the woman is
+                             centered in the frame, head and shoulders."
+                             Captura 7 -de lado; antes del 05-10-2026, la 4-. Segunda vuelta: la
+                             primera -semilla 55- salió
+                             seria. Se recorta abajo un borde gris desenfocado.
+
+PROMPT-C
+  "Photorealistic portrait photograph, eye-level head-and-shoulders framing, clear empty foreground
+  with nothing between the camera and the person, a young man in his mid 20s with short curly black
+  hair and an olive green t-shirt sits in a small apartment in the evening and talks to the camera
+  with a friendly warm smile, looking straight into the lens, relaxed, realistic skin texture, warm
+  amber lamp light on his face, a bookshelf and a floor lamp softly blurred behind him, the man is
+  centered in the frame, calm understated documentary style, hands out of frame"
+
+Revisión una por una: manos, ojos, dientes, orejas, lentes, aros y que el fondo no tuviera texto
+ni letras falsas. Lo que falló se rehízo o se recortó, como se anota arriba.
+
+Para cambiar una persona: se reemplaza persona-X.png, con el mismo tamaño y la misma orientación,
+y se corre herramientas/todo.sh.

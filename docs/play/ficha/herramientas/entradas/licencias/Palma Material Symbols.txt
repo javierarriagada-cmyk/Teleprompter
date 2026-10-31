@@ -1,0 +1,1 @@
+Símbolo front_hand de Material Symbols (Google), Apache 2.0. Se reutiliza el mismo trazo incluido en src/components/MarcaGuia.tsx de Sigo. Fuente del proyecto: https://github.com/google/material-design-icons
