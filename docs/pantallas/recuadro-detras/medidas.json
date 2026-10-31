@@ -1,0 +1,3074 @@
+[
+  {
+    "tag": "g86-oscuro-der-abajo-listo-hoy",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "der-abajo",
+    "mom": "listo",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 635,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 367.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-der-abajo-listo-propuesta",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "der-abajo",
+    "mom": "listo",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 635,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-der-abajo-grabando-hoy",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "der-abajo",
+    "mom": "grabando",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 635,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 367.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-der-abajo-grabando-propuesta",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "der-abajo",
+    "mom": "grabando",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 635,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-der-abajo-controles-hoy",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "der-abajo",
+    "mom": "controles",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 635,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 367.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-der-abajo-controles-propuesta",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "der-abajo",
+    "mom": "controles",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 635,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-der-arriba-listo-hoy",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "der-arriba",
+    "mom": "listo",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 635,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 367.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-der-arriba-listo-propuesta",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "der-arriba",
+    "mom": "listo",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 635,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-der-arriba-grabando-hoy",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "der-arriba",
+    "mom": "grabando",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 635,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 367.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-der-arriba-grabando-propuesta",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "der-arriba",
+    "mom": "grabando",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 635,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-der-arriba-controles-hoy",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "der-arriba",
+    "mom": "controles",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 635,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 367.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-der-arriba-controles-propuesta",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "der-arriba",
+    "mom": "controles",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 635,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-izq-abajo-listo-hoy",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "izq-abajo",
+    "mom": "listo",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 535.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-izq-abajo-listo-propuesta",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "izq-abajo",
+    "mom": "listo",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-izq-abajo-grabando-hoy",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "izq-abajo",
+    "mom": "grabando",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 535.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-izq-abajo-grabando-propuesta",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "izq-abajo",
+    "mom": "grabando",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-izq-abajo-controles-hoy",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "izq-abajo",
+    "mom": "controles",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 535.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-izq-abajo-controles-propuesta",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "izq-abajo",
+    "mom": "controles",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-izq-arriba-listo-hoy",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "izq-arriba",
+    "mom": "listo",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 535.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-izq-arriba-listo-propuesta",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "izq-arriba",
+    "mom": "listo",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-izq-arriba-grabando-hoy",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "izq-arriba",
+    "mom": "grabando",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 535.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-izq-arriba-grabando-propuesta",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "izq-arriba",
+    "mom": "grabando",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-izq-arriba-controles-hoy",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "izq-arriba",
+    "mom": "controles",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 535.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-oscuro-izq-arriba-controles-propuesta",
+    "tel": "g86",
+    "tema": "oscuro",
+    "esquina": "izq-arriba",
+    "mom": "controles",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-der-abajo-listo-hoy",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "der-abajo",
+    "mom": "listo",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 635,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 367.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-der-abajo-listo-propuesta",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "der-abajo",
+    "mom": "listo",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 635,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-der-abajo-grabando-hoy",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "der-abajo",
+    "mom": "grabando",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 635,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 367.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-der-abajo-grabando-propuesta",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "der-abajo",
+    "mom": "grabando",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 635,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-der-abajo-controles-hoy",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "der-abajo",
+    "mom": "controles",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 635,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 367.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-der-abajo-controles-propuesta",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "der-abajo",
+    "mom": "controles",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 635,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-der-arriba-listo-hoy",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "der-arriba",
+    "mom": "listo",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 635,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 367.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-der-arriba-listo-propuesta",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "der-arriba",
+    "mom": "listo",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 635,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-der-arriba-grabando-hoy",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "der-arriba",
+    "mom": "grabando",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 635,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 367.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-der-arriba-grabando-propuesta",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "der-arriba",
+    "mom": "grabando",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 635,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-der-arriba-controles-hoy",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "der-arriba",
+    "mom": "controles",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 635,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 367.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-der-arriba-controles-propuesta",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "der-arriba",
+    "mom": "controles",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 635,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-izq-abajo-listo-hoy",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "izq-abajo",
+    "mom": "listo",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 535.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-izq-abajo-listo-propuesta",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "izq-abajo",
+    "mom": "listo",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-izq-abajo-grabando-hoy",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "izq-abajo",
+    "mom": "grabando",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 535.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-izq-abajo-grabando-propuesta",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "izq-abajo",
+    "mom": "grabando",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-izq-abajo-controles-hoy",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "izq-abajo",
+    "mom": "controles",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 535.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-izq-abajo-controles-propuesta",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "izq-abajo",
+    "mom": "controles",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 318,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-izq-arriba-listo-hoy",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "izq-arriba",
+    "mom": "listo",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 535.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-izq-arriba-listo-propuesta",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "izq-arriba",
+    "mom": "listo",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-izq-arriba-grabando-hoy",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "izq-arriba",
+    "mom": "grabando",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 535.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-izq-arriba-grabando-propuesta",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "izq-arriba",
+    "mom": "grabando",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-izq-arriba-controles-hoy",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "izq-arriba",
+    "mom": "controles",
+    "variante": "hoy",
+    "columnaPx": 455,
+    "charsApprox": 39,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 535.765625,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "g86-claro-izq-arriba-controles-propuesta",
+    "tel": "g86",
+    "tema": "claro",
+    "esquina": "izq-arriba",
+    "mom": "controles",
+    "variante": "propuesta",
+    "columnaPx": 607,
+    "charsApprox": 52,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 199.09375,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-der-abajo-listo-hoy",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "der-abajo",
+    "mom": "listo",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 520,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-der-abajo-listo-propuesta",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "der-abajo",
+    "mom": "listo",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 520,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-der-abajo-grabando-hoy",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "der-abajo",
+    "mom": "grabando",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 520,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-der-abajo-grabando-propuesta",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "der-abajo",
+    "mom": "grabando",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 520,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-der-abajo-controles-hoy",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "der-abajo",
+    "mom": "controles",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 520,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-der-abajo-controles-propuesta",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "der-abajo",
+    "mom": "controles",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 520,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-der-arriba-listo-hoy",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "der-arriba",
+    "mom": "listo",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 520,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-der-arriba-listo-propuesta",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "der-arriba",
+    "mom": "listo",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 520,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-der-arriba-grabando-hoy",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "der-arriba",
+    "mom": "grabando",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 520,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-der-arriba-grabando-propuesta",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "der-arriba",
+    "mom": "grabando",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 520,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-der-arriba-controles-hoy",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "der-arriba",
+    "mom": "controles",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 520,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-der-arriba-controles-propuesta",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "der-arriba",
+    "mom": "controles",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 520,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-izq-abajo-listo-hoy",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "izq-abajo",
+    "mom": "listo",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-izq-abajo-listo-propuesta",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "izq-abajo",
+    "mom": "listo",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-izq-abajo-grabando-hoy",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "izq-abajo",
+    "mom": "grabando",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-izq-abajo-grabando-propuesta",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "izq-abajo",
+    "mom": "grabando",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-izq-abajo-controles-hoy",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "izq-abajo",
+    "mom": "controles",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-izq-abajo-controles-propuesta",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "izq-abajo",
+    "mom": "controles",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-izq-arriba-listo-hoy",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "izq-arriba",
+    "mom": "listo",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-izq-arriba-listo-propuesta",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "izq-arriba",
+    "mom": "listo",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-izq-arriba-grabando-hoy",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "izq-arriba",
+    "mom": "grabando",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-izq-arriba-grabando-propuesta",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "izq-arriba",
+    "mom": "grabando",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-izq-arriba-controles-hoy",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "izq-arriba",
+    "mom": "controles",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-oscuro-izq-arriba-controles-propuesta",
+    "tel": "redmi",
+    "tema": "oscuro",
+    "esquina": "izq-arriba",
+    "mom": "controles",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-der-abajo-listo-hoy",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "der-abajo",
+    "mom": "listo",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 520,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-der-abajo-listo-propuesta",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "der-abajo",
+    "mom": "listo",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 520,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-der-abajo-grabando-hoy",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "der-abajo",
+    "mom": "grabando",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 520,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-der-abajo-grabando-propuesta",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "der-abajo",
+    "mom": "grabando",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 520,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-der-abajo-controles-hoy",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "der-abajo",
+    "mom": "controles",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 520,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-der-abajo-controles-propuesta",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "der-abajo",
+    "mom": "controles",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 520,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-der-arriba-listo-hoy",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "der-arriba",
+    "mom": "listo",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 520,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-der-arriba-listo-propuesta",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "der-arriba",
+    "mom": "listo",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 520,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-der-arriba-grabando-hoy",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "der-arriba",
+    "mom": "grabando",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 520,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-der-arriba-grabando-propuesta",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "der-arriba",
+    "mom": "grabando",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 520,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-der-arriba-controles-hoy",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "der-arriba",
+    "mom": "controles",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 520,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-der-arriba-controles-propuesta",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "der-arriba",
+    "mom": "controles",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 520,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-izq-abajo-listo-hoy",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "izq-abajo",
+    "mom": "listo",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-izq-abajo-listo-propuesta",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "izq-abajo",
+    "mom": "listo",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-izq-abajo-grabando-hoy",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "izq-abajo",
+    "mom": "grabando",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-izq-abajo-grabando-propuesta",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "izq-abajo",
+    "mom": "grabando",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-izq-abajo-controles-hoy",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "izq-abajo",
+    "mom": "controles",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-izq-abajo-controles-propuesta",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "izq-abajo",
+    "mom": "controles",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 267,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-izq-arriba-listo-hoy",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "izq-arriba",
+    "mom": "listo",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-izq-arriba-listo-propuesta",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "izq-arriba",
+    "mom": "listo",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-izq-arriba-grabando-hoy",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "izq-arriba",
+    "mom": "grabando",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-izq-arriba-grabando-propuesta",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "izq-arriba",
+    "mom": "grabando",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-izq-arriba-controles-hoy",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "izq-arriba",
+    "mom": "controles",
+    "variante": "hoy",
+    "columnaPx": 340,
+    "charsApprox": 29,
+    "carril": "168px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": false,
+    "vivo": null,
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  },
+  {
+    "tag": "redmi-claro-izq-arriba-controles-propuesta",
+    "tel": "redmi",
+    "tema": "claro",
+    "esquina": "izq-arriba",
+    "mom": "controles",
+    "variante": "propuesta",
+    "columnaPx": 492,
+    "charsApprox": 42,
+    "carril": "0px",
+    "rec": {
+      "x": 140,
+      "y": 12,
+      "w": 144,
+      "h": 81
+    },
+    "banda": {
+      "y": 0,
+      "h": 134
+    },
+    "panel": false,
+    "cruzaRecuadro": true,
+    "vivo": {
+      "text": "memorizar",
+      "box": {
+        "x": 298.28125,
+        "y": 116.78125,
+        "w": 109.03125,
+        "h": 35
+      }
+    },
+    "layout": true,
+    "sample": "Hola. Lee esto en voz alta, con calma, c"
+  }
+]
