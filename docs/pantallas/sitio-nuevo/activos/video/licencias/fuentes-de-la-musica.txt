@@ -1,0 +1,6 @@
+Composición MIDI original para este montaje: piano, contrabajo y percusión ligera, 95 BPM.
+Instrumentos: GeneralUser GS de S. Christian Collins.
+https://www.schristiancollins.com/generaluser.php
+https://github.com/mrbumpy409/GeneralUser-GS/blob/main/documentation/LICENSE.txt
+Síntesis local: FluidSynth. https://www.fluidsynth.org/download/
+Licencia de los instrumentos guardada en instrumentos/LICENSE-GeneralUser.txt.
