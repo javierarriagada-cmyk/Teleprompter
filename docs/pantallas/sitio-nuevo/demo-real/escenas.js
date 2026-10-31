@@ -159,20 +159,27 @@ export function iniciarEscenas(datos) {
       // la pildora flota sobre el borde de abajo del telefono.
       const s = Math.min((0.7 * vh) / 800, (0.84 * vw) / 380)
       const cy = 0.265 * vh + 400 * s
-      // PROTOTIPO E0 (único desvío vs fuente): teléfono más alto para que
-      // marca + frase + demo se lean juntos sobre el pliegue. La portada publicada hace peek.
-      E.e0 = { x: 0, y: 0.355 * vh + 400 * s - vh / 2, rotationX: 8, rotationY: 0, rotationZ: 0, scale: s * 0.88 }
+      // PROTOTIPO E0 móvil: marca+frase+teléfono juntos; escala coherente con Y
+      // para que el teléfono quepa entero (o un crop deliberado) en ~894 px.
+      const s0 = Math.min((0.60 * vh) / 800, (0.78 * vw) / 380)
+      E.e0 = { x: 0, y: 0.295 * vh + 400 * s0 - vh / 2, rotationX: 6, rotationY: 0, rotationZ: 0, scale: s0 }
       E.e1 = { x: 0.1 * vw, y: cy - vh / 2, rotationX: 0, rotationY: -10, rotationZ: 0, scale: s }
       E.e3 = { x: 0, y: cy - vh / 2 + 0.01 * vh, rotationX: 0, rotationY: 7, rotationZ: -1.5, scale: s * 1.02 }
       // En E2 los dos telefonos van derechos, sin giro: el comun mueve su texto en cada cuadro,
       // y dentro de un telefono girado en 3D ese texto se vuelve a dibujar entero cada vez
       // -medido en un telefono de gama media simulado: 22 a 33 cuadros largos de 99 con giro,
       // 9 a 14 sin el-.
-      const s2 = Math.min((0.50 * vw) / 380, (0.46 * vh) / 800)
-      const cy2 = 0.38 * vh + 400 * s2
-      E.e2sigo = { x: 0.24 * vw, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
-      E.e2comun = { x: -0.24 * vw, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
-      E.ondaE2 = { y: cy2 + 400 * s2 + 64, medio: 190 * s2 }
+      // PROTOTIPO E2 móvil: teléfonos más chicos con gutters claros; hueco para
+      // avisos arriba y rótulos abajo legibles (≥14 px en pantalla).
+      const s2 = Math.min((0.38 * vw) / 380, (0.36 * vh) / 800)
+      // .telefono mide 380 px de ancho (no 360): gutters reales entre marcos.
+      const half = (380 * s2) / 2
+      const gutter = Math.max(22, 0.055 * vw)
+      const x2 = half + gutter / 2
+      const cy2 = 0.40 * vh + 400 * s2
+      E.e2sigo = { x: x2, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
+      E.e2comun = { x: -x2, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
+      E.ondaE2 = { y: cy2 + 400 * s2 + 52, medio: 170 * s2 }
       const sz = s * 1.4
       E.e4zoom = { x: 0, y: 0.38 * vh - 22 * sz + 400 * sz - vh / 2, rotationX: 30, rotationY: -10, rotationZ: 0, scale: sz }
       E.e4graba = { x: 0, y: cy - vh / 2, rotationX: 0, rotationY: -5, rotationZ: 0, scale: s }
@@ -190,11 +197,15 @@ export function iniciarEscenas(datos) {
       E.e0 = { x: 0.28 * vw, y: 0.20 * vh + 400 * s0 - vh / 2, rotationX: 4, rotationY: -6, rotationZ: 0, scale: s0 }
       E.e1 = { x: xR, y: 0.01 * vh, rotationX: 4, rotationY: -12, rotationZ: 0, scale: s }
       E.e3 = { x: xR * 0.95, y: 0, rotationX: 0, rotationY: 9, rotationZ: -1.5, scale: s * 1.03 }
-      const s2 = Math.min((0.50 * vh) / 800, (0.29 * vw) / 380)
-      const cy2 = 0.32 * vh + 400 * s2
-      E.e2sigo = { x: 0.15 * vw, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
-      E.e2comun = { x: -0.15 * vw, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
-      E.ondaE2 = { y: cy2 + 400 * s2 + 88, medio: 190 * s2 }
+      // PROTOTIPO E2 desk: gutters claros entre los dos; avisos van arriba del marco.
+      const s2 = Math.min((0.46 * vh) / 800, (0.25 * vw) / 380)
+      const half = (380 * s2) / 2
+      const gutter = Math.max(36, 0.035 * vw)
+      const x2 = half + gutter / 2
+      const cy2 = 0.33 * vh + 400 * s2
+      E.e2sigo = { x: x2, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
+      E.e2comun = { x: -x2, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
+      E.ondaE2 = { y: cy2 + 400 * s2 + 80, medio: 180 * s2 }
       const sz = s * 1.75
       E.e4zoom = { x: xR * 0.7, y: 0.3 * vh - 22 * sz + 400 * sz - vh / 2, rotationX: 30, rotationY: -22, rotationZ: 0, scale: sz }
       E.e4graba = { x: xR, y: 0, rotationX: 0, rotationY: -8, rotationZ: 0, scale: s }
