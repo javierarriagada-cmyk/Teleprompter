@@ -99,18 +99,59 @@ a:hover { color: #fff; }
 
 main { position: relative; z-index: 1; }
 
-/* ---------- HERO ---------- */
-.hero {
-  min-height: 100svh;
-  display: grid;
-  align-content: center;
-  gap: 1.1rem;
-  padding: calc(2.6rem + env(safe-area-inset-top)) var(--pad) 1.5rem;
-  max-width: var(--max);
-  margin: 0 auto;
+/* ---------- DEMO ESCENARIO: portada + cómo funciona ---------- */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border: 0;
 }
+
+.demo-escenario {
+  position: relative;
+}
+
+.demo-pegado {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.demo-composicion {
+  position: relative;
+  width: min(1240px, 100%);
+  height: 100%;
+  margin: 0 auto;
+  padding:
+    calc(1rem + env(safe-area-inset-top))
+    var(--pad)
+    calc(0.85rem + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+/* Texto de portada: encima, sin empujar el teléfono */
+.hero-copy {
+  position: absolute;
+  z-index: 3;
+  left: var(--pad);
+  right: var(--pad);
+  top: calc(0.85rem + env(safe-area-inset-top));
+  display: grid;
+  gap: 0.45rem;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.hero-copy.fuera {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
 .hero-marca {
-  width: min(58vw, 220px);
+  width: min(64vw, 230px);
   margin: 0;
   line-height: 0;
   color: var(--crema);
@@ -133,190 +174,169 @@ main { position: relative; z-index: 1; }
   margin: 0;
   font-family: var(--serif);
   font-weight: 400;
-  font-size: clamp(1.55rem, 6.2vw, 2.35rem);
-  line-height: 1.18;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.7rem, 7.2vw, 2.15rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
   color: var(--crema);
-  max-width: 16ch;
+  max-width: 14ch;
 }
 
-.hero-demo {
-  justify-self: center;
-  width: min(100%, 236px);
-  margin-top: 0.15rem;
-}
-@media (max-height: 780px) {
-  .hero-demo { width: min(100%, 210px); }
-  .hero-frase { font-size: clamp(1.35rem, 5.5vw, 1.9rem); }
-}
-
-.tel {
-  position: relative;
-  aspect-ratio: 9 / 19.2;
-  border-radius: 2rem;
-  background: #161412;
-  border: 1px solid rgba(242, 236, 232, 0.18);
-  box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.5),
-    0 30px 60px rgba(0, 0, 0, 0.55);
-  overflow: hidden;
-}
-.tel-pantalla {
-  position: absolute;
-  inset: 0.55rem;
-  border-radius: 1.45rem;
-  overflow: hidden;
-  background: #050505;
-}
-.tel-estado {
-  position: absolute;
-  top: 0.55rem;
-  left: 0.85rem;
-  right: 0.85rem;
-  z-index: 5;
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.62rem;
-  color: rgba(242, 236, 232, 0.75);
-  font-variant-numeric: tabular-nums;
-}
-.tel-punto {
-  position: absolute;
-  top: 1.55rem;
-  left: 50%;
-  width: 0.55rem;
-  height: 0.55rem;
-  margin-left: -0.275rem;
-  border-radius: 50%;
-  background: var(--rojo);
-  box-shadow: 0 0 10px rgba(225, 29, 46, 0.85);
-  opacity: 0;
-  z-index: 6;
-  transition: opacity 0.35s ease;
-}
-.tel.grabando .tel-punto { opacity: 1; animation: respira-punto 2.2s ease-in-out infinite; }
-@keyframes respira-punto {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.45; }
-}
-
-.tel-lectura {
-  position: absolute;
-  inset: 0;
-  padding: 3.2rem 1.05rem 2rem;
-  overflow: hidden;
-}
-.tel-columna {
-  font-family: var(--serif);
-  font-size: 1.05rem;
-  line-height: 1.55;
-  color: rgba(231, 225, 222, 0.92);
-  transform: translateY(42%);
-  will-change: transform;
-}
-.tel-columna .viva {
-  color: #fff;
-  text-shadow: 0 0 18px rgba(255, 255, 255, 0.25);
-}
-.tel-columna .dicha {
-  color: rgba(231, 225, 222, 0.38);
-}
-.tel-banda {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 46%;
-  height: 1.7rem;
-  background: linear-gradient(180deg, transparent, rgba(11, 10, 9, 0.55), transparent);
-  pointer-events: none;
-}
-.tel-aviso {
-  position: absolute;
-  left: 50%;
-  bottom: 18%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.45rem 0.75rem;
-  border-radius: 999px;
-  background: rgba(11, 10, 9, 0.72);
-  border: 1px solid var(--linea);
-  font-size: 0.72rem;
-  color: var(--crema);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  white-space: nowrap;
-}
-.tel-aviso.on { opacity: 1; }
-.tel-aviso i {
-  width: 0.55rem;
-  height: 0.55rem;
-  border-radius: 50%;
-  background: var(--rojo);
-  box-shadow: 0 0 8px rgba(225, 29, 46, 0.9);
-  animation: respira-punto 1.4s ease-in-out infinite;
-}
-
-.tel-subs {
+/* Teléfono siempre al centro del sticky viewport */
+.tel-escenario {
   position: absolute;
   inset: 0;
   display: grid;
-  place-items: end center;
-  padding: 0 1rem 2.4rem;
-  background:
-    radial-gradient(60% 40% at 50% 30%, rgba(180, 140, 90, 0.25), transparent 70%),
-    linear-gradient(180deg, #1a1714, #0a0908);
+  place-items: center;
+  z-index: 1;
+  /* Marca+frase arriba, leyenda abajo; teléfono llenando el centro */
+  padding-top: 6.2rem;
+  padding-bottom: 5.2rem;
+}
+
+.tel-escala {
+  width: 380px;
+  height: 800px;
+  transform-origin: center center;
+  transform: scale(0.44);
+}
+
+.como-leyenda {
+  position: absolute;
+  z-index: 3;
+  left: var(--pad);
+  right: var(--pad);
+  bottom: calc(0.9rem + env(safe-area-inset-bottom));
+  min-height: 4.2rem;
   opacity: 0;
-  transition: opacity 0.45s ease;
+  transform: translateY(12px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
   pointer-events: none;
 }
-.tel-subs.on { opacity: 1; }
-.tel-subs span {
-  display: block;
-  max-width: 90%;
-  text-align: center;
-  font-family: var(--sans);
-  font-weight: 600;
-  font-size: 0.95rem;
-  line-height: 1.25;
-  color: #111;
-  background: #FFE066;
-  padding: 0.35rem 0.55rem;
-  border-radius: 0.25rem;
+.como-leyenda.visible {
+  opacity: 1;
+  transform: none;
 }
-
-.hero-pista {
-  margin: 0;
-  text-align: center;
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
+.como-kicker {
+  margin: 0 0 0.3rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--apagado);
 }
+.como-frase {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.12rem, 4.4vw, 1.4rem);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: var(--crema);
+  max-width: 24ch;
+  position: absolute;
+  left: 0; right: 0;
+  top: 1.35rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s;
+}
+.como-frase.activa {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
 
-@media (min-width: 900px) {
-  .hero {
-    grid-template-columns: 1.05fr 0.95fr;
-    grid-template-rows: auto auto 1fr;
+.demo-tramo-hero { height: 100svh; }
+.demo-tramos-como { display: contents; }
+.demo-tramo { height: 105svh; }
+
+@media (max-height: 780px) {
+  .tel-escala { transform: scale(0.34); }
+  .tel-escenario { padding-top: 6.5rem; padding-bottom: 4.8rem; }
+  .hero-frase { font-size: clamp(1.45rem, 6vw, 1.85rem); }
+  .hero-marca { width: min(52vw, 190px); }
+}
+@media (max-height: 700px) {
+  .tel-escala { transform: scale(0.30); }
+}
+
+/* Desktop: una composición — tipografía grande a la izquierda, teléfono pegado */
+@media (min-width: 960px) {
+  .demo-composicion {
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    column-gap: 3rem;
-    min-height: 100svh;
-    padding-top: 4rem;
+    justify-content: center;
+    gap: 1.35rem;
+    padding-top: 2.25rem;
+    padding-bottom: 2rem;
   }
-  .hero-marca { grid-column: 1; width: min(28vw, 280px); }
+  .hero-copy {
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
+    transform: none;
+    width: min(40vw, 480px);
+    flex: 0 1 auto;
+    gap: 1rem;
+  }
+  .hero-copy.fuera {
+    /* Sigue ocupando su columna para que el teléfono no salte */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .hero-marca {
+    width: min(32vw, 400px);
+  }
   .hero-frase {
-    grid-column: 1;
-    font-size: clamp(2.2rem, 3.4vw, 3.1rem);
-    max-width: 12ch;
+    font-size: clamp(2.6rem, 4.4vw, 4rem);
+    max-width: none;
+    line-height: 1.02;
   }
-  .hero-demo {
-    grid-column: 2;
-    grid-row: 1 / span 3;
-    width: min(100%, 320px);
-    justify-self: end;
-    margin: 0;
+  .tel-escenario {
+    position: relative;
+    inset: auto;
+    flex: 0 0 auto;
+    padding: 0;
+    display: block;
+    width: calc(380px * 0.86);
+    height: calc(800px * 0.86);
   }
-  .hero-pista { grid-column: 1; text-align: left; align-self: end; }
+  .tel-escala {
+    transform: scale(0.86);
+    transform-origin: top left;
+  }
+  .como-leyenda {
+    position: absolute;
+    left: var(--pad);
+    right: auto;
+    top: auto;
+    bottom: 11%;
+    width: min(38vw, 460px);
+    min-height: 5.5rem;
+  }
+  .como-frase {
+    font-size: clamp(1.5rem, 2.1vw, 2rem);
+    max-width: 18ch;
+  }
+}
+
+@media (min-width: 1200px) {
+  .demo-composicion { gap: 1.1rem; }
+  .tel-escenario {
+    width: calc(380px * 0.94);
+    height: calc(800px * 0.94);
+  }
+  .tel-escala { transform: scale(0.94); }
+  .hero-marca { width: min(30vw, 440px); }
+  .hero-frase { font-size: clamp(3rem, 4.2vw, 4.4rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-copy, .como-leyenda, .como-frase { transition: none; }
+  .marca-svg .resplandor { animation: none; opacity: 0.55; }
 }
 
 /* ---------- SECCIONES ---------- */
@@ -353,67 +373,6 @@ main { position: relative; z-index: 1; }
   max-width: 36rem;
   color: var(--apagado);
   font-size: 1.02rem;
-}
-
-/* Cómo funciona: tres tiempos */
-.tiempos {
-  display: grid;
-  gap: 1.25rem;
-  margin-top: 2.25rem;
-}
-.tiempo {
-  position: relative;
-  border: 1px solid var(--linea);
-  border-radius: 1.25rem;
-  padding: 1.35rem 1.25rem 1.4rem;
-  background: linear-gradient(180deg, rgba(242, 236, 232, 0.035), transparent 55%);
-  overflow: hidden;
-  opacity: 0.55;
-  transform: translateY(10px);
-  transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.4s ease;
-}
-.tiempo.visible {
-  opacity: 1;
-  transform: none;
-  border-color: rgba(242, 236, 232, 0.28);
-}
-.tiempo-num {
-  font-family: var(--serif);
-  font-size: 0.85rem;
-  color: var(--rojo);
-  letter-spacing: 0.06em;
-  margin-bottom: 0.55rem;
-}
-.tiempo h3 {
-  margin: 0 0 0.45rem;
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: 1.35rem;
-  color: var(--crema);
-}
-.tiempo p {
-  margin: 0;
-  color: var(--apagado);
-  font-size: 0.98rem;
-}
-.tiempo-linea {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: var(--rojo);
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 0.7s ease;
-}
-.tiempo.visible .tiempo-linea { transform: scaleY(1); }
-
-/* Siempre en columna: evita la plantilla de tres tarjetas. */
-.tiempos { max-width: 36rem; }
-@media (min-width: 900px) {
-  .tiempos { gap: 1.1rem; }
-  .tiempo { padding: 1.5rem 1.6rem 1.55rem; }
 }
 
 /* Video */
@@ -485,13 +444,15 @@ main { position: relative; z-index: 1; }
 }
 .uso {
   display: grid;
-  grid-template-columns: 6.5rem 1fr;
-  gap: 1rem;
-  padding: 1.15rem 0;
+  grid-template-columns: 11.5rem 1fr;
+  column-gap: 1.5rem;
+  padding: 1.25rem 0;
   border-bottom: 1px solid var(--linea);
   align-items: baseline;
 }
 .uso strong {
+  padding-right: 1rem;
+  box-sizing: content-box;
   font-family: var(--serif);
   font-weight: 400;
   font-size: 1.15rem;
@@ -501,10 +462,12 @@ main { position: relative; z-index: 1; }
 
 @media (min-width: 800px) {
   .uso {
-    grid-template-columns: 9rem 1fr;
+    grid-template-columns: 14rem 1fr;
     padding: 1.35rem 0;
   }
-  .uso strong { font-size: 1.28rem; }
+  .uso strong {
+  padding-right: 1rem;
+  box-sizing: content-box; font-size: 1.28rem; }
 }
 
 /* Capturas */

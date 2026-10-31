@@ -1,0 +1,59 @@
+<div class="telefono" data-telefono="@nombre@">
+  <div class="rotulo">@rotulo@</div>
+  <div class="telefono-canto"></div>
+  <div class="telefono-cuerpo">
+    <div class="pantalla-lectura">
+      <div class="camara-detras">
+        <i class="bokeh b1"></i><i class="bokeh b2"></i><i class="bokeh b3"></i><i class="bokeh b4"></i><i class="bokeh b5"></i>
+      </div>
+      <div class="lectura serif">
+        <div class="banda"></div>
+        <div class="panel-lectura"></div>
+        <div class="desliza">
+          <div class="capa-destacado"></div>
+          <div class="columna">@guion@</div>
+        </div>
+        <div class="velo"></div>
+        <div class="marcador-fijo"></div>
+      </div>
+      <!-- E2: lo que pasa en la pausa, a la vista sin leer -->
+      <div class="aviso aviso-espera"><i class="punto-respira"></i>{{telefono.espera}}</div>
+      <div class="aviso aviso-escapa"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>{{telefono.escapa}}</div>
+      <!-- E5: el video grabado con Sigo, vertical -->
+      <div class="video">
+        <div class="escena-video">
+          <i class="muro"></i><i class="ventana"></i><i class="lampara"></i><i class="repisa"></i><i class="planta"></i>
+          <i class="bokeh v1"></i><i class="bokeh v2"></i><i class="bokeh v3"></i><i class="bokeh v4"></i><i class="bokeh v5"></i><i class="bokeh v6"></i>
+          <i class="polvo"></i>
+        </div>
+        <div class="video-estilo">{{estilos.amarillo}}</div>
+        <div class="capa-subtitulos" data-estilo="amarillo"><div class="subtitulo"></div></div>
+        <div class="video-controles">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/></svg>
+          <span class="video-tiempo">0:00</span>
+          <span class="video-barra"><i></i></span>
+          <span class="video-total">0:40</span>
+        </div>
+      </div>
+      <!-- E6: la senal, grande -->
+      <div class="sin-senal">
+        <span class="senal-grande"><i></i><i></i><i></i><i></i></span>
+        <svg class="wifi-grande" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 9a14 14 0 0 1 19 0"/><path d="M6 12.6a9 9 0 0 1 12 0"/><path d="M9.4 16a4 4 0 0 1 5.2 0"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg>
+        <svg class="avion-grande" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>
+        <span class="sin-senal-texto">{{telefono.avion}}</span>
+      </div>
+      <div class="barra-estado">
+        <span class="hora">10:08</span>
+        <span class="iconos">
+          <svg class="icono-avion" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>
+          <svg class="icono-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M2.5 9a14 14 0 0 1 19 0"/><path d="M6 12.6a9 9 0 0 1 12 0"/><path d="M9.4 16a4 4 0 0 1 5.2 0"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg>
+          <span class="senal"><i></i><i></i><i></i><i></i></span>
+          <span class="bateria"><i></i></span>
+        </span>
+      </div>
+      <div class="haz"></div>
+      <div class="punto-grabando"></div>
+      <div class="lente"></div>
+    </div>
+  </div>
+</div>
