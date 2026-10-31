@@ -22,7 +22,7 @@ await new Promise(r => setTimeout(r, 1200))
 
 // Smooth scroll through hero + cómo (E0 → E1 → E2 → E5) over ~10s
 const frames = 90 // ~9s at 10fps
-const targets = [0, 1.3, 2.7, 6.1] // vh units along escenario
+const targets = [0, 1.25, 2.9, 4.9] // vh units: E0 → E1 → E2 → E5 (TOTAL 5.1)
 const times = [0, 0.25, 0.5, 1.0] // normalized timeline
 
 function ease(t){ return t<0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2 }

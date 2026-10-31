@@ -1,7 +1,9 @@
 // COPIA de sitio/fuente/escenas.js para el prototipo docs/pantallas/sitio-nuevo.
-// ÚNICO desvío: posiciones E0 (móvil y escritorio) para composición marca+frase+demo
-// sobre el pliegue. Diff exacto: escenas.fuente.js (idéntico a la fuente) vs este archivo.
-// El motor (Pantalla, Reloj, E1–E6, reduced-motion) es el publicado.
+// Desvíos documentados (ver NOTA-DEMO-REAL.md y escenas.fuente.js):
+// 1) Medidas E0: marca + frase + demo juntos sobre el pliegue (el vivo hace peek).
+// 2) Línea de tiempo corta: solo E0 → E1 → E2 → E5 (hablas / espera / subtítulos).
+//    E3 formatos, E4 lente/cámara y E6 sin-internet no aparecen en el scroll del prototipo.
+// El motor (Pantalla, Reloj, Onda, reduced-motion, lógica E1/E2/E5) es el publicado.
 
 // LA COREOGRAFIA: el telefono fijo y el scroll como hilo. 27-09-2026, docs/el-sitio.md v2.
 //
@@ -24,29 +26,26 @@ import { Pantalla, Reloj } from './pantalla.js'
 import { Onda } from './onda.js'
 
 // [escena, desde, hasta, mejor cuadro -el que se muestra quieto con movimiento reducido-]
+// Prototipo: tres momentos de «Cómo funciona» (E1, E2, E5). Ids de escena se conservan
+// para textos[n] y data-escena. Umbrales de E3/E4/E6 quedan fuera de TOTAL.
 const ESCENAS = [
   [0, 0, 0.45, 0],
-  [1, 0.45, 1.55, 1.3],
-  [2, 1.55, 3.05, 2.7],
-  [3, 3.05, 4.3, 4.2],
-  [4, 4.3, 5.6, 4.85],
-  [5, 5.6, 7.25, 6.1],
-  [6, 7.25, 8.5, 8.3]
+  [1, 0.45, 1.6, 1.25],
+  [2, 1.6, 3.4, 2.9],
+  [5, 3.4, 5.1, 4.2]
 ]
-const TOTAL = 8.5
-// Donde deja el scroll cada capitulo de la pildora.
-const CAPITULOS = { 1: 1.1, 2: 2.35, 3: 4.1, 4: 4.8, 5: 6.1, 6: 8.2 }
-// Los formatos se pintan en E3, uno tras otro, y quedan.
-const PINTA = [['negrita', 3.35], ['ambar', 3.5], ['celeste', 3.65], ['salvia', 3.8], ['destacado', 3.95]]
-const GRABA = [5.0, 5.65]
-const LENTE = [4.55, 5.0]
-const VIDEO = [5.75, 7.3]
-const ESTILOS = [['amarillo', 5.6], ['rojo', 6.3], ['formal', 6.8]]
-// Sin internet: las cuatro barras se apagan de a una, despues el wifi, despues el avion.
-const SIN_INTERNET = 7.4
-const SENAL = [7.5, 7.6, 7.7, 7.8]
-const SIN_WIFI = 7.9
-const AVION = 8.0
+const TOTAL = 5.1
+const CAPITULOS = { 1: 1.15, 2: 2.7, 5: 4.2 }
+// E3/E4/E6 fuera del recorrido: umbrales > TOTAL para que no disparen clases.
+const PINTA = [['negrita', 99], ['ambar', 99], ['celeste', 99], ['salvia', 99], ['destacado', 99]]
+const GRABA = [99, 99.5]
+const LENTE = [99, 99.5]
+const VIDEO = [3.45, 5.1]
+const ESTILOS = [['amarillo', 3.4], ['rojo', 4.15], ['formal', 4.7]]
+const SIN_INTERNET = 99
+const SENAL = [99, 99.1, 99.2, 99.3]
+const SIN_WIFI = 99.4
+const AVION = 99.5
 
 const escenaEn = (p) => (ESCENAS.find((e) => p < e[2]) || ESCENAS[ESCENAS.length - 1])[0]
 
@@ -162,15 +161,15 @@ export function iniciarEscenas(datos) {
       const cy = 0.265 * vh + 400 * s
       // PROTOTIPO E0 (único desvío vs fuente): teléfono más alto para que
       // marca + frase + demo se lean juntos sobre el pliegue. La portada publicada hace peek.
-      E.e0 = { x: 0, y: 0.30 * vh + 400 * s - vh / 2, rotationX: 9, rotationY: 0, rotationZ: 0, scale: s * 0.94 }
+      E.e0 = { x: 0, y: 0.355 * vh + 400 * s - vh / 2, rotationX: 8, rotationY: 0, rotationZ: 0, scale: s * 0.88 }
       E.e1 = { x: 0.1 * vw, y: cy - vh / 2, rotationX: 0, rotationY: -10, rotationZ: 0, scale: s }
       E.e3 = { x: 0, y: cy - vh / 2 + 0.01 * vh, rotationX: 0, rotationY: 7, rotationZ: -1.5, scale: s * 1.02 }
       // En E2 los dos telefonos van derechos, sin giro: el comun mueve su texto en cada cuadro,
       // y dentro de un telefono girado en 3D ese texto se vuelve a dibujar entero cada vez
       // -medido en un telefono de gama media simulado: 22 a 33 cuadros largos de 99 con giro,
       // 9 a 14 sin el-.
-      const s2 = Math.min((0.46 * vw) / 380, (0.42 * vh) / 800)
-      const cy2 = 0.36 * vh + 400 * s2
+      const s2 = Math.min((0.50 * vw) / 380, (0.46 * vh) / 800)
+      const cy2 = 0.38 * vh + 400 * s2
       E.e2sigo = { x: 0.24 * vw, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
       E.e2comun = { x: -0.24 * vw, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
       E.ondaE2 = { y: cy2 + 400 * s2 + 64, medio: 190 * s2 }
@@ -185,12 +184,14 @@ export function iniciarEscenas(datos) {
     } else {
       const s = Math.min((0.82 * vh) / 800, 1)
       const xR = 0.19 * vw
-      // PROTOTIPO E0 (único desvío vs fuente): teléfono completo a la vista, marca gigante intacta.
-      E.e0 = { x: 0, y: 0.26 * vh + 400 * s - vh / 2, rotationX: 6, rotationY: 0, rotationZ: 0, scale: Math.min(s * 0.98, (0.64 * vh) / 800) }
+      // PROTOTIPO E0: marca+frase grandes (vara del vivo); teléfono a la derecha con
+      // aire respecto de «que sigue tu voz.», casi entero sobre el pliegue.
+      const s0 = Math.min((0.78 * vh) / 800, (0.27 * vw) / 380)
+      E.e0 = { x: 0.28 * vw, y: 0.20 * vh + 400 * s0 - vh / 2, rotationX: 4, rotationY: -6, rotationZ: 0, scale: s0 }
       E.e1 = { x: xR, y: 0.01 * vh, rotationX: 4, rotationY: -12, rotationZ: 0, scale: s }
       E.e3 = { x: xR * 0.95, y: 0, rotationX: 0, rotationY: 9, rotationZ: -1.5, scale: s * 1.03 }
-      const s2 = Math.min((0.46 * vh) / 800, (0.27 * vw) / 380)
-      const cy2 = 0.3 * vh + 400 * s2
+      const s2 = Math.min((0.50 * vh) / 800, (0.29 * vw) / 380)
+      const cy2 = 0.32 * vh + 400 * s2
       E.e2sigo = { x: 0.15 * vw, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
       E.e2comun = { x: -0.15 * vw, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
       E.ondaE2 = { y: cy2 + 400 * s2 + 88, medio: 190 * s2 }
@@ -255,52 +256,27 @@ export function iniciarEscenas(datos) {
     tl.fromTo(canvas, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, 0.5)
 
     // E1 -> E2: aparece el comun al lado; la luz se parte en fria y tibia
-    sale(textos[1], 1.5)
-    tl.to(canvas, { autoAlpha: 0, duration: 0.12 }, 1.5)
-    tl.to(telSigo, { ...L.e2sigo, duration: 0.45 }, 1.5)
-    tl.to(telComun, { ...L.e2comun, autoAlpha: 1, duration: 0.45 }, 1.5)
-    tl.to(luces.tibia, { opacity: 0, duration: 0.3 }, 1.5)
-    tl.to(luces.duelo, { opacity: 1, duration: 0.35 }, 1.55)
-    tl.to('.rotulo', { opacity: 1, duration: 0.2 }, 1.85)
-    entra(textos[2], 1.62)
-    tl.to(canvas, { autoAlpha: 1, duration: 0.2 }, 1.9)
+    sale(textos[1], 1.55)
+    tl.to(canvas, { autoAlpha: 0, duration: 0.12 }, 1.55)
+    tl.to(telSigo, { ...L.e2sigo, duration: 0.5 }, 1.55)
+    tl.to(telComun, { ...L.e2comun, autoAlpha: 1, duration: 0.5 }, 1.55)
+    tl.to(luces.tibia, { opacity: 0, duration: 0.3 }, 1.55)
+    tl.to(luces.duelo, { opacity: 1, duration: 0.4 }, 1.6)
+    tl.to('.rotulo', { opacity: 1, duration: 0.25 }, 1.9)
+    entra(textos[2], 1.68)
+    tl.to(canvas, { autoAlpha: 1, duration: 0.25 }, 1.95)
 
-    // E2 -> E3: se va el comun; los colores del guion encienden la luz
-    sale(textos[2], 3.0)
-    tl.to(canvas, { autoAlpha: 0, duration: 0.12 }, 3.0)
-    tl.to('.rotulo', { opacity: 0, duration: 0.12 }, 3.0)
-    tl.to(telComun, { autoAlpha: 0, x: L.e2comun.x - 0.3 * L.vw, duration: 0.35 }, 3.0)
-    tl.to(telSigo, { ...L.e3, duration: 0.4 }, 3.0)
-    tl.to(luces.duelo, { opacity: 0, duration: 0.3 }, 3.0)
-    tl.to(luces.color, { opacity: 1, duration: 0.5 }, 3.1)
-    entra(textos[3], 3.12)
-
-    // E3 -> E4: gira hasta mostrar el lente, el haz, y despues grabando
-    sale(textos[3], 4.28)
-    tl.to(luces.color, { opacity: 0, duration: 0.3 }, 4.28)
-    tl.to(luces.lente, { opacity: 1, duration: 0.3 }, 4.32)
-    tl.to(telSigo, { ...L.e4zoom, duration: 0.45 }, 4.28)
-    entra(textos[4], 4.36)
-    tl.to(haz, { autoAlpha: 1, duration: 0.15 }, 4.58)
-    tl.to(haz, { autoAlpha: 0, duration: 0.12 }, 4.98)
-    tl.to(telSigo, { ...L.e4graba, duration: 0.4 }, 4.95)
-
-    // E4 -> E5: el telefono pierde el marco y se vuelve el video, grande
-    sale(textos[4], 5.58)
-    tl.to(luces.lente, { opacity: 0, duration: 0.3 }, 5.58)
-    tl.to(luces.cine, { opacity: 1, duration: 0.35 }, 5.6)
-    tl.to(telSigo, { ...L.e5, duration: 0.45 }, 5.58)
-    tl.to(video, { autoAlpha: 1, duration: 0.2 }, 5.72)
-    entra(textos[5], 5.66)
-
-    // E5 -> E6: vuelve el marco; se va la senal
-    sale(textos[5], 7.22)
-    tl.to(video, { autoAlpha: 0, duration: 0.15 }, 7.22)
-    tl.to(luces.cine, { opacity: 0, duration: 0.3 }, 7.22)
-    tl.to(luces.noche, { opacity: 1, duration: 0.35 }, 7.25)
-    tl.to(telSigo, { ...L.e6, duration: 0.4 }, 7.22)
-    entra(textos[6], 7.3)
-    tl.to(pildora, { autoAlpha: 0, duration: 0.15 }, TOTAL - 0.15)
+    // E2 -> E5 (prototipo): salta formatos/lente/offline; va directo a subtítulos
+    sale(textos[2], 3.35)
+    tl.to(canvas, { autoAlpha: 0, duration: 0.12 }, 3.35)
+    tl.to('.rotulo', { opacity: 0, duration: 0.15 }, 3.35)
+    tl.to(telComun, { autoAlpha: 0, x: L.e2comun.x - 0.3 * L.vw, duration: 0.4 }, 3.35)
+    tl.to(luces.duelo, { opacity: 0, duration: 0.3 }, 3.35)
+    tl.to(luces.cine, { opacity: 1, duration: 0.4 }, 3.4)
+    tl.to(telSigo, { ...L.e5, duration: 0.5 }, 3.35)
+    tl.to(video, { autoAlpha: 1, duration: 0.25 }, 3.5)
+    entra(textos[5], 3.45)
+    tl.to(pildora, { autoAlpha: 0, duration: 0.15 }, TOTAL - 0.2)
     tl.set({}, {}, TOTAL)
 
     tl.time(Math.min(tiempo, TOTAL))
@@ -312,11 +288,17 @@ export function iniciarEscenas(datos) {
       scrub: reducido ? false : (tactil ? 0.35 : true),
       onUpdate: reducido ? (st) => {
         // Movimiento reducido: cada escena quieta en su mejor cuadro, sin interpolar.
-        const e = ESCENAS[escenaEn(st.progress * TOTAL)]
+        // Buscar por tramo (no por id): con timeline corta ESCENAS[5] no existe.
+        const pNow = st.progress * TOTAL
+        const e = ESCENAS.find((x) => pNow < x[2]) || ESCENAS[ESCENAS.length - 1]
         if (tl.time() !== e[3]) tl.time(e[3])
       } : undefined
     })
-    if (reducido) tl.time(ESCENAS[escenaEn(disparador.progress * TOTAL)][3])
+    if (reducido) {
+      const p0 = disparador.progress * TOTAL
+      const e0 = ESCENAS.find((x) => p0 < x[2]) || ESCENAS[ESCENAS.length - 1]
+      tl.time(e0[3])
+    }
     onda.medir()
   }
 
@@ -368,10 +350,9 @@ export function iniciarEscenas(datos) {
     if (cambia('capitulo', cap)) ponerCapitulo(cap)
 
     // La lectura: cada escena con su reloj -ver arriba-.
-    const enE2 = p >= 1.6 && p < 3.05
-    const enE3 = p >= 3.05 && p < 4.3
-    const enE5 = p >= 5.6 && p < 7.3
-    const reloj = enE2 ? relojE2 : enE3 ? relojE3 : enE5 ? relojE5 : relojLectura
+    const enE2 = p >= 1.6 && p < 3.4
+    const enE5 = p >= 3.4 && p < 5.1
+    const reloj = enE2 ? relojE2 : enE5 ? relojE5 : relojLectura
     let deGolpe = false
     if (reloj !== relojActivo) {
       if (reloj !== relojLectura) reloj.reiniciar(ahora)
@@ -384,13 +365,13 @@ export function iniciarEscenas(datos) {
     const a = alfa.toFixed(2)
     if (cambia('alfa', a)) { sigo.desliza.style.opacity = a; comun.desliza.style.opacity = a }
     sigo.dibujar(t, ahora, deGolpe)
-    if (p > 1.5 && p < 3.4) {
+    if (p > 1.55 && p < 3.45) {
       comun.dibujar(t, ahora, deGolpe)
       ponerPausa(t, deGolpe)
     } else if (cambia('fueraE2', true)) {
       ponerPausa(-1, true)
     }
-    if (p > 1.5 && p < 3.4) estadoPrevio.fueraE2 = false
+    if (p > 1.55 && p < 3.45) estadoPrevio.fueraE2 = false
 
     // La onda
     const alfaOnda = +gsap.getProperty(canvas, 'opacity')
@@ -482,11 +463,8 @@ export function iniciarEscenas(datos) {
     const v = new Set()
     const enPausa = t >= pausa[0] + 250 && t < pausa[1] + 200
     // En el celular los avisos de E2 ya van dentro de cada pantalla: sin tarjetas encima.
-    if (esc === 2 && p > 1.9 && enPausa && !L.movil) { v.add('espera'); v.add('corre') }
-    if (esc === 3) {
-      const pintados = PINTA.filter(([, d]) => p >= d).map(([f]) => f)
-      if (L.movil) { if (pintados.length) v.add(pintados[pintados.length - 1]) } else pintados.forEach((f) => v.add(f))
-    }
+    // Comparación E2: en escritorio, tarjetas laterales refuerzan el contraste.
+    if (esc === 2 && p > 1.85 && enPausa && !L.movil) { v.add('espera'); v.add('corre') }
     if (p >= LENTE[0] && p < LENTE[1]) v.add('lente')
     if (p >= GRABA[0] + 0.05 && p < GRABA[1] - 0.1) v.add('camara')
     if (p >= AVION && p < TOTAL && !L.movil) v.add('avion')

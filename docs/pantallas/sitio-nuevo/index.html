@@ -50,27 +50,16 @@
         <h2 class="titular">Sigo te espera.</h2>
         <p class="bajada">El texto avanza contigo y te espera cuando haces una&nbsp;pausa.</p>
       </div>
-      <div class="texto-escena" data-escena="3">
-        <p class="capitulo">Tu guion</p>
-        <h2 class="titular">Tu guion, con intención.</h2>
-        <p class="bajada">Marca lo que quieres decir con fuerza. Pinta los cambios de tono. Destaca lo que no se te puede pasar.</p>
-      </div>
-      <div class="texto-escena" data-escena="4">
-        <p class="capitulo">Grabar</p>
-        <h2 class="titular">Mirando al lente.</h2>
-        <p class="bajada">El texto queda bajo la cámara: miras al lente, no a la pantalla. Pausa cuando quieras y la pausa no queda en el video. Lejos del teléfono, pausa con la palma.</p>
-      </div>
+      <!-- E3/E4 fuera del prototipo corto (solo E1/E2/E5). Nodos conservados ocultos por si el motor los consulta. -->
+      <div class="texto-escena" data-escena="3" hidden aria-hidden="true"></div>
+      <div class="texto-escena" data-escena="4" hidden aria-hidden="true"></div>
       <div class="texto-escena" data-escena="5">
         <p class="capitulo">Tu video</p>
         <h2 class="titular">Subtítulos, al ritmo de tu voz.</h2>
         <p class="bajada">Los subtítulos se crean con las palabras de tu guion y el tiempo de tu&nbsp;voz.</p>
         <p class="estilos-subtitulo" aria-hidden="true"><span data-estilo="amarillo">Amarillo</span><span data-estilo="rojo">Rojo</span><span data-estilo="formal">Formal</span></p>
       </div>
-      <div class="texto-escena" data-escena="6">
-        <p class="capitulo">Sin internet</p>
-        <h2 class="titular">Sin internet.</h2>
-        <p class="bajada">La voz de tu idioma se baja sola la primera vez que abres Sigo. Después funciona sin internet, y tu voz no sale del teléfono.</p>
-      </div>
+      <div class="texto-escena" data-escena="6" hidden aria-hidden="true"></div>
 
       <!-- La onda de la voz: E1 y E2 -->
       <canvas class="onda" aria-hidden="true"></canvas>
@@ -214,19 +203,14 @@
       </div>
 
       <!-- Los capitulos -->
-      <nav class="pildora" aria-label="Capítulos">
+      <nav class="pildora" aria-label="Cómo funciona">
         <span class="pildora-fondo" aria-hidden="true"></span>
         <a href="#e1" data-capitulo="1">Leer</a>
         <a href="#e2" data-capitulo="2">Te espera</a>
-        <a href="#e3" data-capitulo="3">Tu guion</a>
-        <a href="#e4" data-capitulo="4">Grabar</a>
         <a href="#e5" data-capitulo="5">Tu video</a>
-        <a href="#e6" data-capitulo="6">Sin internet</a>
       </nav>
     </div>
-    <!-- Anclas de los capitulos, a la altura de cada escena -->
-    <span class="ancla" id="e1"></span><span class="ancla" id="e2"></span><span class="ancla" id="e3"></span>
-    <span class="ancla" id="e4"></span><span class="ancla" id="e5"></span><span class="ancla" id="e6"></span>
+    <span class="ancla" id="e1"></span><span class="ancla" id="e2"></span><span class="ancla" id="e5"></span>
   </section>
 
   <!-- Ancla semántica: Cómo funciona = escenas reales E1 (hablas), E2 (espera), E5 (subtítulos) -->

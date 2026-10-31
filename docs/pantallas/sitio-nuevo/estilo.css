@@ -287,3 +287,113 @@ footer.pie {
   .entrada { padding-top: calc(5.5svh + env(safe-area-inset-top, 0px)); }
   .titular-entrada { margin-top: 2.8svh; }
 }
+
+/* --- Ronda 3: ritmo, luz, comparación E2 --- */
+
+/* Hero: aire limpio entre frase y teléfono (sin hueco muerto ni solape). */
+.titular-entrada {
+  margin-top: 1.8svh;
+  margin-bottom: 0;
+  letter-spacing: -0.01em;
+}
+@media (min-width: 900px) {
+  /* Marca y frase a la vara del vivo; el teléfono vive a la derecha (ver escenas E0). */
+  .entrada {
+    padding-top: calc(5svh + env(safe-area-inset-top, 0px));
+    padding-right: min(42vw, 520px); /* reserva aire para el teléfono */
+    box-sizing: border-box;
+  }
+  .titular-entrada {
+    margin-top: 2.4svh;
+    max-width: 11.5em;
+    font-size: clamp(76px, 6.6vw, 142px);
+    line-height: 1.05;
+    text-align: left;
+  }
+  .marca-gigante {
+    width: min(40vw, 30svh * 1.96);
+    margin-right: auto;
+  }
+}
+
+/* Comparación E2: rótulos legibles, contraste inmediato. */
+.rotulo {
+  font-size: clamp(13px, 3.4vw, 15px) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em;
+  text-transform: none !important;
+  opacity: 1 !important;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(12, 11, 10, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  white-space: nowrap;
+}
+.telefono[data-telefono="comun"] .rotulo {
+  color: rgba(242, 236, 232, 0.72) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.telefono[data-telefono="sigo"] .rotulo {
+  color: var(--crema, #F2ECE8) !important;
+  border: 1px solid rgba(240, 192, 112, 0.35);
+  box-shadow: 0 0 0 1px rgba(240, 192, 112, 0.08);
+}
+
+/* Avisos dentro del teléfono: más presentes en el mejor cuadro. */
+.aviso-escapa {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.01em;
+}
+.aviso-espera {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+}
+
+/* Luz: un velo cálido suave sobre el escenario (no reemplaza el barrido fuente). */
+#escenario .fijo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(55% 40% at 50% 12%, rgba(255, 210, 160, 0.10), transparent 70%),
+    radial-gradient(70% 55% at 50% 60%, rgba(240, 170, 110, 0.05), transparent 75%);
+}
+
+/* Transiciones de texto de escena: un poco más respiradas. */
+.texto-escena .capitulo {
+  letter-spacing: 0.14em;
+  opacity: 0.72;
+}
+.texto-escena .bajada {
+  max-width: 28em;
+  line-height: 1.45;
+}
+
+/* Píldora de tres momentos: más compacta y clara. */
+.pildora a {
+  font-weight: 500;
+}
+
+
+/* E2 contraste instantáneo: el común se escapa; Sigo se queda. */
+.telefono[data-telefono="comun"].se-escapa .aviso-escapa {
+  transform: translate(-50%, 0) scale(1.02);
+}
+.telefono[data-telefono="sigo"].espera .aviso-espera {
+  font-size: 16px !important;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.45);
+}
+@media (min-width: 900px) {
+  .rotulo { font-size: 14px !important; }
+  .tarjeta[data-tarjeta="corre"],
+  .tarjeta[data-tarjeta="espera"] {
+    font-size: 15px;
+    letter-spacing: 0.01em;
+  }
+}

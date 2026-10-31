@@ -22,13 +22,26 @@ async function waitReady(page) {
 }
 
 async function scrollToCapitulo(page, k) {
-  // Use ESCENAS best-frame progress (index [3]), not just CAPITULOS markers
+  // ESCENAS best-frame progress (index [3]) on the short E0→E1→E2→E5 timeline
   await page.evaluate((k) => {
     const escenario = document.getElementById('escenario')
-    const BEST = { 1: 1.3, 2: 2.7, 5: 6.1 }
+    const BEST = { 1: 1.25, 2: 2.9, 5: 4.2 }
     window.scrollTo(0, escenario.offsetTop + BEST[k] * window.innerHeight)
   }, k)
-  await new Promise(r => setTimeout(r, 1600))
+  await new Promise(r => setTimeout(r, 1400))
+  // E2: wait until pause contrast is visible (badges), up to ~6s of Reloj loop
+  if (k === 2) {
+    try {
+      await page.waitForFunction(() => {
+        const s = document.querySelector('.telefono[data-telefono="sigo"]')
+        const c = document.querySelector('.telefono[data-telefono="comun"]')
+        return (s && s.classList.contains('espera')) || (c && c.classList.contains('se-escapa'))
+      }, { timeout: 7000 })
+      await new Promise(r => setTimeout(r, 400))
+    } catch (e) {
+      console.log('WARN E2 badges not yet visible')
+    }
+  }
 }
 
 async function measure(page, label) {

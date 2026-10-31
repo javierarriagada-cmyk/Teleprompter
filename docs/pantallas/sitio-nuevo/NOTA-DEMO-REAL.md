@@ -1,20 +1,17 @@
-# Demo real en el prototipo
+# Demo real en el prototipo (sitio-nuevo)
 
-## Qué se reutiliza sin cambiar
-Copias byte-idénticas de `sitio/fuente/` en `demo-real/`:
+Copia de trabajo de `sitio/fuente/` para abrir el prototipo con doble clic (`file://`).
 
-- `demo.js`, `lectura.js`, `pantalla.js`, `onda.js`, `franja.js`, `telefono.html`
-- `escenas.fuente.js` = copia prístina de `escenas.js` (referencia; no se carga)
-- vendor GSAP / ScrollTrigger / Lenis y fuentes woff2
+## Desvíos documentados (únicos)
 
-«Cómo funciona» = escenas reales E1 (hablas → te sigue), E2 (pausa → te espera), E5 (video + subtítulos). Reduced-motion: el motor ya congela cada escena en su mejor cuadro (`ESCENAS[i][3]`).
+1. **E0 (primera pantalla)**  
+   - Móvil: marca + frase + teléfono juntos sobre el pliegue, con aire limpio entre frase y teléfono (el vivo hace peek).  
+   - Escritorio: marca y frase a la vara del vivo a la izquierda; teléfono a la derecha, sin tapar «que sigue tu voz.», casi entero a la vista.
 
-## Adaptadores mínimos (file://)
-1. `#demo-datos` inline en `index.html` (misma data que produce el build; evita fetch CORS en file://).
-2. `demo-real/file-adapter.css`: solo `@font-face` con rutas relativas a `fuentes/`.
-3. Scripts y CSS con rutas relativas (sin `/fuente/...` absolutos).
+2. **Línea de tiempo corta (solo «Cómo funciona»)**  
+   Solo E0 → E1 (hablas) → E2 (espera / comparación con un teleprompter común) → E5 (subtítulos).  
+   E3 (formatos), E4 (lente/cámara) y E6 (sin internet) no aparecen en el scroll: umbrales > TOTAL.  
+   Los ids de escena 1/2/5 se conservan para textos y píldora.
 
-## Único desvío de lógica visual
-`demo-real/escenas.js` vs `escenas.fuente.js`: solo las medidas de **E0** (móvil y escritorio). La portada publicada hace *peek* del teléfono y deja un hueco muerto entre frase y teléfono; el encargo pide marca + frase + demo juntos sobre el pliegue, teléfono legible. E1–E6, Reloj, Pantalla, reduced-motion: iguales a la fuente.
-
-Diff exacto: `diff demo-real/escenas.fuente.js demo-real/escenas.js`.
+El motor (`demo.js`, `pantalla.js`, `lectura.js`, `onda.js`, reduced-motion, teléfono) es el publicado.  
+`escenas.fuente.js` es la referencia byte-a-byte del fuente; no se usa en runtime.
