@@ -7,47 +7,230 @@
 <meta name="description" content="Teleprompter que sigue tu voz: el texto avanza mientras lees en voz alta.">
 <meta name="theme-color" content="#0B0A09">
 <meta name="robots" content="noindex,nofollow">
+<link rel="preload" href="demo-real/fuentes/source-serif-4-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="demo-real/estilo.css">
+<link rel="stylesheet" href="demo-real/file-adapter.css">
 <link rel="stylesheet" href="estilo.css">
-<link rel="stylesheet" href="demo-real/telefono.css">
+<script>document.documentElement.classList.add('js')</script>
 </head>
-<body>
+<body class="portada">
 <div class="grano" aria-hidden="true"></div>
-<nav class="selector" aria-label="Idioma">
-  <a href="#" aria-current="true">ES</a>
-  <a href="#" title="English (en el sitio publicado)">EN</a>
-  <a href="#" title="Português (en el sitio publicado)">PT</a>
+<nav class="idioma idioma-arriba" aria-label="Idioma">
+  <a href="#" lang="es" aria-current="page">ES</a><span aria-hidden="true">·</span><a href="#" lang="en" title="English (en el sitio publicado)">EN</a><span aria-hidden="true">·</span><a href="#" lang="pt" title="Português (en el sitio publicado)">PT</a>
 </nav>
 
 <main>
-  <!-- Portada + Cómo funciona: un solo escenario sticky con la demo REAL -->
-  <section class="demo-escenario" data-demo-escenario aria-label="Portada y cómo funciona">
-    <div class="demo-pegado">
-      <div class="demo-composicion">
-        <div class="hero-copy" data-hero-copy>
-          <h1 class="hero-marca"><svg class="marca-svg" viewBox="90 151.84 252 128.32" role="img" aria-label="Sigo"><defs><filter id="resplandor-hero" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="16"/></filter></defs><circle class="resplandor" cx="313.53" cy="191.04" r="38.43" filter="url(#resplandor-hero)"/><path d="M118.47 251.42L118.47 251.42Q109.86 251.42 102.25 249.44Q94.63 247.45 90 244.80L90 244.80L90.40 224.67L100.20 224.67L103.24 240.43Q106.29 241.76 109.60 242.55L109.60 242.55Q113.44 243.48 118.07 243.48L118.07 243.48Q124.43 243.48 128.53 241.69Q132.64 239.90 134.63 236.66Q136.61 233.41 136.61 229.44L136.61 229.44Q136.61 225.60 135.09 222.95Q133.57 220.30 130.32 218.25Q127.08 216.20 121.78 214.21L121.78 214.21L117.15 212.23Q109.60 209.18 103.77 205.54Q97.95 201.90 94.63 196.80Q91.32 191.70 91.32 184.15L91.32 184.15Q91.32 176.21 95.56 170.65Q99.80 165.08 107.08 162.17Q114.37 159.26 123.64 159.26L123.64 159.26Q131.71 159.26 138.07 161.11Q144.43 162.96 148.27 165.48L148.27 165.48L147.74 184.42L138.20 184.42L135.16 169.32Q134.63 169.06 134.23 168.92L134.23 168.92Q129.73 167.07 123.90 167.07L123.90 167.07Q118.87 167.07 115.29 168.73Q111.72 170.38 109.73 173.29Q107.74 176.21 107.74 180.05L107.74 180.05Q107.74 183.76 109.33 186.40Q110.92 189.05 114.17 191.10Q117.41 193.16 122.31 195.14L122.31 195.14L127.21 197.13Q135.42 200.44 141.25 204.15Q147.07 207.86 150.12 212.89Q153.17 217.92 153.17 225.20L153.17 225.20Q153.17 233.28 148.86 239.17Q144.56 245.07 136.81 248.24Q129.06 251.42 118.47 251.42ZM198.85 249.30L163.63 249.30L163.63 242.29L172.90 241.36Q172.90 240.96 173.03 240.43L173.03 240.43Q173.03 235.53 173.03 230.37L173.03 230.37L173.03 205.21Q173.03 201.23 172.90 197.13L172.90 197.13L162.83 196.47L162.83 190.11L185.61 182.83L189.85 183.49L189.71 200.84L189.71 230.37Q189.71 235.53 189.85 240.43L189.85 240.43Q189.85 240.96 189.85 241.49L189.85 241.49L198.85 242.29L198.85 249.30ZM180.97 171.44L180.97 171.44Q176.74 171.44 173.76 168.59Q170.78 165.75 170.78 161.64L170.78 161.64Q170.78 157.40 173.76 154.62Q176.74 151.84 180.97 151.84L180.97 151.84Q185.34 151.84 188.26 154.62Q191.17 157.40 191.17 161.64L191.17 161.64Q191.17 165.75 188.26 168.59Q185.34 171.44 180.97 171.44ZM235.93 280.16L235.93 280.16Q226.26 280.16 219.77 278.11Q213.29 276.05 210.04 272.48Q206.80 268.90 206.80 264.27L206.80 264.27Q206.80 260.43 208.92 257.51Q211.03 254.60 215.40 252.48L215.40 252.48Q218.32 251.16 222.29 249.97L222.29 249.97L222.29 248.38Q216.86 247.45 213.68 245.00Q210.50 242.55 210.50 237.78L210.50 237.78Q210.50 233.28 213.68 230.17Q216.86 227.06 222.69 224.54L222.69 224.54L222.69 223.48Q222.55 223.48 222.55 223.48L222.55 223.48Q216.46 220.83 213.09 215.93Q209.71 211.03 209.71 204.15L209.71 204.15Q209.71 197.53 213.09 192.50Q216.46 187.46 222.55 184.75Q228.65 182.03 236.86 182.03L236.86 182.03Q242.68 182.03 247.05 183.29Q251.42 184.55 254.47 186.80L254.47 186.80Q256.72 188.65 258.18 190.64L258.18 190.64L258.97 190.64L271.15 181.24L275.79 181.90L275.79 194.88L262.15 194.88Q262.81 196.07 263.21 197.39L263.21 197.39Q264.14 200.31 264.14 203.88L264.14 203.88Q264.14 210.64 260.83 215.60Q257.51 220.57 251.49 223.35Q245.46 226.13 236.99 226.13L236.99 226.13Q231.29 226.13 226.53 224.94L226.53 224.94Q225.73 225.73 225.20 226.53L225.20 226.53Q223.88 228.51 223.88 231.16L223.88 231.16Q223.88 234.21 226.06 235.86Q228.25 237.52 233.28 237.52L233.28 237.52L249.83 237.52Q258.18 237.52 263.54 239.84Q268.90 242.15 271.42 246.19Q273.93 250.23 273.93 255.53L273.93 255.53Q273.93 260.69 271.09 265.19Q268.24 269.70 263.14 273.07Q258.04 276.45 251.09 278.30Q244.14 280.16 235.93 280.16ZM225.60 251.42L225.60 251.42Q224.67 252.35 223.88 253.28L223.88 253.28Q222.42 255.13 221.63 257.18Q220.83 259.24 220.83 261.75L220.83 261.75Q220.83 264.93 222.69 267.45Q224.54 269.96 228.38 271.35Q232.22 272.74 238.45 272.74L238.45 272.74Q245.46 272.74 250.23 271.09Q255.00 269.43 257.45 266.65Q259.90 263.87 259.90 260.43L259.90 260.43Q259.90 256.46 257.12 254.01Q254.34 251.56 248.24 251.56L248.24 251.56L231.16 251.56Q228.65 251.56 226.53 251.42L226.53 251.42Q226.00 251.42 225.60 251.42ZM236.99 219.38L236.99 219.38Q240.70 219.38 243.35 217.52Q245.99 215.67 247.32 212.16Q248.64 208.65 248.64 203.88Q248.64 199.12 247.32 195.67Q245.99 192.23 243.41 190.44Q240.83 188.65 237.12 188.65L237.12 188.65Q233.55 188.65 230.90 190.51Q228.25 192.36 226.92 195.81Q225.60 199.25 225.60 204.02Q225.60 208.78 226.92 212.23Q228.25 215.67 230.77 217.52Q233.28 219.38 236.99 219.38Z" fill="currentColor"/><circle class="punto" cx="313.53" cy="191.04" r="28.47"/></svg></h1>
-          <p class="hero-frase">El teleprompter<br>que sigue tu&nbsp;voz.</p>
+<section class="escenario" id="escenario" aria-label="Sigo, escena por escena">
+    <div class="fijo">
+      <!-- Las luces de cada escena: se encienden y apagan con el scroll. -->
+      <div class="luces" aria-hidden="true">
+        <div class="luz luz-entrada"></div>
+        <div class="luz luz-tibia"></div>
+        <div class="luz luz-duelo"></div>
+        <div class="luz luz-color"></div>
+        <div class="luz luz-lente"></div>
+        <div class="luz luz-cine"></div>
+        <div class="luz luz-noche"></div>
+      </div>
+
+      <!-- E0 -->
+      <header class="entrada" data-escena="0">
+        <h1 class="marca-gigante"><svg class="marca-svg" viewBox="90 151.84 252 128.32" role="img" aria-label="Sigo"><defs><filter id="resplandor-entrada-es" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="16"/></filter></defs><circle class="resplandor" cx="313.53" cy="191.04" r="38.43" filter="url(#resplandor-entrada-es)"/><path d="M118.47 251.42L118.47 251.42Q109.86 251.42 102.25 249.44Q94.63 247.45 90 244.80L90 244.80L90.40 224.67L100.20 224.67L103.24 240.43Q106.29 241.76 109.60 242.55L109.60 242.55Q113.44 243.48 118.07 243.48L118.07 243.48Q124.43 243.48 128.53 241.69Q132.64 239.90 134.63 236.66Q136.61 233.41 136.61 229.44L136.61 229.44Q136.61 225.60 135.09 222.95Q133.57 220.30 130.32 218.25Q127.08 216.20 121.78 214.21L121.78 214.21L117.15 212.23Q109.60 209.18 103.77 205.54Q97.95 201.90 94.63 196.80Q91.32 191.70 91.32 184.15L91.32 184.15Q91.32 176.21 95.56 170.65Q99.80 165.08 107.08 162.17Q114.37 159.26 123.64 159.26L123.64 159.26Q131.71 159.26 138.07 161.11Q144.43 162.96 148.27 165.48L148.27 165.48L147.74 184.42L138.20 184.42L135.16 169.32Q134.63 169.06 134.23 168.92L134.23 168.92Q129.73 167.07 123.90 167.07L123.90 167.07Q118.87 167.07 115.29 168.73Q111.72 170.38 109.73 173.29Q107.74 176.21 107.74 180.05L107.74 180.05Q107.74 183.76 109.33 186.40Q110.92 189.05 114.17 191.10Q117.41 193.16 122.31 195.14L122.31 195.14L127.21 197.13Q135.42 200.44 141.25 204.15Q147.07 207.86 150.12 212.89Q153.17 217.92 153.17 225.20L153.17 225.20Q153.17 233.28 148.86 239.17Q144.56 245.07 136.81 248.24Q129.06 251.42 118.47 251.42ZM198.85 249.30L163.63 249.30L163.63 242.29L172.90 241.36Q172.90 240.96 173.03 240.43L173.03 240.43Q173.03 235.53 173.03 230.37L173.03 230.37L173.03 205.21Q173.03 201.23 172.90 197.13L172.90 197.13L162.83 196.47L162.83 190.11L185.61 182.83L189.85 183.49L189.71 200.84L189.71 230.37Q189.71 235.53 189.85 240.43L189.85 240.43Q189.85 240.96 189.85 241.49L189.85 241.49L198.85 242.29L198.85 249.30ZM180.97 171.44L180.97 171.44Q176.74 171.44 173.76 168.59Q170.78 165.75 170.78 161.64L170.78 161.64Q170.78 157.40 173.76 154.62Q176.74 151.84 180.97 151.84L180.97 151.84Q185.34 151.84 188.26 154.62Q191.17 157.40 191.17 161.64L191.17 161.64Q191.17 165.75 188.26 168.59Q185.34 171.44 180.97 171.44ZM235.93 280.16L235.93 280.16Q226.26 280.16 219.77 278.11Q213.29 276.05 210.04 272.48Q206.80 268.90 206.80 264.27L206.80 264.27Q206.80 260.43 208.92 257.51Q211.03 254.60 215.40 252.48L215.40 252.48Q218.32 251.16 222.29 249.97L222.29 249.97L222.29 248.38Q216.86 247.45 213.68 245.00Q210.50 242.55 210.50 237.78L210.50 237.78Q210.50 233.28 213.68 230.17Q216.86 227.06 222.69 224.54L222.69 224.54L222.69 223.48Q222.55 223.48 222.55 223.48L222.55 223.48Q216.46 220.83 213.09 215.93Q209.71 211.03 209.71 204.15L209.71 204.15Q209.71 197.53 213.09 192.50Q216.46 187.46 222.55 184.75Q228.65 182.03 236.86 182.03L236.86 182.03Q242.68 182.03 247.05 183.29Q251.42 184.55 254.47 186.80L254.47 186.80Q256.72 188.65 258.18 190.64L258.18 190.64L258.97 190.64L271.15 181.24L275.79 181.90L275.79 194.88L262.15 194.88Q262.81 196.07 263.21 197.39L263.21 197.39Q264.14 200.31 264.14 203.88L264.14 203.88Q264.14 210.64 260.83 215.60Q257.51 220.57 251.49 223.35Q245.46 226.13 236.99 226.13L236.99 226.13Q231.29 226.13 226.53 224.94L226.53 224.94Q225.73 225.73 225.20 226.53L225.20 226.53Q223.88 228.51 223.88 231.16L223.88 231.16Q223.88 234.21 226.06 235.86Q228.25 237.52 233.28 237.52L233.28 237.52L249.83 237.52Q258.18 237.52 263.54 239.84Q268.90 242.15 271.42 246.19Q273.93 250.23 273.93 255.53L273.93 255.53Q273.93 260.69 271.09 265.19Q268.24 269.70 263.14 273.07Q258.04 276.45 251.09 278.30Q244.14 280.16 235.93 280.16ZM225.60 251.42L225.60 251.42Q224.67 252.35 223.88 253.28L223.88 253.28Q222.42 255.13 221.63 257.18Q220.83 259.24 220.83 261.75L220.83 261.75Q220.83 264.93 222.69 267.45Q224.54 269.96 228.38 271.35Q232.22 272.74 238.45 272.74L238.45 272.74Q245.46 272.74 250.23 271.09Q255.00 269.43 257.45 266.65Q259.90 263.87 259.90 260.43L259.90 260.43Q259.90 256.46 257.12 254.01Q254.34 251.56 248.24 251.56L248.24 251.56L231.16 251.56Q228.65 251.56 226.53 251.42L226.53 251.42Q226.00 251.42 225.60 251.42ZM236.99 219.38L236.99 219.38Q240.70 219.38 243.35 217.52Q245.99 215.67 247.32 212.16Q248.64 208.65 248.64 203.88Q248.64 199.12 247.32 195.67Q245.99 192.23 243.41 190.44Q240.83 188.65 237.12 188.65L237.12 188.65Q233.55 188.65 230.90 190.51Q228.25 192.36 226.92 195.81Q225.60 199.25 225.60 204.02Q225.60 208.78 226.92 212.23Q228.25 215.67 230.77 217.52Q233.28 219.38 236.99 219.38Z" fill="currentColor"/><circle class="punto" cx="313.53" cy="191.04" r="28.47"/></svg></h1>
+        <p class="titular-entrada">El teleprompter que sigue&nbsp;tu&nbsp;voz.</p>
+      </header>
+
+      <!-- Los textos de las escenas E1 a E6 -->
+      <div class="texto-escena" data-escena="1">
+        <p class="capitulo">Cómo funciona</p>
+        <h2 class="titular" data-palabra-a-palabra>Tú hablas. Sigo te sigue.</h2>
+        <p class="bajada">Hablas y el texto avanza contigo. Sin tocar nada.</p>
+      </div>
+      <div class="texto-escena arriba" data-escena="2">
+        <p class="capitulo">Te espera</p>
+        <h2 class="titular">Sigo te espera.</h2>
+        <p class="bajada">El texto avanza contigo y te espera cuando haces una&nbsp;pausa.</p>
+      </div>
+      <div class="texto-escena" data-escena="3">
+        <p class="capitulo">Tu guion</p>
+        <h2 class="titular">Tu guion, con intención.</h2>
+        <p class="bajada">Marca lo que quieres decir con fuerza. Pinta los cambios de tono. Destaca lo que no se te puede pasar.</p>
+      </div>
+      <div class="texto-escena" data-escena="4">
+        <p class="capitulo">Grabar</p>
+        <h2 class="titular">Mirando al lente.</h2>
+        <p class="bajada">El texto queda bajo la cámara: miras al lente, no a la pantalla. Pausa cuando quieras y la pausa no queda en el video. Lejos del teléfono, pausa con la palma.</p>
+      </div>
+      <div class="texto-escena" data-escena="5">
+        <p class="capitulo">Tu video</p>
+        <h2 class="titular">Subtítulos, al ritmo de tu voz.</h2>
+        <p class="bajada">Los subtítulos se crean con las palabras de tu guion y el tiempo de tu&nbsp;voz.</p>
+        <p class="estilos-subtitulo" aria-hidden="true"><span data-estilo="amarillo">Amarillo</span><span data-estilo="rojo">Rojo</span><span data-estilo="formal">Formal</span></p>
+      </div>
+      <div class="texto-escena" data-escena="6">
+        <p class="capitulo">Sin internet</p>
+        <h2 class="titular">Sin internet.</h2>
+        <p class="bajada">La voz de tu idioma se baja sola la primera vez que abres Sigo. Después funciona sin internet, y tu voz no sale del teléfono.</p>
+      </div>
+
+      <!-- La onda de la voz: E1 y E2 -->
+      <canvas class="onda" aria-hidden="true"></canvas>
+
+      <!-- Los telefonos -->
+      <div class="telefonos" aria-hidden="true">
+        <div class="telefono" data-telefono="comun">
+  <div class="rotulo">Un teleprompter común</div>
+  <div class="telefono-canto"></div>
+  <div class="telefono-cuerpo">
+    <div class="pantalla-lectura">
+      <div class="camara-detras">
+        <i class="bokeh b1"></i><i class="bokeh b2"></i><i class="bokeh b3"></i><i class="bokeh b4"></i><i class="bokeh b5"></i>
+      </div>
+      <div class="lectura serif">
+        <div class="banda"></div>
+        <div class="panel-lectura"></div>
+        <div class="desliza">
+          <div class="capa-destacado"></div>
+          <div class="columna"><div class="line"><span data-token="0">Hoy</span> <span data-token="1">quiero</span> <span data-token="2">contarte</span> <span data-token="3">algo</span> <span data-token="4" class="f-negrita">importante.</span> <span data-token="5">Al</span> <span data-token="6">grabar</span> <span data-token="7">un</span> <span data-token="8">video,</span> <span data-token="9">corto</span> <span data-token="10">o</span> <span data-token="11">largo,</span> <span data-token="12">leer</span> <span data-token="13">de</span> <span data-token="14">un</span> <span data-token="15">papel</span> <span data-token="16">siempre</span> <span data-token="17">se</span> <span data-token="18">nota.</span> <span data-token="19">Ahora</span> <span data-token="20">leo,</span> <span data-token="21">hablo</span> <span data-token="22">y</span> <span data-token="23" class="f-salvia">el</span> <span data-token="24" class="f-salvia">texto</span> <span data-token="25" class="f-salvia">me</span> <span data-token="26" class="f-salvia">sigue.</span> <span data-token="27" class="f-ambar">Sin</span> <span data-token="28" class="f-ambar">apuro.</span> <span data-token="29" class="f-celeste">Sin</span> <span data-token="30" class="f-celeste">perder</span> <span data-token="31" class="f-celeste">el</span> <span data-token="32" class="f-celeste">hilo.</span> <span data-token="33">Y</span> <span data-token="34">lo</span> <span data-token="35">que</span> <span data-token="36">no</span> <span data-token="37">se</span> <span data-token="38">me</span> <span data-token="39">puede</span> <span data-token="40">pasar,</span> <span data-token="41" class="f-destacado">lo</span><span class="f-destacado"> </span><span data-token="42" class="f-destacado">marco</span><span class="f-destacado"> </span><span data-token="43" class="f-destacado">en</span><span class="f-destacado"> </span><span data-token="44" class="f-destacado">amarillo.</span></div><div class="line"><span data-token="45">Si</span> <span data-token="46">me</span> <span data-token="47">detengo</span> <span data-token="48">a</span> <span data-token="49">pensar,</span> <span data-token="50">el</span> <span data-token="51">texto</span> <span data-token="52">me</span> <span data-token="53">espera.</span> <span data-token="54">Cuando</span> <span data-token="55">vuelvo</span> <span data-token="56">a</span> <span data-token="57">hablar,</span> <span data-token="58">sigue</span> <span data-token="59">conmigo.</span> <span data-token="60">Miro</span> <span data-token="61">al</span> <span data-token="62">lente,</span> <span data-token="63">no</span> <span data-token="64">a</span> <span data-token="65">la</span> <span data-token="66">pantalla,</span> <span data-token="67">y</span> <span data-token="68">quien</span> <span data-token="69">me</span> <span data-token="70">ve</span> <span data-token="71">siente</span> <span data-token="72">que</span> <span data-token="73">le</span> <span data-token="74">hablo</span> <span data-token="75">directamente.</span></div><div class="line"><span data-token="76">Si</span> <span data-token="77">pauso,</span> <span data-token="78">ese</span> <span data-token="79">tramo</span> <span data-token="80">no</span> <span data-token="81">queda.</span> <span data-token="82">Al</span> <span data-token="83">terminar,</span> <span data-token="84">el</span> <span data-token="85">video</span> <span data-token="86">ya</span> <span data-token="87">lleva</span> <span data-token="88">sus</span> <span data-token="89">subtítulos.</span> <span data-token="90">Lo</span> <span data-token="91">comparto</span> <span data-token="92">así,</span> <span data-token="93">tal</span> <span data-token="94">como</span> <span data-token="95">salió.</span></div></div>
         </div>
-        <div class="tel-escenario" aria-hidden="true">
-          <div class="tel-escala">
-            <div data-tel-mount></div>
-          </div>
+        <div class="velo"></div>
+        <div class="marcador-fijo"></div>
+      </div>
+      <!-- E2: lo que pasa en la pausa, a la vista sin leer -->
+      <div class="aviso aviso-espera"><i class="punto-respira"></i>Te espera</div>
+      <div class="aviso aviso-escapa"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Se te escapó</div>
+      <!-- E5: el video grabado con Sigo, vertical -->
+      <div class="video">
+        <div class="escena-video">
+          <i class="muro"></i><i class="ventana"></i><i class="lampara"></i><i class="repisa"></i><i class="planta"></i>
+          <i class="bokeh v1"></i><i class="bokeh v2"></i><i class="bokeh v3"></i><i class="bokeh v4"></i><i class="bokeh v5"></i><i class="bokeh v6"></i>
+          <i class="polvo"></i>
         </div>
-        <div class="como-leyenda" data-como-leyenda>
-          <p class="como-kicker">Cómo funciona</p>
-          <p class="como-frase activa" data-como-frase="0">Tú hablas. Sigo te&nbsp;sigue.</p>
-          <p class="como-frase" data-como-frase="1">El texto avanza contigo y te espera cuando haces una&nbsp;pausa.</p>
-          <p class="como-frase" data-como-frase="2">Los subtítulos se crean con las palabras de tu guion y el tiempo de tu&nbsp;voz.</p>
+        <div class="video-estilo">Amarillo</div>
+        <div class="capa-subtitulos" data-estilo="amarillo"><div class="subtitulo"></div></div>
+        <div class="video-controles">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/></svg>
+          <span class="video-tiempo">0:00</span>
+          <span class="video-barra"><i></i></span>
+          <span class="video-total">0:40</span>
         </div>
       </div>
+      <!-- E6: la senal, grande -->
+      <div class="sin-senal">
+        <span class="senal-grande"><i></i><i></i><i></i><i></i></span>
+        <svg class="wifi-grande" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 9a14 14 0 0 1 19 0"/><path d="M6 12.6a9 9 0 0 1 12 0"/><path d="M9.4 16a4 4 0 0 1 5.2 0"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg>
+        <svg class="avion-grande" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>
+        <span class="sin-senal-texto">Modo avión</span>
+      </div>
+      <div class="barra-estado">
+        <span class="hora">10:08</span>
+        <span class="iconos">
+          <svg class="icono-avion" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>
+          <svg class="icono-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M2.5 9a14 14 0 0 1 19 0"/><path d="M6 12.6a9 9 0 0 1 12 0"/><path d="M9.4 16a4 4 0 0 1 5.2 0"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg>
+          <span class="senal"><i></i><i></i><i></i><i></i></span>
+          <span class="bateria"><i></i></span>
+        </span>
+      </div>
+      <div class="haz"></div>
+      <div class="punto-grabando"></div>
+      <div class="lente"></div>
     </div>
-    <!-- Tramos de scroll: hero + 3 momentos -->
-    <div class="demo-tramo demo-tramo-hero" data-demo-tramo="hero" aria-hidden="true"></div>
-    <div class="demo-tramos-como" id="como">
-      <div class="demo-tramo" data-demo-tramo="0"><span class="sr-only">Hablas y el texto te sigue</span></div>
-      <div class="demo-tramo" data-demo-tramo="1"><span class="sr-only">Te detienes y el texto te espera</span></div>
-      <div class="demo-tramo" data-demo-tramo="2"><span class="sr-only">Terminas y el video ya lleva subtítulos</span></div>
+  </div>
+</div>
+
+        <div class="telefono" data-telefono="sigo">
+  <div class="rotulo">Sigo</div>
+  <div class="telefono-canto"></div>
+  <div class="telefono-cuerpo">
+    <div class="pantalla-lectura">
+      <div class="camara-detras">
+        <i class="bokeh b1"></i><i class="bokeh b2"></i><i class="bokeh b3"></i><i class="bokeh b4"></i><i class="bokeh b5"></i>
+      </div>
+      <div class="lectura serif">
+        <div class="banda"></div>
+        <div class="panel-lectura"></div>
+        <div class="desliza">
+          <div class="capa-destacado"></div>
+          <div class="columna"><div class="line"><span data-token="0">Hoy</span> <span data-token="1">quiero</span> <span data-token="2">contarte</span> <span data-token="3">algo</span> <span data-token="4" class="f-negrita">importante.</span> <span data-token="5">Al</span> <span data-token="6">grabar</span> <span data-token="7">un</span> <span data-token="8">video,</span> <span data-token="9">corto</span> <span data-token="10">o</span> <span data-token="11">largo,</span> <span data-token="12">leer</span> <span data-token="13">de</span> <span data-token="14">un</span> <span data-token="15">papel</span> <span data-token="16">siempre</span> <span data-token="17">se</span> <span data-token="18">nota.</span> <span data-token="19">Ahora</span> <span data-token="20">leo,</span> <span data-token="21">hablo</span> <span data-token="22">y</span> <span data-token="23" class="f-salvia">el</span> <span data-token="24" class="f-salvia">texto</span> <span data-token="25" class="f-salvia">me</span> <span data-token="26" class="f-salvia">sigue.</span> <span data-token="27" class="f-ambar">Sin</span> <span data-token="28" class="f-ambar">apuro.</span> <span data-token="29" class="f-celeste">Sin</span> <span data-token="30" class="f-celeste">perder</span> <span data-token="31" class="f-celeste">el</span> <span data-token="32" class="f-celeste">hilo.</span> <span data-token="33">Y</span> <span data-token="34">lo</span> <span data-token="35">que</span> <span data-token="36">no</span> <span data-token="37">se</span> <span data-token="38">me</span> <span data-token="39">puede</span> <span data-token="40">pasar,</span> <span data-token="41" class="f-destacado">lo</span><span class="f-destacado"> </span><span data-token="42" class="f-destacado">marco</span><span class="f-destacado"> </span><span data-token="43" class="f-destacado">en</span><span class="f-destacado"> </span><span data-token="44" class="f-destacado">amarillo.</span></div><div class="line"><span data-token="45">Si</span> <span data-token="46">me</span> <span data-token="47">detengo</span> <span data-token="48">a</span> <span data-token="49">pensar,</span> <span data-token="50">el</span> <span data-token="51">texto</span> <span data-token="52">me</span> <span data-token="53">espera.</span> <span data-token="54">Cuando</span> <span data-token="55">vuelvo</span> <span data-token="56">a</span> <span data-token="57">hablar,</span> <span data-token="58">sigue</span> <span data-token="59">conmigo.</span> <span data-token="60">Miro</span> <span data-token="61">al</span> <span data-token="62">lente,</span> <span data-token="63">no</span> <span data-token="64">a</span> <span data-token="65">la</span> <span data-token="66">pantalla,</span> <span data-token="67">y</span> <span data-token="68">quien</span> <span data-token="69">me</span> <span data-token="70">ve</span> <span data-token="71">siente</span> <span data-token="72">que</span> <span data-token="73">le</span> <span data-token="74">hablo</span> <span data-token="75">directamente.</span></div><div class="line"><span data-token="76">Si</span> <span data-token="77">pauso,</span> <span data-token="78">ese</span> <span data-token="79">tramo</span> <span data-token="80">no</span> <span data-token="81">queda.</span> <span data-token="82">Al</span> <span data-token="83">terminar,</span> <span data-token="84">el</span> <span data-token="85">video</span> <span data-token="86">ya</span> <span data-token="87">lleva</span> <span data-token="88">sus</span> <span data-token="89">subtítulos.</span> <span data-token="90">Lo</span> <span data-token="91">comparto</span> <span data-token="92">así,</span> <span data-token="93">tal</span> <span data-token="94">como</span> <span data-token="95">salió.</span></div></div>
+        </div>
+        <div class="velo"></div>
+        <div class="marcador-fijo"></div>
+      </div>
+      <!-- E2: lo que pasa en la pausa, a la vista sin leer -->
+      <div class="aviso aviso-espera"><i class="punto-respira"></i>Te espera</div>
+      <div class="aviso aviso-escapa"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Se te escapó</div>
+      <!-- E5: el video grabado con Sigo, vertical -->
+      <div class="video">
+        <div class="escena-video">
+          <i class="muro"></i><i class="ventana"></i><i class="lampara"></i><i class="repisa"></i><i class="planta"></i>
+          <i class="bokeh v1"></i><i class="bokeh v2"></i><i class="bokeh v3"></i><i class="bokeh v4"></i><i class="bokeh v5"></i><i class="bokeh v6"></i>
+          <i class="polvo"></i>
+        </div>
+        <div class="video-estilo">Amarillo</div>
+        <div class="capa-subtitulos" data-estilo="amarillo"><div class="subtitulo"></div></div>
+        <div class="video-controles">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/></svg>
+          <span class="video-tiempo">0:00</span>
+          <span class="video-barra"><i></i></span>
+          <span class="video-total">0:40</span>
+        </div>
+      </div>
+      <!-- E6: la senal, grande -->
+      <div class="sin-senal">
+        <span class="senal-grande"><i></i><i></i><i></i><i></i></span>
+        <svg class="wifi-grande" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 9a14 14 0 0 1 19 0"/><path d="M6 12.6a9 9 0 0 1 12 0"/><path d="M9.4 16a4 4 0 0 1 5.2 0"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg>
+        <svg class="avion-grande" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>
+        <span class="sin-senal-texto">Modo avión</span>
+      </div>
+      <div class="barra-estado">
+        <span class="hora">10:08</span>
+        <span class="iconos">
+          <svg class="icono-avion" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>
+          <svg class="icono-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M2.5 9a14 14 0 0 1 19 0"/><path d="M6 12.6a9 9 0 0 1 12 0"/><path d="M9.4 16a4 4 0 0 1 5.2 0"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg>
+          <span class="senal"><i></i><i></i><i></i><i></i></span>
+          <span class="bateria"><i></i></span>
+        </span>
+      </div>
+      <div class="haz"></div>
+      <div class="punto-grabando"></div>
+      <div class="lente"></div>
     </div>
+  </div>
+</div>
+
+      </div>
+
+      <!-- Tarjetas flotantes: momentos de quien lee -->
+      <div class="tarjetas" aria-hidden="true">
+        <div class="tarjeta" data-tarjeta="espera"><span class="punto-vivo"></span>Te detuviste: el texto espera</div>
+        <div class="tarjeta tenue" data-tarjeta="corre">El otro sigue corriendo</div>
+        <div class="tarjeta formato" data-tarjeta="negrita"><b>Aa</b>Negrita</div>
+        <div class="tarjeta formato" data-tarjeta="ambar"><i class="muestra" style="background:#F0C070"></i>Ámbar</div>
+        <div class="tarjeta formato" data-tarjeta="celeste"><i class="muestra" style="background:#8FB8DE"></i>Celeste</div>
+        <div class="tarjeta formato" data-tarjeta="salvia"><i class="muestra" style="background:#9CC5A1"></i>Verde</div>
+        <div class="tarjeta formato" data-tarjeta="destacado"><i class="muestra" style="background:#FFE066"></i>Destacado</div>
+        <div class="tarjeta" data-tarjeta="lente">El renglón queda bajo el lente</div>
+        <div class="tarjeta" data-tarjeta="camara"><span class="punto-rojo"></span>La cámara, detrás del texto</div>
+        <div class="tarjeta" data-tarjeta="avion"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>Modo avión. El texto sigue.</div>
+      </div>
+
+      <!-- Los capitulos -->
+      <nav class="pildora" aria-label="Capítulos">
+        <span class="pildora-fondo" aria-hidden="true"></span>
+        <a href="#e1" data-capitulo="1">Leer</a>
+        <a href="#e2" data-capitulo="2">Te espera</a>
+        <a href="#e3" data-capitulo="3">Tu guion</a>
+        <a href="#e4" data-capitulo="4">Grabar</a>
+        <a href="#e5" data-capitulo="5">Tu video</a>
+        <a href="#e6" data-capitulo="6">Sin internet</a>
+      </nav>
+    </div>
+    <!-- Anclas de los capitulos, a la altura de cada escena -->
+    <span class="ancla" id="e1"></span><span class="ancla" id="e2"></span><span class="ancla" id="e3"></span>
+    <span class="ancla" id="e4"></span><span class="ancla" id="e5"></span><span class="ancla" id="e6"></span>
   </section>
+
+  <!-- Ancla semántica: Cómo funciona = escenas reales E1 (hablas), E2 (espera), E5 (subtítulos) -->
+  <div id="como" class="sr-only">Cómo funciona</div>
 
   <!-- 3. Video -->
   <section class="seccion" id="video" aria-labelledby="video-titulo">
@@ -141,10 +324,11 @@
   </div>
 </footer>
 
+<script type="application/json" id="demo-datos">{"hastaMs":41641,"palabrasDestacadas":6,"cuadros":[[0,0],[2912,1],[3072,2],[3264,3],[3552,4],[4832,5],[5152,6],[5472,7],[5840,8],[6368,9],[6784,10],[7168,11],[7696,12],[8096,13],[8448,14],[8800,15],[9232,16],[9632,17],[10016,18],[11376,19],[11680,20],[12112,21],[12528,22],[12880,23],[13264,24],[13600,25],[13952,26],[15248,27],[15552,28],[16768,29],[17088,30],[17424,31],[17792,32],[18688,33],[18992,34],[19280,35],[19552,36],[19824,37],[20096,38],[20400,39],[20752,40],[21104,41],[21648,42],[22080,43],[22448,44],[24368,45],[24672,46],[25056,47],[25456,48],[25872,49],[29392,50],[29696,51],[30000,52],[30368,53],[31728,54],[32048,55],[32368,56],[32736,57],[33232,58],[33792,59],[35136,60],[35472,61],[35840,62],[36272,63],[36624,64],[36960,65],[37328,66],[37776,67],[38192,68],[38576,69],[38912,70],[39264,71],[39648,72],[40016,73],[40352,74],[41120,75]],"voz":[[400,699],[748,1191],[1263,1803],[1891,2238],[2294,2930],[3654,3904],[3945,4389],[4461,4712],[4753,5148],[5472,5868],[5932,6135],[6168,6563],[6887,7235],[7291,7542],[7583,7834],[7875,8270],[8334,8826],[8906,9157],[9198,9545],[10221,10617],[10681,10980],[11289,11684],[11748,11951],[11984,12235],[12276,12671],[12736,12987],[13027,13423],[14107,14406],[14455,14850],[15534,15834],[15882,16326],[16398,16649],[16690,17037],[17713,17916],[17949,18200],[18241,18540],[18589,18840],[18881,19132],[19172,19423],[19464,19860],[19924,20319],[20643,20894],[20935,21331],[21395,21646],[21687,22226],[23414,23665],[23706,23957],[23998,24489],[24569,24772],[24805,25248],[28121,28372],[28413,28808],[28872,29123],[29164,29607],[30299,30743],[30815,31258],[31331,31533],[31566,32010],[32342,32737],[32802,33293],[33993,34340],[34397,34648],[34688,35084],[35408,35659],[35700,35903],[35936,36187],[36228,36767],[37115,37318],[37351,37746],[37811,38062],[38102,38353],[38394,38838],[38910,39209],[39258,39509],[39549,39945],[40009,40741]],"subtitulos":[[400,3530,[[["Hoy",400,699],["quiero",748,1191],["contarte",1263,1803]],[["algo",1891,2238],["importante.",2294,2930]]]],[3654,6887,[[["Al",3654,3904],["grabar",3945,4389],["un",4461,4712],["video,",4753,5148]],[["corto",5472,5868],["o",5932,6135],["largo,",6168,6563]]]],[6887,10145,[[["leer",6887,7235],["de",7291,7542],["un",7583,7834],["papel",7875,8270]],[["siempre",8334,8826],["se",8906,9157],["nota.",9198,9545]]]],[10221,14023,[[["Ahora",10221,10617],["leo,",10681,10980],["hablo",11289,11684],["y",11748,11951]],[["el",11984,12235],["texto",12276,12671],["me",12736,12987],["sigue.",13027,13423]]]],[14107,15450,[[["Sin",14107,14406],["apuro.",14455,14850]]]],[15534,17637,[[["Sin",15534,15834],["perder",15882,16326],["el",16398,16649],["hilo.",16690,17037]]]],[17713,22826,[[["Y",17713,17916],["lo",17949,18200],["que",18241,18540],["no",18589,18840],["se",18881,19132],["me",19172,19423],["puede",19464,19860]],[["pasar,",19924,20319],["lo",20643,20894],["marco",20935,21331],["en",21395,21646],["amarillo.",21687,22226]]]],[23414,25848,[[["Si",23414,23665],["me",23706,23957],["detengo",23998,24489],["a",24569,24772],["pensar,",24805,25248]]]],[28121,30207,[[["el",28121,28372],["texto",28413,28808],["me",28872,29123],["espera.",29164,29607]]]],[30299,33893,[[["Cuando",30299,30743],["vuelvo",30815,31258],["a",31331,31533]],[["hablar,",31566,32010],["sigue",32342,32737],["conmigo.",32802,33293]]]],[33993,38910,[[["Miro",33993,34340],["al",34397,34648],["lente,",34688,35084],["no",35408,35659],["a",35700,35903],["la",35936,36187]],[["pantalla,",36228,36767],["y",37115,37318],["quien",37351,37746],["me",37811,38062],["ve",38102,38353],["siente",38394,38838]]]],[38910,41341,[[["que",38910,39209],["le",39258,39509],["hablo",39549,39945],["directamente.",40009,40741]]]]],"pausa":[25248,28121,49],"estilos":{"amarillo":"Amarillo","rojo":"Rojo","formal":"Formal"}}</script>
+<script src="demo-real/vendor/gsap.min.js" defer></script>
+<script src="demo-real/vendor/ScrollTrigger.min.js" defer></script>
+<script src="demo-real/vendor/lenis.min.js" defer></script>
+<script type="module" src="demo-real/demo.js"></script>
 <script src="prototipo.js" defer></script>
-<script type="module">
-import { arrancarDemo } from './demo-real/arrancar.js';
-arrancarDemo();
-</script>
 </body>
 </html>

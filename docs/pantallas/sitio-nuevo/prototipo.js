@@ -1,4 +1,5 @@
-/* Prototipo: video perezoso y revelados. La demo del teléfono vive en demo-real/arrancar.js. */
+/* Prototipo: video perezoso y revelados de secciones bajo el escenario.
+   La demo del teléfono es la real: demo-real/demo.js → escenas.js (sin cambios). */
 (function () {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -28,7 +29,7 @@
 
     async function play() {
       await cargar()
-      caja.classList.add('playing')
+      caja.classList.add('is-playing')
       try { await video.play() } catch (e) {}
     }
 
@@ -39,13 +40,13 @@
     const nodos = document.querySelectorAll('.revela')
     if (!nodos.length) return
     if (reduce || !('IntersectionObserver' in window)) {
-      nodos.forEach((n) => n.classList.add('visible'))
+      nodos.forEach((n) => n.classList.add('revelado'))
       return
     }
     const io = new IntersectionObserver((ents) => {
       ents.forEach((e) => {
         if (e.isIntersecting) {
-          e.target.classList.add('visible')
+          e.target.classList.add('revelado')
           io.unobserve(e.target)
         }
       })

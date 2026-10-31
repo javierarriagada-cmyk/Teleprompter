@@ -1,0 +1,10 @@
+Bibliotecas de la pagina, incluidas aca para que el sitio no le pida nada a otro servidor
+-docs/el-sitio.md v2, seccion 2-. armar.mjs las copia a sitio/public/vendor/.
+
+  gsap.min.js, ScrollTrigger.min.js   GSAP 3.15.0 (npm gsap@3.15.0, dist/)
+      Licencia: GSAP Standard "no charge" License, https://gsap.com/standard-license
+      -gratis desde 2025, incluidos sus plugins-.
+  lenis.min.js                        Lenis 1.3.26 (npm lenis@1.3.26, dist/)
+      Licencia: MIT, en LICENSE-lenis.txt.
+
+Para actualizarlas: npm pack gsap lenis, y copiar esos mismos archivos de dist/.

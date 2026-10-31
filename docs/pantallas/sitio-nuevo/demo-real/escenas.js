@@ -1,3 +1,8 @@
+// COPIA de sitio/fuente/escenas.js para el prototipo docs/pantallas/sitio-nuevo.
+// ÚNICO desvío: posiciones E0 (móvil y escritorio) para composición marca+frase+demo
+// sobre el pliegue. Diff exacto: escenas.fuente.js (idéntico a la fuente) vs este archivo.
+// El motor (Pantalla, Reloj, E1–E6, reduced-motion) es el publicado.
+
 // LA COREOGRAFIA: el telefono fijo y el scroll como hilo. 27-09-2026, docs/el-sitio.md v2.
 //
 // Todo el escenario -E0 a E6- es una sola seccion alta con una capa pegada a la pantalla
@@ -155,7 +160,9 @@ export function iniciarEscenas(datos) {
       // la pildora flota sobre el borde de abajo del telefono.
       const s = Math.min((0.7 * vh) / 800, (0.84 * vw) / 380)
       const cy = 0.265 * vh + 400 * s
-      E.e0 = { x: 0, y: 0.62 * vh + 400 * s - vh / 2, rotationX: 26, rotationY: 0, rotationZ: 0, scale: s * 0.92 }
+      // PROTOTIPO E0 (único desvío vs fuente): teléfono más alto para que
+      // marca + frase + demo se lean juntos sobre el pliegue. La portada publicada hace peek.
+      E.e0 = { x: 0, y: 0.30 * vh + 400 * s - vh / 2, rotationX: 9, rotationY: 0, rotationZ: 0, scale: s * 0.94 }
       E.e1 = { x: 0.1 * vw, y: cy - vh / 2, rotationX: 0, rotationY: -10, rotationZ: 0, scale: s }
       E.e3 = { x: 0, y: cy - vh / 2 + 0.01 * vh, rotationX: 0, rotationY: 7, rotationZ: -1.5, scale: s * 1.02 }
       // En E2 los dos telefonos van derechos, sin giro: el comun mueve su texto en cada cuadro,
@@ -178,7 +185,8 @@ export function iniciarEscenas(datos) {
     } else {
       const s = Math.min((0.82 * vh) / 800, 1)
       const xR = 0.19 * vw
-      E.e0 = { x: 0, y: 0.72 * vh + 400 * s - vh / 2, rotationX: 28, rotationY: 0, rotationZ: 0, scale: s * 0.98 }
+      // PROTOTIPO E0 (único desvío vs fuente): teléfono completo a la vista, marca gigante intacta.
+      E.e0 = { x: 0, y: 0.26 * vh + 400 * s - vh / 2, rotationX: 6, rotationY: 0, rotationZ: 0, scale: Math.min(s * 0.98, (0.64 * vh) / 800) }
       E.e1 = { x: xR, y: 0.01 * vh, rotationX: 4, rotationY: -12, rotationZ: 0, scale: s }
       E.e3 = { x: xR * 0.95, y: 0, rotationX: 0, rotationY: 9, rotationZ: -1.5, scale: s * 1.03 }
       const s2 = Math.min((0.46 * vh) / 800, (0.27 * vw) / 380)

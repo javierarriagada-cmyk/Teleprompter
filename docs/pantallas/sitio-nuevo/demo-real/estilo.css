@@ -1,7 +1,13 @@
-@font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 400; font-display: swap; src: url(../activos/fuentes/source-serif-4-latin-400-normal.woff2) format("woff2"); }
-@font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 600; font-display: swap; src: url(../activos/fuentes/source-serif-4-latin-600-normal.woff2) format("woff2"); }
-@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight: 400; font-display: swap; src: url(../activos/fuentes/source-sans-3-latin-400-normal.woff2) format("woff2"); }
-@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight: 600; font-display: swap; src: url(../activos/fuentes/source-sans-3-latin-600-normal.woff2) format("woff2"); }
+/* EL SITIO, VERSION 2. 27-09-2026, docs/el-sitio.md.
+   La paleta es la de la aplicacion: suelo #151312, y para la entrada un negro mas hondo
+   #0B0A09; letra #E7E1DE, crema #F2ECE8, apagado #9C948E. El rojo #E11D2E es la luz de
+   grabacion: el punto de la marca y el punto de grabar, nada mas. */
+
+@font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 400; font-display: swap; src: url(/fuentes/source-serif-4-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 600; font-display: swap; src: url(/fuentes/source-serif-4-latin-600-normal.woff2) format("woff2"); }
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight: 400; font-display: swap; src: url(/fuentes/source-sans-3-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight: 600; font-display: swap; src: url(/fuentes/source-sans-3-latin-600-normal.woff2) format("woff2"); }
+
 :root {
   color-scheme: dark;
   --hondo: #0B0A09;
@@ -19,6 +25,7 @@
 @media (min-width: 900px) {
   :root { --titular: clamp(96px, 7.4vw, 160px); --margen: 6vw; }
 }
+
 * { box-sizing: border-box; }
 html { background: var(--hondo); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body {
@@ -35,20 +42,31 @@ body {
 a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
 :focus-visible { outline: 2px solid var(--crema); outline-offset: 3px; border-radius: 6px; }
 .solo-lector { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* EL GRANO DE PELICULA. Quieto: un ruido que se mueve en toda la pantalla cuesta cuadros en un
+   telefono de gama media, y quieto ya da la materia. */
 .grano {
   position: fixed;
   inset: 0;
   z-index: 50;
   pointer-events: none;
   opacity: 0.07;
+  /* En su propia capa: se pinta una vez y el compositor lo pone encima. */
   transform: translateZ(0);
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
+
+/* ---------- la marca ---------- */
+
 .marca-svg { display: block; width: 100%; height: auto; overflow: visible; color: var(--crema); }
 .marca-svg .punto { fill: var(--rojo); }
+/* El resplandor del punto: la luz de grabar encendida. Respira, lento. */
 @media (prefers-reduced-motion: reduce) { .marca-svg .resplandor, .telefono.grabando .punto-grabando, .punto-respira, .escena-video { animation: none !important; } }
 .marca-svg .resplandor { fill: var(--rojo); opacity: 0.55; transform-box: fill-box; transform-origin: center; animation: respira 3.2s ease-in-out infinite; }
 @keyframes respira { 0%, 100% { opacity: 0.35; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.12); } }
+
+/* ---------- el escenario: todo lo que pasa con el telefono fijo ---------- */
+
 .escenario { position: relative; height: 1160svh; }
 .fijo {
   position: sticky;
@@ -58,6 +76,7 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   background: var(--suelo);
 }
 .ancla { position: absolute; left: 0; width: 1px; height: 1px; }
+
 .luces, .luz { position: absolute; inset: 0; pointer-events: none; }
 .luz { opacity: 0; will-change: opacity; }
 .luz-entrada {
@@ -66,6 +85,7 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
     radial-gradient(60% 45% at 50% -8%, rgba(255, 196, 140, 0.20), rgba(255, 196, 140, 0) 70%),
     var(--hondo);
 }
+/* La luz que barre desde arriba al entrar: desde donde estaria el lente. */
 .luz-entrada::after {
   content: "";
   position: absolute;
@@ -76,13 +96,16 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   background: linear-gradient(to bottom, rgba(255, 210, 160, 0), rgba(255, 210, 160, 0.10) 60%, rgba(255, 210, 160, 0));
   transform: translateY(var(--barrido, 0%));
 }
+/* UNA LUZ POR CAPITULO: el entorno del telefono cambia en cada escena, no solo el texto. */
 .luz-tibia { background: radial-gradient(42% 55% at var(--luz-x, 64%) 52%, rgba(240, 170, 110, 0.24), rgba(240, 170, 110, 0) 70%); }
+/* E2: frio del lado del comun, tibio del lado de Sigo. */
 .luz-duelo {
   background:
     radial-gradient(34% 50% at var(--izq, 32%) 56%, rgba(150, 165, 190, 0.16), rgba(150, 165, 190, 0) 70%),
     radial-gradient(34% 50% at var(--der, 68%) 56%, rgba(245, 175, 110, 0.26), rgba(245, 175, 110, 0) 70%),
     #121110;
 }
+/* E3: los colores del guion, como luz detras del telefono. */
 .luz-color {
   background:
     radial-gradient(26% 34% at calc(var(--luz-x, 64%) - 12%) 30%, rgba(240, 192, 112, 0.22), rgba(240, 192, 112, 0) 70%),
@@ -91,8 +114,12 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
     #141211;
 }
 .luz-lente { background: radial-gradient(34% 70% at var(--luz-x, 64%) 0%, rgba(255, 214, 160, 0.3), rgba(255, 214, 160, 0) 72%), #100F0E; }
+/* E5: sala oscura, y la luz del video derramada alrededor del cuadro. */
 .luz-cine { background: radial-gradient(40% 55% at var(--luz-x, 64%) 55%, rgba(255, 170, 100, 0.22), rgba(255, 170, 100, 0) 70%), radial-gradient(80% 60% at 50% 100%, rgba(80, 100, 140, 0.14), rgba(0, 0, 0, 0) 70%), #0A0908; }
+/* E6: noche, azul hondo. */
 .luz-noche { background: radial-gradient(45% 55% at var(--luz-x, 64%) 50%, rgba(110, 140, 200, 0.16), rgba(0, 0, 0, 0) 70%), linear-gradient(#08090D, #0B0A09); }
+
+/* E0 */
 .entrada {
   position: absolute;
   inset: 0;
@@ -120,6 +147,9 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   .marca-gigante { width: min(40vw, 30svh * 1.96); }
   .titular-entrada { font-size: clamp(76px, 7vw, 150px); max-width: 12em; margin-top: 3svh; }
 }
+
+/* LOS TEXTOS DE LAS ESCENAS. En un telefono van arriba y el telefono abajo; en un computador,
+   a la izquierda con el telefono a la derecha, o arriba en las escenas anchas. */
 .texto-escena {
   position: absolute;
   z-index: 4;
@@ -169,6 +199,7 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   transition: color 250ms, background-color 250ms, border-color 250ms;
 }
 .estilos-subtitulo span.activo { color: var(--hondo); background: var(--crema); border-color: var(--crema); }
+
 @media (max-width: 899px) {
   .titular { font-size: clamp(44px, 12vw, 64px); }
   .bajada { font-size: 16px; margin-top: 10px; }
@@ -183,7 +214,12 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   .texto-escena.arriba .titular { font-size: clamp(64px, 5.6vw, 112px); }
   .estilos-subtitulo span { font-size: 14px; }
 }
+
+/* ---------- la onda de la voz ---------- */
 .onda { position: absolute; left: 0; top: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; opacity: 0; }
+
+/* ---------- los telefonos ---------- */
+
 .telefonos { position: absolute; inset: 0; z-index: 3; perspective: 1900px; perspective-origin: 50% 40%; pointer-events: none; }
 .telefono {
   position: absolute;
@@ -196,6 +232,7 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   will-change: transform;
 }
 .telefono[data-telefono="comun"] { opacity: 0; visibility: hidden; }
+/* El canto: un poco del espesor del telefono, que se ve cuando gira. */
 .telefono-canto {
   position: absolute;
   inset: 0;
@@ -203,6 +240,9 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   background: linear-gradient(90deg, #2a2623, #5a534d 12%, #1d1a18 50%, #4d4741 88%, #25211f);
   transform: translateZ(-9px);
 }
+/* LA SOMBRA LARGA, dibujada con un degradado y no con box-shadow: un box-shadow de 120 px de
+   desenfoque se vuelve a calcular en cada cuadro mientras el telefono se mueve, y con los dos
+   telefonos de E2 costaba un tercio de los cuadros en un telefono de gama media simulado. */
 .telefono::before {
   content: "";
   position: absolute;
@@ -227,6 +267,7 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
     inset 0 0 0 3px rgba(0, 0, 0, 0.6),
     0 1px 0 rgba(255, 255, 255, 0.05);
 }
+/* El brillo del borde, como un filo de metal que toma la luz de arriba. */
 .telefono-cuerpo::after {
   content: "";
   position: absolute;
@@ -244,6 +285,7 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   background: #151312;
   isolation: isolate;
 }
+
 .rotulo {
   position: absolute;
   left: -40px;
@@ -258,6 +300,8 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   opacity: 0;
 }
 .telefono[data-telefono="sigo"] .rotulo { color: var(--crema); }
+
+/* La barra de estado y el lente: arriba, como en un Android con camara perforada. */
 .barra-estado {
   position: absolute;
   z-index: 8;
@@ -304,6 +348,10 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   box-shadow: 0 0 0 1.5px #050505;
 }
 .telefono.ilumina-lente .lente { box-shadow: 0 0 0 1.5px #050505, 0 0 18px 6px rgba(255, 214, 160, 0.55); }
+
+/* EL HAZ: del lente al renglon que se lee, justo debajo. Un cono de luz con los bordes
+   difusos -el desenfoque va afuera y el recorte adentro: al reves, el borde queda duro- y una
+   franja mas clara donde toca el renglon. */
 .haz {
   position: absolute;
   z-index: 7;
@@ -334,6 +382,11 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   border-radius: 50%;
   background: rgba(255, 224, 180, 0.35);
 }
+
+/* La lectura: TeleprompterView.tsx con "donde lees" arriba y sin camara, escrito como CSS
+   fijo -ninguna funcion de la aplicacion viaja a la pagina-. Renglones de 1,4 letras, 16 px
+   entre parrafos, columna del 90% con 5% de margen, la ventana clara de cuatro renglones mas
+   16 px de holgura y abajo el fondo al 55%. */
 .lectura {
   --letra-lectura: 26px;
   --fila: calc(var(--letra-lectura) * 1.4);
@@ -376,8 +429,13 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   border-radius: 999px;
   background: rgba(231, 225, 222, 0.85);
 }
+
+/* La voz encendiendo la palabra -E1-: cuando la onda la alcanza. */
 .columna [data-token] { transition: color 180ms, text-shadow 260ms; }
 .oye-voz .columna [data-token].suena { color: #FFF4E8; text-shadow: 0 0 14px rgba(255, 196, 140, 0.9), 0 0 2px rgba(255, 220, 190, 0.8); }
+
+/* LOS FORMATOS DEL EDITOR, como renglones.tsx: negrita, los tres colores de COLORES_TRAMO y el
+   DESTACADO amarillo con letra #111. Se encienden en la escena E3 y quedan. */
 .columna .f-negrita { transition: font-weight 0s, color 400ms; }
 .pinta-negrita .columna .f-negrita { font-weight: 600; color: #FFF; }
 .columna .f-ambar, .columna .f-celeste, .columna .f-salvia { transition: color 700ms ease; }
@@ -393,6 +451,9 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   box-decoration-break: clone;
 }
 .pinta-destacado .columna .f-destacado { background-size: 100% 100%; color: #111111; }
+
+/* EL TELEPROMPTER COMUN -E2-: texto parejo, sin ventana ni linea, con la marca fija de
+   donde leer que llevan esos aparatos. */
 .telefono[data-modo="fijo"] .velo,
 .telefono[data-modo="fijo"] .banda,
 .telefono[data-modo="fijo"] .capa-destacado { display: none; }
@@ -407,6 +468,7 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   height: 0;
   border-top: 2px dashed rgba(201, 202, 206, 0.35);
 }
+/* La marca fija del comun: una flecha y una raya donde se supone que lees. */
 .telefono[data-modo="fijo"] .marcador-fijo::before {
   content: "";
   position: absolute;
@@ -416,10 +478,15 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   border-bottom: 9px solid transparent;
   border-left: 13px solid rgba(201, 202, 206, 0.8);
 }
+
+/* El comun se ve como lo que es: una pantalla pareja, fria, sin nada que le diga donde vas. */
 .telefono[data-modo="fijo"] .pantalla-lectura { background: #17181A; }
 .telefono[data-modo="fijo"] .lectura { color: #C9CACE; }
 .telefono[data-modo="fijo"] .barra-estado { background: linear-gradient(#17181A 70%, rgba(23, 24, 26, 0)); }
+/* La frase que tocaba decir y el comun se llevo: tachada, en ambar, subiendo. */
 .columna .escapa { color: #F0C070 !important; text-decoration: line-through; text-decoration-thickness: 3px; text-decoration-color: rgba(240, 192, 112, 0.9); transition: color 250ms; }
+
+/* LOS AVISOS DE E2, dentro de cada pantalla. */
 .aviso {
   position: absolute;
   z-index: 9;
@@ -443,6 +510,9 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
 .telefono.espera .aviso-espera, .telefono.se-escapa .aviso-escapa { opacity: 1; transform: translate(-50%, 0) scale(1); }
 .telefono:not(.espera) .punto-respira { animation-play-state: paused; }
 .punto-respira { width: 18px; height: 18px; border-radius: 50%; background: var(--rojo); box-shadow: 0 0 14px rgba(225, 29, 46, 0.9); animation: respira-punto 1.6s ease-in-out infinite; }
+
+/* E6: LA SENAL, GRANDE. Un panel sobre la mitad de abajo de la pantalla: arriba la lectura
+   sigue a la vista, avanzando. */
 .sin-senal {
   position: absolute;
   z-index: 9;
@@ -490,6 +560,9 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
 .telefono.avion .senal-grande, .telefono.avion .wifi-grande { opacity: 0; transition: opacity 250ms; }
 .sin-senal-texto { grid-column: 1 / 3; grid-row: 2; font-family: var(--sans); font-size: 26px; font-weight: 600; letter-spacing: 0.02em; opacity: 0; transition: opacity 300ms 150ms; }
 .telefono.avion .sin-senal-texto { opacity: 1; }
+
+/* GRABANDO -E4-: la camara detras del texto, sin velo, y el panel translucido de la ventana
+   de lectura encima -styles.css, .panel-lectura, alfa 0,45-. */
 .camara-detras {
   position: absolute;
   inset: 0;
@@ -542,6 +615,10 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
 }
 .telefono.grabando .punto-grabando { opacity: 1; animation: respira-punto 2.4s ease-in-out infinite; }
 @keyframes respira-punto { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+
+/* EL VIDEO GRABADO CON SIGO -E5-. Vertical, llena la pantalla, y el telefono pierde el marco:
+   queda el cuadro del video. La escena es luz y profundidad -una pared tibia, una ventana, una
+   lampara, luces fuera de foco-, sin caras inventadas. */
 .video {
   position: absolute;
   z-index: 10;
@@ -551,6 +628,7 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   background: #0e0c0b;
 }
 .escena-video { position: absolute; inset: -6%; will-change: transform; animation: respira-camara 9s ease-in-out infinite alternate; }
+/* Quieta mientras no se ve: una animacion infinita escondida igual cuesta cuadros. */
 .telefono:not(.es-video) .escena-video { animation-play-state: paused; }
 @keyframes respira-camara { from { transform: scale(1) translate(0, 0); } to { transform: scale(1.05) translate(-1.5%, -1%); } }
 .escena-video i { position: absolute; display: block; }
@@ -619,12 +697,16 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
 }
 .video-barra { position: relative; flex: 1; height: 4px; border-radius: 4px; background: rgba(255, 255, 255, 0.25); }
 .video-barra i { display: block; height: 100%; width: 0; border-radius: 4px; background: #fff; }
+/* Sin marco: el telefono se vuelve el cuadro del video. */
 .telefono.es-video .telefono-canto { opacity: 0; }
 .telefono.es-video .telefono-cuerpo { background: transparent; box-shadow: none; }
 .telefono.es-video .telefono-cuerpo::after { opacity: 0; }
 .telefono.es-video .pantalla-lectura { border-radius: 30px; box-shadow: 0 40px 120px -20px rgba(255, 160, 90, 0.35), 0 30px 80px rgba(0, 0, 0, 0.7); }
 .telefono-canto, .telefono-cuerpo, .telefono-cuerpo::after { transition: opacity 400ms, background 400ms, box-shadow 400ms; }
 .pantalla-lectura { transition: border-radius 400ms, box-shadow 400ms; }
+
+/* ---------- las tarjetas flotantes ---------- */
+
 .tarjetas { position: absolute; inset: 0; z-index: 6; pointer-events: none; }
 .tarjeta {
   position: absolute;
@@ -656,6 +738,9 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
 @media (max-width: 899px) {
   .tarjeta { font-size: 13px; padding: 8px 12px 8px 10px; border-radius: 13px; }
 }
+
+/* ---------- la pildora de capitulos ---------- */
+
 .pildora {
   position: absolute;
   z-index: 8;
@@ -686,11 +771,16 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
 }
 .pildora a.activo { color: var(--hondo); }
 .pildora-fondo { position: absolute; z-index: 0; top: 5px; bottom: 5px; left: 0; width: 0; border-radius: 999px; background: var(--crema); transition: transform 350ms cubic-bezier(.3, .8, .3, 1), width 350ms cubic-bezier(.3, .8, .3, 1); }
+/* En un telefono no caben los seis nombres: el capitulo de ahora con su nombre, y los otros
+   como puntos que igual se tocan. */
 @media (max-width: 899px) {
   .pildora a { font-size: 13px; padding: 7px 12px; }
   .pildora a:not(.activo) { width: 22px; padding: 7px 0; font-size: 0; color: transparent; }
   .pildora a:not(.activo)::after { content: ""; position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--apagado); }
 }
+
+/* ---------- E7: el cierre ---------- */
+
 .cierre {
   position: relative;
   min-height: 100svh;
@@ -729,6 +819,9 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   .frase-cierre { font-size: clamp(80px, 6.6vw, 140px); }
   .disponible { font-size: 17px; }
 }
+
+/* ---------- el pie ---------- */
+
 .pie { position: relative; z-index: 1; padding: 0 var(--margen) calc(28px + env(safe-area-inset-bottom, 0px)); background: var(--hondo); color: var(--apagado); font-size: 15px; }
 .pie ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 0; margin: 0 auto; padding: 24px 0 0; max-width: 1200px; border-top: 1px solid var(--filete); list-style: none; }
 .pie li { display: flex; flex-wrap: nowrap; }
@@ -741,6 +834,11 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   .pie li + li { flex-basis: auto; }
   .pie li + li::before { content: "·"; }
 }
+
+/* ---------- el idioma: "ES · EN" ---------- */
+
+/* Discreto: arriba a la derecha, fijo, y en el pie. El idioma de la pagina en crema, el otro
+   apagado. Encima del grano y del escenario, pero chico: no compite con la marca. */
 .idioma {
   display: inline-flex;
   align-items: center;
@@ -774,6 +872,13 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
 @media (min-width: 900px) {
   .idioma-arriba { top: 22px; right: 26px; }
 }
+
+/* ---------- la invitacion a probar Sigo: la franja y la seccion #prueba ---------- */
+
+/* LA FRANJA -Javier, 07-10-2026, bocetos en 03-pruebas/sitio-testers-. Delgada, arriba de
+   todo y dentro de la pagina: no flota ni oscurece nada, y al bajar se va con el resto. Solo
+   lo que ya trae el sitio: el suelo, un filete, la letra sans. La primera frase apagada, la
+   segunda en crema. Va bajo el grano -z-index menor que 50-: la misma textura que el resto. */
 .franja-prueba {
   position: relative;
   z-index: 1;
@@ -793,6 +898,7 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
 .franja-prueba a { color: var(--apagado); text-decoration: none; text-wrap: balance; }
 .franja-prueba a span { color: var(--crema); font-weight: 600; white-space: nowrap; }
 .franja-prueba a:hover span { text-decoration: underline; text-decoration-color: rgba(242, 236, 232, 0.4); }
+/* La X: discreta, 12 px de dibujo y 40x40 para el dedo. */
 .franja-cerrar {
   position: absolute;
   top: 50%;
@@ -811,14 +917,21 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
 }
 .franja-cerrar:hover { color: var(--letra); }
 .franja-cerrar svg { display: block; width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; }
+/* Cerrar necesita JavaScript: sin el, la X no se muestra y la franja queda como enlace. */
 html:not(.js) .franja-cerrar { display: none; }
+/* Cerrada en esta visita -sessionStorage, ver franja.js y el <script> del <head>-. */
 .franja-cerrada .franja-prueba, .franja-prueba[hidden] { display: none; }
+/* EL SELECTOR ES · EN baja 40 px mientras la franja se ve: si no, quedaria encima de la X.
+   Cuando la franja sale de la pantalla -franja-fuera, franja.js- o se cierra, vuelve. */
 html:not(.franja-cerrada):not(.franja-fuera) .franja-prueba:not([hidden]) ~ .idioma-arriba { top: calc(52px + env(safe-area-inset-top, 0px)); }
 @media (min-width: 900px) {
   .franja-prueba { min-height: 42px; font-size: 15px; }
   .franja-cerrar { right: 14px; }
   html:not(.franja-cerrada):not(.franja-fuera) .franja-prueba:not([hidden]) ~ .idioma-arriba { top: 62px; }
 }
+
+/* LA SECCION #prueba: entre el cierre y el pie, centrada como el cierre. El titulo es la serif
+   de los titulares; el texto, como las bajadas; el correo, crema con un subrayado fino. */
 .prueba {
   position: relative;
   padding: 4svh var(--margen) 14svh;
@@ -826,6 +939,9 @@ html:not(.franja-cerrada):not(.franja-fuera) .franja-prueba:not([hidden]) ~ .idi
   text-align: center;
   overflow: hidden;
 }
+/* La luz tibia de abajo del cierre -.luz-cierre, "70% 60% at 50% 110%"- se cortaba en seco
+   donde empieza esta seccion y dejaba una raya. Aca se refleja con la misma forma y el mismo
+   alto -el cierre mide 100svh-: la luz se lee como un solo resplandor. */
 .prueba::before {
   content: "";
   position: absolute;
@@ -837,6 +953,8 @@ html:not(.franja-cerrada):not(.franja-fuera) .franja-prueba:not([hidden]) ~ .idi
   background: radial-gradient(70% 60% at 50% -10%, rgba(255, 196, 140, 0.10), rgba(0, 0, 0, 0) 70%);
 }
 .prueba > * { position: relative; }
+/* El foco llega aca al saltar desde la franja -tabindex="-1"-: la seccion no es un control,
+   no lleva anillo. */
 .prueba:focus { outline: none; }
 .prueba-titulo {
   margin: 0 auto;
@@ -869,11 +987,18 @@ html:not(.franja-cerrada):not(.franja-fuera) .franja-prueba:not([hidden]) ~ .idi
   .prueba-titulo { font-size: clamp(64px, 5vw, 96px); max-width: 14em; }
   .prueba-texto { margin-top: 28px; font-size: 20px; max-width: 30em; }
 }
+
+/* ---------- sin JavaScript: las escenas en fila, quietas ---------- */
 html:not(.js) .escenario { height: auto; }
 html:not(.js) .fijo { position: relative; height: auto; padding-bottom: 60px; }
 html:not(.js) .entrada, html:not(.js) .texto-escena { position: relative; inset: auto; opacity: 1; visibility: visible; transform: none; width: auto; left: auto; right: auto; top: auto; padding: 48px var(--margen); }
 html:not(.js) .telefonos, html:not(.js) .pildora, html:not(.js) .tarjetas, html:not(.js) .onda, html:not(.js) .ancla { display: none; }
+
+/* ---------- privacidad y soporte ---------- */
+
 .interior { position: relative; min-height: 100svh; display: flex; flex-direction: column; background: var(--hondo); }
+/* La luz tibia de arriba, en su capa: como fondo del body se cortaba donde termina la
+   primera pantalla. */
 .interior::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 90svh; pointer-events: none; background: radial-gradient(60% 45% at 50% -6%, rgba(255, 196, 140, 0.14), rgba(255, 196, 140, 0) 70%); }
 .interior > :not(.grano):not(.idioma-arriba) { position: relative; }
 .interior .cabecera { padding: calc(26px + env(safe-area-inset-top, 0px)) var(--margen) 0; }
@@ -888,5 +1013,7 @@ html:not(.js) .telefonos, html:not(.js) .pildora, html:not(.js) .tarjetas, html:
 .texto p a, .texto .correo { color: var(--crema); }
 .texto .correo { display: inline-block; margin-top: 8px; font-family: var(--serif); font-size: clamp(22px, 6vw, 34px); text-decoration: none; border-bottom: 1px solid var(--filete); }
 .texto .correo:hover { border-color: var(--crema); }
+/* -18-10-2026- LAS FOTOS DEL MANUAL -ayuda.html-: la pantalla del teléfono, angosta y centrada, con el canto
+   redondeado de un teléfono y el filete del sitio. Salen de 540 px y se muestran a 270: nítidas en pantallas 2x. */
 .texto .captura { margin: 20px 0 8px; }
 .texto .captura img { display: block; width: min(270px, 72%); height: auto; margin: 0 auto; border-radius: 22px; border: 1px solid var(--filete); }
