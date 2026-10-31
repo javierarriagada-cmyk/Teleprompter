@@ -6,7 +6,9 @@
    sube para cubrirla (160 en vez de 96) y el tramo macizo llega mas alto. */
 .velo-controles {
   height: calc(var(--circulo-desde-abajo) + 72px + 160px + env(safe-area-inset-bottom, 0px));
-  background: linear-gradient(to top, var(--velo) 0%, var(--velo) 58%, transparent 100%);
+  /* 31-10-2026, aprobado por Javier en el Redmi en vivo: el tramo macizo llega al 72 %, y el texto
+     se desvanece antes de tocar el dock. Antes: var(--velo) 58%. */
+  background: linear-gradient(to top, var(--velo) 0%, var(--velo) 72%, transparent 100%);
 }
 
 .fila-fichas-listo {

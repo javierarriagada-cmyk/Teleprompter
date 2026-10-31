@@ -369,7 +369,9 @@ export function VeloControles({ colorFondo }: { colorFondo: string }) {
       className="velo-controles"
       data-testid="velo-controles"
       aria-hidden="true"
-      style={{ ['--velo' as any]: `rgba(${r}, ${g}, ${b}, 0.92)` }}
+      // 31-10-2026, aprobado por Javier en el Redmi en vivo: opaco. Con 0.92 pasaba un 8 % de brillo
+      // y las letras blancas se notaban detras del dock. Antes: rgba(${r}, ${g}, ${b}, 0.92)
+      style={{ ['--velo' as any]: `rgba(${r}, ${g}, ${b}, 1)` }}
     />
   )
 }
