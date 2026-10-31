@@ -41,6 +41,7 @@ import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENT
 // import { pluginAtras, hayAdondeVolver as hayAdondeVolverAtras, conAnimacionAtras, leerBorde, leerAvance, escalaAtras, corrimientoAtras, type BordeAtras, type EstadoAtras } from './lib/atrasPredictivo'
 import { pluginAtras, hayAdondeVolver as hayAdondeVolverAtras, conAnimacionAtras, camaraConElGesto, leerBorde, leerAvance, escalaAtras, corrimientoAtras, type BordeAtras, type EstadoAtras } from './lib/atrasPredictivo'
 import { encenderCamara, apagarCamara, camaraEncendida, ladoActual, LadoCamara, obtenerCalidadesSoportadas, fijarCalidadVideo, alNegarseLaCamara, estabilizacionSoportada } from './lib/camara'
+import { ladosCarrilAviso } from './lib/recuadroAbajoTelH'
 import { obtenerEspacioLibre, escucharMediciones } from './lib/archivosNativos'
 import { calcularMinutosDisponibles } from './lib/espacio'
 import { hapticaToqueMedio, hapticaToqueSuave, hapticaSeleccion } from './haptica'
@@ -3004,10 +3005,19 @@ export default function App({ motor, repoOverride }: AppProps) {
   const columnaDelAviso = () => {
     const rielIzq = conCamara ? 'var(--riel-izq-grabar)' : 'var(--riel-izq-leer)'
     const conRecuadro = camaraActiva && fondoToma === 'recuadro'
-    const recuadroIzq = conRecuadro && esquinaRecuadroActual.startsWith('izq')
+    // 31-10-2026, recuadro-abajo-ancho: con el recuadro ABAJO en teléfono de lado
+    // no hay carril (CSS pone --carril-recuadro-h: 0 en [data-recuadro=abajo]), pero
+    // el aviso vive fuera de ese atributo, así que aquí tampoco se suma el carril.
+    // Con el recuadro ARRIBA el carril sigue. Antes: se sumaba el carril en las
+    // cuatro esquinas siempre que hubiera recuadro.
+    const { izquierda: recuadroIzq, derecha: recuadroDer } = ladosCarrilAviso({
+      layout,
+      conRecuadro,
+      esquina: esquinaRecuadroActual
+    })
     return {
       izquierda: `calc(${rielIzq}${recuadroIzq ? ' + var(--carril-recuadro-h)' : ''} + env(safe-area-inset-left, 0px))`,
-      derecha: `calc(var(--riel-der)${conRecuadro && !recuadroIzq ? ' + var(--carril-recuadro-h)' : ''} + env(safe-area-inset-right, 0px))`
+      derecha: `calc(var(--riel-der)${recuadroDer ? ' + var(--carril-recuadro-h)' : ''} + env(safe-area-inset-right, 0px))`
     }
   }
 

@@ -31,6 +31,16 @@
   --carril-recuadro-h: 168px;
 }
 
+/* 31-10-2026, recuadro-abajo-ancho, aprobado por Javier en el Redmi en vivo.
+   Con el recuadro en una esquina de ABAJO no hay carril: la columna recupera el
+   aire de 28 y el ancho de sin-recuadro. data-recuadro lo pone TeleprompterView
+   (1504): "abajo" | "arriba" | "no". Con el recuadro ARRIBA todo queda como hoy
+   (carril 168, aire 20). Antes: el carril iba igual en las cuatro esquinas. */
+.layout-tel-h [data-recuadro="abajo"] {
+  --carril-recuadro-h: 0px;
+  --columna-aire-h-recuadro: 28px;
+}
+
 /* LOS RIELES. Un envoltorio sin z-index -no arma su propio apilamiento, así los botones de adentro
    siguen compitiendo con capa-panel-ficha y con el texto como en vertical- y una capa de fondo
    debajo de los botones. El fondo sigue al TEMA ---riel-fondo, styles.css-: los rieles son de la

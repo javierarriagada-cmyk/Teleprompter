@@ -92,6 +92,7 @@ import {
 import { movimientoApagado } from './movimiento'
 // Antes: import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA, MARGEN_RENGLON_LECTURA_PX } from './estiloLectura'
 import { familiaLectura, colorLetraEfectiva, columnaLectura, rellenoLecturaDePie, INTERLINEADO_LECTURA, MARGEN_RENGLON_LECTURA_PX } from './estiloLectura'
+import { sinCarrilRecuadroTelH } from '../lib/recuadroAbajoTelH'
 import { actualizarConfigCamara } from '../lib/camara'
 import { useBrilloAlCambiarEstado } from '../hooks/useBrilloAlCambiarEstado'
 import { leerBrilloSistema, restaurarBrillo } from '../lib/brillo'
@@ -1789,7 +1790,13 @@ export default function TeleprompterView({
         // Sobre la imagen de la camara las letras llevan una sombra suave, como
         // los subtitulos: separa cada letra de lo que tenga detras. Oscura para
         // letra clara, clara para la letra negra de la pareja blanca.
-        className={textoSobreImagen ? `lectura-sobre-imagen${isWhiteBg ? ' letra-oscura' : ''}` : undefined}
+        /* 31-10-2026, recuadro-abajo-ancho: con el recuadro abajo en teléfono de lado
+           el texto pasa sobre la imagen del recuadro —mismo halo que «detrás»— sin
+           tocar textoSobreImagen (velo, banda y panel siguen igual). Antes: la clase
+           solo iba con textoSobreImagen (= cámara detrás). */
+        className={(textoSobreImagen || sinCarrilRecuadroTelH(diseno, recuadroEnPantalla, esquinaRecuadroH))
+          ? `lectura-sobre-imagen${isWhiteBg ? ' letra-oscura' : ''}`
+          : undefined}
         style={{
           height: '100%',
           overflowY: 'auto',
