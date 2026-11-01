@@ -169,21 +169,27 @@ export function iniciarEscenas(datos) {
       // y dentro de un telefono girado en 3D ese texto se vuelve a dibujar entero cada vez
       // -medido en un telefono de gama media simulado: 22 a 33 cuadros largos de 99 con giro,
       // 9 a 14 sin el-.
-      // PROTOTIPO E2 móvil: teléfonos + rótulos + onda (Apple/Sony).
-      // Empacar hacia la píldora (phoneTop alto) para matar aire muerto.
-      const s2 = Math.min((0.46 * vw) / 380, (0.52 * vh) / 800)
+      // PROTOTIPO E2 móvil: teléfonos bajo el bajada (~28px a badges), luego
+      // crecen en alto (prioridad vertical; pueden superar el tope de ancho).
+      const badgeLocal = 88 // CSS móvil .aviso top: -88px
+      const gapBadge = 28
+      const bandBelow = 58
+      const pillPad = 40
+      const headEnd = Math.min(0.172 * vh, 154) // bajo titular+bajada E2
+      // Altura primero: s2 desde el presupuesto vertical (no min con ancho).
+      const s2 = Math.min(
+        (vh - pillPad - bandBelow - headEnd - gapBadge) / (800 + badgeLocal),
+        0.61
+      )
       const half = (380 * s2) / 2
-      const gutter = Math.max(14, 0.032 * vw)
+      const gutter = 8
       const x2 = half + gutter / 2
       const phoneH = 800 * s2
-      const bandBelow = 72
-      const pillPad = 54
-      const minTop = Math.max(0.24 * vh, 200) // bajo titular+avisos
-      const phoneTop = Math.max(minTop, vh - pillPad - bandBelow - phoneH)
+      const phoneTop = headEnd + gapBadge + badgeLocal * s2
       const cy2 = phoneTop + phoneH / 2
       E.e2sigo = { x: x2, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
       E.e2comun = { x: -x2, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
-      E.ondaE2 = { y: phoneTop + phoneH + 20, medio: half * 0.92, alto: 30 }
+      E.ondaE2 = { y: phoneTop + phoneH + 14, medio: half * 0.92, alto: 26 }
       const sz = s * 1.4
       E.e4zoom = { x: 0, y: 0.38 * vh - 22 * sz + 400 * sz - vh / 2, rotationX: 30, rotationY: -10, rotationZ: 0, scale: sz }
       E.e4graba = { x: 0, y: cy - vh / 2, rotationX: 0, rotationY: -5, rotationZ: 0, scale: s }

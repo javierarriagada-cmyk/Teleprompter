@@ -408,6 +408,17 @@ footer.pie {
 
 /* Hero móvil: menos aire muerto, marca+frase+teléfono en 894. */
 @media (max-width: 899px) {
+  .telefono > .aviso {
+    top: -88px;
+    font-size: 22px;
+    padding: 8px 14px 8px 11px;
+    gap: 8px;
+  }
+  .rotulo {
+    top: calc(100% + 72px) !important;
+    font-size: 15px !important;
+    padding: 0.32em 0.5em;
+  }
   .entrada {
     padding-top: calc(3.2svh + env(safe-area-inset-top, 0px));
   }
