@@ -262,9 +262,9 @@ html:not(.js) .franja-cerrar { display: none; }
   image-rendering: auto;
 }
 .proto-tel-guiones {
-  /* Native Guiones UI crop; CSS width capped so 2× DPR ≤ source pixels. */
-  width: min(17.5rem, 72vw, 285px);
-  aspect-ratio: 570 / 810;
+  /* Misma proporción que .proto-tel (captura app 392×850 ≈ 360/780). */
+  width: min(17.5rem, 72vw, 300px);
+  aspect-ratio: 360 / 780;
 }
 .proto-tel-guiones .proto-tel-pantalla img {
   object-fit: cover;
