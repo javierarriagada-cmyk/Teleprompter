@@ -174,17 +174,24 @@ export function iniciarEscenas(datos) {
       const gutter = 14
       const badgeLocal = 88 // CSS móvil .aviso top: -88px
       const gapBadge = 28
-      const bandBelow = 48 // onda + rótulos (rótulos counter-scale, más cerca)
-      const pillPad = 36
+      // Rótulos counter-scale ~30px visual + aire mínimo bajo ellos (sin vacío negro).
+      const rotSpace = 36
+      const pillPad = 28
       const headEnd = Math.min(0.172 * vh, 154)
       const s2w = ((vw - 2 * side - gutter) / 2) / 380
-      const s2h = (vh - pillPad - bandBelow - headEnd - gapBadge) / (800 + badgeLocal)
+      const s2h = (vh - pillPad - rotSpace - headEnd - gapBadge) / (800 + badgeLocal)
       const s2 = Math.min(s2w, s2h)
       document.documentElement.style.setProperty('--tel-scale', String(s2))
       const half = (380 * s2) / 2
       const x2 = half + gutter / 2
       const phoneH = 800 * s2
-      const phoneTop = headEnd + gapBadge + badgeLocal * s2
+      // Ancla al bajada; si el ancho limita, reparte el sobrante para equilibrar
+      // el aire bajo la comparación (no un vacío negro solo abajo).
+      let phoneTop = headEnd + gapBadge + badgeLocal * s2
+      const clusterBottom = phoneTop + phoneH + rotSpace
+      const floor = vh - pillPad
+      const slack = Math.max(0, floor - clusterBottom)
+      if (slack > 8) phoneTop += slack * 0.88
       const cy2 = phoneTop + phoneH / 2
       E.e2sigo = { x: x2, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
       E.e2comun = { x: -x2, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
@@ -510,9 +517,10 @@ export function iniciarEscenas(datos) {
   function tarjetasVisibles(p, esc, t) {
     const v = new Set()
     const enPausa = t >= pausa[0] + 250 && t < pausa[1] + 200
-    // En el celular los avisos de E2 ya van dentro de cada pantalla: sin tarjetas encima.
-    // Comparación E2: en escritorio, tarjetas laterales refuerzan el contraste.
-    if (esc === 2 && p > 1.85 && enPausa && !L.movil) { v.add('espera'); v.add('corre') }
+    // PROTOTIPO ronda 3: sin textos laterales «El otro sigue…» / «Te detuviste…»
+    // (repiten los avisos de cada teléfono). Los nodos quedan en el HTML por si el
+    // motor los consulta; nunca se muestran.
+    // (antes: en escritorio se añadían espera/corre en E2 pausa)
     if (p >= LENTE[0] && p < LENTE[1]) v.add('lente')
     if (p >= GRABA[0] + 0.05 && p < GRABA[1] - 0.1) v.add('camara')
     if (p >= AVION && p < TOTAL && !L.movil) v.add('avion')

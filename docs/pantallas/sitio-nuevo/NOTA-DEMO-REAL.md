@@ -23,8 +23,10 @@ Copia de trabajo de `sitio/fuente/` para abrir el prototipo con doble clic (`fil
 
 4. **E2 móvil — composición bajo el bajada**  
    - `scale = min(width-fit, height-fit)` con márgenes laterales ≥12 px y gutter 14 px.  
-   - `phoneTop` anclado al bajada (~28 px hasta badges); no se empuja al fondo.  
-   - Si el ancho limita, se acepta ese tamaño (no se desborda el viewport).  
+   - `phoneTop` anclado al bajada (~28 px hasta badges).  
+   - Si el ancho limita y sobra alto, se reparte ~88 % del sobrante hacia abajo
+     (`phoneTop += slack * 0.88`) para equilibrar el aire bajo la comparación
+     (rótulos cerca de la píldora, sin vacío negro solo abajo).  
    - `--tel-scale` en `:root` para que los rótulos/avisos compensen el scale en CSS.
 
 5. **E2 escritorio — composición producto**  
@@ -61,3 +63,11 @@ Copia de trabajo de `sitio/fuente/` para abrir el prototipo con doble clic (`fil
 - Rótulos E2: counter-scale móvil (`transform: scale(1 / var(--tel-scale))`) para ≥14 px en pantalla.  
 - Avisos crema/ámbar fuera del guion; z-index `telefonos` sobre el texto.  
 - Titular E2 desk compacto; píldora más baja en E2.
+
+8. **Sin tarjetas laterales E2**  
+   - `tarjetasVisibles` ya no añade `espera`/`corre` (repetían los avisos del teléfono).  
+   - Los nodos quedan en el HTML con `hidden`; CSS los oculta.
+
+9. **E5 chips (CSS del prototipo)**  
+   - En escritorio, `.estilos-subtitulo` lleva margen interior y `padding-bottom` para
+     separarse del borde del bloque de texto y de la píldora de momentos.

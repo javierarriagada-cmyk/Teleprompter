@@ -1,37 +1,47 @@
-# Nota del prototipo — sitio nuevo
+# Nota del prototipo — sitio nuevo (ronda 3)
 
 Prototipo en HTML estático para abrir con doble clic (`file://`). Nada de esto está publicado.
+Rama `sitio-nuevo-prototipo`, solo `docs/pantallas/sitio-nuevo/`.
 
-## Peso (carpeta del prototipo, sin `capturas-prototipo/`)
+## Peso medido (2026-10-31)
+
+Sin contar `capturas-prototipo/`, `_tools/`, ni `escenas.fuente.js` (referencia, no se carga).
 
 | Bloque | Peso |
 | --- | --- |
-| HTML + CSS + JS | ~37 KiB |
-| Fuentes (4 woff2) | ~71 KiB |
-| Poster del video | ~149 KiB |
-| Gráfico 1024×500 | ~24 KiB |
-| 8 capturas PNG | ~3,8 MiB |
-| **Primera vista (sin MP4)** | **~4,05 MiB** |
+| HTML + CSS (proto + demo-real) | ~101 KiB |
+| JS runtime (demo + prototipo, sin fuente) | ~69 KiB |
+| Vendor (GSAP + ScrollTrigger + Lenis) | ~134 KiB |
+| Fuentes (woff2, una copia en red) | ~73 KiB |
+| Poster WebP (frame real del MP4) | ~50 KiB |
+| 8 capturas WebP + crop guiones | ~370 KiB |
+| **Primera vista (hero+demo+libs, sin poster/caps/MP4)** | **~378 KiB** |
+| **Página completa sin MP4 (lo que descarga el navegador)** | **~0,78 MiB** |
 | Video MP4 (solo al reproducir) | ~4,5 MiB |
-| **Todo con video** | **~8,5 MiB** |
 
-El cuello de botella son las capturas PNG a resolución de ficha. El video no se descarga hasta el clic (poster + botón).
+**Meta ≤ 1,5 MiB sin video: cumplida (~0,78 MiB en red).** En disco las fuentes están duplicadas (`activos/fuentes` + `demo-real/fuentes`); el navegador solo baja una. Capturas en WebP con `loading="lazy"`. El video no se descarga hasta el toque (poster + botón).
 
-## Cómo portar a `sitio/` sin romper es / en / pt
+## Ronda 3 — qué cambió
 
-1. **No tocar** el árbol publicado hasta tener textos en los tres idiomas. Este prototipo solo prueba layout, ritmo y demo en español.
-2. Extraer la demo del teléfono a un módulo compartido (hoy vive en `prototipo.js`; en el sitio real conviene reutilizar `sitio/fuente` `demo.js` / `escenas.js` / `lectura.js` o un subset sin GSAP para la portada).
-3. CSS: llevar tokens (`--hondo`, `--rojo`, tipografías) al sistema de `sitio/fuente/estilo` y mapear secciones a clases existentes; evitar duplicar la hoja entera.
-4. i18n: cada cadena de UI sale de `sitio/fuente/textos/{es,en,pt}` (o el mecanismo actual de `armar.mjs`). Las afirmaciones de producto deben seguir saliendo de las fichas aprobadas (`docs/play/ficha/textos-*.txt`), no inventar.
-5. Activos: servir video y capturas desde `sitio/public/` (o CDN) con nombres estables; convertir capturas a WebP/AVIF y `srcset`; mantener `preload`/`loading` correctos en http(s) (en `file://` el lazy falla).
-6. El selector ES · EN · PT del prototipo es decorativo; en producción enlaza a las rutas/locales ya armadas.
-7. Pie: reutilizar los mismos href de Ayuda, Soporte, Privacidad, Términos y Borrar cuenta del sitio actual.
-8. Propuesta técnica al integrar: IntersectionObserver (ya), posible scroll-linked demo más rica (GSAP/ScrollTrigger como en el sitio actual) solo si no empeora el LCP del hero; video con `preload="none"` + poster.
+1. Ajustes en lo aprobado: sin textos laterales que repetían avisos; aire bajo E2 móvil equilibrado; chips E5 desk separados del borde y de la píldora.
+2. Video vertical 9:16 con poster extraído del MP4 (frame ~5,2 s).
+3. «Para qué» en cuatro paneles con capturas reales (no lista de filas).
+4. «La app de verdad»: galería con ritmo; 08 landscape a ancho completo.
+5. «Tus guiones»: captura 07 real (editor + respaldo), no el gráfico claro.
+6. Cierre: una acción (mailto), sin caja con borde.
+7. Franja «Sigo está en prueba…» + pie Ayuda/Soporte/Privacidad/Términos/Borrar cuenta + ES·EN·PT.
 
-## Limitaciones vistas en las capturas
+## Cómo portar a `sitio/`
 
-- El peso de primera vista (~4 MiB) no es aceptable en producción sin comprimir capturas.
-- La captura `08.png` de la ficha es apaisada; en el carril se muestra más ancha (`cap-ancha`).
-- La demo del hero es un ciclo ligero (hablar → pausa → subtítulos), no el guion completo de `escenas.js`.
-- En pantallas muy bajas el teléfono del hero se reduce; conviene probar en 667–844 de alto.
-- El GIF de scroll (~2,9 MiB) es pesado; para revisar el ritmo preferir `scroll-telefono.mp4` (~650 KiB).
+1. No tocar el árbol publicado hasta textos en es / en / pt.
+2. La demo ya es copia de `sitio/fuente`; al integrar, volver a un solo `escenas.js` y listar desvíos en PR.
+3. Franja: reutilizar `sitio/fuente/franja.js` (el prototipo trae un subset en `prototipo.js`).
+4. Activos: WebP + `srcset`; video con `preload="none"` + poster.
+5. i18n: cadenas desde `sitio/fuente/textos/{es,en,pt}`; producto desde fichas aprobadas.
+
+## Limitaciones honestas
+
+- El poster del video es un frame del trailer de Play (composición marketing con teléfono centrado), no un fotograma “de app a pantalla completa”; se ve contenido real, no un rectángulo negro.
+- «Para qué» reutiliza capturas de la ficha (01/02/03/06); no hay clips de uso distintos por vertical.
+- La galería en móvil es 2 columnas + 08 ancho; en desk el ritmo es asimétrico pero sigue siendo estático (sin scroll-scrub).
+- El selector ES·EN·PT del prototipo es decorativo.
