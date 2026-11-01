@@ -149,6 +149,20 @@ html:not(.js) .franja-cerrar { display: none; }
   max-width: 28rem;
   margin: 0 auto;
 }
+/* El contenedor no altera la disposición aprobada en teléfono. */
+.video-copy { display: contents; }
+@media (min-width: 900px) {
+  /* Antes: texto a la izquierda sobre una tarjeta centrada; ahora forman una pareja. */
+  .interno-video {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(3rem, 7vw, 7rem);
+    align-items: center;
+    max-width: 1080px;
+  }
+  .video-copy { display: block; }
+  .interno-video .video-marco { justify-content: flex-end; }
+}
 #video .titular { max-width: 14ch; }
 .video-marco {
   display: flex;

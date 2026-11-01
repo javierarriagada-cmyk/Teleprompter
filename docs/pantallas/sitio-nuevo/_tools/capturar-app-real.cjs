@@ -1,5 +1,5 @@
 // Capturas app real (src/ en main via Vite). No modifica src/.
-const puppeteer = require('/tmp/capvf/node_modules/puppeteer-core')
+const puppeteer = require('puppeteer-core')
 const fs = require('fs')
 const path = require('path')
 const { execFileSync } = require('child_process')
@@ -121,7 +121,8 @@ async function nuevaPagina(br, extraLS = {}, vp = null) {
   await p.goto(BASE, { waitUntil: 'networkidle2', timeout: 60000 })
   await p.waitForSelector('[data-testid="btn-leer-tarjeta"], [data-testid^="fila-guion-"]', { timeout: 30000 })
   await sleep(1200)
-  await sembrar(p)
+  if (extraLS.guionFinal) await sembrarFinal(p, extraLS.guionFinal)
+  else await sembrar(p)
   await p.reload({ waitUntil: 'networkidle2' })
   await p.waitForSelector('[data-testid="btn-leer-tarjeta"]', { timeout: 30000 })
   await sleep(1800)
@@ -157,18 +158,94 @@ async function clickTest(p, sel) {
   return true
 }
 
+
+// Ronda final: solo tres capturas nuevas, sin regenerar las secciones aprobadas.
+// Antes: la única ejecución sembraba también un video de 0:42 y capturaba toda la galería.
+async function sembrarFinal(p, guion) {
+  await p.evaluate(async (guion) => {
+    await new Promise((resolve, reject) => {
+      const req = indexedDB.open('teleprompter_db', 2)
+      req.onerror = () => reject(req.error)
+      req.onsuccess = () => {
+        const db = req.result
+        const tx = db.transaction(['guiones', 'grabaciones'], 'readwrite')
+        const g = tx.objectStore('guiones')
+        g.clear()
+        tx.objectStore('grabaciones').clear()
+        const ahora = Date.now()
+        g.put({ id: 'g-captura-final', titulo: guion.titulo, idioma: 'es', creado: ahora,
+          modificado: ahora, bloques: [{id:'b-captura-final',nombre:'',texto:guion.texto}] })
+        tx.oncomplete = () => { db.close(); resolve() }
+        tx.onerror = () => reject(tx.error)
+      }
+    })
+  }, guion)
+}
+
+async function capturarFinales(br) {
+  const guiones = {
+    cuenta: { titulo: 'Notas de la semana', texto: 'Anotar las ideas principales antes de preparar el próximo guion.' },
+    clases: { titulo: 'El ciclo del agua', texto: 'El ciclo del agua.\n\nHoy veremos cómo el agua cambia de estado y circula por la naturaleza.\n\nEl calor del sol transforma parte del agua en vapor. Ese vapor asciende y se enfría. Entonces se forman pequeñas gotas que se agrupan en las nubes.\n\nCuando las gotas crecen, caen en forma de lluvia. Una parte del agua llega a los ríos y otra se infiltra en el suelo.\n\nPensemos ahora en un charco después de la lluvia. ¿Qué ocurre con él cuando vuelve a salir el sol?' },
+    presentaciones: { titulo: 'Resultados del trimestre', texto: 'Resultados del trimestre.\n\nBuenos días. Hoy revisaremos los resultados del equipo y las prioridades para los próximos tres meses.\n\nTerminamos ocho proyectos. Dos entregas se retrasaron porque la revisión comenzó demasiado tarde.\n\nPara el siguiente trimestre propongo reservar una semana de revisión antes de cada entrega y reunirnos los lunes para resolver los bloqueos.\n\nAl terminar esta presentación, acordaremos las fechas y quién estará a cargo de cada tarea.' }
+  }
+  const informe = []
+  for (const [tipo, nombre, webp] of [
+    ['cuenta','guiones-cuenta-final','guiones-ui.webp'],
+    ['clases','uso-clases-final','uso-clases.webp'],
+    ['presentaciones','uso-presentaciones-final','uso-presentaciones.webp']
+  ]) {
+    if (process.env.CAPTURA_TIPO && process.env.CAPTURA_TIPO !== tipo) continue
+    const { p, ctx } = await nuevaPagina(br, {guionFinal:guiones[tipo],modo:'voz',
+      ajustes:{tema:'oscuro',fontSize:28,mostrarTiempo:true}},
+      {width:392,height:850,deviceScaleFactor:2,isMobile:true,hasTouch:true})
+    if (tipo === 'cuenta') {
+      await p.click('[data-testid="btn-menu-superior-biblioteca"]')
+      await p.waitForSelector('[data-testid="btn-continuar-con-google"]',{visible:true,timeout:20000})
+      // Desplazar el panel real hasta la cuenta, sin borrar ni tapar componentes.
+      await p.$eval('[data-testid="seccion-cuenta"]', el => el.scrollIntoView({block:'start'}))
+    } else {
+      await p.click('[data-testid="btn-leer-tarjeta"]')
+      await p.waitForSelector('[data-testid="btn-empezar-toma"]',{visible:true,timeout:20000})
+      await p.waitForFunction((fragmento)=>document.body.innerText.includes(fragmento),{},guiones[tipo].titulo)
+    }
+    await p.evaluate(async () => {
+      await document.fonts.ready
+      document.activeElement?.blur()
+      window.getSelection()?.removeAllRanges()
+    })
+    await p.mouse.move(0,0)
+    await sleep(700)
+    const foco = await p.evaluate(()=>({etiqueta:document.activeElement?.tagName,
+      focoVisible:!!document.activeElement?.matches(':focus-visible')}))
+    if(foco.focoVisible) throw new Error(`Quedó foco visible en ${tipo}`)
+    const png = await shot(p,nombre)
+    const destino = path.join(CROPS,webp)
+    execFileSync(process.env.PYTHON || 'python', ['-c',
+      'from PIL import Image; import sys; Image.open(sys.argv[1]).convert("RGB").save(sys.argv[2], "WEBP", lossless=True, method=6)',png,destino])
+    informe.push({tipo,guion:guiones[tipo],png:path.relative(ROOT,png),webp:path.relative(ROOT,destino),foco,
+      origen:'Interfaz React de la app en el navegador, sin cámara ni reconocimiento de voz ejecutándose.'})
+    await ctx.close()
+  }
+  fs.writeFileSync(path.join(OUT,'capturas-finales.json'),JSON.stringify(informe,null,2)+'\n')
+}
+
 ;(async () => {
   const br = await puppeteer.launch({
-    executablePath: '/usr/bin/google-chrome',
+    executablePath: process.env.CHROME_PATH || (process.platform === 'win32' ? 'C:/Program Files/Google/Chrome/Application/chrome.exe' : '/usr/bin/google-chrome'),
     args: [
       '--no-sandbox',
       '--lang=es-CL',
       '--use-fake-ui-for-media-stream',
       '--use-fake-device-for-media-stream',
-      '--use-file-for-fake-video-capture=/tmp/capvf/cam.y4m',
+      ...(process.argv.includes('--finales') ? [] : ['--use-file-for-fake-video-capture=' + (process.env.FAKE_VIDEO || '/tmp/capvf/cam.y4m')]),
       '--autoplay-policy=no-user-gesture-required'
     ]
   })
+
+  if (process.argv.includes('--finales')) {
+    try { await capturarFinales(br) } finally { await br.close() }
+    return
+  }
 
   // --- GUIONES: Ajustes + Continuar con Google (sin título otoño detrás) ---
   {

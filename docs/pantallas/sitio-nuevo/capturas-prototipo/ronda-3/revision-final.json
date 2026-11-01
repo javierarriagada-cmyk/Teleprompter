@@ -1,0 +1,381 @@
+{
+  "base": "1297c70",
+  "escala_capturas": 1,
+  "viewports": [
+    {
+      "nombre": "tel",
+      "width": 392,
+      "height": 894,
+      "primera_vista_bytes": 373600,
+      "recursos": [
+        {
+          "archivo": "/demo-real/fuentes/source-serif-4-latin-400-normal.woff2",
+          "bytes": 20088
+        },
+        {
+          "archivo": "/demo-real/file-adapter.css",
+          "bytes": 871
+        },
+        {
+          "archivo": "/demo-real/estilo.css",
+          "bytes": 43870
+        },
+        {
+          "archivo": "/estilo.css",
+          "bytes": 21829
+        },
+        {
+          "archivo": "/demo-real/vendor/ScrollTrigger.min.js",
+          "bytes": 44586
+        },
+        {
+          "archivo": "/demo-real/vendor/gsap.min.js",
+          "bytes": 72938
+        },
+        {
+          "archivo": "/demo-real/vendor/lenis.min.js",
+          "bytes": 18723
+        },
+        {
+          "archivo": "/demo-real/demo.js",
+          "bytes": 1382
+        },
+        {
+          "archivo": "/prototipo.js",
+          "bytes": 4978
+        },
+        {
+          "archivo": "/demo-real/escenas.js",
+          "bytes": 30722
+        },
+        {
+          "archivo": "/demo-real/franja.js",
+          "bytes": 2690
+        },
+        {
+          "archivo": "/demo-real/fuentes/source-sans-3-latin-400-normal.woff2",
+          "bytes": 15696
+        },
+        {
+          "archivo": "/demo-real/fuentes/source-sans-3-latin-600-normal.woff2",
+          "bytes": 15668
+        },
+        {
+          "archivo": "/demo-real/fuentes/source-serif-4-latin-600-normal.woff2",
+          "bytes": 21532
+        },
+        {
+          "archivo": "/demo-real/pantalla.js",
+          "bytes": 9364
+        },
+        {
+          "archivo": "/demo-real/onda.js",
+          "bytes": 5049
+        },
+        {
+          "archivo": "/favicon.ico",
+          "bytes": 0
+        }
+      ],
+      "video": {
+        "texto": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "tarjeta": {
+          "x": 20,
+          "y": -5209.671875,
+          "width": 352,
+          "height": 625.765625
+        }
+      },
+      "imagenes": [
+        {
+          "archivo": "activos/capturas-webp/crops/uso-clases.webp",
+          "natural": [
+            784,
+            1700
+          ],
+          "render": [
+            265,
+            592
+          ],
+          "completa": true
+        },
+        {
+          "archivo": "activos/capturas-webp/crops/uso-presentaciones.webp",
+          "natural": [
+            784,
+            1700
+          ],
+          "render": [
+            265,
+            592
+          ],
+          "completa": true
+        },
+        {
+          "archivo": "activos/capturas-webp/crops/guiones-ui.webp",
+          "natural": [
+            784,
+            1700
+          ],
+          "render": [
+            265,
+            592
+          ],
+          "completa": true
+        }
+      ],
+      "escenas": [
+        {
+          "selector": "#video",
+          "captura": "final-video-tel.png",
+          "rectangulo": {
+            "x": 0,
+            "y": 5510,
+            "width": 392,
+            "height": 923
+          }
+        },
+        {
+          "selector": "#para",
+          "captura": "final-para-tel.png",
+          "rectangulo": {
+            "x": 0,
+            "y": 6433,
+            "width": 392,
+            "height": 3521
+          }
+        },
+        {
+          "selector": ".uso-momento:nth-child(2)",
+          "captura": "final-clases-tel.png",
+          "rectangulo": {
+            "x": 0,
+            "y": 7564,
+            "width": 392,
+            "height": 748
+          }
+        },
+        {
+          "selector": ".uso-momento:nth-child(3)",
+          "captura": "final-presentaciones-tel.png",
+          "rectangulo": {
+            "x": 0,
+            "y": 8351,
+            "width": 392,
+            "height": 748
+          }
+        },
+        {
+          "selector": "#guiones",
+          "captura": "final-guiones-tel.png",
+          "rectangulo": {
+            "x": 0,
+            "y": 11126,
+            "width": 392,
+            "height": 945
+          }
+        }
+      ],
+      "errores": [],
+      "demo_animada_file": false,
+      "consola_file": [
+        "Access to font at 'file:///C:/Users/56990/Desktop/sitio-nuevo/docs/pantallas/sitio-nuevo/demo-real/fuentes/source-serif-4-latin-400-normal.woff2' from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: chrome, chrome-experimental-site-token-provider, chrome-extension, chrome-untrusted, data, http, https, isolated-app.",
+        "Failed to load resource: net::ERR_FAILED",
+        "Access to script at 'file:///C:/Users/56990/Desktop/sitio-nuevo/docs/pantallas/sitio-nuevo/demo-real/demo.js' from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: chrome, chrome-experimental-site-token-provider, chrome-extension, chrome-untrusted, data, http, https, isolated-app.",
+        "Failed to load resource: net::ERR_FAILED"
+      ]
+    },
+    {
+      "nombre": "desk",
+      "width": 1440,
+      "height": 900,
+      "primera_vista_bytes": 373600,
+      "recursos": [
+        {
+          "archivo": "/demo-real/fuentes/source-serif-4-latin-400-normal.woff2",
+          "bytes": 20088
+        },
+        {
+          "archivo": "/demo-real/estilo.css",
+          "bytes": 43870
+        },
+        {
+          "archivo": "/demo-real/file-adapter.css",
+          "bytes": 871
+        },
+        {
+          "archivo": "/estilo.css",
+          "bytes": 21829
+        },
+        {
+          "archivo": "/demo-real/vendor/gsap.min.js",
+          "bytes": 72938
+        },
+        {
+          "archivo": "/demo-real/demo.js",
+          "bytes": 1382
+        },
+        {
+          "archivo": "/demo-real/vendor/lenis.min.js",
+          "bytes": 18723
+        },
+        {
+          "archivo": "/demo-real/vendor/ScrollTrigger.min.js",
+          "bytes": 44586
+        },
+        {
+          "archivo": "/prototipo.js",
+          "bytes": 4978
+        },
+        {
+          "archivo": "/demo-real/fuentes/source-sans-3-latin-400-normal.woff2",
+          "bytes": 15696
+        },
+        {
+          "archivo": "/demo-real/fuentes/source-sans-3-latin-600-normal.woff2",
+          "bytes": 15668
+        },
+        {
+          "archivo": "/demo-real/fuentes/source-serif-4-latin-600-normal.woff2",
+          "bytes": 21532
+        },
+        {
+          "archivo": "/demo-real/escenas.js",
+          "bytes": 30722
+        },
+        {
+          "archivo": "/demo-real/franja.js",
+          "bytes": 2690
+        },
+        {
+          "archivo": "/demo-real/pantalla.js",
+          "bytes": 9364
+        },
+        {
+          "archivo": "/demo-real/onda.js",
+          "bytes": 5049
+        }
+      ],
+      "video": {
+        "texto": {
+          "x": 200,
+          "y": 79.6875,
+          "width": 469.59375,
+          "height": 235.46875
+        },
+        "tarjeta": {
+          "x": 770.390625,
+          "y": -115.453125,
+          "width": 469.609375,
+          "height": 625.765625
+        }
+      },
+      "imagenes": [
+        {
+          "archivo": "activos/capturas-webp/crops/uso-clases.webp",
+          "natural": [
+            784,
+            1700
+          ],
+          "render": [
+            265,
+            592
+          ],
+          "completa": true
+        },
+        {
+          "archivo": "activos/capturas-webp/crops/uso-presentaciones.webp",
+          "natural": [
+            784,
+            1700
+          ],
+          "render": [
+            265,
+            592
+          ],
+          "completa": true
+        },
+        {
+          "archivo": "activos/capturas-webp/crops/guiones-ui.webp",
+          "natural": [
+            784,
+            1700
+          ],
+          "render": [
+            265,
+            592
+          ],
+          "completa": true
+        }
+      ],
+      "escenas": [
+        {
+          "selector": "#video",
+          "captura": "final-video-desk.png",
+          "rectangulo": {
+            "x": 160,
+            "y": 5538,
+            "width": 1120,
+            "height": 802
+          }
+        },
+        {
+          "selector": "#para",
+          "captura": "final-para-desk.png",
+          "rectangulo": {
+            "x": 0,
+            "y": 6340,
+            "width": 1440,
+            "height": 3094
+          }
+        },
+        {
+          "selector": ".uso-momento:nth-child(2)",
+          "captura": "final-clases-desk.png",
+          "rectangulo": {
+            "x": 180,
+            "y": 7397,
+            "width": 1080,
+            "height": 607
+          }
+        },
+        {
+          "selector": ".uso-momento:nth-child(3)",
+          "captura": "final-presentaciones-desk.png",
+          "rectangulo": {
+            "x": 180,
+            "y": 8060,
+            "width": 1080,
+            "height": 607
+          }
+        },
+        {
+          "selector": "#guiones",
+          "captura": "final-guiones-desk.png",
+          "rectangulo": {
+            "x": 160,
+            "y": 11166,
+            "width": 1120,
+            "height": 783
+          }
+        }
+      ],
+      "errores": [],
+      "demo_animada_file": false,
+      "consola_file": [
+        "Access to font at 'file:///C:/Users/56990/Desktop/sitio-nuevo/docs/pantallas/sitio-nuevo/demo-real/fuentes/source-serif-4-latin-400-normal.woff2' from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: chrome, chrome-experimental-site-token-provider, chrome-extension, chrome-untrusted, data, http, https, isolated-app.",
+        "Failed to load resource: net::ERR_FAILED",
+        "Access to script at 'file:///C:/Users/56990/Desktop/sitio-nuevo/docs/pantallas/sitio-nuevo/demo-real/demo.js' from origin 'null' has been blocked by CORS policy: Cross origin requests are only supported for protocol schemes: chrome, chrome-experimental-site-token-provider, chrome-extension, chrome-untrusted, data, http, https, isolated-app.",
+        "Failed to load resource: net::ERR_FAILED"
+      ]
+    }
+  ],
+  "apertura_file": true,
+  "nota_peso": "A la medición de red se sumaron los seis bytes de sangría final del HTML, sin cambios funcionales.",
+  "limite_file": "HTML estático disponible; demo animada y precarga de fuente bloqueadas por CORS, como en 1297c70."
+}

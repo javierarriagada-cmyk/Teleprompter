@@ -1,0 +1,44 @@
+[
+  {
+    "tipo": "cuenta",
+    "guion": {
+      "titulo": "Notas de la semana",
+      "texto": "Anotar las ideas principales antes de preparar el próximo guion."
+    },
+    "png": "activos\\capturas-app\\guiones-cuenta-final.png",
+    "webp": "activos\\capturas-webp\\crops\\guiones-ui.webp",
+    "foco": {
+      "etiqueta": "BODY",
+      "focoVisible": false
+    },
+    "origen": "Interfaz React de la app en el navegador, sin cámara ni reconocimiento de voz ejecutándose."
+  },
+  {
+    "tipo": "clases",
+    "guion": {
+      "titulo": "El ciclo del agua",
+      "texto": "El ciclo del agua.\n\nHoy veremos cómo el agua cambia de estado y circula por la naturaleza.\n\nEl calor del sol transforma parte del agua en vapor. Ese vapor asciende y se enfría. Entonces se forman pequeñas gotas que se agrupan en las nubes.\n\nCuando las gotas crecen, caen en forma de lluvia. Una parte del agua llega a los ríos y otra se infiltra en el suelo.\n\nPensemos ahora en un charco después de la lluvia. ¿Qué ocurre con él cuando vuelve a salir el sol?"
+    },
+    "png": "activos\\capturas-app\\uso-clases-final.png",
+    "webp": "activos\\capturas-webp\\crops\\uso-clases.webp",
+    "foco": {
+      "etiqueta": "BODY",
+      "focoVisible": false
+    },
+    "origen": "Interfaz React de la app en el navegador, sin cámara ni reconocimiento de voz ejecutándose."
+  },
+  {
+    "tipo": "presentaciones",
+    "guion": {
+      "titulo": "Resultados del trimestre",
+      "texto": "Resultados del trimestre.\n\nBuenos días. Hoy revisaremos los resultados del equipo y las prioridades para los próximos tres meses.\n\nTerminamos ocho proyectos. Dos entregas se retrasaron porque la revisión comenzó demasiado tarde.\n\nPara el siguiente trimestre propongo reservar una semana de revisión antes de cada entrega y reunirnos los lunes para resolver los bloqueos.\n\nAl terminar esta presentación, acordaremos las fechas y quién estará a cargo de cada tarea."
+    },
+    "png": "activos\\capturas-app\\uso-presentaciones-final.png",
+    "webp": "activos\\capturas-webp\\crops\\uso-presentaciones.webp",
+    "foco": {
+      "etiqueta": "BODY",
+      "focoVisible": false
+    },
+    "origen": "Interfaz React de la app en el navegador, sin cámara ni reconocimiento de voz ejecutándose."
+  }
+]
