@@ -8,7 +8,17 @@
   height: calc(var(--circulo-desde-abajo) + 72px + 160px + env(safe-area-inset-bottom, 0px));
   /* 31-10-2026, aprobado por Javier en el Redmi en vivo: el tramo macizo llega al 72 %, y el texto
      se desvanece antes de tocar el dock. Antes: var(--velo) 58%. */
-  background: linear-gradient(to top, var(--velo) 0%, var(--velo) 72%, transparent 100%);
+  /* La curva evita que se note dónde empieza la sombra. Antes: background:
+     linear-gradient(to top, var(--velo) 0%, var(--velo) 72%, transparent 100%); */
+  background: linear-gradient(
+    to top,
+    var(--velo) 0%,
+    var(--velo) 72%,
+    color-mix(in srgb, var(--velo) 85%, transparent) 79%,
+    color-mix(in srgb, var(--velo) 55%, transparent) 87%,
+    color-mix(in srgb, var(--velo) 20%, transparent) 94%,
+    transparent 100%
+  );
 }
 
 .fila-fichas-listo {
@@ -1172,6 +1182,7 @@
 .dock-duracion {
   font-size: 20px;
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
   color: var(--color-texto);
 }
 
