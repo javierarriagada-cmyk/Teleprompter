@@ -14,7 +14,22 @@ Copia de trabajo de `sitio/fuente/` para abrir el prototipo con doble clic (`fil
    Los ids de escena 1/2/5 se conservan para textos y píldora.
 
 3. **E2 (comparación común vs Sigo)**  
-   Presentación: dos teléfonos con gutter explícito; rótulos en coords de teléfono (~40 px → ≥14 px en pantalla); avisos «Se te escapó» / «Te espera» fuera de la pantalla (hijos de `.telefono`, encima del marco), nunca tapando el guion.
+   Presentación: dos teléfonos con gutter explícito; rótulos en coords de teléfono; avisos «Se te escapó» / «Te espera» fuera de la pantalla (hijos de `.telefono`, encima del marco), nunca tapando el guion.  
+   Con onda de voz real (`onda.js`) en E1 y E2: mismas barras bajo ambos teléfonos;
+   en silencio se aplanan a la vez — el común sigue escapando, Sigo espera.
+
+4. **Onda rediseñada (Apple/Sony)**  
+   Motor real `onda.js`: pocas barras redondeadas, paleta crema/`#F0C070`, silencio casi plano
+   (sin líneas punteadas). E2 alinea una onda bajo cada teléfono a la misma `t` de voz.
 
 El motor (`demo.js`, `pantalla.js`, `lectura.js`, `onda.js`, reduced-motion, teléfono) es el publicado.  
 `escenas.fuente.js` es la referencia byte-a-byte del fuente; no se usa en runtime.
+## Onda — qué tomamos de Apple / Sony (t122u/t123u)
+
+- **Apple Dynamic Island / AirPods product pages:** pocas barras redondeadas, amplitud suave;
+  en silencio un piso continuo bajo (no cero, no línea punteada); el “ahora” se lee por
+  el acento cálido de las barras cercanas, no por un playhead grueso.
+- **Sony audio product pages:** EQ limpio monocromo + acento de producto; alineado al
+  artefacto (aquí: al ancho de cada teléfono), sin decoración densa.
+- **Historia E2:** misma `t` de voz bajo ambos → al callar, ambas ondas se aplanan;
+  el común sigue escapando, Sigo espera; al volver la voz, la onda crece y el texto de Sigo sigue.

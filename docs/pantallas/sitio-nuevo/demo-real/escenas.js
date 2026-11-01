@@ -169,18 +169,20 @@ export function iniciarEscenas(datos) {
       // y dentro de un telefono girado en 3D ese texto se vuelve a dibujar entero cada vez
       // -medido en un telefono de gama media simulado: 22 a 33 cuadros largos de 99 con giro,
       // 9 a 14 sin el-.
-      // PROTOTIPO E2 móvil: teléfonos más chicos con gutters claros; hueco para
-      // avisos arriba y rótulos abajo legibles (≥14 px en pantalla).
-      // Más grandes + más arriba: menos aire muerto bajo el titular.
-      const s2 = Math.min((0.44 * vw) / 380, (0.46 * vh) / 800)
+      // PROTOTIPO E2 móvil: teléfonos + rótulos + onda de voz (Apple/Sony).
+      // Onda bajo cada rótulo, alineada al ancho del teléfono; misma voz →
+      // en silencio ambas se aplanan; el común sigue escapando, Sigo espera.
+      const s2 = Math.min((0.45 * vw) / 380, (0.48 * vh) / 800)
       const half = (380 * s2) / 2
-      const gutter = Math.max(18, 0.042 * vw)
+      const gutter = Math.max(16, 0.038 * vw)
       const x2 = half + gutter / 2
-      const phoneTop = Math.max(0.235 * vh, 198)
+      // Teléfonos más abajo: avisos libres del copy; onda ENTRE marco y rótulo.
+      const phoneTop = Math.max(0.295 * vh, 262)
       const cy2 = phoneTop + 400 * s2
       E.e2sigo = { x: x2, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
       E.e2comun = { x: -x2, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
-      E.ondaE2 = { y: cy2 + 400 * s2 + 118, medio: 175 * s2 }
+      // Centro de la onda justo bajo el marco (rótulo CSS deja hueco).
+      E.ondaE2 = { y: cy2 + 400 * s2 + 28, medio: half * 0.90, alto: 36 }
       const sz = s * 1.4
       E.e4zoom = { x: 0, y: 0.38 * vh - 22 * sz + 400 * sz - vh / 2, rotationX: 30, rotationY: -10, rotationZ: 0, scale: sz }
       E.e4graba = { x: 0, y: cy - vh / 2, rotationX: 0, rotationY: -5, rotationZ: 0, scale: s }
@@ -198,16 +200,17 @@ export function iniciarEscenas(datos) {
       E.e0 = { x: 0.28 * vw, y: 0.20 * vh + 400 * s0 - vh / 2, rotationX: 4, rotationY: -6, rotationZ: 0, scale: s0 }
       E.e1 = { x: xR, y: 0.01 * vh, rotationX: 4, rotationY: -12, rotationZ: 0, scale: s }
       E.e3 = { x: xR * 0.95, y: 0, rotationX: 0, rotationY: 9, rotationZ: -1.5, scale: s * 1.03 }
-      // PROTOTIPO E2 desk: gutters claros entre los dos; avisos van arriba del marco.
-      const s2 = Math.min((0.50 * vh) / 800, (0.27 * vw) / 380)
+      // PROTOTIPO E2 desk: gutters + onda bajo cada teléfono (misma voz).
+      const s2 = Math.min((0.44 * vh) / 800, (0.25 * vw) / 380)
       const half = (380 * s2) / 2
-      const gutter = Math.max(40, 0.038 * vw)
+      const gutter = Math.max(52, 0.045 * vw)
       const x2 = half + gutter / 2
-      const phoneTop = Math.max(0.28 * vh, 250)
+      // Desk: avisos libres del copy; onda+rótulo caben sobre la píldora.
+      const phoneTop = Math.max(0.325 * vh, 290)
       const cy2 = phoneTop + 400 * s2
       E.e2sigo = { x: x2, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
       E.e2comun = { x: -x2, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
-      E.ondaE2 = { y: cy2 + 400 * s2 + 128, medio: 190 * s2 }
+      E.ondaE2 = { y: cy2 + 400 * s2 + 28, medio: half * 0.90, alto: 40 }
       const sz = s * 1.75
       E.e4zoom = { x: xR * 0.7, y: 0.3 * vh - 22 * sz + 400 * sz - vh / 2, rotationX: 30, rotationY: -22, rotationZ: 0, scale: sz }
       E.e4graba = { x: xR, y: 0, rotationX: 0, rotationY: -8, rotationZ: 0, scale: s }
@@ -266,6 +269,7 @@ export function iniciarEscenas(datos) {
     tl.set(textos[1], { autoAlpha: 1 }, 0.4)
     tl.fromTo($$('.p', textos[1]), { opacity: 0, y: 40 }, { opacity: 1, y: 0, stagger: 0.1, duration: 0.22, ease: 'power2.out' }, 0.42)
     tl.fromTo($('.bajada', textos[1]), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.22 }, 0.72)
+    // E1: la onda se acerca al teléfono (voz viva).
     tl.fromTo(canvas, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, 0.5)
 
     // E1 -> E2: aparece el comun al lado; la luz se parte en fria y tibia
@@ -277,6 +281,7 @@ export function iniciarEscenas(datos) {
     tl.to(luces.duelo, { opacity: 1, duration: 0.4 }, 1.6)
     tl.to('.rotulo', { opacity: 1, duration: 0.25 }, 1.9)
     entra(textos[2], 1.68)
+    // E2: dos ondas alineadas — misma voz; silencio = ambas planas.
     tl.to(canvas, { autoAlpha: 1, duration: 0.25 }, 1.95)
 
     // E2 -> E5 (prototipo): salta formatos/lente/offline; va directo a subtítulos
@@ -386,22 +391,31 @@ export function iniciarEscenas(datos) {
     }
     if (p > 1.55 && p < 3.45) estadoPrevio.fueraE2 = false
 
-    // La onda
+    // La onda (motor real). E1: se acerca al teléfono. E2: una bajo cada
+    // teléfono, misma t de voz — en la pausa ambas se aplanan; el común
+    // sigue escapando, Sigo espera. Reduced-motion: reloj congelado →
+    // barras estáticas (planas en el cuadro de pausa).
     const alfaOnda = +gsap.getProperty(canvas, 'opacity')
     if (alfaOnda > 0.01) {
       if (esc <= 1) {
-        const x = L.vw / 2 + gsap.getProperty(telSigo, 'x') - 190 * gsap.getProperty(telSigo, 'scale')
-        const y = L.vh / 2 + gsap.getProperty(telSigo, 'y') + (86 - 400) * gsap.getProperty(telSigo, 'scale')
-        onda.dibujar(t, { x, y, alto: L.movil ? 50 : 78, izquierda: x })
+        const sc = gsap.getProperty(telSigo, 'scale')
+        const x = L.vw / 2 + gsap.getProperty(telSigo, 'x') - 190 * sc
+        const y = L.vh / 2 + gsap.getProperty(telSigo, 'y') + (86 - 400) * sc
+        onda.dibujar(t, {
+          x, y, alto: L.movil ? 44 : 68, izquierda: x,
+          color: '#E7E1DE', colorAhora: '#F0C070', barW: 4, marca: false
+        })
       } else {
-        // E2: una onda bajo cada telefono, con su "ahora" al centro. Es la misma voz: cuando se
-        // aplana, se aplana bajo los dos a la vez.
-        const { y, medio } = L.ondaE2
-        const alto = L.movil ? 40 : 60
+        const { y, medio, alto: altoE2 } = L.ondaE2
+        const alto = altoE2 || (L.movil ? 34 : 48)
         let primero = true
         for (const tel of [telComun, telSigo]) {
           const cx = L.vw / 2 + gsap.getProperty(tel, 'x')
-          onda.dibujar(t, { x: cx, y, alto, izquierda: medio, pasado: medio, tramo: [cx - medio, cx + medio], limpiar: primero, marca: true })
+          onda.dibujar(t, {
+            x: cx, y, alto, izquierda: medio, pasado: medio,
+            tramo: [cx - medio, cx + medio], limpiar: primero, marca: false,
+            color: '#E7E1DE', colorAhora: '#F0C070', barW: 4
+          })
           primero = false
         }
       }

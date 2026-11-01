@@ -1,12 +1,8 @@
 // LA ONDA DE LA VOZ -escenas E1 y E2-. 27-09-2026, docs/el-sitio.md v2.
-//
-// Barras verticales que viajan hacia el telefono: cada barra es un instante de la voz, con los
-// mismos tiempos que la lectura -datos.voz, cuando empieza y termina cada palabra-. La barra
-// que toca el borde del telefono es lo que suena ahora, y esa palabra se enciende en la
-// pantalla. En los silencios la onda se aplana. La forma de cada palabra -sus silabas, lo alto
-// de cada barra- es dibujo: los tiempos no.
+// Prototipo t122u/t123u: misma lógica de voz; dibujo a la vara Apple/Sony
+// (pocas barras redondeadas, amplitud suave, silencio casi plano, DPR nítido).
 
-const MS_POR_BARRA = 55
+const MS_POR_BARRA = 70
 const PX_POR_BARRA = 7
 
 export class Onda {
@@ -30,26 +26,30 @@ export class Onda {
   // Que tan fuerte suena en el milisegundo t, de 0 a 1.
   fuerza(t) {
     const v = this.voz
-    // Busqueda lineal desde la ultima: las barras se piden en orden.
     let i = this.ultima || 0
     if (i >= v.length || (i > 0 && v[i - 1][1] > t)) i = 0
     while (i < v.length && v[i][1] <= t) i++
     this.ultima = i
-    if (i >= v.length || t < v[i][0]) return 0.035
+    // Silencio: piso muy bajo (Apple Dynamic Island en pausa), no línea punteada.
+    if (i >= v.length || t < v[i][0]) return 0.22
     const [a, b] = v[i]
     const silabas = Math.max(1, Math.round((b - a) / 170))
     const x = (t - a) / (b - a)
     const silaba = Math.abs(Math.sin(Math.PI * x * silabas))
-    const grano = 0.75 + 0.25 * Math.abs(Math.sin(i * 12.9898 + Math.floor(t / MS_POR_BARRA) * 78.233))
-    const borde = Math.min(1, x * 6, (1 - x) * 6)
-    return Math.max(0.06, (0.25 + 0.75 * silaba) * grano * borde)
+    const grano = 0.82 + 0.18 * Math.abs(Math.sin(i * 12.9898 + Math.floor(t / MS_POR_BARRA) * 78.233))
+    const borde = Math.min(1, x * 5, (1 - x) * 5)
+    return Math.max(0.08, (0.22 + 0.78 * silaba) * grano * borde)
   }
 
-  // x: el x en pantalla donde suena ahora; lo que viene llega desde la izquierda.
-  // pasado: cuanto se dibuja a la derecha de "ahora" -lo que ya sono-, en px.
-  // tramo: [desde, hasta] en x, para dibujar varias ondas -una bajo cada telefono, E2- sin
-  // que se pisen; limpiar en false para no borrar la anterior. marca: una raya en "ahora".
-  dibujar(t, { x: xAhora, y, alto, izquierda = xAhora, pasado = 0, alfa = 1, tramo = null, limpiar = true, marca = false }) {
+  // x: el x en pantalla donde suena ahora.
+  // pasado: cuanto se dibuja a la derecha de "ahora".
+  // tramo: [desde, hasta] para varias ondas sin pisarse.
+  // color / colorAhora: paleta Sigo (crema / acento cálido).
+  dibujar(t, {
+    x: xAhora, y, alto, izquierda = xAhora, pasado = 0, alfa = 1,
+    tramo = null, limpiar = true, marca = false,
+    color = '#E7E1DE', colorAhora = '#F0C070', barW = 4
+  }) {
     const ctx = this.ctx
     if (limpiar) ctx.clearRect(0, 0, this.ancho, this.alto)
     if (alfa <= 0.01) return
@@ -63,27 +63,30 @@ export class Onda {
     const desplazamiento = ((t % MS_POR_BARRA) / MS_POR_BARRA) * PX_POR_BARRA
     const n = Math.ceil(izquierda / PX_POR_BARRA) + 1
     const nPasado = Math.ceil(pasado / PX_POR_BARRA)
-    // Del pasado al futuro, para que la busqueda de la fuerza vaya en orden.
+    const halfBar = barW / 2
     for (let k = -nPasado; k <= n; k++) {
       const tk = (Math.floor(t / MS_POR_BARRA) + k) * MS_POR_BARRA
       const x = xAhora - k * PX_POR_BARRA + desplazamiento
       if (x < -PX_POR_BARRA || x > this.ancho + PX_POR_BARRA) continue
       const f = this.fuerza(tk)
-      const h = Math.max(2, f * alto)
-      // Lejos, tenue; cerca del telefono, crema; lo ya dicho, se apaga.
+      const h = Math.max(4, f * alto)
       const lejos = k >= 0 ? Math.min(1, k / n) : 0
-      const opacidad = k >= 0 ? 0.95 - 0.7 * lejos : Math.max(0, 0.5 + k / nPasado * 0.5)
+      const opacidad = k >= 0 ? 0.92 - 0.72 * lejos : Math.max(0.08, 0.55 + k / Math.max(1, nPasado) * 0.45)
       ctx.globalAlpha = opacidad * alfa
-      ctx.fillStyle = k >= 0 && k < 3 ? '#FFE3C4' : '#E7E1DE'
+      ctx.fillStyle = (k >= 0 && k < 2) ? colorAhora : color
       ctx.beginPath()
-      if (ctx.roundRect) ctx.roundRect(x - 1.5, y - h / 2, 3, h, 1.5)
-      else ctx.rect(x - 1.5, y - h / 2, 3, h)
+      if (ctx.roundRect) ctx.roundRect(x - halfBar, y - h / 2, barW, h, halfBar)
+      else ctx.rect(x - halfBar, y - h / 2, barW, h)
       ctx.fill()
     }
     if (marca) {
-      ctx.globalAlpha = 0.9 * alfa
-      ctx.fillStyle = '#F2ECE8'
-      ctx.fillRect(xAhora - 1, y - alto * 0.62, 2, alto * 1.24)
+      // Playhead fino, no una raya gruesa de placeholder.
+      ctx.globalAlpha = 0.55 * alfa
+      ctx.fillStyle = colorAhora
+      ctx.beginPath()
+      if (ctx.roundRect) ctx.roundRect(xAhora - 1, y - alto * 0.55, 2, alto * 1.1, 1)
+      else ctx.rect(xAhora - 1, y - alto * 0.55, 2, alto * 1.1)
+      ctx.fill()
     }
     ctx.restore()
     ctx.globalAlpha = 1
