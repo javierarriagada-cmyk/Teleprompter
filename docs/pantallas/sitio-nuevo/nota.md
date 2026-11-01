@@ -11,7 +11,7 @@ Rama `sitio-nuevo-prototipo`, solo `docs/pantallas/sitio-nuevo/`.
 - E5 bokeh / estilos: sin cambios (demo aprobada).
 
 ### Video
-- Poster: fotograma limpio del MP4 (teleprompter + PiP persona), sin chrome de marketing (logo/barra roja).
+- Poster: fotograma completo 9:16 del MP4 (`f180` / ~18s): composición nativa, teléfono entero visible, texto sin cortes, PiP persona completo. `object-fit: contain` en `.video-caja` (mismo AR 9/16).
 - `.video-nota { display: none }`.
 - Títulos: kicker «El video» / «Del guion al video.» (sin choque con «Así se ve…»).
 
@@ -21,7 +21,7 @@ Rama `sitio-nuevo-prototipo`, solo `docs/pantallas/sitio-nuevo/`.
 - Videos: «…en un recuadro que puedes mover, u ocultarla mientras grabas.»
 - Clases: `object-position: center 6%` (sin velo negro cortando la última línea legible; el fade del teleprompter es el de la app).
 - Presentaciones: fotograma mujer + panel «Estilo de subtítulos» (chips Sin/Amarillo/Blanco/Fondo) cubriendo el disco Play; sin póster de Play disc.
-- Ensayos: UI real Velocidad fija (≠ Clases).
+- Ensayos: Ajustes real en español con «Velocidad fija» seleccionado + control Velocidad (barras); claramente ≠ Clases (Leer con la voz).
 
 ### La app
 - Título «Lee, graba y exporta.»; bajada de producto (tamaño/tipografía/colores), no «Capturas reales de la ficha».
@@ -41,10 +41,10 @@ Rama `sitio-nuevo-prototipo`, solo `docs/pantallas/sitio-nuevo/`.
 | Videos / phone-02 | `uso-videos.webp`, `phone-02.webp` | App real Grabar LISTO + persona (fake cam y4m / still inyectado en recuadro) |
 | Clases | `uso-clases.webp` | App real Leer |
 | Presentaciones / phone-03 | `uso-presentaciones.webp`, `phone-03.webp` | Frame Play mujer + overlay UI estilo subtítulos |
-| Ensayos / phone-06 | `uso-ensayos.webp`, `phone-06.webp` | App real Velocidad fija |
+| Ensayos / phone-06 | `uso-ensayos.webp`, `phone-06.webp` | App real Ajustes · Velocidad fija (es) |
 | Guiones | `guiones-ui.webp` | App real Ajustes + cuenta Google |
 | phone-08 | `phone-08.webp` | App real Grabar horizontal + persona en PiP |
-| Poster | `activos/video/poster.webp` | Crop limpio del MP4 (pantalla del teléfono) |
+| Poster | `activos/video/poster.webp` (+ `.jpg`) | Frame completo 9:16 del MP4 (teléfono + persona, sin zoom) |
 
 PNG fuente: `activos/capturas-app/`. Herramientas: `_tools/capturar-app-real.cjs`, `_tools/capturar-ronda3.mjs`.
 
