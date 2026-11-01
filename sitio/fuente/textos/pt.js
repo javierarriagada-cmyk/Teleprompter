@@ -182,7 +182,9 @@ export default {
     titulo: 'Excluir sua conta do Sigo',
     desdeLaApp: 'Pelo app: abra o Sigo, toque na sua conta no alto de Configurações, escolha Excluir conta e confirme. Sua conta e o backup dos seus roteiros na nuvem são excluídos na hora. Não é possível desfazer. Os roteiros do seu celular não são tocados.',
     sinLaApp: 'Sem o app: escreva para <a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a> a partir do e-mail da sua conta do Google, com o assunto «Excluir minha conta do Sigo». Excluímos sua conta e o backup dos seus roteiros o quanto antes, em no máximo 7 dias, e avisamos você quando estiver feito.',
-    queSeBorra: 'O que é excluído: sua conta do Sigo (seu e-mail, seu nome, o link da sua foto de perfil e o identificador da conta) e todo o backup dos seus roteiros. Não guardamos cópias.'
+    queSeBorra: 'O que é excluído: sua conta do Sigo (seu e-mail, seu nome, o link da sua foto de perfil e o identificador da conta) e todo o backup dos seus roteiros. Não guardamos cópias.',
+    // -borrar-cuenta-suscripcion, 31-10-2026- Mesma chave que es.js. Antes: (não existia).
+    avisoSuscripcion: 'Se você tem o Sigo+, excluir sua conta não cancela a assinatura. Cancele no <a href="https://play.google.com/store/account/subscriptions">Google Play</a> para parar de pagar. Também excluímos seu registro de compras na RevenueCat; o Google mantém o dele.'
   },
 
   // EL GUION DEL TELÉFONO -sitio/fuente/lectura.js-, escrito en portugués con los mismos formatos

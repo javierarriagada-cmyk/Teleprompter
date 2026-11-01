@@ -193,7 +193,10 @@ export default {
     titulo: 'Borrar tu cuenta de Sigo',
     desdeLaApp: 'Desde la app: abre Sigo, toca tu cuenta arriba de Ajustes, elige Borrar cuenta y confirma. Se borran al instante tu cuenta y la copia de seguridad de tus guiones en la nube. No se puede deshacer. Los guiones de tu teléfono no se tocan.',
     sinLaApp: 'Sin la app: escríbenos a <a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a> desde el correo de tu cuenta de Google, con el asunto «Borrar mi cuenta de Sigo». Borramos tu cuenta y la copia de seguridad de tus guiones lo antes posible, y como máximo en 7 días, y te avisamos cuando esté hecho.',
-    queSeBorra: 'Qué se borra: tu cuenta de Sigo (tu correo, tu nombre, el enlace a tu foto de perfil y el identificador de la cuenta) y toda la copia de seguridad de tus guiones. No guardamos copias.'
+    queSeBorra: 'Qué se borra: tu cuenta de Sigo (tu correo, tu nombre, el enlace a tu foto de perfil y el identificador de la cuenta) y toda la copia de seguridad de tus guiones. No guardamos copias.',
+    // -borrar-cuenta-suscripcion, 31-10-2026- Google Play enlazado. Antes: (clave inexistente).
+    // Motivo: borrar la cuenta no cancela Sigo+; hay que decirlo en el sitio también.
+    avisoSuscripcion: 'Si tienes Sigo+, borrar tu cuenta no cancela la suscripción. Cancélala en <a href="https://play.google.com/store/account/subscriptions">Google Play</a> para dejar de pagar. También borramos tu registro de compras en RevenueCat; Google conserva el suyo.'
   },
 
   // EL GUION DEL TELEFONO -sitio/fuente/lectura.js-. Con los formatos del editor: **negrita**,

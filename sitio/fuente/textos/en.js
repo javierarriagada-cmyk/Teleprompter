@@ -182,7 +182,9 @@ export default {
     titulo: 'Delete your Sigo account',
     desdeLaApp: 'From the app: open Sigo, tap your account at the top of Settings, choose Delete account and confirm. Your account and the backup of your scripts in the cloud are deleted right away. This can\'t be undone. The scripts on your phone aren\'t affected.',
     sinLaApp: 'Without the app: write to us at <a href="mailto:hello@sigoteleprompter.com">hello@sigoteleprompter.com</a> from the email of your Google account, with the subject "Delete my Sigo account". We delete your account and the backup of your scripts as soon as possible, within 7 days at most, and let you know when it\'s done.',
-    queSeBorra: 'What gets deleted: your Sigo account (your email, your name, the link to your profile photo and the account identifier) and the whole backup of your scripts. We don\'t keep copies.'
+    queSeBorra: 'What gets deleted: your Sigo account (your email, your name, the link to your profile photo and the account identifier) and the whole backup of your scripts. We don\'t keep copies.',
+    // -borrar-cuenta-suscripcion, 31-10-2026- Same key as es.js. Antes: (did not exist).
+    avisoSuscripcion: 'If you have Sigo+, deleting your account doesn\'t cancel your subscription. Cancel it in <a href="https://play.google.com/store/account/subscriptions">Google Play</a> to stop paying. We also delete your purchase record at RevenueCat; Google keeps its own.'
   },
 
   // THE SCRIPT ON THE PHONE. La misma idea que el de espanol y los mismos formatos. El
