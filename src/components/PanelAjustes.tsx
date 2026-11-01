@@ -29,7 +29,7 @@ import { ErrorCuenta, ResultadoCuenta, borrarCuenta, entrar, estadoCuenta, salir
 // -orden B- El estado de la copia de seguridad, para la línea de la tarjeta de la cuenta.
 import { FaseRespaldo, estadoRespaldo, suscribirRespaldo } from '../lib/respaldo'
 // -orden 2, punto 6, 26-10-2026- Tarjeta Sigo+, restaurar compras y fila con Customer Center.
-import { restaurarCompras, ofertaTraePruebaGratis, suscripcionSinVerificar, suscribirSuscripcion, estadoSuscripcion } from '../lib/suscripcion'
+import { restaurarCompras, ofertaTraePruebaGratis, suscripcionSinVerificar, suscribirSuscripcion, estadoSuscripcion, tieneSuscripcion } from '../lib/suscripcion'
 import { abrirOferta, abrirCentroDeCliente } from '../lib/oferta'
 import type { ClaveTexto } from '../textos'
 import { t, useTextos, ENDONIMO_IDIOMA } from '../textos'
@@ -983,6 +983,11 @@ function TarjetaCuenta({ hostMenus }: { hostMenus: HTMLElement | null }) {
   const estado = useSyncExternalStore(suscribirCuenta, estadoCuenta, estadoCuenta)
   // Antes 2026-10-29: const estadoSub = useSyncExternalStore(suscribirSuscripcion, ...)
   // para mostrarFilaSigoActivoEnCuenta. Motivo: la fila salió de la tarjeta.
+  // -borrar-cuenta-suscripcion, 31-10-2026- Vuelve la suscripción al store de la tarjeta para el
+  // aviso del diálogo de borrar. Antes: (sin esta línea; solo el comentario de arriba).
+  // Motivo: con Sigo+ el diálogo muestra aviso y botón a Play; sin suscribirse no se redibuja.
+  const estadoSub = useSyncExternalStore(suscribirSuscripcion, estadoSuscripcion, estadoSuscripcion)
+  void estadoSub
   const respaldo = useSyncExternalStore(suscribirRespaldo, estadoRespaldo, estadoRespaldo)
   // Debajo de la tarjeta, como en la orden A: un error, o el aviso de que se cerró la sesión.
   const [linea, setLinea] = useState<ClaveTexto | null>(null)
@@ -1087,6 +1092,25 @@ function TarjetaCuenta({ hostMenus }: { hostMenus: HTMLElement | null }) {
                 después, que el teléfono no se toca. Antes: <p className="texto-dialogo">{t('borrarCuentaTexto')}</p> */}
             <p className="texto-dialogo">{t('borrarCuentaTexto')}</p>
             <p className="texto-dialogo">{t('borrarCuentaTexto2')}</p>
+            {/* -borrar-cuenta-suscripcion, 31-10-2026- Con Sigo+, aviso de que la suscripción sigue
+                y botón a Google Play. Tocar el botón no cierra el diálogo; Cancelar y Borrar igual.
+                Borrar no exige cancelar antes. Sin Sigo+, el diálogo queda como antes.
+                Antes: (solo los dos párrafos y .botones-dialogo; sin aviso ni botón a Play).
+                Motivo: borrar la cuenta no cancela el cobro en Play; Play pide detallar pasos
+                adicionales -support.google.com/googleplay/android-developer/answer/13327111-. */}
+            {tieneSuscripcion() && (
+              <>
+                <p className="texto-dialogo" data-testid="aviso-borrar-cuenta-suscripcion">{t('borrarCuentaAvisoSuscripcion')}</p>
+                <button
+                  type="button"
+                  className="boton-dialogo"
+                  data-testid="btn-borrar-cuenta-google-play"
+                  onClick={() => abrirEnlace('https://play.google.com/store/account/subscriptions')}
+                >
+                  {t('borrarCuentaIrAGooglePlay')}
+                </button>
+              </>
+            )}
             <div className="botones-dialogo">
               <button type="button" className="boton-dialogo" data-testid="btn-borrar-cuenta-cancelar" onClick={() => setConfirmarBorrar(false)}>
                 {t('cancelar')}

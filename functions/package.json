@@ -1,0 +1,21 @@
+{
+  "name": "sigo-functions",
+  "description": "Cloud Functions de Sigo — primera: borrar el registro de RevenueCat al borrar la cuenta",
+  "engines": {
+    "node": "22"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "node --experimental-strip-types --test src/borrarSuscriptorRevenueCat.test.ts"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.0.2",
+    "firebase-functions": "^6.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.2"
+  },
+  "private": true
+}
