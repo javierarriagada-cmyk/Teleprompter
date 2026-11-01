@@ -3,7 +3,7 @@
 Prototipo en HTML estático para abrir con doble clic (`file://`). Nada de esto está publicado.
 Rama `sitio-nuevo-prototipo`, solo `docs/pantallas/sitio-nuevo/`.
 
-## Ronda 3 — fix crispness (post-7d4b951)
+## Ronda 3 — fix crispness (`0ebde4b`, post-7d4b951)
 
 - **Guiones:** UI nativa de `07.png` en marco `.proto-tel` (mismo canto/cuerpo que el héroe), opacidad 1, sin filtro. El póster Play «Continuar con Google» de 07 tiene texto suave/aberración en el PNG fuente; no se usa (queda como leftover).
 - **Para qué:** cuatro momentos en marco de teléfono, mismo tamaño; Videos=cámara PiP+timer (02); Clases=lectura (01); Presentaciones=video con subtítulos (03); Ensayos=velocidad fija (06). Fade superior en Videos porque el mock del póster 02 arranca a media frase.
@@ -24,12 +24,12 @@ Medido con respuestas HTTP reales al cargar la página (imgs a eager).
 | Vendor (GSAP + ScrollTrigger + Lenis) | ~133 KiB |
 | Fuentes (woff2) | ~87 KiB |
 | Poster WebP (frame real del MP4) | ~50 KiB |
-| Capturas WebP (usos + galería + guiones) | ~411 KiB |
+| Capturas WebP (usos + galería + guiones) | ~0,85 MiB |
 | **Primera vista (hero+demo+libs, sin poster/caps/MP4)** | **~372 KiB** |
-| **Página completa sin MP4 (navegador)** | **~0,81 MiB** |
+| **Página completa sin MP4 (navegador)** | **~1,29 MiB** |
 | Video MP4 (solo al reproducir) | ~4,5 MiB |
 
-**Meta ≤ 1,5 MiB sin video: cumplida (~0,81 MiB en red).** En disco hay PNG fuente en `activos/capturas/` (~3,8 MiB) que la página no descarga; solo se sirven WebP.El video no se descarga hasta el toque (poster + botón).
+**Meta ≤ 1,5 MiB sin video: cumplida (~1,29 MiB en assets enlazados).** En disco hay PNG fuente en `activos/capturas/` (~3,8 MiB) que la página no descarga; solo se sirven WebP.El video no se descarga hasta el toque (poster + botón).
 
 ## Ronda 3 — qué cambió
 
@@ -37,7 +37,7 @@ Medido con respuestas HTTP reales al cargar la página (imgs a eager).
 2. Video vertical 9:16 con poster extraído del MP4 (frame ~5,2 s).
 3. «Para qué»: cuatro momentos editoriales con **crops del UI real** (sin titulares de póster de Play). Línea corta de la ficha. No repite la galería (material distinto / recorte distinto).
 4. «La app de verdad»: carrusel horizontal con snap (~80 % + peek) de phone-01…06; 08 landscape en momento ancho propio. **07 no está en la galería** (solo en Guiones).
-5. «Tus guiones»: composite oscuro Continuar con Google + editor Guiones sobre `#12100E`, sin tarjeta crema ni texto cortado.
+5. «Tus guiones»: UI nativa de 07 en marco `.proto-tel` (mismo estilo héroe), opacidad plena. El card «Continuar con Google» del póster 07 queda fuera (texto suave en el PNG fuente).
 6. Cierre: una acción (mailto), sin caja con borde.
 7. Franja «Sigo está en prueba…» con **ES · EN · PT dentro de la franja** (ya no flota sobre el contenido). Pie con Ayuda/Soporte/Privacidad/Términos/Borrar cuenta + ES·EN·PT.
 
