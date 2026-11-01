@@ -1052,6 +1052,10 @@ html:not(.js) .franja-cerrar { display: none; }
   .franja-cerrar { right: 14px; }
   .idioma-franja { font-size: 13px; }
 }
+.franja-prueba:not(.franja-play) { grid-template-columns: auto minmax(0, 1fr) auto; }
+@media (max-width: 480px) {
+  .franja-prueba .franja-msg span { white-space: normal; }
+}
 .franja-play, .franja-cerrada .franja-play { display: grid; grid-template-columns: auto auto; justify-content: space-between; padding: 8px 12px; }
 .franja-prueba .franja-boton {
   display: inline-flex;

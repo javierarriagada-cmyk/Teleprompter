@@ -1166,6 +1166,13 @@ html:not(.js) .franja-cerrar { display: none; }
   .franja-cerrar { right: 14px; }
   .idioma-franja { font-size: 13px; }
 }
+/* -franja, 01-11-2026- La frase «Se uno de los primeros en probarlo» es mas larga que la anterior: a
+   375 px el selector se salia 6 px por la izquierda y la flecha quedaba bajo la X. En telefono la
+   frase pasa a dos renglones; la columna puede encoger para que nada empuje al selector. */
+.franja-prueba:not(.franja-play) { grid-template-columns: auto minmax(0, 1fr) auto; }
+@media (max-width: 480px) {
+  .franja-prueba .franja-msg span { white-space: normal; }
+}
 /* -play-arriba, 01-11-2026- El boton de arriba, solo con PLAY_PUBLICADO: la misma pastilla crema del
    boton Leer de la app. No se puede cerrar: por eso vuelve a mostrarse aunque la invitacion se haya
    cerrado en esta visita. */
