@@ -129,6 +129,10 @@ export const en: Textos = {
   // the backup status line and the delete-account error.
   cuentaBienvenidaTitulo: 'Never lose a script',
   borrarCuentaTexto2: "The scripts on this phone aren't affected.",
+  // -borrar-cuenta-suscripcion, 31-10-2026- Same keys as es.ts.
+  // Antes: (did not exist).
+  borrarCuentaAvisoSuscripcion: "Your Sigo+ subscription stays active and you'll keep being charged. To stop paying, cancel it in Google Play.",
+  borrarCuentaIrAGooglePlay: 'Go to Google Play',
   respaldoCompleto: 'Backup complete',
   respaldoSubiendo: 'Backing up…',
   respaldoEsperando: 'Waiting for connection',

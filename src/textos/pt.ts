@@ -111,6 +111,10 @@ export const pt: Textos = {
   cuentaErrorOtro: 'Não deu para entrar. Tente de novo.',
   cuentaBienvenidaTitulo: 'Nunca perca um roteiro',
   borrarCuentaTexto2: 'Os roteiros deste celular não são afetados.',
+  // -borrar-cuenta-suscripcion, 31-10-2026- Mesmas chaves que es.ts.
+  // Antes: (não existiam).
+  borrarCuentaAvisoSuscripcion: 'Sua assinatura do Sigo+ continua ativa e continuará sendo cobrada. Para parar de pagar, cancele no Google Play.',
+  borrarCuentaIrAGooglePlay: 'Ir para o Google Play',
   respaldoCompleto: 'Backup concluído',
   respaldoSubiendo: 'Fazendo backup…',
   respaldoEsperando: 'Aguardando conexão',

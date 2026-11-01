@@ -141,6 +141,11 @@ export const es = {
   // de borrar la cuenta, que antes decía «No se pudo entrar».
   cuentaBienvenidaTitulo: 'Nunca pierdas un guion',
   borrarCuentaTexto2: 'Los guiones de este teléfono no se tocan.',
+  // -borrar-cuenta-suscripcion, 31-10-2026- Aviso y botón a Google Play cuando hay Sigo+.
+  // Antes: (no existían; el diálogo no mencionaba la suscripción).
+  // Motivo: borrar la cuenta no cancela el cobro en Play; hay que decirlo y dar el camino.
+  borrarCuentaAvisoSuscripcion: 'Tu suscripción a Sigo+ sigue activa y se seguirá cobrando. Para dejar de pagar, cancélala en Google Play.',
+  borrarCuentaIrAGooglePlay: 'Ir a Google Play',
   respaldoCompleto: 'Copia de seguridad completa',
   respaldoSubiendo: 'Haciendo copia de seguridad…',
   respaldoEsperando: 'Esperando conexión',
