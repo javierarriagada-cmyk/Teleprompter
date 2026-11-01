@@ -1,5 +1,9 @@
 <div class="telefono" data-telefono="@nombre@">
   <div class="rotulo">@rotulo@</div>
+  <!-- Como en el prototipo aprobado: los avisos quedan fuera del borde de pantalla. -->
+      <!-- E2: lo que pasa en la pausa, a la vista sin leer -->
+      <div class="aviso aviso-espera"><i class="punto-respira"></i>{{telefono.espera}}</div>
+      <div class="aviso aviso-escapa"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>{{telefono.escapa}}</div>
   <div class="telefono-canto"></div>
   <div class="telefono-cuerpo">
     <div class="pantalla-lectura">
@@ -16,9 +20,7 @@
         <div class="velo"></div>
         <div class="marcador-fijo"></div>
       </div>
-      <!-- E2: lo que pasa en la pausa, a la vista sin leer -->
-      <div class="aviso aviso-espera"><i class="punto-respira"></i>{{telefono.espera}}</div>
-      <div class="aviso aviso-escapa"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>{{telefono.escapa}}</div>
+      <!-- Antes: los avisos E2 estaban dentro de pantalla-lectura y se recortaban. -->
       <!-- E5: el video grabado con Sigo, vertical -->
       <div class="video">
         <div class="escena-video">

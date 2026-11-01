@@ -1,5 +1,81 @@
 # El sitio — sigoteleprompter.com
 
+## Estado actual: portada aprobada del PR #165 — 01-11-2026
+
+La portada de `sitio/` traslada el prototipo `875acb1` sin publicarlo. El PR #165
+continúa abierto como referencia. Se arma desde la raíz con `node sitio/armar.mjs`;
+`sitio/public/` es la salida versionada. No hace falta Firebase para revisarla.
+
+### Estructura y fuentes
+
+- `sitio/fuente/portada.html`: escenario corto E0 → E1 → E2 → E5, Video,
+  Para qué, La app, Guiones, Cierre y pie editorial.
+- `sitio/fuente/textos/{es,en,pt}.js`: textos visibles, etiquetas y rutas de imágenes.
+  `nuevaPortada` contiene la portada aprobada y sus traducciones. Las claves anteriores
+  permanecen; los comentarios «Antes:» no describen la versión actual.
+- `sitio/fuente/telefono.html`: conserva los avisos E2 fuera del recorte del teléfono,
+  como el prototipo. La lectura y sus datos los genera `lectura.js` en cada idioma al armar.
+  No se copian el JSON del prototipo ni código del motor al JavaScript publicado.
+- `estilo.css`: hoja base y hoja del prototipo integradas, fuentes en `/fuentes/`.
+  No incluye `file-adapter.css`.
+- `escenas.js` y `onda.js`: recorrido, medidas y onda del prototipo aprobado.
+  `portada.js` inicializa el video perezoso, revelados y galería; `demo.js` lo conecta.
+  `franja.js` sigue siendo el único controlador de la invitación superior.
+- `pie()` y `selector()` generan los enlaces reales, idioma guardado, canonical y hreflang.
+  Privacidad, términos, soporte, ayuda y borrar cuenta mantienen contenido y rutas en los
+  tres idiomas. La nueva hoja y el pie también se aplican a esas páginas.
+- `sitio/fuente/activos/{es,en,pt}/`: imágenes por idioma, con rutas absolutas
+  `/activos/...`. El armado copia esta carpeta a `public/activos/` y la conserva al limpiar.
+  `activos/PROCEDENCIA.md` distingue captura React, material de ficha y límites pendientes.
+
+### Video por idioma
+
+`video.archivo` decide si existe la sección: ES apunta a
+`/activos/video/sigo-version-google-play-es.mp4`; EN y PT están vacíos. Así no se asigna
+el video español a otro idioma. Para habilitar una versión futura, se agrega su fuente
+a `docs/play/ficha/video/` y se completa la clave del idioma correspondiente.
+
+El armado copia el MP4 desde esa carpeta, sin duplicarlo en `sitio/fuente/`. Antes de tocar
+reproducir no existe un elemento video ni se pide el MP4; el póster sí es una imagen lazy.
+
+### Interruptor de Google Play
+
+En `sitio/armar.mjs`: **`const PLAY_PUBLICADO = false`**.
+
+- `false`: franja de prueba, «Pronto en Google Play» e invitación por correo, sin insignia.
+- `true`: desaparecen esos tres anuncios; en el cierre aparece la insignia oficial del
+  idioma enlazada a la ficha pública; la descripción y Open Graph usan las claves sin
+  «Pronto»; el pie de todas las páginas suma el aviso de marca de Google.
+
+Este cambio no publica nada. Hace falta volver a armar; desplegar requiere otro encargo.
+Los SVG oficiales se guardan sin modificar en `activos/google-play/`, con origen y SHA-256.
+La insignia mide 56 px de alto y tiene 14 px de espacio libre sobre fondo liso.
+
+### Revisión local y límites
+
+Las herramientas necesarias están en `sitio/herramientas/`, con su dependencia de captura
+ya usada en el prototipo; no se agregan dependencias a la app. Ver su `LEEME.md`.
+`revisar-sitio.cjs` sirve `sitio/public/` por HTTP con rutas limpias y cierra el servidor
+al terminar. Revisa /, /en, /pt y los interiores a 360, 392, 768 y 1440 px. Los PNG y JSON
+de revisión van fuera del repo, en `C:\Users\56990\Desktop\sitio-real-capturas`.
+
+Se revisan ambas posiciones del interruptor y se deja **false**, con `public/` rearmado.
+Las pruebas de la aplicación siguen siendo de lógica, sin fijar posiciones ni tamaños.
+La captura del navegador no certifica comportamiento nativo en Android.
+
+**Pendiente visual:** Videos / phone-02 y la horizontal phone-08 de EN/PT muestran
+la cámara de prueba de Chrome. La interfaz y el guion sí están en su idioma, pero estas
+imágenes no tienen la calidad de una toma con persona. La galería phone-03 española es
+una composición anterior conservada por aprobación; los recortes EN/PT salen de sus
+fichas respectivas y no reconstruyen el selector flotante de esa composición.
+El español conserva también el foco antiguo de phone-05; Guiones sí usa la captura limpia.
+Estas limitaciones deben revisarse antes de publicar; no se sustituyen por imágenes españolas.
+
+## Antes: versión 2 del sitio y criterio de su recorrido largo
+
+Lo que sigue se conserva como historia. La estructura vigente es la descrita arriba.
+
+
 Version 2, 27-09-2026. Reemplaza a la primera, que produjo una pagina correcta y plana. Javier
 sobre esa pagina: "parece una landing page de bajo presupuesto", "la parte de abajo la podria
 haber hecho yo en word". Esta version empieza por la vara.

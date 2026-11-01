@@ -10,10 +10,13 @@
 
 import { iniciarEscenas } from './escenas.js'
 import { iniciarFranja } from './franja.js'
+// Las secciones editoriales no esperan a medir las palabras de la demo.
+import { iniciarPortada } from './portada.js'
 
 function iniciar() {
   // La franja de la invitacion no espera a las letras ni a GSAP: su X tiene que andar ya.
   iniciarFranja()
+  iniciarPortada()
   const datosEl = document.getElementById('demo-datos')
   if (!datosEl) return
   const datos = JSON.parse(datosEl.textContent)

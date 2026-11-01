@@ -78,7 +78,7 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
 @media (prefers-reduced-motion: reduce) { .marca-svg .resplandor, .telefono.grabando .punto-grabando, .punto-respira, .escena-video { animation: none !important; } }
 .marca-svg .resplandor { fill: var(--rojo); opacity: 0.55; transform-box: fill-box; transform-origin: center; animation: respira 3.2s ease-in-out infinite; }
 @keyframes respira { 0%, 100% { opacity: 0.35; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.12); } }
-.escenario { position: relative; height: 1160svh; }
+.escenario { position: relative; height: 610svh; }
 .fijo {
   position: sticky;
   top: 0;
@@ -277,7 +277,7 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   position: absolute;
   left: -40px;
   right: -40px;
-  top: calc(100% + 36px);
+  top: calc(100% + 52px);
   text-align: center;
   font-family: var(--sans);
   font-size: 34px;
@@ -919,22 +919,799 @@ html:not(.js) .telefonos, html:not(.js) .pildora, html:not(.js) .tarjetas, html:
 .texto .correo:hover { border-color: var(--crema); }
 .texto .captura { margin: 20px 0 8px; }
 .texto .captura img { display: block; width: min(270px, 72%); height: auto; margin: 0 auto; border-radius: 22px; border: 1px solid var(--filete); }
+:root {
+  --proto-max: 1120px;
+  --proto-pad: clamp(1.25rem, 4vw, 2.5rem);
+  --hondo: #0B0A09;
+  --crema: #F2ECE8;
+  --letra: #E7E1DE;
+  --apagado: #9C948E;
+  --rojo: #E11D2E;
+  --linea: rgba(242, 236, 232, 0.12);
+  --serif: "Source Serif 4", Georgia, serif;
+  --sans: "Source Sans 3", system-ui, sans-serif;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.seccion {
+  position: relative;
+  z-index: 2;
+  padding: clamp(3.25rem, 7vw, 5.5rem) var(--proto-pad);
+  max-width: var(--proto-max);
+  margin: 0 auto;
+  background: var(--hondo);
+}
+.seccion-ancha {
+  max-width: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+.seccion-ancha .interno {
+  max-width: var(--proto-max);
+  margin: 0 auto;
+  padding: 0 var(--proto-pad);
+}
+.seccion .kicker {
+  margin: 0 0 0.75rem;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--apagado);
+}
+.seccion .titular {
+  margin: 0 0 1rem;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.85rem, 4.2vw, 3rem);
+  line-height: 1.15;
+  color: var(--crema);
+  max-width: 18ch;
+}
+.seccion .bajada {
+  margin: 0 0 1.75rem;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--apagado);
+  max-width: 36rem;
+}
+.revela { opacity: 1; transform: none; }
+.js .revela { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.js .revela.revelado { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .js .revela { opacity: 1; transform: none; transition: none; }
+}
+.franja-prueba {
+  position: relative;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 40px;
+  padding: 9px 44px 9px 12px;
+  background: var(--hondo);
+  border-bottom: 1px solid var(--linea);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.35;
+  text-align: center;
+  color: var(--apagado);
+}
+.franja-prueba .franja-msg { color: var(--apagado); text-decoration: none; text-wrap: balance; justify-self: center; }
+.franja-prueba .franja-msg span { color: var(--crema); font-weight: 600; white-space: nowrap; }
+.franja-prueba .franja-msg:hover span { text-decoration: underline; text-decoration-color: rgba(242, 236, 232, 0.4); }
+.idioma-franja {
+  position: static;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  z-index: auto;
+  pointer-events: auto;
+}
+.idioma-franja a { color: rgba(156, 148, 142, 0.85); text-decoration: none; }
+.idioma-franja a[aria-current] { color: var(--crema); }
+.idioma-franja span { color: rgba(156, 148, 142, 0.45); }
+.idioma-arriba { display: none !important; }
+.franja-cerrar {
+  position: absolute;
+  top: 50%;
+  right: 2px;
+  width: 40px;
+  height: 40px;
+  margin-top: -20px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: rgba(156, 148, 142, 0.75);
+  cursor: pointer;
+}
+.franja-cerrar:hover { color: var(--letra); }
+.franja-cerrar svg { display: block; width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; }
+html:not(.js) .franja-cerrar { display: none; }
+.franja-cerrada .franja-prueba, .franja-prueba[hidden] { display: none; }
+@media (min-width: 900px) {
+  .franja-prueba { min-height: 42px; font-size: 15px; padding-left: 18px; }
+  .franja-cerrar { right: 14px; }
+  .idioma-franja { font-size: 13px; }
+}
+.interno-video {
+  max-width: 28rem;
+  margin: 0 auto;
+}
+.video-copy { display: contents; }
+@media (min-width: 900px) {
+  .interno-video {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(3rem, 7vw, 7rem);
+    align-items: center;
+    max-width: 1080px;
+  }
+  .video-copy { display: block; }
+  .interno-video .video-marco { justify-content: flex-end; }
+}
+#video .titular { max-width: 14ch; }
+.video-marco {
+  display: flex;
+  justify-content: center;
+}
+.video-caja {
+  position: relative;
+  width: min(100%, 22rem);
+  border-radius: 1.35rem;
+  overflow: hidden;
+  background: #161412;
+  aspect-ratio: 9 / 16;
+  border: 1px solid var(--linea);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+}
+.video-caja .poster {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  background: #0B0A09;
+}
+.video-play {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border: 0;
+  background: rgba(11, 10, 9, 0.22);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.play-disco {
+  width: 4.25rem;
+  height: 4.25rem;
+  border-radius: 999px;
+  background: var(--crema);
+  color: var(--hondo);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+}
+.video-caja.is-playing .video-play { display: none; }
+.video-caja.is-playing .poster { opacity: 0; }
+.video-caja video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #0B0A09;
+}
+.video-nota {
+  display: none;
+}
+.proto-tel {
+  position: relative;
+  width: min(17.5rem, 74vw);
+  aspect-ratio: 360 / 780;
+  margin: 0 auto;
+  filter: drop-shadow(0 28px 56px rgba(0, 0, 0, 0.52));
+}
+.proto-tel-canto {
+  position: absolute;
+  inset: 0;
+  border-radius: 15.5%;
+  background: linear-gradient(90deg, #2a2623, #5a534d 12%, #1d1a18 50%, #4d4741 88%, #25211f);
+}
+.proto-tel-cuerpo {
+  position: absolute;
+  inset: 0;
+  padding: 2.65%;
+  border-radius: 15.5%;
+  background: linear-gradient(145deg, #3b3632, #16140f 45%, #2b2724);
+  box-shadow:
+    inset 0 0 0 1.5px rgba(255, 240, 225, 0.16),
+    inset 0 0 0 3px rgba(0, 0, 0, 0.6),
+    0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.proto-tel-cuerpo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 15.5%;
+  pointer-events: none;
+  background: linear-gradient(170deg, rgba(255, 236, 214, 0.13), rgba(255, 236, 214, 0) 28%);
+}
+.proto-tel-pantalla {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 13.2%;
+  overflow: hidden;
+  background: #151312;
+  isolation: isolate;
+}
+.proto-tel-pantalla img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 6%;
+  opacity: 1;
+  filter: none;
+  -webkit-filter: none;
+  image-rendering: auto;
+}
+.proto-tel-guiones {
+  width: min(17.5rem, 72vw, 300px);
+  aspect-ratio: 360 / 780;
+}
+.proto-tel-guiones .proto-tel-pantalla img {
+  object-fit: cover;
+  object-position: center 4%;
+}
+.usos-editorial {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 5vw, 3.5rem);
+  padding: 1rem 0;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+.uso-momento {
+  display: grid;
+  gap: 1.15rem;
+  align-items: center;
+  padding: 0.35rem var(--proto-pad);
+  margin: 0;
+}
+@media (min-width: 820px) {
+  .uso-momento {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(1.75rem, 4vw, 3.25rem);
+    padding: 0 clamp(1.5rem, 4vw, 2.5rem);
+  }
+  .uso-momento:nth-child(even) .uso-pantalla { order: -1; }
+  .uso-momento:nth-child(even) .uso-copy { justify-self: start; text-align: left; }
+  .uso-momento:nth-child(odd) .uso-copy { justify-self: end; text-align: right; }
+  .uso-momento:nth-child(odd) .uso-copy p { margin-left: auto; }
+}
+.uso-pantalla {
+  margin: 0;
+  justify-self: center;
+  width: 100%;
+  max-width: min(17.5rem, 74vw);
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+}
+.uso-copy h3 {
+  margin: 0 0 0.45rem;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.65rem, 3.4vw, 2.2rem);
+  color: var(--crema);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.uso-copy p {
+  margin: 0;
+  color: var(--apagado);
+  font-size: clamp(1.02rem, 2vw, 1.12rem);
+  line-height: 1.5;
+  max-width: 32ch;
+}
+.galeria-carrusel {
+  padding: 0.85rem 0 0.25rem;
+  overflow: hidden;
+}
+.galeria-pista {
+  display: flex;
+  gap: 0.85rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: max(var(--proto-pad), calc((100% - 22rem) / 2));
+  padding: 0.35rem var(--proto-pad) 1.1rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.galeria-pista::-webkit-scrollbar { display: none; }
+.g-slide {
+  flex: 0 0 min(80vw, 22rem);
+  scroll-snap-align: center;
+  margin: 0;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  border: 1px solid var(--linea);
+  background: #12100E;
+  box-shadow: 0 22px 56px rgba(0, 0, 0, 0.38);
+}
+.g-slide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 720 / 1280;
+  object-fit: cover;
+  object-position: center top;
+  vertical-align: top;
+}
+.galeria-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.15rem var(--proto-pad) 0.35rem;
+}
+.galeria-puntos {
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+  justify-content: center;
+}
+.galeria-puntos button {
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(240, 234, 228, 0.28);
+  cursor: pointer;
+  transition: background 160ms ease, transform 160ms ease;
+}
+.galeria-puntos button[aria-current="true"] {
+  background: var(--crema);
+  transform: scale(1.25);
+}
+.galeria-contador {
+  margin: 0;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: var(--apagado);
+  font-variant-numeric: tabular-nums;
+}
+@media (min-width: 900px) {
+  .galeria-pista {
+    gap: 1.15rem;
+    scroll-padding-inline: max(2rem, calc((100% - 26rem) / 2));
+    padding-inline: max(2rem, calc((100% - 78rem) / 2));
+  }
+  .g-slide { flex-basis: min(26rem, 42vw); }
+}
+.g-wide {
+  margin: 1.75rem auto 0.5rem;
+  padding: 0 var(--proto-pad);
+  max-width: 1080px;
+  border-radius: 0;
+  background: transparent;
+}
+.g-wide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 1.15rem;
+  border: 1px solid var(--linea);
+  background: #12100E;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  aspect-ratio: auto;
+  object-fit: contain;
+  object-position: center;
+}
+.g-wide figcaption {
+  margin: 0.95rem auto 0;
+  max-width: 36ch;
+  text-align: center;
+  font-family: var(--serif);
+  font-size: clamp(1.2rem, 2.4vw, 1.65rem);
+  color: var(--crema);
+  letter-spacing: -0.015em;
+}
+.resguardo {
+  display: grid;
+  gap: 2.25rem;
+  align-items: center;
+}
+@media (min-width: 860px) {
+  .resguardo { grid-template-columns: 1fr 0.92fr; gap: 3rem; }
+}
+.resguardo-copy .bajada { margin-bottom: 1rem; }
+.resguardo-copy .bajada:last-child { margin-bottom: 0; }
+.resguardo-foto {
+  margin: 0;
+  justify-self: center;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  overflow: visible;
+  max-width: none;
+}
+#cierre.cierre {
+  position: relative;
+  text-align: center;
+  padding: clamp(3.25rem, 7vw, 5.5rem) var(--proto-pad);
+  background: var(--hondo);
+  overflow: hidden;
+}
+#cierre.cierre::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 55%;
+  pointer-events: none;
+  background: radial-gradient(70% 60% at 50% 110%, rgba(255, 196, 140, 0.12), transparent 70%);
+}
+#cierre .marca-cierre {
+  position: relative;
+  width: min(200px, 40vw);
+  margin: 0 auto 1.35rem;
+  color: var(--crema);
+}
+#cierre .marca-cierre .marca-svg { width: 100%; height: auto; display: block; }
+#cierre .marca-cierre .punto { fill: var(--rojo); }
+#cierre .marca-cierre .resplandor { fill: var(--rojo); opacity: 0.2; }
+#cierre .cierre-frase {
+  position: relative;
+  font-family: var(--serif);
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  color: var(--crema);
+  margin: 0 0 0.65rem;
+  letter-spacing: -0.015em;
+}
+#cierre .cierre-disp {
+  position: relative;
+  color: var(--apagado);
+  margin: 0 0 2.75rem;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.78rem;
+}
+#cierre .cierre-accion {
+  position: relative;
+  max-width: 28rem;
+  margin: 0 auto;
+}
+#cierre .cierre-invita {
+  margin: 0 0 1.15rem;
+  color: var(--apagado);
+  line-height: 1.5;
+  font-size: 1.05rem;
+}
+#cierre .cierre-mail {
+  display: inline-block;
+  color: var(--crema);
+  font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(242, 236, 232, 0.35);
+  padding-bottom: 0.15rem;
+}
+#cierre .cierre-mail:hover {
+  border-bottom-color: var(--crema);
+}
+footer.pie {
+  position: relative;
+  z-index: 2;
+  background: var(--hondo);
+}
+.pie-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem 1.1rem;
+  list-style: none;
+  margin: 0;
+  padding: 1.5rem var(--proto-pad) 0.75rem;
+  border-top: 1px solid var(--linea);
+}
+.pie-links a { color: var(--apagado); text-decoration: none; }
+.pie-links a:hover { color: var(--crema); }
+.pie-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem 1.5rem;
+  padding: 0.5rem var(--proto-pad) calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  color: var(--apagado);
+  font-size: 0.92rem;
+}
+.pie-meta a { color: var(--apagado); }
+.pie-meta .idiomas { display: flex; gap: 0.45rem; align-items: center; }
+.pie-meta .idiomas a[aria-current="true"] { color: var(--crema); }
+.entrada {
+  padding-top: calc(4.5svh + env(safe-area-inset-top, 0px));
+}
+.titular-entrada {
+  margin-top: 2.2svh;
+}
+@media (min-width: 900px) {
+  .entrada { padding-top: calc(5.5svh + env(safe-area-inset-top, 0px)); }
+  .titular-entrada { margin-top: 2.8svh; }
+}
+.titular-entrada {
+  margin-top: 1.8svh;
+  margin-bottom: 0;
+  letter-spacing: -0.01em;
+}
+@media (min-width: 900px) {
+  .entrada {
+    padding-top: calc(5svh + env(safe-area-inset-top, 0px));
+    padding-right: min(42vw, 520px);
+    box-sizing: border-box;
+  }
+  .titular-entrada {
+    margin-top: 2.4svh;
+    max-width: 11.5em;
+    font-size: clamp(76px, 6.6vw, 142px);
+    line-height: 1.05;
+    text-align: left;
+  }
+  .marca-gigante {
+    width: min(40vw, 30svh * 1.96);
+    margin-right: auto;
+  }
+}
+.rotulo {
+  font-size: 36px !important;
+  font-weight: 650 !important;
+  letter-spacing: -0.015em;
+  text-transform: none !important;
+  line-height: 1.18;
+  padding: 0.42em 0.65em;
+  border-radius: 22px;
+  background: rgba(12, 11, 10, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  white-space: normal;
+  text-align: center;
+  overflow: visible;
+  top: calc(100% + 88px) !important;
+  left: -6px !important;
+  right: -6px !important;
+  color: var(--crema, #F2ECE8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: none;
+}
+.telefono[data-telefono="comun"] .rotulo,
+.telefono[data-telefono="sigo"] .rotulo {
+  color: var(--crema, #F2ECE8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: none;
+}
+.onda {
+  pointer-events: none !important;
+}
+.rotulo {
+  width: max-content !important;
+  max-width: calc(100% + 28px);
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%);
+}
+.telefono > .aviso {
+  position: absolute;
+  z-index: 12;
+  left: 50%;
+  right: auto;
+  top: -100px;
+  bottom: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px 10px 16px;
+  border-radius: 999px;
+  font-family: var(--sans);
+  font-size: 30px;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, 8px) scale(0.96);
+  transition: opacity 280ms ease, transform 380ms cubic-bezier(.3, 1.4, .5, 1);
+  pointer-events: none;
+  max-width: calc(100% + 40px);
+}
+.telefono > .aviso-espera {
+  color: #1a1408;
+  background: #F2ECE8;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 0 0 1px rgba(240, 192, 112, 0.35),
+    0 10px 28px rgba(0, 0, 0, 0.45);
+}
+.telefono > .aviso-escapa {
+  color: #1a1408;
+  background: #F0C070;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+}
+.telefono.espera > .aviso-espera,
+.telefono.se-escapa > .aviso-escapa {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+.telefono[data-telefono="comun"] > .aviso-espera { display: none; }
+.telefono[data-telefono="sigo"] > .aviso-escapa { display: none; }
+@media (max-width: 899px) {
+  .telefono > .aviso {
+    top: -88px;
+    font-size: calc(13px / var(--tel-scale, 0.46));
+    padding: calc(6px / var(--tel-scale, 0.46)) calc(10px / var(--tel-scale, 0.46)) calc(6px / var(--tel-scale, 0.46)) calc(8px / var(--tel-scale, 0.46));
+    gap: calc(6px / var(--tel-scale, 0.46));
+  }
+  .rotulo {
+    top: calc(100% + 40px) !important;
+    font-size: 14.5px !important;
+    font-weight: 650 !important;
+    padding: 5px 9px;
+    border-radius: 10px;
+    line-height: 1.2;
+    transform: translateX(-50%) scale(calc(1 / var(--tel-scale, 0.46)));
+    transform-origin: top center;
+  }
+  .entrada {
+    padding-top: calc(3.2svh + env(safe-area-inset-top, 0px));
+  }
+  .titular-entrada {
+    margin-top: 1.0svh;
+    font-size: clamp(30px, 7.6vw, 42px);
+  }
+  .marca-gigante {
+    width: min(64vw, 22svh * 1.96);
+  }
+  .pildora {
+    bottom: max(14px, env(safe-area-inset-bottom, 0px));
+  }
+}
+@media (min-width: 900px) {
+  .telefono > .aviso {
+    top: -88px;
+    font-size: 26px;
+    padding: 8px 16px 8px 13px;
+  }
+  .rotulo {
+    font-size: 28px !important;
+    top: calc(100% + 78px) !important;
+    padding: 0.36em 0.58em;
+  }
+  .texto-escena.arriba {
+    top: 2.8svh;
+  }
+  .texto-escena.arriba .titular {
+    font-size: clamp(42px, 3.6vw, 60px);
+    line-height: 1.02;
+  }
+  .texto-escena.arriba .bajada {
+    font-size: 15px;
+    margin-top: 0.22em;
+    max-width: 34em;
+    line-height: 1.35;
+  }
+  .texto-escena.arriba .capitulo {
+    margin-bottom: 0.22em;
+    font-size: 10px;
+  }
+  .tarjeta[data-tarjeta="corre"],
+  .tarjeta[data-tarjeta="espera"] {
+    font-size: 15px;
+    letter-spacing: 0.01em;
+  }
+  .pildora {
+    bottom: 16px;
+  }
+}
+#escenario .fijo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(55% 40% at 50% 12%, rgba(255, 210, 160, 0.10), transparent 70%),
+    radial-gradient(70% 55% at 50% 60%, rgba(240, 170, 110, 0.05), transparent 75%);
+}
+.texto-escena .capitulo {
+  letter-spacing: 0.14em;
+  opacity: 0.72;
+}
+.texto-escena .bajada {
+  max-width: 28em;
+  line-height: 1.45;
+}
+.pildora a {
+  font-weight: 500;
+}
+.telefonos { z-index: 5; }
+.texto-escena { z-index: 4; }
+.tarjeta[data-tarjeta="espera"],
+.tarjeta[data-tarjeta="corre"] {
+  display: none !important;
+}
+@media (min-width: 900px) {
+  .texto-escena[data-escena="5"] {
+    top: 9svh !important;
+    transform: none !important;
+    padding-left: 0.75rem;
+    padding-right: 1.5rem;
+    box-sizing: border-box;
+    width: min(38vw, 500px);
+  }
+  .texto-escena[data-escena="5"] .estilos-subtitulo {
+    margin: 1.5rem 0.35rem 0;
+    padding-bottom: 0;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    max-width: 17.5rem;
+  }
+  .texto-escena[data-escena="5"] .estilos-subtitulo span {
+    margin: 0;
+  }
+}
+.pie-meta .idioma-pie { display: flex; gap: .45rem; align-items: center; margin: 0; }
+.pie-meta .idioma-pie a[aria-current] { color: var(--crema); }
+.interior .idioma-arriba { display: flex !important; }
+.pie-copyright, .pie-marca { color: var(--apagado); font-size: .8rem; margin: 1rem 0 0; }
+.cierre-play { display: inline-block; padding: 14px; margin-top: 1.5rem; background: var(--negro, #0B0A09); }
+.cierre-play img { display: block; height: 56px; width: auto; max-width: 100%; }
 </style>
 </head>
 <body class="portada">
 <div class="grano" aria-hidden="true"></div>
-<!-- LA INVITACION A PROBAR SIGO, arriba de todo y dentro de la pagina: no flota ni tapa nada,
+<div class="franja-prueba" id="franja-prueba">
+  <nav class="idioma idioma-franja" aria-label="Idioma"><a href="/" lang="es" hreflang="es" data-idioma="es">ES</a><span aria-hidden="true">·</span><a href="/en" lang="en" hreflang="en" data-idioma="en">EN</a><span aria-hidden="true">·</span><a href="/pt" lang="pt" hreflang="pt" data-idioma="pt" aria-current="page">PT</a></nav>
+  <a class="franja-msg" href="#prueba">O Sigo está em fase de testes. <span>Seja um dos primeiros a usar&nbsp;→</span></a>
+  <button class="franja-cerrar" type="button" aria-label="Fechar" aria-controls="franja-prueba"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11"/></svg></button>
+</div>
+
+<!-- Antes: notas de la portada larga, reemplazada por el prototipo aprobado.
+LA INVITACION A PROBAR SIGO, arriba de todo y dentro de la pagina: no flota ni tapa nada,
      y al bajar se va con el resto. Es un enlace de verdad a #prueba -funciona sin JavaScript-;
      la X la cierra por esta visita -franja.js-. Va antes del selector: estilo.css baja el
-     selector mientras la franja se ve. Solo en la portada. -->
-<div class="franja-prueba" id="franja-prueba">
-  <a href="#prueba">O Sigo está em fase de testes. <span>Seja um dos primeiros a usar&nbsp;→</span></a>
-  <button class="franja-cerrar" type="button" aria-label="Fechar aviso" aria-controls="franja-prueba"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11"/></svg></button>
-</div>
-<nav class="idioma idioma-arriba" aria-label="Idioma"><a href="/" lang="es" hreflang="es" data-idioma="es">ES</a><span aria-hidden="true">·</span><a href="/en" lang="en" hreflang="en" data-idioma="en">EN</a><span aria-hidden="true">·</span><a href="/pt" lang="pt" hreflang="pt" data-idioma="pt" aria-current="page">PT</a></nav>
-
+     selector mientras la franja se ve. Solo en la portada.
+Los telefonos
+Anclas de los capitulos, a la altura de cada escena
+E7
+LA INVITACION: despues del cierre -"Pronto en Google Play."- y antes del pie. No corta el
+       escenario, y se lee como lo que sigue: todavia no esta en Play, pero se puede probar.
+       tabindex="-1": al saltar desde la franja, el foco queda aca.
+-->
 <main>
-  <section class="escenario" id="escenario" aria-label="Sigo, cena por cena">
+<section class="escenario" id="escenario" aria-label="Sigo, cena por cena">
     <div class="fijo">
       <!-- Las luces de cada escena: se encienden y apagan con el scroll. -->
       <div class="luces" aria-hidden="true">
@@ -955,44 +1732,37 @@ html:not(.js) .telefonos, html:not(.js) .pildora, html:not(.js) .tarjetas, html:
 
       <!-- Los textos de las escenas E1 a E6 -->
       <div class="texto-escena" data-escena="1">
-        <p class="capitulo">Ler</p>
-        <h2 class="titular" data-palabra-a-palabra>Acompanha a sua voz.</h2>
+        <p class="capitulo">Como funciona</p>
+        <h2 class="titular" data-palabra-a-palabra>Você fala. O Sigo segue você.</h2>
         <p class="bajada">Você fala e o texto anda junto. Sem tocar em nada.</p>
       </div>
       <div class="texto-escena arriba" data-escena="2">
         <p class="capitulo">Espera você</p>
-        <h2 class="titular">Os outros correm. <span class="acento">O Sigo espera.</span></h2>
-        <p class="bajada">Se você para para pensar, o texto espera. Quando volta a falar, ele continua junto.</p>
+        <h2 class="titular">O Sigo espera por você.</h2>
+        <p class="bajada">O texto avança com você e espera quando você faz uma&nbsp;pausa.</p>
       </div>
-      <div class="texto-escena" data-escena="3">
-        <p class="capitulo">Seu roteiro</p>
-        <h2 class="titular">Seu roteiro, com intenção.</h2>
-        <p class="bajada">Marque o que você quer dizer com força. Pinte as mudanças de tom. Destaque o que não pode passar batido.</p>
-      </div>
-      <div class="texto-escena" data-escena="4">
-        <p class="capitulo">Gravar</p>
-        <h2 class="titular">Olhando para a lente.</h2>
-        <p class="bajada">O texto fica logo abaixo da câmera: você olha para a lente, não para a tela. Pause quando quiser, e a pausa não fica no vídeo. Longe do celular, pause com a palma da mão.</p>
-      </div>
+      <!-- E3/E4 fuera del prototipo corto (solo E1/E2/E5). Nodos conservados ocultos por si el motor los consulta. -->
+      <div class="texto-escena" data-escena="3" hidden aria-hidden="true"></div>
+      <div class="texto-escena" data-escena="4" hidden aria-hidden="true"></div>
       <div class="texto-escena" data-escena="5">
         <p class="capitulo">Seu vídeo</p>
         <h2 class="titular">Legendas no ritmo da sua voz.</h2>
-        <p class="bajada">Ao terminar, seu vídeo vem com legendas no ritmo da sua voz e o filtro que você escolher. O que você vê é o que fica salvo.</p>
+        <p class="bajada">As legendas usam as palavras do seu roteiro e o tempo da sua&nbsp;voz.</p>
         <p class="estilos-subtitulo" aria-hidden="true"><span data-estilo="amarillo">Amarelo</span><span data-estilo="rojo">Vermelho</span><span data-estilo="formal">Formal</span></p>
       </div>
-      <div class="texto-escena" data-escena="6">
-        <p class="capitulo">Sem internet</p>
-        <h2 class="titular">Sem internet.</h2>
-        <p class="bajada">A voz do seu idioma é baixada sozinha na primeira vez que você abre o Sigo. Depois funciona sem internet, e a sua voz não sai do celular.</p>
-      </div>
+      <div class="texto-escena" data-escena="6" hidden aria-hidden="true"></div>
 
       <!-- La onda de la voz: E1 y E2 -->
       <canvas class="onda" aria-hidden="true"></canvas>
 
-      <!-- Los telefonos -->
-      <div class="telefonos" aria-hidden="true">
-        <div class="telefono" data-telefono="comun">
-  <div class="rotulo">Um teleprompter comum</div>
+      <!-- Los telefonos se generan por idioma con la lectura calculada al armar. -->
+<div class="telefonos" aria-hidden="true">
+<div class="telefono" data-telefono="comun">
+  <div class="rotulo">Um teleprompter<br>comum</div>
+  <!-- Como en el prototipo aprobado: los avisos quedan fuera del borde de pantalla. -->
+      <!-- E2: lo que pasa en la pausa, a la vista sin leer -->
+      <div class="aviso aviso-espera"><i class="punto-respira"></i>Espera você</div>
+      <div class="aviso aviso-escapa"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Passou direto</div>
   <div class="telefono-canto"></div>
   <div class="telefono-cuerpo">
     <div class="pantalla-lectura">
@@ -1009,9 +1779,7 @@ html:not(.js) .telefonos, html:not(.js) .pildora, html:not(.js) .tarjetas, html:
         <div class="velo"></div>
         <div class="marcador-fijo"></div>
       </div>
-      <!-- E2: lo que pasa en la pausa, a la vista sin leer -->
-      <div class="aviso aviso-espera"><i class="punto-respira"></i>Espera você</div>
-      <div class="aviso aviso-escapa"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Passou direto</div>
+      <!-- Antes: los avisos E2 estaban dentro de pantalla-lectura y se recortaban. -->
       <!-- E5: el video grabado con Sigo, vertical -->
       <div class="video">
         <div class="escena-video">
@@ -1051,8 +1819,12 @@ html:not(.js) .telefonos, html:not(.js) .pildora, html:not(.js) .tarjetas, html:
   </div>
 </div>
 
-        <div class="telefono" data-telefono="sigo">
+<div class="telefono" data-telefono="sigo">
   <div class="rotulo">Sigo</div>
+  <!-- Como en el prototipo aprobado: los avisos quedan fuera del borde de pantalla. -->
+      <!-- E2: lo que pasa en la pausa, a la vista sin leer -->
+      <div class="aviso aviso-espera"><i class="punto-respira"></i>Espera você</div>
+      <div class="aviso aviso-escapa"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Passou direto</div>
   <div class="telefono-canto"></div>
   <div class="telefono-cuerpo">
     <div class="pantalla-lectura">
@@ -1069,9 +1841,7 @@ html:not(.js) .telefonos, html:not(.js) .pildora, html:not(.js) .tarjetas, html:
         <div class="velo"></div>
         <div class="marcador-fijo"></div>
       </div>
-      <!-- E2: lo que pasa en la pausa, a la vista sin leer -->
-      <div class="aviso aviso-espera"><i class="punto-respira"></i>Espera você</div>
-      <div class="aviso aviso-escapa"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Passou direto</div>
+      <!-- Antes: los avisos E2 estaban dentro de pantalla-lectura y se recortaban. -->
       <!-- E5: el video grabado con Sigo, vertical -->
       <div class="video">
         <div class="escena-video">
@@ -1111,12 +1881,12 @@ html:not(.js) .telefonos, html:not(.js) .pildora, html:not(.js) .tarjetas, html:
   </div>
 </div>
 
-      </div>
+</div>
 
-      <!-- Tarjetas flotantes: momentos de quien lee -->
+<!-- Tarjetas flotantes: momentos de quien lee -->
       <div class="tarjetas" aria-hidden="true">
-        <div class="tarjeta" data-tarjeta="espera"><span class="punto-vivo"></span>Você parou: o texto espera</div>
-        <div class="tarjeta tenue" data-tarjeta="corre">O outro continua correndo</div>
+        <div class="tarjeta" data-tarjeta="espera" hidden aria-hidden="true"><span class="punto-vivo"></span>Você parou: o texto espera</div>
+        <div class="tarjeta tenue" data-tarjeta="corre" hidden aria-hidden="true">O outro continua correndo</div>
         <div class="tarjeta formato" data-tarjeta="negrita"><b>Aa</b>Negrito</div>
         <div class="tarjeta formato" data-tarjeta="ambar"><i class="muestra" style="background:#F0C070"></i>Âmbar</div>
         <div class="tarjeta formato" data-tarjeta="celeste"><i class="muestra" style="background:#8FB8DE"></i>Azul-claro</div>
@@ -1128,44 +1898,167 @@ html:not(.js) .telefonos, html:not(.js) .pildora, html:not(.js) .tarjetas, html:
       </div>
 
       <!-- Los capitulos -->
-      <nav class="pildora" aria-label="Capítulos">
+      <nav class="pildora" aria-label="Como funciona">
         <span class="pildora-fondo" aria-hidden="true"></span>
         <a href="#e1" data-capitulo="1">Ler</a>
         <a href="#e2" data-capitulo="2">Espera você</a>
-        <a href="#e3" data-capitulo="3">Seu roteiro</a>
-        <a href="#e4" data-capitulo="4">Gravar</a>
         <a href="#e5" data-capitulo="5">Seu vídeo</a>
-        <a href="#e6" data-capitulo="6">Sem internet</a>
       </nav>
     </div>
-    <!-- Anclas de los capitulos, a la altura de cada escena -->
-    <span class="ancla" id="e1"></span><span class="ancla" id="e2"></span><span class="ancla" id="e3"></span>
-    <span class="ancla" id="e4"></span><span class="ancla" id="e5"></span><span class="ancla" id="e6"></span>
+    <span class="ancla" id="e1"></span><span class="ancla" id="e2"></span><span class="ancla" id="e5"></span>
   </section>
 
-  <!-- E7 -->
-  <section class="cierre" id="e7">
-    <div class="luz luz-cierre" aria-hidden="true"></div>
+  <!-- Ancla semántica: Cómo funciona = escenas reales E1 (hablas), E2 (espera), E5 (subtítulos) -->
+  <div id="como" class="sr-only">Como funciona</div>
+
+  <!-- 3. Video: poster real (frame del MP4), vertical como el video de Play; lazy hasta el toque -->
+
+
+  <!-- 4. Para qué: cuatro momentos en marco de teléfono, titulares reales -->
+  <section class="seccion seccion-ancha" id="para" aria-labelledby="para-titulo">
+    <div class="interno">
+      <p class="kicker revela">Para que serve</p>
+      <h2 class="titular revela" id="para-titulo">Para seus vídeos, aulas, palestras e&nbsp;apresentações.</h2>
+      <p class="bajada revela">Leia seu roteiro no seu ritmo enquanto grava um vídeo, prepara uma aula ou ensaia uma apresentação.</p>
+    </div>
+    <div class="usos-editorial">
+      <article class="uso-momento revela">
+        <div class="uso-copy">
+          <h3>Vídeos</h3>
+          <p>Grave com a câmera frontal ou traseira, na vertical ou na horizontal. Veja sua imagem atrás do texto, em uma janela que você pode mover, ou deixe a imagem oculta enquanto grava.</p>
+        </div>
+        <div class="uso-pantalla">
+          <div class="proto-tel">
+            <div class="proto-tel-canto" aria-hidden="true"></div>
+            <div class="proto-tel-cuerpo">
+              <div class="proto-tel-pantalla">
+                <img src="/activos/pt/uso-videos.webp" alt="Roteiro com a câmera em uma janela durante a gravação" width="784" height="1700" loading="lazy" decoding="async">
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="uso-momento revela">
+        <div class="uso-copy">
+          <h3>Aulas</h3>
+          <p>Prepare o roteiro da sua aula e leia no seu ritmo. Quando você faz uma pausa, o texto espera.</p>
+        </div>
+        <div class="uso-pantalla">
+          <div class="proto-tel">
+            <div class="proto-tel-canto" aria-hidden="true"></div>
+            <div class="proto-tel-cuerpo">
+              <div class="proto-tel-pantalla">
+                <img src="/activos/pt/uso-clases.webp" alt="Roteiro de uma aula sobre o ciclo da água na tela de leitura do Sigo" width="784" height="1700" loading="lazy" decoding="async">
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="uso-momento revela">
+        <div class="uso-copy">
+          <h3>Apresentações</h3>
+          <p>Ensaie sua apresentação sem gravar. Leia no seu ritmo, com o texto acompanhando sua voz.</p>
+        </div>
+        <div class="uso-pantalla">
+          <div class="proto-tel">
+            <div class="proto-tel-canto" aria-hidden="true"></div>
+            <div class="proto-tel-cuerpo">
+              <div class="proto-tel-pantalla">
+                <img src="/activos/pt/uso-presentaciones.webp" alt="Roteiro de uma apresentação de resultados do trimestre na tela de leitura do Sigo" width="784" height="1700" loading="lazy" decoding="async">
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="uso-momento revela">
+        <div class="uso-copy">
+          <h3>Ensaios</h3>
+          <p>Você também pode ler sem gravar, com velocidade fixa, até o texto sair com naturalidade.</p>
+        </div>
+        <div class="uso-pantalla">
+          <div class="proto-tel">
+            <div class="proto-tel-canto" aria-hidden="true"></div>
+            <div class="proto-tel-cuerpo">
+              <div class="proto-tel-pantalla">
+                <img src="/activos/pt/uso-ensayos.webp" alt="Leitura com velocidade fixa, sem gravar" width="784" height="1700" loading="lazy" decoding="async">
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 5. La app: capturas UI (sin póster); ritmo grande; 08 landscape; sin 07 (va en Guiones) -->
+  <section class="seccion seccion-ancha" id="app" aria-labelledby="app-titulo">
+    <div class="interno">
+      <p class="kicker revela">O aplicativo de verdade</p>
+      <h2 class="titular revela" id="app-titulo">Leia, grave e exporte.</h2>
+      <p class="bajada revela">Ajuste o tamanho do texto, a fonte, a largura e as cores. Use negrito, cores e destaques no roteiro.</p>
+    </div>
+    <div class="galeria-carrusel" data-galeria data-etiqueta="Captura {n} de {total}" aria-label="Capturas de tela do Sigo">
+      <div class="galeria-pista" data-galeria-pista>
+        <figure class="g-slide revela"><img src="/activos/pt/phone-01.webp" alt="Sigo pronto para ler um roteiro com acompanhamento de voz" width="720" height="1280" loading="lazy" decoding="async"></figure>
+        <figure class="g-slide revela"><img src="/activos/pt/phone-02.webp" alt="Roteiro com a imagem da câmera em uma janela" width="720" height="1280" loading="lazy" decoding="async"></figure>
+        <figure class="g-slide revela"><img src="/activos/pt/phone-03.webp" alt="Vídeo com legendas e seletor de estilo" width="720" height="1280" loading="lazy" decoding="async"></figure>
+        <figure class="g-slide revela"><img src="/activos/pt/phone-04.webp" alt="Controle por gestos: palma da mão e V" width="720" height="1280" loading="lazy" decoding="async"></figure>
+        <figure class="g-slide revela"><img src="/activos/pt/phone-05.webp" alt="Prévia com filtros" width="720" height="1280" loading="lazy" decoding="async"></figure>
+        <figure class="g-slide revela"><img src="/activos/pt/phone-06.webp" alt="Ajustes de leitura com velocidade fixa" width="720" height="1280" loading="lazy" decoding="async"></figure>
+      </div>
+      <div class="galeria-hint" aria-hidden="false">
+        <div class="galeria-puntos" data-galeria-puntos role="tablist" aria-label="Posição do carrossel"></div>
+        <p class="galeria-contador" data-galeria-contador><span data-gal-n>1</span> / 6</p>
+      </div>
+    </div>
+    <figure class="g-wide revela">
+      <img src="/activos/pt/phone-08.webp" alt="Gravação na horizontal com o roteiro sobre a câmera" width="1440" height="664" loading="lazy" decoding="async">
+      <figcaption>Grave na vertical ou na horizontal.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 6. Guiones a salvo: UI real 07 en marco de teléfono (mismo estilo que el héroe) -->
+  <section class="seccion" id="guiones" aria-labelledby="guiones-titulo">
+    <div class="resguardo revela">
+      <div class="resguardo-copy">
+        <p class="kicker">Seus roteiros a salvo</p>
+        <h2 class="titular" id="guiones-titulo">Seus roteiros, com você.</h2>
+        <p class="bajada">Escreva, cole um texto ou importe arquivos .txt, .md e .docx. Você pode usar o Sigo sem entrar em uma conta.</p>
+        <p class="bajada">Para fazer backup dos roteiros e recuperá-los em outro celular, entre com o Google.</p>
+      </div>
+      <div class="resguardo-foto">
+        <div class="proto-tel proto-tel-guiones">
+          <div class="proto-tel-canto" aria-hidden="true"></div>
+          <div class="proto-tel-cuerpo">
+            <div class="proto-tel-pantalla">
+              <img src="/activos/pt/guiones-ui.webp" alt="Ajustes com conta Google e backup dos roteiros" width="784" height="1700" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Cierre: una sola acción clara — invitación a la prueba -->
+  <section class="cierre" id="cierre" aria-labelledby="cierre-frase">
     <div class="marca-cierre"><svg class="marca-svg" viewBox="90 151.84 252 128.32" role="img" aria-label="Sigo"><defs><filter id="resplandor-cierre-pt" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="16"/></filter></defs><circle class="resplandor" cx="313.53" cy="191.04" r="38.43" filter="url(#resplandor-cierre-pt)"/><path d="M118.47 251.42L118.47 251.42Q109.86 251.42 102.25 249.44Q94.63 247.45 90 244.80L90 244.80L90.40 224.67L100.20 224.67L103.24 240.43Q106.29 241.76 109.60 242.55L109.60 242.55Q113.44 243.48 118.07 243.48L118.07 243.48Q124.43 243.48 128.53 241.69Q132.64 239.90 134.63 236.66Q136.61 233.41 136.61 229.44L136.61 229.44Q136.61 225.60 135.09 222.95Q133.57 220.30 130.32 218.25Q127.08 216.20 121.78 214.21L121.78 214.21L117.15 212.23Q109.60 209.18 103.77 205.54Q97.95 201.90 94.63 196.80Q91.32 191.70 91.32 184.15L91.32 184.15Q91.32 176.21 95.56 170.65Q99.80 165.08 107.08 162.17Q114.37 159.26 123.64 159.26L123.64 159.26Q131.71 159.26 138.07 161.11Q144.43 162.96 148.27 165.48L148.27 165.48L147.74 184.42L138.20 184.42L135.16 169.32Q134.63 169.06 134.23 168.92L134.23 168.92Q129.73 167.07 123.90 167.07L123.90 167.07Q118.87 167.07 115.29 168.73Q111.72 170.38 109.73 173.29Q107.74 176.21 107.74 180.05L107.74 180.05Q107.74 183.76 109.33 186.40Q110.92 189.05 114.17 191.10Q117.41 193.16 122.31 195.14L122.31 195.14L127.21 197.13Q135.42 200.44 141.25 204.15Q147.07 207.86 150.12 212.89Q153.17 217.92 153.17 225.20L153.17 225.20Q153.17 233.28 148.86 239.17Q144.56 245.07 136.81 248.24Q129.06 251.42 118.47 251.42ZM198.85 249.30L163.63 249.30L163.63 242.29L172.90 241.36Q172.90 240.96 173.03 240.43L173.03 240.43Q173.03 235.53 173.03 230.37L173.03 230.37L173.03 205.21Q173.03 201.23 172.90 197.13L172.90 197.13L162.83 196.47L162.83 190.11L185.61 182.83L189.85 183.49L189.71 200.84L189.71 230.37Q189.71 235.53 189.85 240.43L189.85 240.43Q189.85 240.96 189.85 241.49L189.85 241.49L198.85 242.29L198.85 249.30ZM180.97 171.44L180.97 171.44Q176.74 171.44 173.76 168.59Q170.78 165.75 170.78 161.64L170.78 161.64Q170.78 157.40 173.76 154.62Q176.74 151.84 180.97 151.84L180.97 151.84Q185.34 151.84 188.26 154.62Q191.17 157.40 191.17 161.64L191.17 161.64Q191.17 165.75 188.26 168.59Q185.34 171.44 180.97 171.44ZM235.93 280.16L235.93 280.16Q226.26 280.16 219.77 278.11Q213.29 276.05 210.04 272.48Q206.80 268.90 206.80 264.27L206.80 264.27Q206.80 260.43 208.92 257.51Q211.03 254.60 215.40 252.48L215.40 252.48Q218.32 251.16 222.29 249.97L222.29 249.97L222.29 248.38Q216.86 247.45 213.68 245.00Q210.50 242.55 210.50 237.78L210.50 237.78Q210.50 233.28 213.68 230.17Q216.86 227.06 222.69 224.54L222.69 224.54L222.69 223.48Q222.55 223.48 222.55 223.48L222.55 223.48Q216.46 220.83 213.09 215.93Q209.71 211.03 209.71 204.15L209.71 204.15Q209.71 197.53 213.09 192.50Q216.46 187.46 222.55 184.75Q228.65 182.03 236.86 182.03L236.86 182.03Q242.68 182.03 247.05 183.29Q251.42 184.55 254.47 186.80L254.47 186.80Q256.72 188.65 258.18 190.64L258.18 190.64L258.97 190.64L271.15 181.24L275.79 181.90L275.79 194.88L262.15 194.88Q262.81 196.07 263.21 197.39L263.21 197.39Q264.14 200.31 264.14 203.88L264.14 203.88Q264.14 210.64 260.83 215.60Q257.51 220.57 251.49 223.35Q245.46 226.13 236.99 226.13L236.99 226.13Q231.29 226.13 226.53 224.94L226.53 224.94Q225.73 225.73 225.20 226.53L225.20 226.53Q223.88 228.51 223.88 231.16L223.88 231.16Q223.88 234.21 226.06 235.86Q228.25 237.52 233.28 237.52L233.28 237.52L249.83 237.52Q258.18 237.52 263.54 239.84Q268.90 242.15 271.42 246.19Q273.93 250.23 273.93 255.53L273.93 255.53Q273.93 260.69 271.09 265.19Q268.24 269.70 263.14 273.07Q258.04 276.45 251.09 278.30Q244.14 280.16 235.93 280.16ZM225.60 251.42L225.60 251.42Q224.67 252.35 223.88 253.28L223.88 253.28Q222.42 255.13 221.63 257.18Q220.83 259.24 220.83 261.75L220.83 261.75Q220.83 264.93 222.69 267.45Q224.54 269.96 228.38 271.35Q232.22 272.74 238.45 272.74L238.45 272.74Q245.46 272.74 250.23 271.09Q255.00 269.43 257.45 266.65Q259.90 263.87 259.90 260.43L259.90 260.43Q259.90 256.46 257.12 254.01Q254.34 251.56 248.24 251.56L248.24 251.56L231.16 251.56Q228.65 251.56 226.53 251.42L226.53 251.42Q226.00 251.42 225.60 251.42ZM236.99 219.38L236.99 219.38Q240.70 219.38 243.35 217.52Q245.99 215.67 247.32 212.16Q248.64 208.65 248.64 203.88Q248.64 199.12 247.32 195.67Q245.99 192.23 243.41 190.44Q240.83 188.65 237.12 188.65L237.12 188.65Q233.55 188.65 230.90 190.51Q228.25 192.36 226.92 195.81Q225.60 199.25 225.60 204.02Q225.60 208.78 226.92 212.23Q228.25 215.67 230.77 217.52Q233.28 219.38 236.99 219.38Z" fill="currentColor"/><circle class="punto" cx="313.53" cy="191.04" r="28.47"/></svg></div>
-    <p class="frase-cierre">O teleprompter que acompanha a sua&nbsp;voz.</p>
-    <p class="disponible">Em breve no Google Play.</p>
-  </section>
+    <p class="cierre-frase" id="cierre-frase">O teleprompter que acompanha a sua&nbsp;voz.</p>
+    <!-- Invitación aprobada mientras Play todavía no es público; el armado la sustituye completa. -->
+    <p class="cierre-disp">Em breve no Google Play</p>
+    <div class="cierre-accion" id="prueba" tabindex="-1">
+      <p class="cierre-invita">Experimente o Sigo antes do lançamento. Escreva para nós com o e-mail da sua conta Google e enviaremos o convite.</p>
+      <a class="cierre-mail" href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a>
+    </div>
 
-  <!-- LA INVITACION: despues del cierre -"Pronto en Google Play."- y antes del pie. No corta el
-       escenario, y se lee como lo que sigue: todavia no esta en Play, pero se puede probar.
-       tabindex="-1": al saltar desde la franja, el foco queda aca. -->
-  <section class="prueba" id="prueba" aria-labelledby="prueba-titulo" tabindex="-1">
-    <h2 class="prueba-titulo" id="prueba-titulo">Experimente o Sigo antes de todo mundo</h2>
-    <p class="prueba-texto">Estamos convidando um grupo pequeno para usar o Sigo no Android antes do lançamento. Escreva para <a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a> com o e-mail da sua conta do Google, e enviamos o convite para você.</p>
   </section>
 </main>
+
 <footer class="pie">
-  <ul>
-    <li><span><a href="/pt/privacidade">Privacidade</a></span><span><a href="/pt/termos">Termos</a></span><span><a href="/pt/suporte">Suporte</a></span><span><a href="/pt/ajuda">Ajuda</a></span><span><a href="/pt/excluir-conta">Excluir conta</a></span></li>
-    <li><span><a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a></span><span>© Sigo</span></li>
-  </ul>
-  <nav class="idioma idioma-pie" aria-label="Idioma"><a href="/" lang="es" hreflang="es" data-idioma="es">ES</a><span aria-hidden="true">·</span><a href="/en" lang="en" hreflang="en" data-idioma="en">EN</a><span aria-hidden="true">·</span><a href="/pt" lang="pt" hreflang="pt" data-idioma="pt" aria-current="page">PT</a></nav>
+  <ul class="pie-links"><li><a href="/pt/ajuda">Ajuda</a></li><li><a href="/pt/suporte">Suporte</a></li><li><a href="/pt/privacidade">Privacidade</a></li><li><a href="/pt/termos">Termos</a></li><li><a href="/pt/excluir-conta">Excluir conta</a></li></ul>
+  <div class="pie-meta"><span><a href="mailto:hola@sigoteleprompter.com">hola@sigoteleprompter.com</a></span><nav class="idioma idioma-pie" aria-label="Idioma"><a href="/" lang="es" hreflang="es" data-idioma="es">ES</a><span aria-hidden="true">·</span><a href="/en" lang="en" hreflang="en" data-idioma="en">EN</a><span aria-hidden="true">·</span><a href="/pt" lang="pt" hreflang="pt" data-idioma="pt" aria-current="page">PT</a></nav></div>
+  <p class="pie-copyright">© Sigo</p>
+
 </footer>
+
 <script type="application/json" id="demo-datos">{"hastaMs":43711,"palabrasDestacadas":6,"cuadros":[[0,0],[2768,1],[2928,2],[3104,3],[3328,4],[3616,5],[4096,6],[4528,7],[5952,8],[6272,9],[6592,10],[6944,11],[7504,12],[7920,13],[8336,14],[8864,15],[9264,16],[9616,17],[9968,18],[10368,19],[10944,20],[12368,21],[12672,22],[13008,23],[13488,24],[13904,25],[14240,26],[14576,27],[14880,28],[15296,29],[16816,30],[17136,31],[18368,32],[18688,33],[19008,34],[19376,35],[20112,36],[20416,37],[20704,38],[20992,39],[21312,40],[21664,41],[22144,42],[22736,43],[23168,44],[23568,45],[24048,46],[25792,47],[26112,48],[26448,49],[26832,50],[27264,51],[30768,52],[31056,53],[31360,54],[31728,55],[33056,56],[33376,57],[33696,58],[34048,59],[34480,60],[35008,61],[35536,62],[36976,63],[37280,64],[37600,65],[37952,66],[38384,67],[38800,68],[39136,69],[39456,70],[39824,71],[40208,72],[40576,73],[40912,74],[41248,75],[41600,76],[41952,77],[42336,78],[42848,79],[43216,80]],"voz":[[400,751],[808,1207],[1272,1721],[1794,2096],[2145,2544],[2609,3254],[3359,3709],[3767,4117],[4794,5047],[5088,5537],[5610,5862],[5904,6303],[6628,7028],[7093,7346],[7387,7786],[8111,8413],[8462,8715],[8756,9009],[9050,9450],[9515,9963],[10036,10534],[11235,11634],[11699,11952],[11993,12344],[12661,13012],[13069,13273],[13306,13509],[13543,13942],[14007,14260],[14301,14897],[15614,15915],[15964,16413],[17106,17408],[17457,17905],[17978,18182],[18215,18517],[19186,19390],[19423,19627],[19660,19962],[20011,20312],[20362,20712],[20769,21218],[21291,21739],[22072,22325],[22366,22766],[22831,23084],[23125,23622],[24803,25056],[25097,25350],[25391,25742],[25799,26149],[26207,26655],[29528,29732],[29765,30165],[30230,30483],[30524,30972],[31665,32114],[32187,32586],[32652,32855],[32888,33288],[33613,33915],[33964,34510],[34599,35048],[35741,36092],[36149,36499],[36556,36760],[36793,37193],[37518,37820],[37869,38219],[38277,38480],[38513,38864],[39181,39385],[39418,39769],[39826,40079],[40120,40372],[40414,40813],[40878,41180],[41229,41580],[41637,42085],[42158,42460],[42509,42811]],"subtitulos":[[400,4717,[[["Hoje",400,751],["quero",808,1207],["contar",1272,1721],["uma",1794,2096],["coisa",2145,2544]],[["importante",2609,3254],["para",3359,3709],["você.",3767,4117]]]],[4794,8111,[[["Ao",4794,5047],["gravar",5088,5537],["um",5610,5862],["vídeo,",5904,6303]],[["curto",6628,7028],["ou",7093,7346],["longo,",7387,7786]]]],[8111,11134,[[["ler",8111,8413],["de",8462,8715],["um",8756,9009],["papel",9050,9450],["sempre",9515,9963],["aparece.",10036,10534]]]],[11235,15497,[[["Agora",11235,11634],["eu",11699,11952],["leio,",11993,12344],["falo",12661,13012],["e",13069,13273]],[["o",13306,13509],["texto",13543,13942],["me",14007,14260],["acompanha.",14301,14897]]]],[15614,17013,[[["Sem",15614,15915],["pressa.",15964,16413]]]],[17106,19117,[[["Sem",17106,17408],["perder",17457,17905],["o",17978,18182],["fio.",18215,18517]]]],[19186,24222,[[["E",19186,19390],["o",19423,19627],["que",19660,19962],["não",20011,20312],["pode",20362,20712],["passar",20769,21218]],[["batido,",21291,21739],["eu",22072,22325],["marco",22366,22766],["em",22831,23084],["amarelo.",23125,23622]]]],[24803,27255,[[["Se",24803,25056],["eu",25097,25350],["paro",25391,25742],["para",25799,26149],["pensar,",26207,26655]]]],[29528,31572,[[["o",29528,29732],["texto",29765,30165],["me",30230,30483],["espera.",30524,30972]]]],[31665,35648,[[["Quando",31665,32114],["volto",32187,32586],["a",32652,32855],["falar,",32888,33288]],[["ele",33613,33915],["continua",33964,34510],["comigo.",34599,35048]]]],[35741,39181,[[["Olho",35741,36092],["para",36149,36499],["a",36556,36760],["lente,",36793,37193]],[["não",37518,37820],["para",37869,38219],["a",38277,38480],["tela,",38513,38864]]]],[39181,43411,[[["e",39181,39385],["quem",39418,39769],["me",39826,40079],["vê",40120,40372],["sente",40414,40813],["que",40878,41180]],[["falo",41229,41580],["direto",41637,42085],["com",42158,42460],["ele.",42509,42811]]]]],"pausa":[26655,29528,51],"estilos":{"amarillo":"Amarelo","rojo":"Vermelho","formal":"Formal"}}</script>
 <script src="/vendor/gsap.min.js" defer></script>
 <script src="/vendor/ScrollTrigger.min.js" defer></script>

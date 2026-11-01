@@ -1,0 +1,21 @@
+<!-- La sección solo se arma si existe video en el idioma: nunca se hereda el español. -->
+  <section class="seccion" id="video" aria-labelledby="video-titulo">
+    <div class="interno-video">
+      <div class="video-copy">
+        <p class="kicker revela">{{nuevaPortada.videoKicker}}</p>
+        <h2 class="titular revela" id="video-titulo">{{nuevaPortada.videoTitulo}}</h2>
+        <p class="bajada revela">{{nuevaPortada.videoTexto}}</p>
+      </div>
+      <div class="video-marco revela" data-video data-archivo="{{video.archivo}}">
+        <div class="video-caja">
+          <button type="button" class="video-play" data-video-play aria-label="{{nuevaPortada.videoReproducir}}">
+            <span class="play-disco" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v13.72L19 12 8 5.14z"/></svg>
+            </span>
+          </button>
+          <img class="poster" data-video-poster src="/activos/es/poster.webp" alt="{{nuevaPortada.videoPoster}}" width="1080" height="1920" decoding="async" loading="lazy">
+        </div>
+      </div>
+
+    </div>
+  </section>
