@@ -136,6 +136,16 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
    limite_grabacion_segundos, aviso_antes_segundos- se mueven en Firebase Remote Config sin sacar versión.
    El launchMode pasó a singleTop: probar los accesos directos.
 
+   -31-10-2026, decisión de Javier, borrar-cuenta-suscripcion-: al borrar la cuenta se borra el registro
+   del cliente en RevenueCat -Cloud Function auth onDelete, secreto REVENUECAT_SECRET_KEY-; la cancelación
+   de la suscripción de Google Play queda en manos de la persona, con aviso en el diálogo de borrar de la
+   app -solo si tiene Sigo+- y en la página Borrar cuenta del sitio. No se cancela desde la función.
+   Para activar la función: `firebase functions:secrets:set REVENUECAT_SECRET_KEY`, luego
+   `firebase deploy --only functions`, y comprobar con una cuenta de prueba.
+   Antes: «y la decisión de Javier sobre qué se hace con los datos de RevenueCat cuando alguien borra su
+   cuenta -se borran con la API de servidor y la clave secreta, no desde la app-.» -sin la decisión tomada
+   ni los pasos de activación-.
+
 Conocido y aceptado: la advertencia de símbolos de depuración por las .so de Vosk, que vienen sin
 símbolos. No bloquea.
 
