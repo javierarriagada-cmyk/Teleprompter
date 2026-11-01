@@ -71,3 +71,6 @@ Copia de trabajo de `sitio/fuente/` para abrir el prototipo con doble clic (`fil
 9. **E5 chips (CSS del prototipo)**  
    - En escritorio, `.estilos-subtitulo` lleva margen interior y `padding-bottom` para
      separarse del borde del bloque de texto y de la píldora de momentos.
+
+## Prototipo file://
+- `demo-real/estilo.css`: rutas de fuentes relativas (`fuentes/…`) en vez de `/fuentes/…` del sitio publicado, para que resuelvan al abrir con doble clic y en el servidor local del prototipo.

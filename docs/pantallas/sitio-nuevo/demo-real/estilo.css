@@ -3,10 +3,10 @@
    #0B0A09; letra #E7E1DE, crema #F2ECE8, apagado #9C948E. El rojo #E11D2E es la luz de
    grabacion: el punto de la marca y el punto de grabar, nada mas. */
 
-@font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 400; font-display: swap; src: url(/fuentes/source-serif-4-latin-400-normal.woff2) format("woff2"); }
-@font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 600; font-display: swap; src: url(/fuentes/source-serif-4-latin-600-normal.woff2) format("woff2"); }
-@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight: 400; font-display: swap; src: url(/fuentes/source-sans-3-latin-400-normal.woff2) format("woff2"); }
-@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight: 600; font-display: swap; src: url(/fuentes/source-sans-3-latin-600-normal.woff2) format("woff2"); }
+@font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 400; font-display: swap; src: url(fuentes/source-serif-4-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 600; font-display: swap; src: url(fuentes/source-serif-4-latin-600-normal.woff2) format("woff2"); }
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight: 400; font-display: swap; src: url(fuentes/source-sans-3-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family: "Source Sans 3"; font-style: normal; font-weight: 600; font-display: swap; src: url(fuentes/source-sans-3-latin-600-normal.woff2) format("woff2"); }
 
 :root {
   color-scheme: dark;

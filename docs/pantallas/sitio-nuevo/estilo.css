@@ -84,11 +84,12 @@
 .franja-prueba {
   position: relative;
   z-index: 40;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: center;
+  gap: 0.5rem;
   min-height: 40px;
-  padding: 9px 44px;
+  padding: 9px 44px 9px 12px;
   background: var(--hondo);
   border-bottom: 1px solid var(--linea);
   font-family: var(--sans);
@@ -97,9 +98,26 @@
   text-align: center;
   color: var(--apagado);
 }
-.franja-prueba a { color: var(--apagado); text-decoration: none; text-wrap: balance; }
-.franja-prueba a span { color: var(--crema); font-weight: 600; white-space: nowrap; }
-.franja-prueba a:hover span { text-decoration: underline; text-decoration-color: rgba(242, 236, 232, 0.4); }
+.franja-prueba .franja-msg { color: var(--apagado); text-decoration: none; text-wrap: balance; justify-self: center; }
+.franja-prueba .franja-msg span { color: var(--crema); font-weight: 600; white-space: nowrap; }
+.franja-prueba .franja-msg:hover span { text-decoration: underline; text-decoration-color: rgba(242, 236, 232, 0.4); }
+.idioma-franja {
+  position: static;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  z-index: auto;
+  pointer-events: auto;
+}
+.idioma-franja a { color: rgba(156, 148, 142, 0.85); text-decoration: none; }
+.idioma-franja a[aria-current] { color: var(--crema); }
+.idioma-franja span { color: rgba(156, 148, 142, 0.45); }
+/* Nunca flotar sobre el contenido: anula demo-real .idioma-arriba si reaparece */
+.idioma-arriba { display: none !important; }
 .franja-cerrar {
   position: absolute;
   top: 50%;
@@ -120,13 +138,10 @@
 .franja-cerrar svg { display: block; width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; }
 html:not(.js) .franja-cerrar { display: none; }
 .franja-cerrada .franja-prueba, .franja-prueba[hidden] { display: none; }
-html:not(.franja-cerrada):not(.franja-fuera) .franja-prueba:not([hidden]) ~ .idioma-arriba {
-  top: calc(52px + env(safe-area-inset-top, 0px));
-}
 @media (min-width: 900px) {
-  .franja-prueba { min-height: 42px; font-size: 15px; }
+  .franja-prueba { min-height: 42px; font-size: 15px; padding-left: 18px; }
   .franja-cerrar { right: 14px; }
-  html:not(.franja-cerrada):not(.franja-fuera) .franja-prueba:not([hidden]) ~ .idioma-arriba { top: 62px; }
+  .idioma-franja { font-size: 13px; }
 }
 
 /* ---------- Video: vertical 9:16, mismo cuidado que los teléfonos ---------- */
@@ -193,113 +208,134 @@ html:not(.franja-cerrada):not(.franja-fuera) .franja-prueba:not([hidden]) ~ .idi
   text-align: center;
 }
 
-/* ---------- Para qué: cuatro usos sentidos, no filas ---------- */
-.usos-grid {
-  display: grid;
-  gap: clamp(1.75rem, 4vw, 2.75rem);
-  padding: 0.5rem var(--proto-pad) 0;
-  max-width: var(--proto-max);
+/* ---------- Para qué: momentos editoriales, UI real sin póster ---------- */
+.usos-editorial {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.75rem, 7vw, 4.5rem);
+  padding: 0.75rem 0 0.5rem;
+  max-width: 1080px;
   margin: 0 auto;
 }
-@media (min-width: 720px) {
-  .usos-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 2.5rem 1.75rem;
-  }
-}
-.uso-card {
+.uso-momento {
+  display: grid;
+  gap: 1.15rem;
+  align-items: center;
+  padding: 0 var(--proto-pad);
   margin: 0;
 }
-.uso-foto {
-  margin: 0 0 1rem;
-  border-radius: 1.15rem;
+@media (min-width: 820px) {
+  .uso-momento {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: clamp(1.75rem, 4vw, 3.25rem);
+    padding: 0 clamp(1.5rem, 4vw, 2.5rem);
+  }
+  .uso-momento:nth-child(even) { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); }
+  .uso-momento:nth-child(even) .uso-pantalla { order: 2; }
+  .uso-momento:nth-child(even) .uso-copy { order: 1; justify-self: end; text-align: right; }
+  .uso-momento:nth-child(even) .uso-copy p { margin-left: auto; }
+}
+.uso-pantalla {
+  margin: 0;
+  border-radius: 1.35rem;
   overflow: hidden;
   border: 1px solid var(--linea);
-  background: #161412;
-  aspect-ratio: 9 / 16;
-  max-height: min(62vh, 520px);
-}
-.uso-foto img {
-  display: block;
+  background: #12100E;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.42);
+  max-width: min(22rem, 82vw);
+  justify-self: center;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
 }
-.uso-card h3 {
-  margin: 0 0 0.4rem;
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
-  color: var(--crema);
-}
-.uso-card p {
-  margin: 0;
-  color: var(--apagado);
-  font-size: 1.02rem;
-  line-height: 1.45;
-  max-width: 28ch;
-}
-
-/* ---------- La app: ritmo, no fila de rectángulos iguales ---------- */
-.galeria {
-  display: grid;
-  gap: 0.85rem;
-  padding: 0.75rem var(--proto-pad) 1rem;
-  max-width: 1180px;
-  margin: 0 auto;
-  grid-template-columns: 1fr 1fr;
-}
-@media (min-width: 900px) {
-  .galeria {
-    grid-template-columns: repeat(12, 1fr);
-    gap: 1.1rem;
-  }
-  .g-a { grid-column: 1 / 5; }
-  .g-b { grid-column: 5 / 9; }
-  .g-c { grid-column: 9 / 13; }
-  .g-d { grid-column: 1 / 4; }
-  .g-e { grid-column: 4 / 7; }
-  .g-f { grid-column: 7 / 10; }
-  .g-g { grid-column: 10 / 13; }
-  .g-h { grid-column: 1 / 13; }
-}
-.g {
-  margin: 0;
-  border-radius: 1.1rem;
-  overflow: hidden;
-  border: 1px solid var(--linea);
-  background: #161412;
-}
-.g img {
+.uso-pantalla img {
   display: block;
   width: 100%;
   height: auto;
   vertical-align: top;
 }
-.g-h {
-  position: relative;
-}
-.g-h img {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-}
-.g-h figcaption {
-  margin: 0.85rem 0.15rem 0.15rem;
+.uso-copy h3 {
+  margin: 0 0 0.45rem;
   font-family: var(--serif);
-  font-size: clamp(1.15rem, 2.2vw, 1.55rem);
+  font-weight: 400;
+  font-size: clamp(1.55rem, 3.2vw, 2.05rem);
   color: var(--crema);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
-@media (max-width: 899px) {
-  /* 01–06 en dos columnas; 07 y 08 a ancho completo (08 landscape). */
-  .g-g, .g-h { grid-column: 1 / -1; }
-  .g-g { max-width: 18rem; justify-self: center; width: 100%; }
+.uso-copy p {
+  margin: 0;
+  color: var(--apagado);
+  font-size: clamp(1.02rem, 2vw, 1.12rem);
+  line-height: 1.5;
+  max-width: 32ch;
 }
 
-/* ---------- Guiones: captura real 07 ---------- */
+/* ---------- La app: carrusel grande con peek; 08 landscape aparte ---------- */
+.galeria-carrusel {
+  padding: 0.85rem 0 0.25rem;
+  overflow: hidden;
+}
+.galeria-pista {
+  display: flex;
+  gap: 0.85rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: max(var(--proto-pad), calc((100% - 22rem) / 2));
+  padding: 0.35rem var(--proto-pad) 1.1rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.galeria-pista::-webkit-scrollbar { display: none; }
+.g-slide {
+  flex: 0 0 min(80vw, 22rem);
+  scroll-snap-align: center;
+  margin: 0;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  border: 1px solid var(--linea);
+  background: #12100E;
+  box-shadow: 0 22px 56px rgba(0, 0, 0, 0.38);
+}
+.g-slide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: top;
+}
+@media (min-width: 900px) {
+  .galeria-pista {
+    gap: 1.15rem;
+    scroll-padding-inline: max(2rem, calc((100% - 26rem) / 2));
+    padding-inline: max(2rem, calc((100% - 78rem) / 2));
+  }
+  .g-slide { flex-basis: min(26rem, 42vw); }
+}
+.g-wide {
+  margin: 1.75rem auto 0.5rem;
+  padding: 0 var(--proto-pad);
+  max-width: 1080px;
+  border-radius: 0;
+  background: transparent;
+}
+.g-wide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 1.15rem;
+  border: 1px solid var(--linea);
+  background: #12100E;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center;
+}
+.g-wide figcaption {
+  margin: 0.95rem 0.1rem 0;
+  font-family: var(--serif);
+  font-size: clamp(1.2rem, 2.4vw, 1.65rem);
+  color: var(--crema);
+  letter-spacing: -0.015em;
+}
+
+/* ---------- Guiones: captura oscura Continuar con Google + editor ---------- */
 .resguardo {
   display: grid;
   gap: 2.25rem;
@@ -315,10 +351,10 @@ html:not(.franja-cerrada):not(.franja-fuera) .franja-prueba:not([hidden]) ~ .idi
   border-radius: 1.35rem;
   overflow: hidden;
   border: 1px solid var(--linea);
-  background: #EDE6DF; /* coincide con el marco de la captura 07 */
-  max-width: 24rem;
+  background: #12100E;
+  max-width: 22rem;
   justify-self: center;
-  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.45);
 }
 .resguardo-foto img {
   display: block;
