@@ -1,23 +1,23 @@
-Propuesta para la misma prueba cerrada de Sigo, 0.11.2. Pendiente de aprobación final.
-Antes: las notas de 0.11.1 trataban contraste de avisos, borrado de tomas y accesibilidad de Ajustes.
+Propuesta para la primera versión de producción de Sigo, 1.0. Pendiente de aprobación final.
+Antes: las notas de la 0.11.2 trataban Sigo+, avisos, bienvenida, marca de agua y el idioma de la oferta.
 <es-419>
-• Sigo+: suscripción mensual o anual para leer y grabar sin límites y guardar sin marca de agua. Restaura y administra tus compras desde Ajustes.
-• Avisos más claros y mejoras en los menús y el control de velocidad fija.
-• Bienvenida renovada en español, inglés y portugués.
-• Nueva marca de agua y mejoras al guardar videos con subtítulos.
-• La oferta de Sigo+ sigue el idioma de la app.
+Primera versión pública de Sigo, el teleprompter que sigue tu voz.
+• Lees en voz alta y el texto avanza contigo; si haces una pausa, te espera.
+• Graba con la cámara frontal o trasera mientras lees, y agrega subtítulos con tu guion y el tiempo de tu voz.
+• Funciona en español, inglés y portugués.
+• Con Sigo+, lee y graba sin cortes y guarda tus videos sin marca de agua.
 </es-419>
 <en-US>
-• Sigo+: a monthly or annual subscription for unlimited reading and recording, and saving without a watermark. Restore and manage purchases in Settings.
-• Clearer notices and improvements to menus and the fixed-speed control.
-• Refreshed welcome scripts in Spanish, English and Portuguese.
-• Updated watermark and improvements when saving captioned videos.
-• The Sigo+ offer follows the app language.
+The first public release of Sigo, the teleprompter that follows your voice.
+• Read out loud and the text moves with you; pause, and it waits.
+• Record with the front or rear camera as you read, and add captions from your script, timed to your voice.
+• Works in Spanish, English and Portuguese.
+• With Sigo+, read and record without cuts and save your videos without a watermark.
 </en-US>
 <pt-BR>
-• Sigo+: assinatura mensal ou anual para ler e gravar sem limites e salvar sem marca-d'água. Restaure e gerencie suas compras nas Configurações.
-• Avisos mais claros e melhorias nos menus e no controle de velocidade fixa.
-• Boas-vindas renovadas em espanhol, inglês e português.
-• Nova marca-d'água e melhorias ao salvar vídeos com legendas.
-• A oferta do Sigo+ segue o idioma do app.
+A primeira versão pública do Sigo, o teleprompter que acompanha a sua voz.
+• Você lê em voz alta e o texto avança com você; se fizer uma pausa, ele espera.
+• Grave com a câmera frontal ou traseira enquanto lê e adicione legendas com seu roteiro e o tempo da sua voz.
+• Funciona em espanhol, inglês e português.
+• Com o Sigo+, leia e grave sem cortes e salve seus vídeos sem marca-d'água.
 </pt-BR>

@@ -77,7 +77,9 @@ android {
         // -26-10-2026- 0.11.1: Ajustes accesible, el aviso invertido y el de tomas a 6 s -#155-, y el cobro sin nada
         // visible -#156-, que Google pide publicado antes de crear la suscripción. Antes: versionName "0.11.0"
         // -30-10-2026- Propuesta 0.11.2: Sigo+, avisos, bienvenida y guardado. Antes: versionName "0.11.1"
-        versionName "0.11.2"
+        // -01-11-2026- 1.0: la versión para producción, como quedó decidido el 06-10-2026. Trae el texto más ancho de
+        // lado, el velo con curva, el aviso de Sigo+ al borrar la cuenta y el aviso breve al guardar. Antes: versionName "0.11.2"
+        versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         // SOLO LOS PROCESADORES DE LOS TELEFONOS -24-09-2026-. Las bibliotecas nativas -Vosk,
         // la camara- venian para seis arquitecturas, y las x86 son solo de emuladores: 21 MB

@@ -90,16 +90,20 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
    Javier: «que suba completa, así también para mí es más fácil pasársela a mi papá, debe subir con todo lo
    que hacemos». Para instalarla desde Play, el papá de Javier tiene que estar entre los verificadores de la
    prueba cerrada.
-   A PRUEBA ABIERTA O A PRODUCCIÓN, NO, hasta que el papá de Javier haya leído en voz alta y los números den
+   A PRODUCCIÓN, SÍ -01-11-2026-: la lectura del papá de Javier quedó hecha. Javier, 31-10-2026: «lo de mi papa
+   ya esta ok, y cerrado».
+   Antes -hasta el 01-11-2026-: «A PRUEBA ABIERTA O A PRODUCCIÓN, NO, hasta que el papá de Javier haya leído en voz alta y los números den
    -teleprom/00-arquitectura/portugues-plan.txt, decisión 3; el protocolo está en docs/investigacion/
    idiomas.md, sección 7.3, de la rama investigacion-idiomas-. El modelo de portugués se equivoca el doble
-   que el de español en el PC: cargar bien ya está comprobado en el teléfono, seguir una lectura todavía no.
+   que el de español en el PC: cargar bien ya está comprobado en el teléfono, seguir una lectura todavía no.»
    Antes -22-10-2026-: «NO subir a Play una versión con eso hasta que el papá de Javier haya leído en voz alta
    con la APK de prueba en el Redmi y los números den. […] Si antes hay que subir otra cosa a Play, se decide
    con Javier.»
 
-   LO QUE FALTA PARA LANZAR EL PORTUGUÉS -portugues-ficha, 2026-10-24-. Se suma a lo de arriba, que sigue
-   valiendo: primero la lectura del papá de Javier. Ayuda de Play Console consultada el 2026-10-24.
+   LO QUE HAY QUE TENER PARA LANZAR EL PORTUGUÉS -portugues-ficha, 2026-10-24-. La lectura del papá de Javier
+   ya está cerrada. Ayuda de Play Console consultada el 2026-10-24.
+   Antes -hasta el 01-11-2026-: «LO QUE FALTA PARA LANZAR EL PORTUGUÉS […] Se suma a lo de arriba, que sigue
+   valiendo: primero la lectura del papá de Javier.»
    a. LA FICHA EN pt-BR. Fichas de Play Store → Ficha de Play Store → Administrar traducciones →
       Seleccionar idiomas → Portugués (Brasil: pt-BR) → Aplicar y Guardar. Los textos, tal cual entre
       dobles corchetes de docs/play/ficha/textos-pt-BR.txt; o `npm run ficha -- subir`, que ya toma pt-BR
@@ -145,6 +149,18 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
    Antes: «y la decisión de Javier sobre qué se hace con los datos de RevenueCat cuando alguien borra su
    cuenta -se borran con la API de servidor y la clave secreta, no desde la app-.» -sin la decisión tomada
    ni los pasos de activación-.
+
+   -01-11-2026- LO DE ARRIBA ESTÁ CUMPLIDO para producción: «Historial de compras» en la ficha de datos, la
+   privacidad con RevenueCat publicada en los tres idiomas y la función de borrado activa, probada y
+   desplegada el 31-10-2026.
+
+12. LOS 11 PAÍSES DE PRODUCCIÓN -decisión de Javier, 31-10-2026; repetida el 01-11-2026-: SOLO AR, AU, BR, CA,
+   CL, CO, ES, GB, MX, PE y US, los que tienen precio de Sigo+. La prueba cerrada está en 177: nada de eso
+   se arrastra a producción. Antes de iniciar el lanzamiento: Prueba y lanza > Producción > pestaña
+   «Países o regiones» > «Agregar países o regiones» o «Editar países o regiones», y guardar. Por omisión
+   la prueba cerrada se sincroniza con producción: mirar en su «Administrar segmento» > «Países o regiones»
+   si queda con esos mismos 11 o si está aparte. Ayuda oficial, leída el 01-11-2026:
+   support.google.com/googleplay/android-developer/answer/7550024.
 
 Conocido y aceptado: la advertencia de símbolos de depuración por las .so de Vosk, que vienen sin
 símbolos. No bloquea.
@@ -247,6 +263,13 @@ B. EN LA CONSOLA -Javier-. `npm run play -- subir` solo sabe la PRUEBA INTERNA y
   «Publicar», según la consola-.», «8. Opcional: si Play avisa que no hay archivo de desofuscación, se sube
   el mapping.txt de arriba. Sirve para leer los informes de fallas.» y «9. […] Nunca «Pausar» ni tocar
   Verificadores.»
+
+B2. LA PRIMERA VERSIÓN DE PRODUCCIÓN -Javier-. Nombres de la Ayuda, leída el 01-11-2026: answer/9859348.
+  Prueba y lanza > Producción > «Crear una versión nueva». Se suben el AAB y las notas, «Guardar como
+  borrador» y «Siguiente». La primera versión no tiene porcentaje de lanzamiento. El botón final es «Iniciar
+  lanzamiento de versión en producción». Antes de eso: los 11 países del punto 12. Publicar lo decide Javier.
+  El mismo día que quede pública: el punto 8 y PLAY_PUBLICADO = true en sitio/armar.mjs, con el sitio rearmado
+  y publicado -docs/el-sitio.md-.
 
 C. DESPUÉS DE PUBLICADA -Javier-: instalar desde Play en el g86 y hacer la toma larga del punto 5, con
    voz, gestos, pausa, guardar, visor, subtítulos y filtro. Lo que falle va a la próxima versión. Si el g86
