@@ -332,7 +332,7 @@ footer.pie {
   white-space: normal;
   text-align: center;
   overflow: visible;
-  top: calc(100% + 112px) !important;
+  top: calc(100% + 88px) !important;
   left: -6px !important;
   right: -6px !important;
   color: var(--crema, #F2ECE8) !important;
@@ -366,7 +366,7 @@ footer.pie {
   z-index: 12;
   left: 50%;
   right: auto;
-  top: -112px;
+  top: -100px;
   bottom: auto;
   display: flex;
   align-items: center;
@@ -384,10 +384,13 @@ footer.pie {
   max-width: calc(100% + 40px);
 }
 .telefono > .aviso-espera {
-  color: #F2ECE8;
-  background: rgba(30, 27, 25, 0.92);
-  border: 1px solid rgba(255, 240, 225, 0.22);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+  /* Contraste alto sobre el charcoal: visible como el badge ámbar del común. */
+  color: #1a1408;
+  background: #F2ECE8;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 0 0 1px rgba(240, 192, 112, 0.35),
+    0 10px 28px rgba(0, 0, 0, 0.45);
 }
 .telefono > .aviso-escapa {
   color: #1a1408;
@@ -422,17 +425,41 @@ footer.pie {
 
 @media (min-width: 900px) {
   .telefono > .aviso {
-    top: -118px;
-    font-size: 30px;
+    top: -88px;
+    font-size: 26px;
+    padding: 8px 16px 8px 13px;
   }
   .rotulo {
-    font-size: 34px !important;
-    top: calc(100% + 108px) !important;
+    font-size: 28px !important;
+    top: calc(100% + 78px) !important;
+    padding: 0.36em 0.58em;
+  }
+  /* E2 desk: titular más compacto para dejar aire a teléfonos grandes. */
+  .texto-escena.arriba {
+    top: 2.8svh;
+  }
+  .texto-escena.arriba .titular {
+    font-size: clamp(42px, 3.6vw, 60px);
+    line-height: 1.02;
+  }
+  .texto-escena.arriba .bajada {
+    font-size: 15px;
+    margin-top: 0.22em;
+    max-width: 34em;
+    line-height: 1.35;
+  }
+  .texto-escena.arriba .capitulo {
+    margin-bottom: 0.22em;
+    font-size: 10px;
   }
   .tarjeta[data-tarjeta="corre"],
   .tarjeta[data-tarjeta="espera"] {
     font-size: 15px;
     letter-spacing: 0.01em;
+  }
+  /* Píldora más discreta bajo la comparación para no pelear con rótulos. */
+  .pildora {
+    bottom: 16px;
   }
 }
 
@@ -464,3 +491,8 @@ footer.pie {
 }
 
 
+
+
+/* E2: avisos deben pintar SOBRE el bloque de texto (z-index). */
+.telefonos { z-index: 5; }
+.texto-escena { z-index: 4; }

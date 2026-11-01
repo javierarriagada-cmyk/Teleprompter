@@ -35,9 +35,14 @@ async function scrollToCapitulo(page, k) {
       await page.waitForFunction(() => {
         const s = document.querySelector('.telefono[data-telefono="sigo"]')
         const c = document.querySelector('.telefono[data-telefono="comun"]')
-        return (s && s.classList.contains('espera')) || (c && c.classList.contains('se-escapa'))
-      }, { timeout: 7000 })
-      await new Promise(r => setTimeout(r, 400))
+        const te = s && s.querySelector('.aviso-espera')
+        const se = c && c.querySelector('.aviso-escapa')
+        if (!s?.classList.contains('espera') || !c?.classList.contains('se-escapa')) return false
+        if (!te || !se) return false
+        const r = te.getBoundingClientRect()
+        return +getComputedStyle(te).opacity > 0.9 && r.width > 40
+      }, { timeout: 9000 })
+      await new Promise(r => setTimeout(r, 350))
     } catch (e) {
       console.log('WARN E2 badges not yet visible')
     }

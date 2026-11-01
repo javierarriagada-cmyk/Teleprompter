@@ -169,27 +169,28 @@ export function iniciarEscenas(datos) {
       // y dentro de un telefono girado en 3D ese texto se vuelve a dibujar entero cada vez
       // -medido en un telefono de gama media simulado: 22 a 33 cuadros largos de 99 con giro,
       // 9 a 14 sin el-.
-      // PROTOTIPO E2 móvil: teléfonos + rótulos + onda de voz (Apple/Sony).
-      // Onda bajo cada rótulo, alineada al ancho del teléfono; misma voz →
-      // en silencio ambas se aplanan; el común sigue escapando, Sigo espera.
-      const s2 = Math.min((0.45 * vw) / 380, (0.48 * vh) / 800)
+      // PROTOTIPO E2 móvil: teléfonos + rótulos + onda (Apple/Sony).
+      // Empacar hacia la píldora (phoneTop alto) para matar aire muerto.
+      const s2 = Math.min((0.46 * vw) / 380, (0.52 * vh) / 800)
       const half = (380 * s2) / 2
-      const gutter = Math.max(16, 0.038 * vw)
+      const gutter = Math.max(14, 0.032 * vw)
       const x2 = half + gutter / 2
-      // Teléfonos más abajo: avisos libres del copy; onda ENTRE marco y rótulo.
-      const phoneTop = Math.max(0.295 * vh, 262)
-      const cy2 = phoneTop + 400 * s2
+      const phoneH = 800 * s2
+      const bandBelow = 72
+      const pillPad = 54
+      const minTop = Math.max(0.24 * vh, 200) // bajo titular+avisos
+      const phoneTop = Math.max(minTop, vh - pillPad - bandBelow - phoneH)
+      const cy2 = phoneTop + phoneH / 2
       E.e2sigo = { x: x2, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
       E.e2comun = { x: -x2, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
-      // Centro de la onda justo bajo el marco (rótulo CSS deja hueco).
-      E.ondaE2 = { y: cy2 + 400 * s2 + 28, medio: half * 0.90, alto: 36 }
+      E.ondaE2 = { y: phoneTop + phoneH + 20, medio: half * 0.92, alto: 30 }
       const sz = s * 1.4
       E.e4zoom = { x: 0, y: 0.38 * vh - 22 * sz + 400 * sz - vh / 2, rotationX: 30, rotationY: -10, rotationZ: 0, scale: sz }
       E.e4graba = { x: 0, y: cy - vh / 2, rotationX: 0, rotationY: -5, rotationZ: 0, scale: s }
       const sv = Math.min((0.6 * vh) / 780, (0.86 * vw) / 360)
       E.e5 = { x: 0, y: 0.305 * vh + 390 * sv - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: sv }
       E.e6 = { x: 0, y: cy - vh / 2, rotationX: 8, rotationY: 0, rotationZ: 0, scale: s }
-      E.espera2Y = cy2 - 400 * s2 - 52
+      E.espera2Y = cy2 - phoneH / 2 - 52
       E.s = s
     } else {
       const s = Math.min((0.82 * vh) / 800, 1)
@@ -200,23 +201,32 @@ export function iniciarEscenas(datos) {
       E.e0 = { x: 0.28 * vw, y: 0.20 * vh + 400 * s0 - vh / 2, rotationX: 4, rotationY: -6, rotationZ: 0, scale: s0 }
       E.e1 = { x: xR, y: 0.01 * vh, rotationX: 4, rotationY: -12, rotationZ: 0, scale: s }
       E.e3 = { x: xR * 0.95, y: 0, rotationX: 0, rotationY: 9, rotationZ: -1.5, scale: s * 1.03 }
-      // PROTOTIPO E2 desk: gutters + onda bajo cada teléfono (misma voz).
-      const s2 = Math.min((0.44 * vh) / 800, (0.25 * vw) / 380)
+      // PROTOTIPO E2 desk: composición producto (Apple/Sony). Teléfonos ~62–70% vh.
+      // Píldora se aparta en la TL durante E2 → liberamos el borde inferior.
+      const s2 = Math.min((0.64 * vh) / 800, (0.28 * vw) / 380, 0.76)
       const half = (380 * s2) / 2
-      const gutter = Math.max(52, 0.045 * vw)
+      const gutter = Math.max(36, Math.min(64, 0.04 * vw))
       const x2 = half + gutter / 2
-      // Desk: avisos libres del copy; onda+rótulo caben sobre la píldora.
-      const phoneTop = Math.max(0.325 * vh, 290)
-      const cy2 = phoneTop + 400 * s2
+      const phoneH = 800 * s2
+      // Titular compacto (~0.12 vh) + avisos (~96*s2) libres del copy.
+      const headEnd = Math.min(0.148 * vh, 130)
+      const avisoClear = Math.max(90 * s2, 62)
+      const bandBelow = Math.min(0.088 * vh, 80)
+      const pillClear = 12 // píldora desplazada en E2
+      let phoneTop = headEnd + avisoClear
+      const maxTop = vh - pillClear - bandBelow - phoneH
+      if (phoneTop > maxTop) phoneTop = Math.max(0.10 * vh, maxTop)
+      const cy2 = phoneTop + phoneH / 2
       E.e2sigo = { x: x2, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
       E.e2comun = { x: -x2, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
-      E.ondaE2 = { y: cy2 + 400 * s2 + 28, medio: half * 0.90, alto: 40 }
+      E.ondaE2 = { y: phoneTop + phoneH + 20, medio: half * 0.90, alto: 34 }
       const sz = s * 1.75
       E.e4zoom = { x: xR * 0.7, y: 0.3 * vh - 22 * sz + 400 * sz - vh / 2, rotationX: 30, rotationY: -22, rotationZ: 0, scale: sz }
       E.e4graba = { x: xR, y: 0, rotationX: 0, rotationY: -8, rotationZ: 0, scale: s }
       const sv = Math.min((0.88 * vh) / 780, 1.25)
       E.e5 = { x: xR, y: 0, rotationX: 0, rotationY: -4, rotationZ: 0, scale: sv }
       E.e6 = { x: xR, y: 0.02 * vh, rotationX: 10, rotationY: -14, rotationZ: 0, scale: s }
+      E.espera2Y = cy2 - phoneH / 2 - 56
       E.s = s
     }
     E.vw = vw
@@ -283,6 +293,9 @@ export function iniciarEscenas(datos) {
     entra(textos[2], 1.68)
     // E2: dos ondas alineadas — misma voz; silencio = ambas planas.
     tl.to(canvas, { autoAlpha: 1, duration: 0.25 }, 1.95)
+    // Apartar la píldora en el pico de la comparación (teléfonos grandes + rótulos).
+    tl.to(pildora, { y: 72, autoAlpha: 0.25, duration: 0.35, ease: 'power2.out' }, 2.05)
+    tl.to(pildora, { y: 0, autoAlpha: 1, duration: 0.3, ease: 'power2.out' }, 3.3)
 
     // E2 -> E5 (prototipo): salta formatos/lente/offline; va directo a subtítulos
     sale(textos[2], 3.35)
@@ -408,13 +421,15 @@ export function iniciarEscenas(datos) {
       } else {
         const { y, medio, alto: altoE2 } = L.ondaE2
         const alto = altoE2 || (L.movil ? 34 : 48)
+        // Misma condición que ponerPausa: en silencio la onda es cápsula continua.
+        const plano = t >= pausa[0] + 150 && t < pausa[1]
         let primero = true
         for (const tel of [telComun, telSigo]) {
           const cx = L.vw / 2 + gsap.getProperty(tel, 'x')
           onda.dibujar(t, {
             x: cx, y, alto, izquierda: medio, pasado: medio,
             tramo: [cx - medio, cx + medio], limpiar: primero, marca: false,
-            color: '#E7E1DE', colorAhora: '#F0C070', barW: 4
+            color: '#E7E1DE', colorAhora: '#F0C070', barW: 4, plano
           })
           primero = false
         }

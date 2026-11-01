@@ -33,3 +33,10 @@ El motor (`demo.js`, `pantalla.js`, `lectura.js`, `onda.js`, reduced-motion, tel
   artefacto (aquí: al ancho de cada teléfono), sin decoración densa.
 - **Historia E2:** misma `t` de voz bajo ambos → al callar, ambas ondas se aplanan;
   el común sigue escapando, Sigo espera; al volver la voz, la onda crece y el texto de Sigo sigue.
+
+## Onda + E2 composición (post-494342f)
+
+- Silencio E2: cápsula continua (`plano` en pausa), no fila de puntos.
+- Desk E2: teléfonos ~64% vh; titular compacto; píldora apartada en el pico;
+  avisos crema/ámbar centrados; `telefonos` z-index sobre el texto.
+- Móvil E2: empaquetado hacia la píldora; silencio = línea continua.

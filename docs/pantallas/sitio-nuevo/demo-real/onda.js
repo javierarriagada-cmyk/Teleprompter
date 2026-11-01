@@ -1,9 +1,9 @@
-// LA ONDA DE LA VOZ -escenas E1 y E2-. 27-09-2026, docs/el-sitio.md v2.
-// Prototipo t122u/t123u: misma lógica de voz; dibujo a la vara Apple/Sony
-// (pocas barras redondeadas, amplitud suave, silencio casi plano, DPR nítido).
+// LA ONDA DE LA VOZ -escenas E1 y E2-. Motor real; dibujo Apple/Sony (t122u/t123u).
+// Silencio = franja continua baja (no fila de puntos). Voz = barras con el mismo paso.
 
 const MS_POR_BARRA = 70
-const PX_POR_BARRA = 7
+const PX_POR_BARRA = 6
+const SILENCIO = 0.18
 
 export class Onda {
   constructor(canvas, voz) {
@@ -23,32 +23,27 @@ export class Onda {
     this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
   }
 
-  // Que tan fuerte suena en el milisegundo t, de 0 a 1.
   fuerza(t) {
     const v = this.voz
     let i = this.ultima || 0
     if (i >= v.length || (i > 0 && v[i - 1][1] > t)) i = 0
     while (i < v.length && v[i][1] <= t) i++
     this.ultima = i
-    // Silencio: piso muy bajo (Apple Dynamic Island en pausa), no línea punteada.
-    if (i >= v.length || t < v[i][0]) return 0.22
+    if (i >= v.length || t < v[i][0]) return SILENCIO
     const [a, b] = v[i]
     const silabas = Math.max(1, Math.round((b - a) / 170))
     const x = (t - a) / (b - a)
     const silaba = Math.abs(Math.sin(Math.PI * x * silabas))
-    const grano = 0.82 + 0.18 * Math.abs(Math.sin(i * 12.9898 + Math.floor(t / MS_POR_BARRA) * 78.233))
+    const grano = 0.84 + 0.16 * Math.abs(Math.sin(i * 12.9898 + Math.floor(t / MS_POR_BARRA) * 78.233))
     const borde = Math.min(1, x * 5, (1 - x) * 5)
-    return Math.max(0.08, (0.22 + 0.78 * silaba) * grano * borde)
+    return Math.max(SILENCIO, (0.28 + 0.72 * silaba) * grano * borde)
   }
 
-  // x: el x en pantalla donde suena ahora.
-  // pasado: cuanto se dibuja a la derecha de "ahora".
-  // tramo: [desde, hasta] para varias ondas sin pisarse.
-  // color / colorAhora: paleta Sigo (crema / acento cálido).
   dibujar(t, {
     x: xAhora, y, alto, izquierda = xAhora, pasado = 0, alfa = 1,
     tramo = null, limpiar = true, marca = false,
-    color = '#E7E1DE', colorAhora = '#F0C070', barW = 4
+    color = '#D8D2CE', colorAhora = '#F0C070', barW = 3.2,
+    plano = false
   }) {
     const ctx = this.ctx
     if (limpiar) ctx.clearRect(0, 0, this.ancho, this.alto)
@@ -63,29 +58,68 @@ export class Onda {
     const desplazamiento = ((t % MS_POR_BARRA) / MS_POR_BARRA) * PX_POR_BARRA
     const n = Math.ceil(izquierda / PX_POR_BARRA) + 1
     const nPasado = Math.ceil(pasado / PX_POR_BARRA)
-    const halfBar = barW / 2
+
+    // ¿Todo el tramo visible está en silencio? → una cápsula continua (Apple idle).
+    let maxF = 0
+    const muestras = []
     for (let k = -nPasado; k <= n; k++) {
       const tk = (Math.floor(t / MS_POR_BARRA) + k) * MS_POR_BARRA
       const x = xAhora - k * PX_POR_BARRA + desplazamiento
       if (x < -PX_POR_BARRA || x > this.ancho + PX_POR_BARRA) continue
+      if (tramo && (x < tramo[0] - 2 || x > tramo[1] + 2)) continue
       const f = this.fuerza(tk)
-      const h = Math.max(4, f * alto)
-      const lejos = k >= 0 ? Math.min(1, k / n) : 0
-      const opacidad = k >= 0 ? 0.92 - 0.72 * lejos : Math.max(0.08, 0.55 + k / Math.max(1, nPasado) * 0.45)
-      ctx.globalAlpha = opacidad * alfa
-      ctx.fillStyle = (k >= 0 && k < 2) ? colorAhora : color
-      ctx.beginPath()
-      if (ctx.roundRect) ctx.roundRect(x - halfBar, y - h / 2, barW, h, halfBar)
-      else ctx.rect(x - halfBar, y - h / 2, barW, h)
-      ctx.fill()
+      maxF = Math.max(maxF, f)
+      muestras.push({ k, x, f })
     }
-    if (marca) {
-      // Playhead fino, no una raya gruesa de placeholder.
-      ctx.globalAlpha = 0.55 * alfa
+    const enSilencio = plano || maxF <= SILENCIO + 0.12
+
+    if (enSilencio) {
+      // Franja continua elegante (Apple idle). Si hay tramo, usarlo entero.
+      let x0, x1
+      if (tramo) { x0 = tramo[0] + 6; x1 = tramo[1] - 6 }
+      else if (muestras.length > 2) {
+        const xs = muestras.map((m) => m.x)
+        x0 = Math.min(...xs) - 1; x1 = Math.max(...xs) + 1
+      } else { x0 = xAhora - izquierda; x1 = xAhora + pasado }
+      const hLine = Math.max(5, Math.min(7, alto * 0.18))
+      ctx.globalAlpha = 0.82 * alfa
+      ctx.fillStyle = color
+      ctx.beginPath()
+      if (ctx.roundRect) ctx.roundRect(x0, y - hLine / 2, Math.max(4, x1 - x0), hLine, hLine / 2)
+      else ctx.rect(x0, y - hLine / 2, Math.max(4, x1 - x0), hLine)
+      ctx.fill()
+      // acento suave en el "ahora"
+      ctx.globalAlpha = 0.95 * alfa
+      ctx.fillStyle = colorAhora
+      const aw = Math.min(32, Math.max(16, (x1 - x0) * 0.16))
+      if (ctx.roundRect) ctx.roundRect(xAhora - aw / 2, y - hLine / 2, aw, hLine, hLine / 2)
+      else ctx.rect(xAhora - aw / 2, y - hLine / 2, aw, hLine)
+      ctx.fill()
+    } else {
+      for (const { k, x, f } of muestras) {
+        const silent = f <= SILENCIO + 0.08
+        // Silencio: ancho = paso → franja continua (nunca fila de puntos).
+        // Voz: barras más finas, mismo paso.
+        const bw = silent ? PX_POR_BARRA + 0.2 : barW
+        const h = silent ? Math.max(3.5, alto * 0.15) : Math.max(4, f * alto)
+        const lejos = k >= 0 ? Math.min(1, k / Math.max(1, n)) : 0
+        const opacidad = silent
+          ? 0.78
+          : (k >= 0 ? 0.95 - 0.7 * lejos : Math.max(0.12, 0.58 + k / Math.max(1, nPasado) * 0.42))
+        ctx.globalAlpha = opacidad * alfa
+        ctx.fillStyle = (!silent && k >= 0 && k < 2) ? colorAhora : color
+        ctx.beginPath()
+        if (ctx.roundRect) ctx.roundRect(x - bw / 2, y - h / 2, bw, h, Math.min(bw / 2, h / 2))
+        else ctx.rect(x - bw / 2, y - h / 2, bw, h)
+        ctx.fill()
+      }
+    }
+    if (marca && !enSilencio) {
+      ctx.globalAlpha = 0.45 * alfa
       ctx.fillStyle = colorAhora
       ctx.beginPath()
-      if (ctx.roundRect) ctx.roundRect(xAhora - 1, y - alto * 0.55, 2, alto * 1.1, 1)
-      else ctx.rect(xAhora - 1, y - alto * 0.55, 2, alto * 1.1)
+      if (ctx.roundRect) ctx.roundRect(xAhora - 1, y - alto * 0.5, 2, alto, 1)
+      else ctx.rect(xAhora - 1, y - alto * 0.5, 2, alto)
       ctx.fill()
     }
     ctx.restore()
