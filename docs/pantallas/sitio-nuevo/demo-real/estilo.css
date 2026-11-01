@@ -67,7 +67,7 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
 
 /* ---------- el escenario: todo lo que pasa con el telefono fijo ---------- */
 
-.escenario { position: relative; height: 1160svh; }
+.escenario { position: relative; height: 610svh; }
 .fijo {
   position: sticky;
   top: 0;
@@ -290,7 +290,7 @@ a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px
   position: absolute;
   left: -40px;
   right: -40px;
-  top: calc(100% + 36px);
+  top: calc(100% + 52px);
   text-align: center;
   font-family: var(--sans);
   font-size: 34px;

@@ -202,10 +202,7 @@ html:not(.js) .franja-cerrar { display: none; }
   background: #0B0A09;
 }
 .video-nota {
-  margin: 0.85rem 0 0;
-  font-size: 0.85rem;
-  color: var(--apagado);
-  text-align: center;
+  display: none;
 }
 
 /* ---------- Marco de teléfono (mismo lenguaje que el héroe / demo-real) ---------- */
@@ -255,7 +252,7 @@ html:not(.js) .franja-cerrar { display: none; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center top;
+  object-position: center 6%;
   opacity: 1;
   filter: none;
   -webkit-filter: none;
@@ -268,23 +265,23 @@ html:not(.js) .franja-cerrar { display: none; }
 }
 .proto-tel-guiones .proto-tel-pantalla img {
   object-fit: cover;
-  object-position: center top;
+  object-position: center 4%;
 }
 
 /* ---------- Para qué: momentos editoriales en marco de teléfono ---------- */
 .usos-editorial {
   display: flex;
   flex-direction: column;
-  gap: clamp(2.75rem, 7vw, 4.5rem);
-  padding: 0.75rem 0 0.5rem;
+  gap: clamp(2.5rem, 5vw, 3.5rem);
+  padding: 1rem 0;
   max-width: 1080px;
   margin: 0 auto;
 }
 .uso-momento {
   display: grid;
-  gap: 1rem;
+  gap: 1.15rem;
   align-items: center;
-  padding: 0 var(--proto-pad);
+  padding: 0.35rem var(--proto-pad);
   margin: 0;
 }
 @media (min-width: 820px) {
@@ -418,12 +415,14 @@ html:not(.js) .franja-cerrar { display: none; }
   border: 1px solid var(--linea);
   background: #12100E;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
+  aspect-ratio: auto;
+  object-fit: contain;
   object-position: center;
 }
 .g-wide figcaption {
-  margin: 0.95rem 0.1rem 0;
+  margin: 0.95rem auto 0;
+  max-width: 36ch;
+  text-align: center;
   font-family: var(--serif);
   font-size: clamp(1.2rem, 2.4vw, 1.65rem);
   color: var(--crema);
@@ -455,7 +454,7 @@ html:not(.js) .franja-cerrar { display: none; }
 #cierre.cierre {
   position: relative;
   text-align: center;
-  padding: clamp(5rem, 14vw, 9rem) var(--proto-pad) clamp(4rem, 10vw, 6rem);
+  padding: clamp(3.25rem, 7vw, 5.5rem) var(--proto-pad);
   background: var(--hondo);
   overflow: hidden;
 }
@@ -475,7 +474,7 @@ html:not(.js) .franja-cerrar { display: none; }
 }
 #cierre .marca-cierre .marca-svg { width: 100%; height: auto; display: block; }
 #cierre .marca-cierre .punto { fill: var(--rojo); }
-#cierre .marca-cierre .resplandor { fill: var(--rojo); opacity: 0.35; }
+#cierre .marca-cierre .resplandor { fill: var(--rojo); opacity: 0.2; }
 #cierre .cierre-frase {
   position: relative;
   font-family: var(--serif);

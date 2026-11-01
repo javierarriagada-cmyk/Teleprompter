@@ -3,43 +3,63 @@
 Prototipo en HTML estático para abrir con doble clic (`file://`). Nada de esto está publicado.
 Rama `sitio-nuevo-prototipo`, solo `docs/pantallas/sitio-nuevo/`.
 
-## Ronda 3 — pantallas de la app real (post-0ebde4b)
+## Estado actual (pass zero-defect + revisión independiente)
 
-**Problema:** los crops de pósters de Play cortaban glifos en los bordes («on calma», «uieres decir») y Guiones perdía la UI de cuenta/respaldo.
+### Escenario / Cómo funciona
+- `.escenario { height: 610svh }` (antes 1160svh). JS `TOTAL=5.1` → altura viva `(TOTAL+1)*vh = 6.1*vh`. El «vacío» negro en captura full-page es la pista de scroll sticky de E1–E5, no un gap extra entre héroe y Video (`gapEscToVideo: 0`).
+- E2 rótulos: `.rotulo { top: calc(100% + 52px) }` — aire bajo etiquetas (~57 px medidos). No se tocó el color del punto «Te espera».
+- E5 bokeh / estilos: sin cambios (demo aprobada).
 
-**Solución:** capturas de la app real (`src/` en `main`, Vite + Chrome headless, viewport 392×850, DPR 2). Salidas solo en esta carpeta; `src/` no se tocó.
+### Video
+- Poster: fotograma limpio del MP4 (teleprompter + PiP persona), sin chrome de marketing (logo/barra roja).
+- `.video-nota { display: none }`.
+- Títulos: kicker «El video» / «Del guion al video.» (sin choque con «Así se ve…»).
 
-### Procedencia de cada momento
+### Para qué
+- Gaps: `.usos-editorial { gap: clamp(2.5rem, 5vw, 3.5rem) }`.
+- Bajada ficha: «Lee tu guion a tu ritmo mientras grabas un video, preparas una clase o ensayas una presentación.»
+- Videos: «…en un recuadro que puedes mover, u ocultarla mientras grabas.»
+- Clases: `object-position: center 6%` (sin velo negro cortando la última línea legible; el fade del teleprompter es el de la app).
+- Presentaciones: fotograma mujer + panel «Estilo de subtítulos» (chips Sin/Amarillo/Blanco/Fondo) cubriendo el disco Play; sin póster de Play disc.
+- Ensayos: UI real Velocidad fija (≠ Clases).
+
+### La app
+- Título «Lee, graba y exporta.»; bajada de producto (tamaño/tipografía/colores), no «Capturas reales de la ficha».
+- Carrusel 6 pantallas de app real; `phone-08` landscape con `aspect-ratio: auto; object-fit: contain`; figcaption centrado «Graba de pie o de lado.» (sin fragmento duplicado).
+
+### Guiones
+- Ajustes + Continuar con Google (`guiones-ui.webp`); `object-position: center 4%`; sin media fila cortada arriba; sin «toño».
+
+### Cierre
+- Padding `clamp(3.25rem, 7vw, 5.5rem)`.
+- Resplandor del punto: `opacity: 0.2`.
+
+### Procedencia de assets
 
 | Uso / sección | Archivo | Origen |
 | --- | --- | --- |
-| Videos | `crops/uso-videos.webp` | **App real** — Grabar LISTO con `fondoToma=recuadro`, PiP y timer «dura aprox.». Cámara = still falso (`--use-file-for-fake-video-capture`); no hay cámara física en headless. |
-| Clases | `crops/uso-clases.webp` | **App real** — pantalla Leer en marcha (texto + pastilla de tiempo). |
-| Presentaciones | `crops/uso-presentaciones.webp` | **Play** — fotograma de video de `03.png` (mujer + subtítulos). Recorte al marco de video, líneas de subtítulo enteras. |
-| Ensayos | `crops/uso-ensayos.webp` | **App real** — LISTO en modo Velocidad fija (ficha visible). |
-| Guiones | `crops/guiones-ui.webp` | **App real** — Ajustes con tarjeta Cuenta: «Nunca pierdas un guion» + **Continuar con Google**. |
+| Videos / phone-02 | `uso-videos.webp`, `phone-02.webp` | App real Grabar LISTO + persona (fake cam y4m / still inyectado en recuadro) |
+| Clases | `uso-clases.webp` | App real Leer |
+| Presentaciones / phone-03 | `uso-presentaciones.webp`, `phone-03.webp` | Frame Play mujer + overlay UI estilo subtítulos |
+| Ensayos / phone-06 | `uso-ensayos.webp`, `phone-06.webp` | App real Velocidad fija |
+| Guiones | `guiones-ui.webp` | App real Ajustes + cuenta Google |
+| phone-08 | `phone-08.webp` | App real Grabar horizontal + persona en PiP |
+| Poster | `activos/video/poster.webp` | Crop limpio del MP4 (pantalla del teléfono) |
 
-PNG fuente de esas capturas: `activos/capturas-app/`. Herramienta: `_tools/capturar-app-real.cjs` (+ worktree temporal de `main` en `/tmp/sigo-main-cap` al generar).
+PNG fuente: `activos/capturas-app/`. Herramientas: `_tools/capturar-app-real.cjs`, `_tools/capturar-ronda3.mjs`.
 
-### Leftovers
-
-- Pósters Play `activos/capturas/01–08.png` y crops viejos de marketing: ya no alimentan Para/Guiones (salvo Presentaciones desde el frame de video de 03).
-- `uso-videos-listo.webp` experimental (si existe): no enlazado.
-- Galería «La app» (`phone-01…06`, `phone-08`) sigue siendo material Play (ficha), no re-capturado en este paso.
-- Cámara de Grabar: still sintético, no feed real.
-
-### Capturas del prototipo
-
-A **deviceScaleFactor: 2**: `capturas-prototipo/ronda-3/` (página completa tel/desk, secciones, como-e2/e5, `recorrido-telefono.mp4`).
+### Capturas de auditoría
+`capturas-prototipo/ronda-3/` @ DPR 2:
+- Tel 392×894: página completa, como-e2/e5, sec-video/para/app/guiones/cierre
+- Desk 1440×900: página completa, como-e2/e5, sec-video/para/app/guiones/cierre
 
 ### Peso
+Primera vista sin video (HTML+CSS+JS+fuentes+vendor, sin lazy imgs ni MP4): **~0,35 MiB** (meta ≤ 1,5 MiB).
 
-Meta ≤ 1,5 MiB sin video: ver medición en el commit / al abrir. Crops nuevos ~0,3 MiB juntos.
+### Límites honestos
+- Cámara en headless: still/y4m inyectado (Capgo sopla viewport; neutramos `#capgo_video` + clip). Persona visible y natural en Grabar.
+- Presentaciones: el disco Play del frame de marketing no se pudo inpaint sin artefactos; se cubre con la hoja de estilo de subtítulos (UI real del producto).
+- El vacío negro de la captura full-page del escenario es la longitud de scroll de la coreografía (610svh), no un padding erróneo entre secciones.
 
 ## Cómo portar a `sitio/`
-
-1. No tocar el árbol publicado hasta textos en es / en / pt.
-2. La demo ya es copia de `sitio/fuente`; al integrar, un solo `escenas.js` y desvíos en PR.
-3. Franja: reutilizar `sitio/fuente/franja.js`; idioma en la franja, nunca fixed sobre capturas.
-4. Activos: WebP; video con `preload="none"` + poster.
-5. i18n desde `sitio/fuente/textos/{es,en,pt}`.
+Copiar HTML/CSS/activos de esta carpeta; no publicar hasta revisión.

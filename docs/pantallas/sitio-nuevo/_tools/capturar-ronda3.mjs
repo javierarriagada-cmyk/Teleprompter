@@ -186,6 +186,15 @@ const browser = await puppeteer.launch({
   await shotViewport(page, 'como-e2-desk')
 
   await shotFull(page, 'pagina-completa-desk')
+
+  for (const [sel, name] of [
+    ['#video', 'sec-video-desk'],
+    ['#para', 'sec-para-desk'],
+    ['#app', 'sec-app-desk'],
+    ['#guiones', 'sec-guiones-desk'],
+    ['#cierre', 'sec-cierre-desk'],
+  ]) await shotSection(page, sel, name)
+
   await page.close()
 }
 
