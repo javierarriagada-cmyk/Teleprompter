@@ -400,7 +400,11 @@ for (const foto of fs.readdirSync(path.join(FUENTE, 'capturas'))) {
 
 // Los activos se publican desde una sola fuente; el MP4 aprobado se conserva únicamente en docs/play.
 fs.rmSync(path.join(PUBLICO, 'activos'), { recursive: true, force: true })
-fs.cpSync(path.join(FUENTE, 'activos'), path.join(PUBLICO, 'activos'), { recursive: true })
+// Antes: se copiaba toda la carpeta, incluidas las notas internas .md. La web solo necesita los activos.
+fs.cpSync(path.join(FUENTE, 'activos'), path.join(PUBLICO, 'activos'), {
+  recursive: true,
+  filter: (origen) => path.extname(origen).toLowerCase() !== '.md'
+})
 for (const t of Object.values(IDIOMAS)) {
   if (!t.video.archivo) continue
   if (!t.video.archivo.startsWith('/activos/video/') || t.video.archivo.includes('..')) throw new Error('Ruta de video fuera de /activos/video/.')

@@ -1,4 +1,11 @@
 // Portada aprobada: recorrido corto E0 → E1 → E2 → E5; ver NOTA-DEMO-REAL del PR #165.
+// LA ONDA DE LA VOZ -escenas E1 y E2-. 27-09-2026, docs/el-sitio.md v2.
+//
+// Barras verticales que viajan hacia el telefono: cada barra es un instante de la voz, con los
+// mismos tiempos que la lectura -datos.voz, cuando empieza y termina cada palabra-. La barra
+// que toca el borde del telefono es lo que suena ahora, y esa palabra se enciende en la
+// pantalla. En los silencios la onda se aplana. La forma de cada palabra -sus silabas, lo alto
+// de cada barra- es dibujo: los tiempos no.
 // LA ONDA DE LA VOZ -escenas E1 y E2-. Motor real; dibujo Apple/Sony (t122u/t123u).
 // Silencio = franja continua baja (no fila de puntos). Voz = barras con el mismo paso.
 
@@ -24,8 +31,10 @@ export class Onda {
     this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
   }
 
+  // Que tan fuerte suena en el milisegundo t, de 0 a 1.
   fuerza(t) {
     const v = this.voz
+    // Busqueda lineal desde la ultima: las barras se piden en orden.
     let i = this.ultima || 0
     if (i >= v.length || (i > 0 && v[i - 1][1] > t)) i = 0
     while (i < v.length && v[i][1] <= t) i++
@@ -40,6 +49,10 @@ export class Onda {
     return Math.max(SILENCIO, (0.28 + 0.72 * silaba) * grano * borde)
   }
 
+  // x: el x en pantalla donde suena ahora; lo que viene llega desde la izquierda.
+  // pasado: cuanto se dibuja a la derecha de "ahora" -lo que ya sono-, en px.
+  // tramo: [desde, hasta] en x, para dibujar varias ondas -una bajo cada telefono, E2- sin
+  // que se pisen; limpiar en false para no borrar la anterior. marca: una raya en "ahora".
   dibujar(t, {
     x: xAhora, y, alto, izquierda = xAhora, pasado = 0, alfa = 1,
     tramo = null, limpiar = true, marca = false,
@@ -63,6 +76,7 @@ export class Onda {
     // ¿Todo el tramo visible está en silencio? → una cápsula continua (Apple idle).
     let maxF = 0
     const muestras = []
+    // Del pasado al futuro, para que la busqueda de la fuerza vaya en orden.
     for (let k = -nPasado; k <= n; k++) {
       const tk = (Math.floor(t / MS_POR_BARRA) + k) * MS_POR_BARRA
       const x = xAhora - k * PX_POR_BARRA + desplazamiento
@@ -103,6 +117,7 @@ export class Onda {
         // Voz: barras más finas, mismo paso.
         const bw = silent ? PX_POR_BARRA + 0.2 : barW
         const h = silent ? Math.max(3.5, alto * 0.15) : Math.max(4, f * alto)
+        // Antes: Lejos, tenue; cerca del telefono, crema; lo ya dicho, se apaga.
         const lejos = k >= 0 ? Math.min(1, k / Math.max(1, n)) : 0
         const opacidad = silent
           ? 0.78

@@ -5,7 +5,8 @@ const puppeteer=require('puppeteer-core')
 const RAIZ=path.resolve(__dirname,'../..'),PUBLICO=path.join(RAIZ,'sitio/public')
 const SALIDA=process.env.SIGO_CAPTURAS
 if(!SALIDA)throw Error('Falta SIGO_CAPTURAS, fuera del repositorio.')
-const publicado=process.argv.includes('--publicado'),sufijo=process.argv.includes('--detalle')?'detalle':publicado?'publicado':'prueba'
+const soloImagenes=process.argv.includes('--imagenes')
+const publicado=process.argv.includes('--publicado'),sufijo=soloImagenes?'imagenes':process.argv.includes('--detalle')?'detalle':publicado?'publicado':'prueba'
 const dormir=ms=>new Promise(r=>setTimeout(r,ms))
 const tipos={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.webp':'image/webp','.png':'image/png','.woff2':'font/woff2','.mp4':'video/mp4'}
 const servidor=http.createServer((req,res)=>{
@@ -25,6 +26,9 @@ async function seccion(p,selector,archivo){
  await p.evaluate(async selector=>{
   const el=document.querySelector(selector)
   // Para revisar imágenes fuera del primer pliegue se las decodifica explícitamente.
+  // Para revisar la sección completa a zoom 100 %, se revelan y decodifican también las imágenes fuera del pliegue.
+  el.querySelectorAll('.revela').forEach(n=>n.classList.add('revelado'))
+  if(el.matches('.revela'))el.classList.add('revelado')
   for(const img of el.querySelectorAll('img')){img.loading='eager';await img.decode()}
  },selector)
  await dormir(750)
@@ -88,21 +92,40 @@ async function seccion(p,selector,archivo){
     const pref=`${sufijo}-${idioma}-${ancho}`
     await p.screenshot({path:path.join(SALIDA,pref+'-inicio.png')})
     const capitulos=[]
-    for(const [id,n] of (publicado?[]:[[1,1.15],[2,2.7],[5,4.2]])){
+    for(const [id,n] of (publicado||soloImagenes?[]:[[1,1.15],[2,2.7],[5,4.2]])){
      await p.evaluate(({n,alto})=>{window.scrollTo(0,document.querySelector('#escenario').offsetTop+n*alto);window.ScrollTrigger.update()}, {n,alto})
      await dormir(1100)
      const dato=await p.evaluate(()=>({activo:document.querySelector('.pildora a.activo')?.dataset.capitulo,telefonos:[...document.querySelectorAll('.telefono')].map(t=>({id:t.id,transform:t.style.transform})),palabras:document.querySelectorAll('.palabra').length}))
      capitulos.push({id,...dato})
      if([392,1440].includes(ancho))await p.screenshot({path:path.join(SALIDA,`${pref}-escena-${id}.png`)})
     }
-    if([392,1440].includes(ancho))for(const selector of (publicado?['#cierre']:['#video','#para','#app','#guiones','#cierre']))if(await p.$(selector))await seccion(p,selector,path.join(SALIDA,pref+'-'+selector.slice(1)+'.png'))
+    if(soloImagenes||[392,1440].includes(ancho))for(const selector of (soloImagenes?['#para','#app','#guiones']:publicado?['#cierre']:['#video','#para','#app','#guiones','#cierre']))if(await p.$(selector))await seccion(p,selector,path.join(SALIDA,pref+'-'+selector.slice(1)+'.png'))
     else await p.$eval('#cierre',el=>el.scrollIntoView({behavior:'instant'}))
+    if(soloImagenes) {
+     const fotos=await p.$$('#app .g-slide img')
+     for(let i=0;i<fotos.length;i++) {
+      await fotos[i].evaluate(async img=>{
+       img.loading='eager';await img.decode();img.closest('.g-slide').classList.add('revelado')
+       const pista=img.closest('[data-galeria-pista]')
+       const r=img.getBoundingClientRect(),p=pista.getBoundingClientRect()
+       pista.scrollTo({left:pista.scrollLeft+r.left+r.width/2-p.left-pista.clientWidth/2,behavior:'instant'})
+       window.scrollTo({top:r.top+scrollY+r.height/2-innerHeight/2,behavior:'instant'})
+      })
+      // Antes: ElementHandle.screenshot volvía a desplazar el carrusel y mezclaba dos capturas.
+      // Antes: el recorte fuera del viewport provocaba otra medida del carrusel al fotografiar.
+      // Se fotografía la ventana a su tamaño real, con la imagen objetivo completamente visible.
+      await dormir(650)
+      const imagenVisible=await fotos[i].evaluate(img=>{const r=img.getBoundingClientRect();return{src:img.getAttribute('src'),x:r.left,y:r.top,width:r.width,height:r.height,ancho:innerWidth,alto:innerHeight}})
+      if(imagenVisible.x < -1 || imagenVisible.x+imagenVisible.width > imagenVisible.ancho+1 || imagenVisible.y < -1 || imagenVisible.y+imagenVisible.height > imagenVisible.alto+1)throw Error('Imagen fuera de la ventana de revisión: '+JSON.stringify(imagenVisible))
+      await p.screenshot({path:path.join(SALIDA,pref+'-galeria-'+(i+1)+'.png')})
+     }
+    }
     const final=await p.evaluate(()=>({texto:document.body.innerText,franja:!!document.querySelector('#franja-prueba'),invitacion:!!document.querySelector('#prueba'),insignia:document.querySelector('.cierre-play img')?.getAttribute('src'),aviso:document.querySelector('.pie-marca')?.textContent,puntos:[...document.querySelectorAll('[data-galeria-puntos] button')].map(n=>n.getAttribute('aria-label'))}))
     if(publicado&&(final.franja||final.invitacion||!final.insignia||!final.aviso||/Pronto en Google Play|Coming soon to Google Play|Em breve no Google Play|Sigo está en prueba|Sigo is in testing|O Sigo está em fase de testes/.test(final.texto+' '+primera.descripcion)))errores.push('Estado público incompleto')
     if(!publicado&&(!final.franja||!final.invitacion||final.insignia||final.aviso))errores.push('Estado de prueba incorrecto')
-    if(idioma==='es'&&ancho===392&&!publicado){await p.$eval('[data-video-play]',b=>b.click());await p.waitForSelector('video');await p.waitForFunction(()=>document.querySelector('video')?.readyState>=2,{timeout:20000});if(!pedidos.some(u=>u.includes('.mp4')))errores.push('El video no pidió el MP4 al reproducir')}
+    if(idioma==='es'&&ancho===392&&!publicado&&!soloImagenes){await p.$eval('[data-video-play]',b=>b.click());await p.waitForSelector('video');await p.waitForFunction(()=>document.querySelector('video')?.readyState>=2,{timeout:20000});if(!pedidos.some(u=>u.includes('.mp4')))errores.push('El video no pidió el MP4 al reproducir')}
     informe.portadas.push({idioma,ancho,...primera,capitulos,puntos:final.puntos,errores})
-    for(const pagina of ['privacidad','terminos','soporte','ayuda','borrarCuenta']){
+    for(const pagina of (soloImagenes?[]:['privacidad','terminos','soporte','ayuda','borrarCuenta'])){
      await p.goto(base+t.rutas[pagina],{waitUntil:'networkidle0',timeout:30000});await p.evaluate(()=>document.fonts.ready)
      const dato=await p.evaluate(()=>({idioma:document.documentElement.lang,desborde:document.documentElement.scrollWidth-innerWidth,titulo:document.querySelector('main h1')?.textContent,texto:document.querySelector('main')?.innerText,selector:document.querySelector('.idioma-arriba')?getComputedStyle(document.querySelector('.idioma-arriba')).display:null}))
      if(dato.desborde>1||dato.idioma!==idioma||!dato.titulo||dato.selector==='none')errores.push('Interior incorrecto '+t.rutas[pagina]+': '+JSON.stringify(dato))

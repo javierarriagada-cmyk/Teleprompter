@@ -26,7 +26,7 @@ continúa abierto como referencia. Se arma desde la raíz con `node sitio/armar.
   tres idiomas. La nueva hoja y el pie también se aplican a esas páginas.
 - `sitio/fuente/activos/{es,en,pt}/`: imágenes por idioma, con rutas absolutas
   `/activos/...`. El armado copia esta carpeta a `public/activos/` y la conserva al limpiar.
-  `activos/PROCEDENCIA.md` distingue captura React, material de ficha y límites pendientes.
+  `activos/PROCEDENCIA.md` distingue captura React, personas generadas y material de ficha; no se publica.
 
 ### Video por idioma
 
@@ -63,13 +63,28 @@ Se revisan ambas posiciones del interruptor y se deja **false**, con `public/` r
 Las pruebas de la aplicación siguen siendo de lógica, sin fijar posiciones ni tamaños.
 La captura del navegador no certifica comportamiento nativo en Android.
 
-**Pendiente visual:** Videos / phone-02 y la horizontal phone-08 de EN/PT muestran
-la cámara de prueba de Chrome. La interfaz y el guion sí están en su idioma, pero estas
-imágenes no tienen la calidad de una toma con persona. La galería phone-03 española es
-una composición anterior conservada por aprobación; los recortes EN/PT salen de sus
-fichas respectivas y no reconstruyen el selector flotante de esa composición.
-El español conserva también el foco antiguo de phone-05; Guiones sí usa la captura limpia.
-Estas limitaciones deben revisarse antes de publicar; no se sustituyen por imágenes españolas.
+### Corrección del PR #168
+
+No quedan imágenes provisionales. Las cámaras de EN/PT muestran las personas generadas
+`persona-A.png` (uso-videos y phone-02) y `persona-C.png` (horizontal phone-08), con
+licencia comercial en `docs/play/ficha/herramientas/fuente/LICENCIA-personas.txt`.
+La imagen solo ocupa el recuadro de cámara con `object-fit: cover`; no se cambian controles.
+Las cámaras españolas permanecen intactas.
+
+`phone-05`, `phone-06` y `uso-ensayos` en español se recapturaron, por excepción expresa,
+con el perfil limpio de Guiones, sin foco ni tomas de ejemplo, conservando contenido y
+dimensiones. Antes: phone-05 tenía foco, 0:42 y sombra detrás de la cuenta; las otras dos,
+esa misma sombra. EN/PT usaban antes la señal de prueba de Chrome.
+
+Los alt de phone-03/04/05 describen ahora las imágenes que efectivamente se muestran,
+en los tres idiomas. La composición española de phone-03 y los recortes de las fichas
+EN/PT se conservan; sus alt no prometen controles que no aparezcan.
+
+Se restituyeron los 26 comentarios de origin/main (11 en escenas.js, 15 en onda.js)
+como comentarios propios junto al código, con «Antes:» donde describen el recorrido viejo.
+Las notas internas `PROCEDENCIA.md` y `ORIGEN.md` permanecen en fuente; el armado filtra
+todos los `.md` de los activos públicos. La revisión visual sigue siendo del navegador,
+sin certificar cámara ni reconocimiento nativos de Android.
 
 ## Antes: versión 2 del sitio y criterio de su recorrido largo
 

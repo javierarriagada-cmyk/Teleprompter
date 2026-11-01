@@ -29,13 +29,16 @@ const ESCENAS = [
   [5, 3.4, 5.1, 4.2]
 ]
 const TOTAL = 5.1
+// Donde deja el scroll cada capitulo de la pildora.
 const CAPITULOS = { 1: 1.15, 2: 2.7, 5: 4.2 }
 // E3/E4/E6 fuera del recorrido: umbrales > TOTAL para que no disparen clases.
+// Antes: Los formatos se pintan en E3, uno tras otro, y quedan.
 const PINTA = [['negrita', 99], ['ambar', 99], ['celeste', 99], ['salvia', 99], ['destacado', 99]]
 const GRABA = [99, 99.5]
 const LENTE = [99, 99.5]
 const VIDEO = [3.45, 5.1]
 const ESTILOS = [['amarillo', 3.4], ['rojo', 4.15], ['formal', 4.7]]
+// Antes: Sin internet: las cuatro barras se apagan de a una, despues el wifi, despues el avion.
 const SIN_INTERNET = 99
 const SENAL = [99, 99.1, 99.2, 99.3]
 const SIN_WIFI = 99.4
@@ -305,6 +308,10 @@ export function iniciarEscenas(datos) {
     tl.to(pildora, { y: 72, autoAlpha: 0.25, duration: 0.35, ease: 'power2.out' }, 2.05)
     tl.to(pildora, { y: 0, autoAlpha: 1, duration: 0.3, ease: 'power2.out' }, 3.3)
 
+    // Antes: E2 -> E3: se va el comun; los colores del guion encienden la luz
+    // Antes: E3 -> E4: gira hasta mostrar el lente, el haz, y despues grabando
+    // Antes: E4 -> E5: el telefono pierde el marco y se vuelve el video, grande
+    // Antes: E5 -> E6: vuelve el marco; se va la senal
     // E2 -> E5 (prototipo): salta formatos/lente/offline; va directo a subtítulos
     sale(textos[2], 3.35)
     tl.to(canvas, { autoAlpha: 0, duration: 0.12 }, 3.35)
@@ -412,6 +419,7 @@ export function iniciarEscenas(datos) {
     }
     if (p > 1.55 && p < 3.45) estadoPrevio.fueraE2 = false
 
+    // La onda
     // La onda (motor real). E1: se acerca al teléfono. E2: una bajo cada
     // teléfono, misma t de voz — en la pausa ambas se aplanan; el común
     // sigue escapando, Sigo espera. Reduced-motion: reloj congelado →
@@ -427,6 +435,8 @@ export function iniciarEscenas(datos) {
           color: '#E7E1DE', colorAhora: '#F0C070', barW: 4, marca: false
         })
       } else {
+        // E2: una onda bajo cada telefono, con su "ahora" al centro. Es la misma voz: cuando se
+        // aplana, se aplana bajo los dos a la vez.
         const { y, medio, alto: altoE2 } = L.ondaE2
         const alto = altoE2 || (L.movil ? 34 : 48)
         // Misma condición que ponerPausa: en silencio la onda es cápsula continua.
@@ -509,6 +519,7 @@ export function iniciarEscenas(datos) {
     avion: { x: 235, y: -250, lado: 'izq' }
   }
 
+  // Antes: En el celular los avisos de E2 ya van dentro de cada pantalla: sin tarjetas encima.
   function tarjetasVisibles(p, esc, t) {
     const v = new Set()
     const enPausa = t >= pausa[0] + 250 && t < pausa[1] + 200

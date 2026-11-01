@@ -9,10 +9,15 @@ usan su misma dependencia `puppeteer-core`; no se cambia el package.json de la a
    con caché en esta carpeta; no cambia src/.
 3. En otra terminal, definir `SIGO_CAPTURAS` con una carpeta externa para los PNG y `PYTHON`
    con un intérprete que tenga Pillow. Ejecutar `node sitio/herramientas/capturar-app-real.cjs`.
-   Chrome se puede indicar con `CHROME_PATH`; `CAPTURA_IDIOMA=en|pt` y `CAPTURA_TIPO`
-   permiten una captura puntual. La cámara predeterminada es la señal de prueba de Chrome.
-   `FAKE_VIDEO` solo se usa con un medio independiente autorizado, nunca una captura española
-   para reemplazar una captura en otro idioma. Sin reconocimiento de voz ni grabación nativa.
+   Chrome se puede indicar con `CHROME_PATH`; `CAPTURA_IDIOMA=es|en|pt` y `CAPTURA_TIPO`
+   permiten una captura puntual. En cámara se muestra `persona-A.png` en vertical y
+   `persona-C.png` en horizontal, desde `docs/play/ficha/herramientas/fuente/`, con la licencia
+   comercial documentada en `LICENCIA-personas.txt`. Se usa `object-fit: cover` dentro del
+   recuadro real y se verifica que los controles no cambien. No hay reconocimiento de voz
+   ni grabación nativa. Antes: se admitía FAKE_VIDEO y la señal de prueba de Chrome.
+   `--correccion` limita la ejecución a las cámaras EN/PT y las tres españolas autorizadas:
+   phone-05, phone-06 y uso-ensayos. Estas conservan su medida anterior y usan un perfil
+   limpio sin grabaciones de ejemplo. Nunca regenera las cámaras españolas aprobadas.
 4. Armar con `node sitio/armar.mjs`. Con `SIGO_CAPTURAS` definido, ejecutar
    `node sitio/herramientas/revisar-sitio.cjs`. Sirve public con direcciones limpias, genera
    evidencia fuera del repo y cierra navegador/servidor. Los JSON registran peso, idioma,
@@ -23,4 +28,4 @@ usan su misma dependencia `puppeteer-core`; no se cambia el package.json de la a
 El recorte de phone-03 se repite desde la ficha de cada idioma con la caja
 (192,514,888,1752), tamaño final 720 × 1280. La composición española anterior no tiene
 un selector flotante equivalente en las fuentes EN/PT: no se simula esa interfaz.
-Ver `sitio/fuente/activos/PROCEDENCIA.md` para los pendientes de calidad visual.
+Ver `sitio/fuente/activos/PROCEDENCIA.md` para la procedencia de cada imagen. No quedan imágenes provisionales. Las notas `.md` de activos no se copian al sitio público.
