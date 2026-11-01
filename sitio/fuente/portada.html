@@ -23,18 +23,22 @@
 </head>
 <body class="portada">
 <div class="grano" aria-hidden="true"></div>
-<!-- LA INVITACION A PROBAR SIGO, arriba de todo y dentro de la pagina: no flota ni tapa nada,
+<!--@franja-->
+
+<!-- Antes: notas de la portada larga, reemplazada por el prototipo aprobado.
+LA INVITACION A PROBAR SIGO, arriba de todo y dentro de la pagina: no flota ni tapa nada,
      y al bajar se va con el resto. Es un enlace de verdad a #prueba -funciona sin JavaScript-;
      la X la cierra por esta visita -franja.js-. Va antes del selector: estilo.css baja el
-     selector mientras la franja se ve. Solo en la portada. -->
-<div class="franja-prueba" id="franja-prueba">
-  <a href="#prueba">{{prueba.franja}} <span>{{prueba.franjaAccion}}</span></a>
-  <button class="franja-cerrar" type="button" aria-label="{{prueba.cerrar}}" aria-controls="franja-prueba"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11"/></svg></button>
-</div>
-<!--@selector-->
-
+     selector mientras la franja se ve. Solo en la portada.
+Los telefonos
+Anclas de los capitulos, a la altura de cada escena
+E7
+LA INVITACION: despues del cierre -"Pronto en Google Play."- y antes del pie. No corta el
+       escenario, y se lee como lo que sigue: todavia no esta en Play, pero se puede probar.
+       tabindex="-1": al saltar desde la franja, el foco queda aca.
+-->
 <main>
-  <section class="escenario" id="escenario" aria-label="{{escenario}}">
+<section class="escenario" id="escenario" aria-label="{{escenario}}">
     <div class="fijo">
       <!-- Las luces de cada escena: se encienden y apagan con el scroll. -->
       <div class="luces" aria-hidden="true">
@@ -55,51 +59,40 @@
 
       <!-- Los textos de las escenas E1 a E6 -->
       <div class="texto-escena" data-escena="1">
-        <p class="capitulo">{{e1.capitulo}}</p>
-        <h2 class="titular" data-palabra-a-palabra>{{e1.titular}}</h2>
+        <p class="capitulo">{{nuevaPortada.como}}</p>
+        <h2 class="titular" data-palabra-a-palabra>{{nuevaPortada.hablas}}</h2>
         <p class="bajada">{{e1.bajada}}</p>
       </div>
       <div class="texto-escena arriba" data-escena="2">
         <p class="capitulo">{{e2.capitulo}}</p>
-        <h2 class="titular">{{e2.titular}}</h2>
-        <p class="bajada">{{e2.bajada}}</p>
+        <h2 class="titular">{{nuevaPortada.esperaTitulo}}</h2>
+        <p class="bajada">{{nuevaPortada.esperaTexto}}</p>
       </div>
-      <div class="texto-escena" data-escena="3">
-        <p class="capitulo">{{e3.capitulo}}</p>
-        <h2 class="titular">{{e3.titular}}</h2>
-        <p class="bajada">{{e3.bajada}}</p>
-      </div>
-      <div class="texto-escena" data-escena="4">
-        <p class="capitulo">{{e4.capitulo}}</p>
-        <h2 class="titular">{{e4.titular}}</h2>
-        <p class="bajada">{{e4.bajada}}</p>
-      </div>
+      <!-- E3/E4 fuera del prototipo corto (solo E1/E2/E5). Nodos conservados ocultos por si el motor los consulta. -->
+      <div class="texto-escena" data-escena="3" hidden aria-hidden="true"></div>
+      <div class="texto-escena" data-escena="4" hidden aria-hidden="true"></div>
       <div class="texto-escena" data-escena="5">
         <p class="capitulo">{{e5.capitulo}}</p>
         <h2 class="titular">{{e5.titular}}</h2>
-        <p class="bajada">{{e5.bajada}}</p>
+        <p class="bajada">{{nuevaPortada.subtitulosEscena}}</p>
         <p class="estilos-subtitulo" aria-hidden="true"><span data-estilo="amarillo">{{estilos.amarillo}}</span><span data-estilo="rojo">{{estilos.rojo}}</span><span data-estilo="formal">{{estilos.formal}}</span></p>
       </div>
-      <div class="texto-escena" data-escena="6">
-        <p class="capitulo">{{e6.capitulo}}</p>
-        <h2 class="titular">{{e6.titular}}</h2>
-        <p class="bajada">{{e6.bajada}}</p>
-      </div>
+      <div class="texto-escena" data-escena="6" hidden aria-hidden="true"></div>
 
       <!-- La onda de la voz: E1 y E2 -->
       <canvas class="onda" aria-hidden="true"></canvas>
 
-      <!-- Los telefonos -->
-      <div class="telefonos" aria-hidden="true">
-        <!--@telefono-comun-->
-        <!--@telefono-sigo-->
-      </div>
+      <!-- Los telefonos se generan por idioma con la lectura calculada al armar. -->
+<div class="telefonos" aria-hidden="true">
+<!--@telefono-comun-->
+<!--@telefono-sigo-->
+</div>
 
-      <!-- Tarjetas flotantes: momentos de quien lee -->
+<!-- Tarjetas flotantes: momentos de quien lee -->
       <div class="tarjetas" aria-hidden="true">
-        <div class="tarjeta" data-tarjeta="espera"><span class="punto-vivo"></span>{{tarjetas.espera}}</div>
-        <div class="tarjeta tenue" data-tarjeta="corre">{{tarjetas.corre}}</div>
-        <div class="tarjeta formato" data-tarjeta="negrita"><b>Aa</b>{{tarjetas.negrita}}</div>
+        <div class="tarjeta" data-tarjeta="espera" hidden aria-hidden="true"><span class="punto-vivo"></span>{{tarjetas.espera}}</div>
+        <div class="tarjeta tenue" data-tarjeta="corre" hidden aria-hidden="true">{{tarjetas.corre}}</div>
+        <div class="tarjeta formato" data-tarjeta="negrita"><b>{{nuevaPortada.muestra}}</b>{{tarjetas.negrita}}</div>
         <div class="tarjeta formato" data-tarjeta="ambar"><i class="muestra" style="background:#F0C070"></i>{{tarjetas.ambar}}</div>
         <div class="tarjeta formato" data-tarjeta="celeste"><i class="muestra" style="background:#8FB8DE"></i>{{tarjetas.celeste}}</div>
         <div class="tarjeta formato" data-tarjeta="salvia"><i class="muestra" style="background:#9CC5A1"></i>{{tarjetas.salvia}}</div>
@@ -110,38 +103,156 @@
       </div>
 
       <!-- Los capitulos -->
-      <nav class="pildora" aria-label="{{capitulosEtiqueta}}">
+      <nav class="pildora" aria-label="{{nuevaPortada.como}}">
         <span class="pildora-fondo" aria-hidden="true"></span>
         <a href="#e1" data-capitulo="1">{{e1.capitulo}}</a>
         <a href="#e2" data-capitulo="2">{{e2.capitulo}}</a>
-        <a href="#e3" data-capitulo="3">{{e3.capitulo}}</a>
-        <a href="#e4" data-capitulo="4">{{e4.capitulo}}</a>
         <a href="#e5" data-capitulo="5">{{e5.capitulo}}</a>
-        <a href="#e6" data-capitulo="6">{{e6.capitulo}}</a>
       </nav>
     </div>
-    <!-- Anclas de los capitulos, a la altura de cada escena -->
-    <span class="ancla" id="e1"></span><span class="ancla" id="e2"></span><span class="ancla" id="e3"></span>
-    <span class="ancla" id="e4"></span><span class="ancla" id="e5"></span><span class="ancla" id="e6"></span>
+    <span class="ancla" id="e1"></span><span class="ancla" id="e2"></span><span class="ancla" id="e5"></span>
   </section>
 
-  <!-- E7 -->
-  <section class="cierre" id="e7">
-    <div class="luz luz-cierre" aria-hidden="true"></div>
+  <!-- Ancla semántica: Cómo funciona = escenas reales E1 (hablas), E2 (espera), E5 (subtítulos) -->
+  <div id="como" class="sr-only">{{nuevaPortada.como}}</div>
+
+  <!-- 3. Video: poster real (frame del MP4), vertical como el video de Play; lazy hasta el toque -->
+  <!--@video-->
+
+  <!-- 4. Para qué: cuatro momentos en marco de teléfono, titulares reales -->
+  <section class="seccion seccion-ancha" id="para" aria-labelledby="para-titulo">
+    <div class="interno">
+      <p class="kicker revela">{{nuevaPortada.paraKicker}}</p>
+      <h2 class="titular revela" id="para-titulo">{{nuevaPortada.paraTitulo}}</h2>
+      <p class="bajada revela">{{nuevaPortada.paraTexto}}</p>
+    </div>
+    <div class="usos-editorial">
+      <article class="uso-momento revela">
+        <div class="uso-copy">
+          <h3>{{nuevaPortada.videosTitulo}}</h3>
+          <p>{{nuevaPortada.videosTexto}}</p>
+        </div>
+        <div class="uso-pantalla">
+          <div class="proto-tel">
+            <div class="proto-tel-canto" aria-hidden="true"></div>
+            <div class="proto-tel-cuerpo">
+              <div class="proto-tel-pantalla">
+                <img src="{{nuevaPortada.activos}}/uso-videos.webp" alt="{{nuevaPortada.videosAlt}}" width="784" height="1700" loading="lazy" decoding="async">
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="uso-momento revela">
+        <div class="uso-copy">
+          <h3>{{nuevaPortada.clasesTitulo}}</h3>
+          <p>{{nuevaPortada.clasesTexto}}</p>
+        </div>
+        <div class="uso-pantalla">
+          <div class="proto-tel">
+            <div class="proto-tel-canto" aria-hidden="true"></div>
+            <div class="proto-tel-cuerpo">
+              <div class="proto-tel-pantalla">
+                <img src="{{nuevaPortada.activos}}/uso-clases.webp" alt="{{nuevaPortada.clasesAlt}}" width="784" height="1700" loading="lazy" decoding="async">
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="uso-momento revela">
+        <div class="uso-copy">
+          <h3>{{nuevaPortada.presentacionesTitulo}}</h3>
+          <p>{{nuevaPortada.presentacionesTexto}}</p>
+        </div>
+        <div class="uso-pantalla">
+          <div class="proto-tel">
+            <div class="proto-tel-canto" aria-hidden="true"></div>
+            <div class="proto-tel-cuerpo">
+              <div class="proto-tel-pantalla">
+                <img src="{{nuevaPortada.activos}}/uso-presentaciones.webp" alt="{{nuevaPortada.presentacionesAlt}}" width="784" height="1700" loading="lazy" decoding="async">
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="uso-momento revela">
+        <div class="uso-copy">
+          <h3>{{nuevaPortada.ensayosTitulo}}</h3>
+          <p>{{nuevaPortada.ensayosTexto}}</p>
+        </div>
+        <div class="uso-pantalla">
+          <div class="proto-tel">
+            <div class="proto-tel-canto" aria-hidden="true"></div>
+            <div class="proto-tel-cuerpo">
+              <div class="proto-tel-pantalla">
+                <img src="{{nuevaPortada.activos}}/uso-ensayos.webp" alt="{{nuevaPortada.ensayosAlt}}" width="784" height="1700" loading="lazy" decoding="async">
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 5. La app: capturas UI (sin póster); ritmo grande; 08 landscape; sin 07 (va en Guiones) -->
+  <section class="seccion seccion-ancha" id="app" aria-labelledby="app-titulo">
+    <div class="interno">
+      <p class="kicker revela">{{nuevaPortada.appKicker}}</p>
+      <h2 class="titular revela" id="app-titulo">{{nuevaPortada.appTitulo}}</h2>
+      <p class="bajada revela">{{nuevaPortada.appTexto}}</p>
+    </div>
+    <div class="galeria-carrusel" data-galeria data-etiqueta="{{nuevaPortada.galeriaCaptura}}" aria-label="{{nuevaPortada.galeriaEtiqueta}}">
+      <div class="galeria-pista" data-galeria-pista>
+        <figure class="g-slide revela"><img src="{{nuevaPortada.activos}}/phone-01.webp" alt="{{nuevaPortada.galeriaAlt1}}" width="720" height="1280" loading="lazy" decoding="async"></figure>
+        <figure class="g-slide revela"><img src="{{nuevaPortada.activos}}/phone-02.webp" alt="{{nuevaPortada.galeriaAlt2}}" width="720" height="1280" loading="lazy" decoding="async"></figure>
+        <figure class="g-slide revela"><img src="{{nuevaPortada.activos}}/phone-03.webp" alt="{{nuevaPortada.galeriaAlt3}}" width="720" height="1280" loading="lazy" decoding="async"></figure>
+        <figure class="g-slide revela"><img src="{{nuevaPortada.activos}}/phone-04.webp" alt="{{nuevaPortada.galeriaAlt4}}" width="720" height="1280" loading="lazy" decoding="async"></figure>
+        <figure class="g-slide revela"><img src="{{nuevaPortada.activos}}/phone-05.webp" alt="{{nuevaPortada.galeriaAlt5}}" width="720" height="1280" loading="lazy" decoding="async"></figure>
+        <figure class="g-slide revela"><img src="{{nuevaPortada.activos}}/phone-06.webp" alt="{{nuevaPortada.galeriaAlt6}}" width="720" height="1280" loading="lazy" decoding="async"></figure>
+      </div>
+      <div class="galeria-hint" aria-hidden="false">
+        <div class="galeria-puntos" data-galeria-puntos role="tablist" aria-label="{{nuevaPortada.galeriaPosicion}}"></div>
+        <p class="galeria-contador" data-galeria-contador><span data-gal-n>{{nuevaPortada.contadorInicio}}</span> {{nuevaPortada.contadorTotal}}</p>
+      </div>
+    </div>
+    <figure class="g-wide revela">
+      <img src="{{nuevaPortada.activos}}/phone-08.webp" alt="{{nuevaPortada.horizontalAlt}}" width="1440" height="664" loading="lazy" decoding="async">
+      <figcaption>{{nuevaPortada.horizontalTexto}}</figcaption>
+    </figure>
+  </section>
+
+  <!-- 6. Guiones a salvo: UI real 07 en marco de teléfono (mismo estilo que el héroe) -->
+  <section class="seccion" id="guiones" aria-labelledby="guiones-titulo">
+    <div class="resguardo revela">
+      <div class="resguardo-copy">
+        <p class="kicker">{{nuevaPortada.guionesKicker}}</p>
+        <h2 class="titular" id="guiones-titulo">{{nuevaPortada.guionesTitulo}}</h2>
+        <p class="bajada">{{nuevaPortada.guionesTexto}}</p>
+        <p class="bajada">{{nuevaPortada.guionesRespaldo}}</p>
+      </div>
+      <div class="resguardo-foto">
+        <div class="proto-tel proto-tel-guiones">
+          <div class="proto-tel-canto" aria-hidden="true"></div>
+          <div class="proto-tel-cuerpo">
+            <div class="proto-tel-pantalla">
+              <img src="{{nuevaPortada.activos}}/guiones-ui.webp" alt="{{nuevaPortada.guionesAlt}}" width="784" height="1700" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Cierre: una sola acción clara — invitación a la prueba -->
+  <section class="cierre" id="cierre" aria-labelledby="cierre-frase">
     <div class="marca-cierre"><!--@marca-cierre--></div>
-    <p class="frase-cierre">{{cierre.frase}}</p>
-    <p class="disponible">{{cierre.disponible}}</p>
-  </section>
-
-  <!-- LA INVITACION: despues del cierre -"Pronto en Google Play."- y antes del pie. No corta el
-       escenario, y se lee como lo que sigue: todavia no esta en Play, pero se puede probar.
-       tabindex="-1": al saltar desde la franja, el foco queda aca. -->
-  <section class="prueba" id="prueba" aria-labelledby="prueba-titulo" tabindex="-1">
-    <h2 class="prueba-titulo" id="prueba-titulo">{{prueba.titulo}}</h2>
-    <p class="prueba-texto">{{prueba.antesDelCorreo}} <a href="mailto:{{correo}}">{{correo}}</a> {{prueba.despuesDelCorreo}}</p>
+    <p class="cierre-frase" id="cierre-frase">{{cierre.frase}}</p>
+    <!--@accion-play-->
   </section>
 </main>
+
 <!--@pie-->
+
 <script type="application/json" id="demo-datos">/*@datos*/</script>
 <script src="/vendor/gsap.min.js" defer></script>
 <script src="/vendor/ScrollTrigger.min.js" defer></script>

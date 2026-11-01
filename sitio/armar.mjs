@@ -40,6 +40,10 @@ import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { build, createServer } from 'vite'
 
+// Una sola decisión habilita la tienda, sus metadatos y su aviso legal; queda apagada hasta aprobación.
+const PLAY_PUBLICADO = false
+const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.sigoteleprompter.app'
+
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const FUENTE = path.join(RAIZ, 'sitio/fuente')
 const PUBLICO = path.join(RAIZ, 'sitio/public')
@@ -66,11 +70,11 @@ const caja = objeto('MARCA_CAJA')
 const vb = [caja.x, caja.y, caja.ancho, caja.alto].map((n) => +n.toFixed(2)).join(' ')
 // Con resplandor: el punto es la luz de grabar encendida -docs/el-sitio.md, E0-. Cada marca
 // lleva su propio filtro: dos ids iguales en la misma pagina se pisan.
-function marca(id, { resplandor = true, etiqueta = true } = {}) {
+function marca(id, { resplandor = true, etiqueta = true, rotulo = '' } = {}) {
   const brillo = resplandor
     ? `<defs><filter id="${id}" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="16"/></filter></defs><circle class="resplandor" cx="${punto.cx}" cy="${punto.cy}" r="${(punto.r * 1.35).toFixed(2)}" filter="url(#${id})"/>`
     : ''
-  const aria = etiqueta ? 'role="img" aria-label="Sigo"' : 'aria-hidden="true"'
+  const aria = etiqueta ? `role="img" aria-label="${rotulo}"` : 'aria-hidden="true"'
   return `<svg class="marca-svg" viewBox="${vb}" ${aria}>${brillo}<path d="${nombre}" fill="currentColor"/><circle class="punto" cx="${punto.cx}" cy="${punto.cy}" r="${punto.r}"/></svg>`
 }
 
@@ -86,6 +90,10 @@ for (const idioma of ['es', 'en', 'pt']) {
   // data, and node are supported»-; con la dirección file:// anda en los dos sistemas. El sitio no se
   // podía armar en el PC de Javier. Antes: IDIOMAS[idioma] = (await import(path.join(FUENTE, 'textos', `${idioma}.js`))).default
   IDIOMAS[idioma] = (await import(pathToFileURL(path.join(FUENTE, 'textos', `${idioma}.js`)).href)).default
+}
+// No se cambian textos legales ni rutas al activar Play; solo las descripciones de portada.
+if (PLAY_PUBLICADO) for (const t of Object.values(IDIOMAS)) {
+  t.meta = { ...t.meta, descripcion: t.nuevaPortada.metaPublicada, ogDescripcion: t.nuevaPortada.ogPublicada }
 }
 const hojas = (o, pre = '') => Object.entries(o).flatMap(([k, v]) => (v && typeof v === 'object' && !Array.isArray(v) ? hojas(v, `${pre}${k}.`) : [`${pre}${k}`]))
 // -portugues-sitio, 2026-10-24- LAS CLAVES ENTRE LOS TRES ARCHIVOS, no solo entre es y en: cada idioma tiene
@@ -197,14 +205,51 @@ function selector(t, pagina, lugar) {
 // ingles, hello@.
 // -sitio-cuenta, 20-10-2026- El pie suma «Borrar cuenta» / «Delete account». Antes, la primera línea era:
 //     <li><span><a href="${t.rutas.privacidad}">${t.pie.privacidad}</a></span><span><a href="${t.rutas.soporte}">${t.pie.soporte}</a></span><span><a href="${t.rutas.ayuda}">${t.pie.ayuda}</a></span></li>
+// Antes: el pie agrupaba los enlaces legales en una fila de spans; se guarda abajo como historia.
+// function pie(t, pagina) {
+//   return `<footer class="pie">
+//   <ul>
+//     <li><span><a href="${t.rutas.privacidad}">${t.pie.privacidad}</a></span><span><a href="${t.rutas.terminos}">${t.pie.terminos}</a></span><span><a href="${t.rutas.soporte}">${t.pie.soporte}</a></span><span><a href="${t.rutas.ayuda}">${t.pie.ayuda}</a></span><span><a href="${t.rutas.borrarCuenta}">${t.pie.borrarCuenta}</a></span></li>
+//     <li><span><a href="mailto:${t.correo}">${t.correo}</a></span><span>© Sigo</span></li>
+//   </ul>
+//   ${selector(t, pagina, 'pie')}
+// </footer>`
+// }
+// El mismo pie editorial se usa en la portada y en las páginas que ya enlazan la app y Play.
 function pie(t, pagina) {
+  const enlaces = ['ayuda', 'soporte', 'privacidad', 'terminos', 'borrarCuenta']
   return `<footer class="pie">
-  <ul>
-    <li><span><a href="${t.rutas.privacidad}">${t.pie.privacidad}</a></span><span><a href="${t.rutas.terminos}">${t.pie.terminos}</a></span><span><a href="${t.rutas.soporte}">${t.pie.soporte}</a></span><span><a href="${t.rutas.ayuda}">${t.pie.ayuda}</a></span><span><a href="${t.rutas.borrarCuenta}">${t.pie.borrarCuenta}</a></span></li>
-    <li><span><a href="mailto:${t.correo}">${t.correo}</a></span><span>© Sigo</span></li>
-  </ul>
-  ${selector(t, pagina, 'pie')}
+  <ul class="pie-links">${enlaces.map(p => `<li><a href="${t.rutas[p]}">${t.pie[p]}</a></li>`).join('')}</ul>
+  <div class="pie-meta"><span><a href="mailto:${t.correo}">${t.correo}</a></span>${selector(t, pagina, 'pie')}</div>
+  <p class="pie-copyright">${t.nuevaPortada.copyright}</p>
+  ${PLAY_PUBLICADO ? `<p class="pie-marca">${t.nuevaPortada.playAviso}</p>` : ''}
 </footer>`
+}
+
+// La franja conserva la acción aprobada, con el selector real y el controlador franja.js.
+// -franja, 01-11-2026- Javier sacó «Sigo está en prueba.»: queda solo la invitación. Antes:
+//   <a class="franja-msg" href="#prueba">${t.prueba.franja} <span>${t.prueba.franjaAccion}</span></a>
+// -play-arriba, 01-11-2026- Javier: arriba también va un botón a Play, apagado hasta publicar. Es solo
+// texto, sin el logo de Play: Google no deja usar su ícono suelto en marketing, y la insignia oficial
+// sigue en el cierre. Lleva otro id para que franja.js no lo trate como invitación que se cierra.
+// Antes: if (PLAY_PUBLICADO) return ''
+function franja(t) {
+  if (PLAY_PUBLICADO) return `<div class="franja-prueba franja-play" id="franja-play">
+  ${selector(t, 'portada', 'franja')}
+  <a class="franja-boton" href="${PLAY_URL}">${t.nuevaPortada.playBoton}&nbsp;→</a>
+</div>`
+  return `<div class="franja-prueba" id="franja-prueba">
+  ${selector(t, 'portada', 'franja')}
+  <a class="franja-msg" href="#prueba"><span>${t.prueba.franjaAccion}</span></a>
+  <button class="franja-cerrar" type="button" aria-label="${t.nuevaPortada.cerrar}" aria-controls="franja-prueba"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11"/></svg></button>
+</div>`
+}
+
+// Las tres insignias son los SVG oficiales sin cambios; el idioma decide cuál se sirve.
+function accionPlay(t) {
+  if (!PLAY_PUBLICADO) return textos(leer('sitio/fuente/invitacion.html'), t, 'invitacion.html')
+  const idioma = { es: 'Spanish-LATAM', en: 'English', pt: 'Portuguese-Brazil' }[t.idioma]
+  return `<a class="cierre-play" href="${PLAY_URL}"><img src="/activos/google-play/GetItOnGooglePlay_Badge_Web_color_${idioma}.svg" alt="${t.nuevaPortada.playAlt}" height="56"></a>`
 }
 
 // Llena las marcas {{clave}} con los textos del idioma. Las listas de privacidad y soporte se
@@ -317,15 +362,19 @@ for (const [idioma, t] of Object.entries(IDIOMAS)) {
   const comunes = (pagina) => ({
     '/*@estilo*/': estilo,
     '<!--@cabecera-idioma-->': cabeceraIdioma(t, pagina),
-    '<!--@selector-->': selector(t, pagina, 'arriba'),
+    // Antes: todas las páginas tenían el selector flotante; la portada lo integra en la franja.
+    ...(pagina === 'portada' ? { '<!--@franja-->': franja(t) } : { '<!--@selector-->': selector(t, pagina, 'arriba') }),
     '<!--@pie-->': pie(t, pagina)
   })
   paginas[archivoDe(t.rutas.portada)] = llenar(textos(leer('sitio/fuente/portada.html'), t, 'portada.html'), {
     ...comunes('portada'),
-    '<!--@marca-->': marca(`resplandor-entrada-${idioma}`),
-    '<!--@marca-cierre-->': marca(`resplandor-cierre-${idioma}`),
+    // El HTML del video no existe sin una versión en este idioma; tampoco se solicita el MP4.
+    '<!--@video-->': t.video.archivo ? textos(leer('sitio/fuente/video.html'), t, 'video.html') : '',
+    '<!--@accion-play-->': accionPlay(t),
+    '<!--@marca-->': marca(`resplandor-entrada-${idioma}`, { rotulo: t.nuevaPortada.marca }),
+    '<!--@marca-cierre-->': marca(`resplandor-cierre-${idioma}`, { rotulo: t.nuevaPortada.marca }),
     '<!--@telefono-sigo-->': telefono('sigo', t.telefono.sigo),
-    '<!--@telefono-comun-->': telefono('comun', t.telefono.comun),
+    '<!--@telefono-comun-->': telefono('comun', t.nuevaPortada.rotuloComun),
     '/*@datos*/': JSON.stringify({ ...lectura.datos, estilos: t.estilos })
   }, `portada.html (${idioma})`)
   paginas[archivoDe(t.rutas.privacidad)] = llenar(textos(leer('sitio/fuente/privacidad.html'), t, 'privacidad.html'), { ...comunes('privacidad'), '<!--@marca-->': marcaInterior }, `privacidad.html (${idioma})`)
@@ -342,7 +391,9 @@ for (const [idioma, t] of Object.entries(IDIOMAS)) {
 
 // Lo que arma este script, y nada mas: lo que quede de un armado anterior se borra.
 // -18-10-2026- Y las fotos del manual, en capturas. Antes: [..., 'sitio.js', 'fuentes', 'vendor', 'icono.png']
-const armados = new Set([...Object.keys(paginas).map((a) => a.split('/')[0]), 'sitio.js', 'fuentes', 'vendor', 'icono.png', 'capturas'])
+const armados = new Set([...Object.keys(paginas).map((a) => a.split('/')[0]), 'sitio.js', 'fuentes', 'vendor', 'icono.png', 'capturas', 'activos'])
+// Antes de limpiar se comprueba el destino absoluto: una ruta ajena al sitio nunca se borra.
+if (path.resolve(PUBLICO) !== path.resolve(RAIZ, 'sitio/public')) throw new Error('Destino de armado fuera de sitio/public.')
 for (const viejo of fs.readdirSync(PUBLICO)) {
   if (armados.has(viejo)) continue
   fs.rmSync(path.join(PUBLICO, viejo), { recursive: true })
@@ -357,9 +408,25 @@ for (const foto of fs.readdirSync(path.join(FUENTE, 'capturas'))) {
   fs.copyFileSync(path.join(FUENTE, 'capturas', foto), path.join(PUBLICO, 'capturas', foto))
 }
 
+// Los activos se publican desde una sola fuente; el MP4 aprobado se conserva únicamente en docs/play.
+fs.rmSync(path.join(PUBLICO, 'activos'), { recursive: true, force: true })
+// Antes: se copiaba toda la carpeta, incluidas las notas internas .md. La web solo necesita los activos.
+fs.cpSync(path.join(FUENTE, 'activos'), path.join(PUBLICO, 'activos'), {
+  recursive: true,
+  filter: (origen) => path.extname(origen).toLowerCase() !== '.md'
+})
+for (const t of Object.values(IDIOMAS)) {
+  if (!t.video.archivo) continue
+  if (!t.video.archivo.startsWith('/activos/video/') || t.video.archivo.includes('..')) throw new Error('Ruta de video fuera de /activos/video/.')
+  const archivo = path.basename(t.video.archivo)
+  fs.mkdirSync(path.join(PUBLICO, 'activos/video'), { recursive: true })
+  fs.copyFileSync(path.join(RAIZ, 'docs/play/ficha/video', archivo), path.join(PUBLICO, 'activos/video', archivo))
+}
+
 for (const [archivo, html] of Object.entries(paginas)) {
   fs.mkdirSync(path.dirname(path.join(PUBLICO, archivo)), { recursive: true })
-  fs.writeFileSync(path.join(PUBLICO, archivo), html)
+  // Se eliminan blancos finales del HTML generado, sin borrar los comentarios de la fuente.
+  fs.writeFileSync(path.join(PUBLICO, archivo), html.replace(/[ \t]+$/gm, ''))
   console.log(`sitio/public/${archivo}`, Buffer.byteLength(html), 'bytes')
 }
 fs.writeFileSync(path.join(PUBLICO, 'sitio.js'), codigo)

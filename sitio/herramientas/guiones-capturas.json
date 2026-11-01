@@ -1,0 +1,48 @@
+{
+  "en": {
+    "general": {
+      "titulo": "Channel launch",
+      "texto": "Today I want to tell you something important. When recording a video, short or long, reading from a piece of paper always shows. Now I read, speak, and the text follows me. Without rushing. Without losing my train of thought. And what I must not forget, I mark in yellow. If I pause to think, the text waits. When I speak again, it follows me."
+    },
+    "cuenta": {
+      "titulo": "Weekly notes",
+      "texto": "Write down the main ideas before preparing the next script."
+    },
+    "clases": {
+      "titulo": "The water cycle",
+      "texto": "The water cycle.\n\nToday we will see how water changes state and circulates through nature.\n\nHeat from the sun turns some water into vapor. The vapor rises and cools. Small drops then form and gather in clouds.\n\nWhen the drops grow, they fall as rain. Some of the water reaches rivers, and some soaks into the ground.\n\nNow think about a puddle after the rain. What happens to it when the sun comes out again?"
+    },
+    "presentaciones": {
+      "titulo": "Quarterly results",
+      "texto": "Quarterly results.\n\nGood morning. Today we will review the team's results and priorities for the next three months.\n\nWe completed eight projects. Two deliveries were delayed because the review started too late.\n\nFor the next quarter, I propose setting aside a week for review before each delivery and meeting on Mondays to resolve any blockers.\n\nAt the end of this presentation, we will agree on the dates and who will be responsible for each task."
+    }
+  },
+  "pt": {
+    "general": {
+      "titulo": "Lançamento do canal",
+      "texto": "Hoje quero contar algo importante. Ao gravar um vídeo, curto ou longo, ler de um papel sempre fica evidente. Agora eu leio, falo e o texto me acompanha. Sem pressa. Sem perder o fio da conversa. E o que não posso esquecer, marco em amarelo. Se eu parar para pensar, o texto me espera. Quando volto a falar, ele continua comigo."
+    },
+    "cuenta": {
+      "titulo": "Notas da semana",
+      "texto": "Anotar as ideias principais antes de preparar o próximo roteiro."
+    },
+    "clases": {
+      "titulo": "O ciclo da água",
+      "texto": "O ciclo da água.\n\nHoje vamos ver como a água muda de estado e circula pela natureza.\n\nO calor do sol transforma parte da água em vapor. Esse vapor sobe e esfria. Então se formam pequenas gotas que se agrupam nas nuvens.\n\nQuando as gotas crescem, caem em forma de chuva. Uma parte da água chega aos rios e outra se infiltra no solo.\n\nAgora vamos pensar em uma poça depois da chuva. O que acontece com ela quando o sol volta a aparecer?"
+    },
+    "presentaciones": {
+      "titulo": "Resultados do trimestre",
+      "texto": "Resultados do trimestre.\n\nBom dia. Hoje vamos rever os resultados da equipe e as prioridades para os próximos três meses.\n\nConcluímos oito projetos. Duas entregas atrasaram porque a revisão começou tarde demais.\n\nPara o próximo trimestre, proponho reservar uma semana de revisão antes de cada entrega e nos reunir às segundas-feiras para resolver os impedimentos.\n\nAo terminar esta apresentação, vamos combinar as datas e quem será responsável por cada tarefa."
+    }
+  },
+  "es": {
+    "general": {
+      "titulo": "Lanzamiento del canal",
+      "texto": "Hoy quiero contarte algo importante. Al grabar un video, corto o largo, leer de un papel siempre se nota. Ahora leo, hablo y el texto me sigue. Sin apuro. Sin perder el hilo. Y lo que no se me puede pasar, lo marco en amarillo. Si me detengo a pensar, el texto me espera. Cuando vuelvo a hablar, sigue conmigo."
+    },
+    "cuenta": {
+      "titulo": "Notas de la semana",
+      "texto": "Anotar las ideas principales antes de preparar el próximo guion."
+    }
+  }
+}
