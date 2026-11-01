@@ -208,7 +208,70 @@ html:not(.js) .franja-cerrar { display: none; }
   text-align: center;
 }
 
-/* ---------- Para qué: momentos editoriales, UI real sin póster ---------- */
+/* ---------- Marco de teléfono (mismo lenguaje que el héroe / demo-real) ---------- */
+.proto-tel {
+  position: relative;
+  width: min(17.5rem, 74vw);
+  aspect-ratio: 360 / 780;
+  margin: 0 auto;
+  filter: drop-shadow(0 28px 56px rgba(0, 0, 0, 0.52));
+}
+.proto-tel-canto {
+  position: absolute;
+  inset: 0;
+  border-radius: 15.5%;
+  background: linear-gradient(90deg, #2a2623, #5a534d 12%, #1d1a18 50%, #4d4741 88%, #25211f);
+}
+.proto-tel-cuerpo {
+  position: absolute;
+  inset: 0;
+  padding: 2.65%;
+  border-radius: 15.5%;
+  background: linear-gradient(145deg, #3b3632, #16140f 45%, #2b2724);
+  box-shadow:
+    inset 0 0 0 1.5px rgba(255, 240, 225, 0.16),
+    inset 0 0 0 3px rgba(0, 0, 0, 0.6),
+    0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.proto-tel-cuerpo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 15.5%;
+  pointer-events: none;
+  background: linear-gradient(170deg, rgba(255, 236, 214, 0.13), rgba(255, 236, 214, 0) 28%);
+}
+.proto-tel-pantalla {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 13.2%;
+  overflow: hidden;
+  background: #151312;
+  isolation: isolate;
+}
+.proto-tel-pantalla img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  opacity: 1;
+  filter: none;
+  -webkit-filter: none;
+  image-rendering: auto;
+}
+.proto-tel-guiones {
+  /* Native Guiones UI crop; CSS width capped so 2× DPR ≤ source pixels. */
+  width: min(17.5rem, 72vw, 285px);
+  aspect-ratio: 570 / 810;
+}
+.proto-tel-guiones .proto-tel-pantalla img {
+  object-fit: cover;
+  object-position: center top;
+}
+
+/* ---------- Para qué: momentos editoriales en marco de teléfono ---------- */
 .usos-editorial {
   display: flex;
   flex-direction: column;
@@ -219,46 +282,41 @@ html:not(.js) .franja-cerrar { display: none; }
 }
 .uso-momento {
   display: grid;
-  gap: 1.15rem;
+  gap: 1rem;
   align-items: center;
   padding: 0 var(--proto-pad);
   margin: 0;
 }
 @media (min-width: 820px) {
   .uso-momento {
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: clamp(1.75rem, 4vw, 3.25rem);
     padding: 0 clamp(1.5rem, 4vw, 2.5rem);
   }
-  .uso-momento:nth-child(even) { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); }
-  .uso-momento:nth-child(even) .uso-pantalla { order: 2; }
-  .uso-momento:nth-child(even) .uso-copy { order: 1; justify-self: end; text-align: right; }
-  .uso-momento:nth-child(even) .uso-copy p { margin-left: auto; }
+  .uso-momento:nth-child(even) .uso-pantalla { order: -1; }
+  .uso-momento:nth-child(even) .uso-copy { justify-self: start; text-align: left; }
+  .uso-momento:nth-child(odd) .uso-copy { justify-self: end; text-align: right; }
+  .uso-momento:nth-child(odd) .uso-copy p { margin-left: auto; }
 }
 .uso-pantalla {
   margin: 0;
-  border-radius: 1.35rem;
-  overflow: hidden;
-  border: 1px solid var(--linea);
-  background: #12100E;
-  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.42);
-  max-width: min(22rem, 82vw);
   justify-self: center;
   width: 100%;
-}
-.uso-pantalla img {
-  display: block;
-  width: 100%;
-  height: auto;
-  vertical-align: top;
+  max-width: min(17.5rem, 74vw);
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
 }
 .uso-copy h3 {
   margin: 0 0 0.45rem;
   font-family: var(--serif);
   font-weight: 400;
-  font-size: clamp(1.55rem, 3.2vw, 2.05rem);
+  font-size: clamp(1.65rem, 3.4vw, 2.2rem);
   color: var(--crema);
   letter-spacing: -0.02em;
+  line-height: 1.15;
 }
 .uso-copy p {
   margin: 0;
@@ -298,7 +356,44 @@ html:not(.js) .franja-cerrar { display: none; }
   display: block;
   width: 100%;
   height: auto;
+  aspect-ratio: 720 / 1280;
+  object-fit: cover;
+  object-position: center top;
   vertical-align: top;
+}
+.galeria-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.15rem var(--proto-pad) 0.35rem;
+}
+.galeria-puntos {
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+  justify-content: center;
+}
+.galeria-puntos button {
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(240, 234, 228, 0.28);
+  cursor: pointer;
+  transition: background 160ms ease, transform 160ms ease;
+}
+.galeria-puntos button[aria-current="true"] {
+  background: var(--crema);
+  transform: scale(1.25);
+}
+.galeria-contador {
+  margin: 0;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: var(--apagado);
+  font-variant-numeric: tabular-nums;
 }
 @media (min-width: 900px) {
   .galeria-pista {
@@ -335,7 +430,7 @@ html:not(.js) .franja-cerrar { display: none; }
   letter-spacing: -0.015em;
 }
 
-/* ---------- Guiones: captura oscura Continuar con Google + editor ---------- */
+/* ---------- Guiones: UI real en marco de teléfono ---------- */
 .resguardo {
   display: grid;
   gap: 2.25rem;
@@ -348,18 +443,12 @@ html:not(.js) .franja-cerrar { display: none; }
 .resguardo-copy .bajada:last-child { margin-bottom: 0; }
 .resguardo-foto {
   margin: 0;
-  border-radius: 1.35rem;
-  overflow: hidden;
-  border: 1px solid var(--linea);
-  background: #12100E;
-  max-width: 22rem;
   justify-self: center;
-  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.45);
-}
-.resguardo-foto img {
-  display: block;
-  width: 100%;
-  height: auto;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  overflow: visible;
+  max-width: none;
 }
 
 /* ---------- Cierre: final, no otra caja ---------- */

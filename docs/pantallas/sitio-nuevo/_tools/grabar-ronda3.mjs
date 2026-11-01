@@ -16,7 +16,7 @@ const browser = await puppeteer.launch({
   args: ['--no-sandbox', '--disable-gpu', '--font-render-hinting=none']
 })
 const page = await browser.newPage()
-await page.setViewport({ width: 392, height: 894, deviceScaleFactor: 1 })
+await page.setViewport({ width: 392, height: 894, deviceScaleFactor: 2 })
 await page.goto(BASE, { waitUntil: 'networkidle0', timeout: 90000 })
 await page.waitForFunction(() => document.documentElement.classList.contains('coreografia'), { timeout: 25000 })
 await page.evaluate(() => document.fonts && document.fonts.ready)

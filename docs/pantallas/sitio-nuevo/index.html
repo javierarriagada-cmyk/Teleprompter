@@ -241,7 +241,7 @@
     </div>
   </section>
 
-  <!-- 4. Para qué: momentos sentidos (UI real, sin titular de póster); no duplica la galería -->
+  <!-- 4. Para qué: cuatro momentos en marco de teléfono, titulares reales -->
   <section class="seccion seccion-ancha" id="para" aria-labelledby="para-titulo">
     <div class="interno">
       <p class="kicker revela">Para qué</p>
@@ -250,39 +250,67 @@
     </div>
     <div class="usos-editorial">
       <article class="uso-momento revela">
-        <figure class="uso-pantalla">
-          <img src="activos/capturas-webp/crops/uso-videos.webp" alt="Guion con la cámara en un recuadro mientras grabas" width="540" height="750" loading="lazy" decoding="async">
-        </figure>
         <div class="uso-copy">
           <h3>Videos</h3>
           <p>Graba con la cámara frontal o trasera. Elige ver tu imagen detrás del texto, en un recuadro u oculta.</p>
         </div>
+        <div class="uso-pantalla">
+          <div class="proto-tel">
+            <div class="proto-tel-canto" aria-hidden="true"></div>
+            <div class="proto-tel-cuerpo">
+              <div class="proto-tel-pantalla">
+                <img src="activos/capturas-webp/crops/uso-videos.webp" alt="Guion con la cámara en un recuadro mientras grabas" width="720" height="1280" loading="lazy" decoding="async">
+              </div>
+            </div>
+          </div>
+        </div>
       </article>
       <article class="uso-momento revela">
-        <figure class="uso-pantalla">
-          <img src="activos/capturas-webp/crops/uso-clases.webp" alt="Texto que avanza al ritmo de la voz" width="564" height="1060" loading="lazy" decoding="async">
-        </figure>
         <div class="uso-copy">
           <h3>Clases</h3>
           <p>El texto avanza contigo y te espera cuando haces una pausa.</p>
         </div>
+        <div class="uso-pantalla">
+          <div class="proto-tel">
+            <div class="proto-tel-canto" aria-hidden="true"></div>
+            <div class="proto-tel-cuerpo">
+              <div class="proto-tel-pantalla">
+                <img src="activos/capturas-webp/crops/uso-clases.webp" alt="Texto que avanza al ritmo de la voz" width="720" height="1280" loading="lazy" decoding="async">
+              </div>
+            </div>
+          </div>
+        </div>
       </article>
       <article class="uso-momento revela">
-        <figure class="uso-pantalla">
-          <img src="activos/capturas-webp/crops/uso-presentaciones.webp" alt="Video con subtítulos al ritmo de la voz" width="550" height="1000" loading="lazy" decoding="async">
-        </figure>
         <div class="uso-copy">
           <h3>Presentaciones</h3>
           <p>Los subtítulos se crean con las palabras de tu guion y el tiempo de tu voz.</p>
         </div>
+        <div class="uso-pantalla">
+          <div class="proto-tel">
+            <div class="proto-tel-canto" aria-hidden="true"></div>
+            <div class="proto-tel-cuerpo">
+              <div class="proto-tel-pantalla">
+                <img src="activos/capturas-webp/crops/uso-presentaciones.webp" alt="Video con subtítulos al ritmo de la voz" width="720" height="1280" loading="lazy" decoding="async">
+              </div>
+            </div>
+          </div>
+        </div>
       </article>
       <article class="uso-momento revela">
-        <figure class="uso-pantalla">
-          <img src="activos/capturas-webp/crops/uso-ensayos.webp" alt="Lectura a velocidad fija, sin grabar" width="550" height="860" loading="lazy" decoding="async">
-        </figure>
         <div class="uso-copy">
           <h3>Ensayos</h3>
           <p>También puedes leer sin grabar, a velocidad fija, hasta que el texto te salga natural.</p>
+        </div>
+        <div class="uso-pantalla">
+          <div class="proto-tel">
+            <div class="proto-tel-canto" aria-hidden="true"></div>
+            <div class="proto-tel-cuerpo">
+              <div class="proto-tel-pantalla">
+                <img src="activos/capturas-webp/crops/uso-ensayos.webp" alt="Lectura a velocidad fija, sin grabar" width="720" height="1280" loading="lazy" decoding="async">
+              </div>
+            </div>
+          </div>
         </div>
       </article>
     </div>
@@ -295,23 +323,27 @@
       <h2 class="titular revela" id="app-titulo">Así se ve por dentro.</h2>
       <p class="bajada revela">Capturas reales de la ficha de Google Play.</p>
     </div>
-    <div class="galeria-carrusel" aria-label="Capturas de Sigo">
-      <div class="galeria-pista">
-        <figure class="g-slide revela"><img src="activos/capturas-webp/crops/phone-01.webp" alt="Sigo preparado para leer un guion con seguimiento de voz" width="564" height="1142" loading="lazy" decoding="async"></figure>
-        <figure class="g-slide revela"><img src="activos/capturas-webp/crops/phone-02.webp" alt="Guion con la vista de cámara en un recuadro" width="560" height="1044" loading="lazy" decoding="async"></figure>
-        <figure class="g-slide revela"><img src="activos/capturas-webp/crops/phone-03.webp" alt="Video subtitulado y selector de estilo" width="550" height="1077" loading="lazy" decoding="async"></figure>
-        <figure class="g-slide revela"><img src="activos/capturas-webp/crops/phone-04.webp" alt="Control por gestos: palma y V" width="650" height="1092" loading="lazy" decoding="async"></figure>
-        <figure class="g-slide revela"><img src="activos/capturas-webp/crops/phone-05.webp" alt="Vista previa con filtros" width="550" height="1090" loading="lazy" decoding="async"></figure>
-        <figure class="g-slide revela"><img src="activos/capturas-webp/crops/phone-06.webp" alt="Ajustes de lectura a velocidad fija" width="560" height="1133" loading="lazy" decoding="async"></figure>
+    <div class="galeria-carrusel" data-galeria aria-label="Capturas de Sigo">
+      <div class="galeria-pista" data-galeria-pista>
+        <figure class="g-slide revela"><img src="activos/capturas-webp/crops/phone-01.webp" alt="Sigo preparado para leer un guion con seguimiento de voz" width="720" height="1280" loading="lazy" decoding="async"></figure>
+        <figure class="g-slide revela"><img src="activos/capturas-webp/crops/phone-02.webp" alt="Guion con la vista de cámara en un recuadro" width="720" height="1280" loading="lazy" decoding="async"></figure>
+        <figure class="g-slide revela"><img src="activos/capturas-webp/crops/phone-03.webp" alt="Video subtitulado y selector de estilo" width="720" height="1280" loading="lazy" decoding="async"></figure>
+        <figure class="g-slide revela"><img src="activos/capturas-webp/crops/phone-04.webp" alt="Control por gestos: palma y V" width="720" height="1280" loading="lazy" decoding="async"></figure>
+        <figure class="g-slide revela"><img src="activos/capturas-webp/crops/phone-05.webp" alt="Vista previa con filtros" width="720" height="1280" loading="lazy" decoding="async"></figure>
+        <figure class="g-slide revela"><img src="activos/capturas-webp/crops/phone-06.webp" alt="Ajustes de lectura a velocidad fija" width="720" height="1280" loading="lazy" decoding="async"></figure>
+      </div>
+      <div class="galeria-hint" aria-hidden="false">
+        <div class="galeria-puntos" data-galeria-puntos role="tablist" aria-label="Posición del carrusel"></div>
+        <p class="galeria-contador" data-galeria-contador><span data-gal-n>1</span> / 6</p>
       </div>
     </div>
     <figure class="g-wide revela">
-      <img src="activos/capturas-webp/crops/phone-08.webp" alt="Grabación en horizontal con el guion sobre la cámara" width="673" height="299" loading="lazy" decoding="async">
-      <figcaption>De pie o de lado — graba en vertical o en horizontal.</figcaption>
+      <img src="activos/capturas-webp/crops/phone-08.webp" alt="Grabación en horizontal con el guion sobre la cámara" width="1440" height="933" loading="lazy" decoding="async">
+      <figcaption>De pie o de lado. Graba en vertical o en horizontal.</figcaption>
     </figure>
   </section>
 
-  <!-- 6. Guiones a salvo: captura real 07 (editor + respaldo), no el gráfico claro -->
+  <!-- 6. Guiones a salvo: UI real 07 en marco de teléfono (mismo estilo que el héroe) -->
   <section class="seccion" id="guiones" aria-labelledby="guiones-titulo">
     <div class="resguardo revela">
       <div class="resguardo-copy">
@@ -320,9 +352,16 @@
         <p class="bajada">Escribe, pega texto o importa archivos .txt, .md y .docx. Puedes usar Sigo sin iniciar sesión.</p>
         <p class="bajada">Si quieres respaldar tus guiones y recuperarlos en otro teléfono, entra con Google.</p>
       </div>
-      <figure class="resguardo-foto">
-        <img src="activos/capturas-webp/07-guiones.webp" alt="Continuar con Google y editor de guiones" width="542" height="931" loading="lazy" decoding="async">
-      </figure>
+      <div class="resguardo-foto">
+        <div class="proto-tel proto-tel-guiones">
+          <div class="proto-tel-canto" aria-hidden="true"></div>
+          <div class="proto-tel-cuerpo">
+            <div class="proto-tel-pantalla">
+              <img src="activos/capturas-webp/crops/guiones-ui.webp" alt="Editor de guiones en Sigo" width="570" height="810" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 

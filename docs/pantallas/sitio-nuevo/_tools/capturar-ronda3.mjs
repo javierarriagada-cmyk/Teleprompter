@@ -98,7 +98,7 @@ const browser = await puppeteer.launch({
 // Phone full + sections
 {
   const page = await browser.newPage()
-  await page.setViewport({ width: 392, height: 894, deviceScaleFactor: 1 })
+  await page.setViewport({ width: 392, height: 894, deviceScaleFactor: 2 })
   await page.goto(BASE, { waitUntil: 'networkidle0', timeout: 90000 })
   await waitReady(page)
 
@@ -160,7 +160,7 @@ const browser = await puppeteer.launch({
 // Desk
 {
   const page = await browser.newPage()
-  await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 })
+  await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 2 })
   await page.goto(BASE, { waitUntil: 'networkidle0', timeout: 90000 })
   await waitReady(page)
 

@@ -83,10 +83,56 @@
     nodos.forEach((n) => io.observe(n))
   }
 
+
+  function armarGaleria() {
+    const root = document.querySelector('[data-galeria]')
+    if (!root) return
+    const pista = root.querySelector('[data-galeria-pista]')
+    const puntos = root.querySelector('[data-galeria-puntos]')
+    const contador = root.querySelector('[data-galeria-contador] [data-gal-n]')
+    if (!pista || !puntos) return
+    const slides = [...pista.querySelectorAll('.g-slide')]
+    if (!slides.length) return
+
+    puntos.replaceChildren()
+    slides.forEach((_, i) => {
+      const b = document.createElement('button')
+      b.type = 'button'
+      b.setAttribute('role', 'tab')
+      b.setAttribute('aria-label', `Captura ${i + 1} de ${slides.length}`)
+      if (i === 0) b.setAttribute('aria-current', 'true')
+      b.addEventListener('click', () => {
+        slides[i].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+      })
+      puntos.appendChild(b)
+    })
+
+    const bots = () => [...puntos.querySelectorAll('button')]
+    function activo() {
+      const mid = pista.scrollLeft + pista.clientWidth / 2
+      let best = 0, bestDist = Infinity
+      slides.forEach((s, i) => {
+        const c = s.offsetLeft + s.offsetWidth / 2
+        const d = Math.abs(c - mid)
+        if (d < bestDist) { bestDist = d; best = i }
+      })
+      bots().forEach((b, i) => {
+        if (i === best) b.setAttribute('aria-current', 'true')
+        else b.removeAttribute('aria-current')
+      })
+      if (contador) contador.textContent = String(best + 1)
+    }
+    pista.addEventListener('scroll', () => {
+      window.requestAnimationFrame(activo)
+    }, { passive: true })
+    activo()
+  }
+
   function iniciar() {
     armarFranja()
     armarVideo()
     armarRevelados()
+    armarGaleria()
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar)

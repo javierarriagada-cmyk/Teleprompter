@@ -3,6 +3,15 @@
 Prototipo en HTML estático para abrir con doble clic (`file://`). Nada de esto está publicado.
 Rama `sitio-nuevo-prototipo`, solo `docs/pantallas/sitio-nuevo/`.
 
+## Ronda 3 — fix crispness (post-7d4b951)
+
+- **Guiones:** UI nativa de `07.png` en marco `.proto-tel` (mismo canto/cuerpo que el héroe), opacidad 1, sin filtro. El póster Play «Continuar con Google» de 07 tiene texto suave/aberración en el PNG fuente; no se usa (queda como leftover).
+- **Para qué:** cuatro momentos en marco de teléfono, mismo tamaño; Videos=cámara PiP+timer (02); Clases=lectura (01); Presentaciones=video con subtítulos (03); Ensayos=velocidad fija (06). Fade superior en Videos porque el mock del póster 02 arranca a media frase.
+- **La app:** puntos + contador 1/6; caption 08 sin raya em: «De pie o de lado. Graba…».
+- Capturas a **deviceScaleFactor: 2**.
+- Peso página (assets enlazados, sin MP4): ~1.29 MiB.
+
+
 ## Peso medido (2026-10-31, red)
 
 Sin contar `capturas-prototipo/`, `_tools/`, ni `escenas.fuente.js` (referencia, no se carga).
