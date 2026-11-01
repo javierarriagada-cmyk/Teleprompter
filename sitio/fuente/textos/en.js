@@ -63,6 +63,7 @@ export default {
     "marca": "Sigo",
     "copyright": "© Sigo",
     "playAlt": "Get it on Google Play",
+    "playBoton": "Get it on Google Play",
     "playAviso": "Google Play and the Google Play logo are trademarks of Google LLC.",
     "metaPublicada": "Sigo is the teleprompter that follows your voice: read aloud and the text moves with you. When you pause, it waits.",
     "ogPublicada": "The teleprompter that follows your voice.",
@@ -145,8 +146,8 @@ export default {
 
   // LA INVITACION A PROBAR SIGO -ver textos/es.js, prueba-.
   prueba: {
-    franja: 'Sigo is in testing.',
-    franjaAccion: 'Be one of the first to use it&nbsp;→',
+    // -franja, 01-11-2026- Ver textos/es.js. Antes: franja: 'Sigo is in testing.', franjaAccion: 'Be one of the first to use it&nbsp;→',
+    franjaAccion: 'Be one of the first to try it&nbsp;→',
     cerrar: 'Close notice',
     titulo: 'Try Sigo before anyone else',
     antesDelCorreo: 'We’re inviting a small group to use Sigo on Android before launch. Write to',

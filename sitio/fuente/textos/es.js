@@ -65,6 +65,7 @@ export default {
     "marca": "Sigo",
     "copyright": "© Sigo",
     "playAlt": "Descargar en Google Play",
+    "playBoton": "Descargar en Google Play",
     "playAviso": "Google Play y el logotipo de Google Play son marcas de Google LLC.",
     "metaPublicada": "Sigo es el teleprompter que sigue tu voz: lees en voz alta y el texto avanza contigo. Si te detienes, te espera.",
     "ogPublicada": "El teleprompter que sigue tu voz.",
@@ -156,8 +157,8 @@ export default {
   // lanzamiento queda sin efecto SOLO para esta franja y esta seccion; el resto del sitio la
   // sigue. El correo va entre antesDelCorreo y despuesDelCorreo, como enlace: sale de correo.
   prueba: {
-    franja: 'Sigo está en prueba.',
-    franjaAccion: 'Sé de los primeros en usarlo&nbsp;→',
+    // -franja, 01-11-2026- Javier. Antes: franja: 'Sigo está en prueba.', franjaAccion: 'Sé de los primeros en usarlo&nbsp;→',
+    franjaAccion: 'Sé uno de los primeros en probarlo&nbsp;→',
     cerrar: 'Cerrar aviso',
     titulo: 'Prueba Sigo antes que nadie',
     antesDelCorreo: 'Estamos invitando a un grupo pequeño a usar Sigo en Android antes del lanzamiento. Escríbenos a',

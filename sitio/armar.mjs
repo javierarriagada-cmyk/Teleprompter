@@ -42,6 +42,7 @@ import { build, createServer } from 'vite'
 
 // Una sola decisión habilita la tienda, sus metadatos y su aviso legal; queda apagada hasta aprobación.
 const PLAY_PUBLICADO = false
+const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.sigoteleprompter.app'
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const FUENTE = path.join(RAIZ, 'sitio/fuente')
@@ -226,11 +227,20 @@ function pie(t, pagina) {
 }
 
 // La franja conserva la acción aprobada, con el selector real y el controlador franja.js.
+// -franja, 01-11-2026- Javier sacó «Sigo está en prueba.»: queda solo la invitación. Antes:
+//   <a class="franja-msg" href="#prueba">${t.prueba.franja} <span>${t.prueba.franjaAccion}</span></a>
+// -play-arriba, 01-11-2026- Javier: arriba también va un botón a Play, apagado hasta publicar. Es solo
+// texto, sin el logo de Play: Google no deja usar su ícono suelto en marketing, y la insignia oficial
+// sigue en el cierre. Lleva otro id para que franja.js no lo trate como invitación que se cierra.
+// Antes: if (PLAY_PUBLICADO) return ''
 function franja(t) {
-  if (PLAY_PUBLICADO) return ''
+  if (PLAY_PUBLICADO) return `<div class="franja-prueba franja-play" id="franja-play">
+  ${selector(t, 'portada', 'franja')}
+  <a class="franja-boton" href="${PLAY_URL}">${t.nuevaPortada.playBoton}&nbsp;→</a>
+</div>`
   return `<div class="franja-prueba" id="franja-prueba">
   ${selector(t, 'portada', 'franja')}
-  <a class="franja-msg" href="#prueba">${t.prueba.franja} <span>${t.prueba.franjaAccion}</span></a>
+  <a class="franja-msg" href="#prueba"><span>${t.prueba.franjaAccion}</span></a>
   <button class="franja-cerrar" type="button" aria-label="${t.nuevaPortada.cerrar}" aria-controls="franja-prueba"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11"/></svg></button>
 </div>`
 }
@@ -239,7 +249,7 @@ function franja(t) {
 function accionPlay(t) {
   if (!PLAY_PUBLICADO) return textos(leer('sitio/fuente/invitacion.html'), t, 'invitacion.html')
   const idioma = { es: 'Spanish-LATAM', en: 'English', pt: 'Portuguese-Brazil' }[t.idioma]
-  return `<a class="cierre-play" href="https://play.google.com/store/apps/details?id=com.sigoteleprompter.app"><img src="/activos/google-play/GetItOnGooglePlay_Badge_Web_color_${idioma}.svg" alt="${t.nuevaPortada.playAlt}" height="56"></a>`
+  return `<a class="cierre-play" href="${PLAY_URL}"><img src="/activos/google-play/GetItOnGooglePlay_Badge_Web_color_${idioma}.svg" alt="${t.nuevaPortada.playAlt}" height="56"></a>`
 }
 
 // Llena las marcas {{clave}} con los textos del idioma. Las listas de privacidad y soporte se

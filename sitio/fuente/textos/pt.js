@@ -75,6 +75,7 @@ export default {
     "marca": "Sigo",
     "copyright": "© Sigo",
     "playAlt": "Disponível no Google Play",
+    "playBoton": "Baixar no Google Play",
     "playAviso": "Google Play e o logotipo do Google Play são marcas da Google LLC.",
     "metaPublicada": "O Sigo é o teleprompter que acompanha sua voz: leia em voz alta e o texto avança com você. Quando você faz uma pausa, ele espera.",
     "ogPublicada": "O teleprompter que acompanha sua voz.",
@@ -154,8 +155,8 @@ export default {
   correo: 'hola@sigoteleprompter.com',
 
   prueba: {
-    franja: 'O Sigo está em fase de testes.',
-    franjaAccion: 'Seja um dos primeiros a usar&nbsp;→',
+    // -franja, 01-11-2026- Ver textos/es.js. Antes: franja: 'O Sigo está em fase de testes.', franjaAccion: 'Seja um dos primeiros a usar&nbsp;→',
+    franjaAccion: 'Seja um dos primeiros a testar&nbsp;→',
     cerrar: 'Fechar aviso',
     titulo: 'Experimente o Sigo antes de todo mundo',
     antesDelCorreo: 'Estamos convidando um grupo pequeno para usar o Sigo no Android antes do lançamento. Escreva para',

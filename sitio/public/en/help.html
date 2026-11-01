@@ -1044,6 +1044,30 @@ html:not(.js) .franja-cerrar { display: none; }
   .franja-cerrar { right: 14px; }
   .idioma-franja { font-size: 13px; }
 }
+.franja-play, .franja-cerrada .franja-play { display: grid; grid-template-columns: auto auto; justify-content: space-between; padding: 8px 12px; }
+.franja-prueba .franja-boton {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #FAF6F3, var(--crema));
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  color: var(--hondo);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+.franja-prueba .franja-boton:hover { transform: translateY(-1px); box-shadow: 0 10px 26px rgba(0, 0, 0, 0.46), inset 0 1px 0 rgba(255, 255, 255, 0.55); }
+.franja-prueba .franja-boton:focus-visible { outline: 2px solid var(--crema); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .franja-prueba .franja-boton { transition: none; }
+}
+@media (min-width: 900px) {
+  .franja-play { padding: 8px 18px; }
+}
 .interno-video {
   max-width: 28rem;
   margin: 0 auto;

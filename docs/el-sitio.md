@@ -43,7 +43,8 @@ reproducir no existe un elemento video ni se pide el MP4; el póster sí es una 
 En `sitio/armar.mjs`: **`const PLAY_PUBLICADO = false`**.
 
 - `false`: franja de prueba, «Pronto en Google Play» e invitación por correo, sin insignia.
-- `true`: desaparecen esos tres anuncios; en el cierre aparece la insignia oficial del
+- `true`: desaparecen esos tres anuncios; arriba aparece el botón a la ficha, que es solo
+  texto, y en el cierre la insignia oficial del
   idioma enlazada a la ficha pública; la descripción y Open Graph usan las claves sin
   «Pronto»; el pie de todas las páginas suma el aviso de marca de Google.
 
