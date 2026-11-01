@@ -1,8 +1,7 @@
 // COPIA de sitio/fuente/escenas.js para el prototipo docs/pantallas/sitio-nuevo.
-// Desvíos documentados (ver NOTA-DEMO-REAL.md y escenas.fuente.js):
-// 1) Medidas E0: marca + frase + demo juntos sobre el pliegue (el vivo hace peek).
-// 2) Línea de tiempo corta: solo E0 → E1 → E2 → E5 (hablas / espera / subtítulos).
-//    E3 formatos, E4 lente/cámara y E6 sin-internet no aparecen en el scroll del prototipo.
+// NO es byte-idéntica: cada desvío está listado en NOTA-DEMO-REAL.md.
+// Resumen: TL corta E0→E1→E2→E5; medidas E0; E2 móvil min(ancho,alto)+bajo bajada;
+// E2 desk ~64% vh; píldora apartada en E2; --tel-scale para rótulos.
 // El motor (Pantalla, Reloj, Onda, reduced-motion, lógica E1/E2/E5) es el publicado.
 
 // LA COREOGRAFIA: el telefono fijo y el scroll como hilo. 27-09-2026, docs/el-sitio.md v2.
@@ -169,27 +168,27 @@ export function iniciarEscenas(datos) {
       // y dentro de un telefono girado en 3D ese texto se vuelve a dibujar entero cada vez
       // -medido en un telefono de gama media simulado: 22 a 33 cuadros largos de 99 con giro,
       // 9 a 14 sin el-.
-      // PROTOTIPO E2 móvil: teléfonos bajo el bajada (~28px a badges), luego
-      // crecen en alto (prioridad vertical; pueden superar el tope de ancho).
+      // PROTOTIPO E2 móvil: bajo el bajada (~28px a badges); scale = min(ancho, alto).
+      // Márgenes ≥12px, gutter claro; si el ancho limita, no se crece a costa del borde.
+      const side = 12
+      const gutter = 14
       const badgeLocal = 88 // CSS móvil .aviso top: -88px
       const gapBadge = 28
-      const bandBelow = 58
-      const pillPad = 40
-      const headEnd = Math.min(0.172 * vh, 154) // bajo titular+bajada E2
-      // Altura primero: s2 desde el presupuesto vertical (no min con ancho).
-      const s2 = Math.min(
-        (vh - pillPad - bandBelow - headEnd - gapBadge) / (800 + badgeLocal),
-        0.61
-      )
+      const bandBelow = 48 // onda + rótulos (rótulos counter-scale, más cerca)
+      const pillPad = 36
+      const headEnd = Math.min(0.172 * vh, 154)
+      const s2w = ((vw - 2 * side - gutter) / 2) / 380
+      const s2h = (vh - pillPad - bandBelow - headEnd - gapBadge) / (800 + badgeLocal)
+      const s2 = Math.min(s2w, s2h)
+      document.documentElement.style.setProperty('--tel-scale', String(s2))
       const half = (380 * s2) / 2
-      const gutter = 8
       const x2 = half + gutter / 2
       const phoneH = 800 * s2
       const phoneTop = headEnd + gapBadge + badgeLocal * s2
       const cy2 = phoneTop + phoneH / 2
       E.e2sigo = { x: x2, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
       E.e2comun = { x: -x2, y: cy2 - vh / 2, rotationX: 0, rotationY: 0, rotationZ: 0, scale: s2 }
-      E.ondaE2 = { y: phoneTop + phoneH + 14, medio: half * 0.92, alto: 26 }
+      E.ondaE2 = { y: phoneTop + phoneH + 10, medio: half * 0.92, alto: 22 }
       const sz = s * 1.4
       E.e4zoom = { x: 0, y: 0.38 * vh - 22 * sz + 400 * sz - vh / 2, rotationX: 30, rotationY: -10, rotationZ: 0, scale: sz }
       E.e4graba = { x: 0, y: cy - vh / 2, rotationX: 0, rotationY: -5, rotationZ: 0, scale: s }
@@ -210,6 +209,7 @@ export function iniciarEscenas(datos) {
       // PROTOTIPO E2 desk: composición producto (Apple/Sony). Teléfonos ~62–70% vh.
       // Píldora se aparta en la TL durante E2 → liberamos el borde inferior.
       const s2 = Math.min((0.64 * vh) / 800, (0.28 * vw) / 380, 0.76)
+      document.documentElement.style.setProperty('--tel-scale', String(s2))
       const half = (380 * s2) / 2
       const gutter = Math.max(36, Math.min(64, 0.04 * vw))
       const x2 = half + gutter / 2

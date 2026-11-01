@@ -2,28 +2,50 @@
 
 Copia de trabajo de `sitio/fuente/` para abrir el prototipo con doble clic (`file://`).
 
-## Desvíos documentados (únicos)
+`escenas.fuente.js` es la referencia byte-a-byte del fuente; no se usa en runtime.
+`demo-real/escenas.js` **no** es byte-idéntico al fuente: toda divergencia va listada abajo.
 
-1. **E0 (primera pantalla)**  
-   - Móvil: marca + frase + teléfono juntos sobre el pliegue, con aire limpio entre frase y teléfono (el vivo hace peek).  
-   - Escritorio: marca y frase a la vara del vivo a la izquierda; teléfono a la derecha, sin tapar «que sigue tu voz.», casi entero a la vista.
+## Desvíos en `demo-real/escenas.js` (vs `sitio/fuente/escenas.js`)
+
+1. **Cabecera de copia**  
+   Comentario al tope: apunta a esta nota y a `escenas.fuente.js`.
 
 2. **Línea de tiempo corta (solo «Cómo funciona»)**  
-   Solo E0 → E1 (hablas) → E2 (espera / comparación con un teleprompter común) → E5 (subtítulos).  
-   E3 (formatos), E4 (lente/cámara) y E6 (sin internet) no aparecen en el scroll: umbrales > TOTAL.  
-   Los ids de escena 1/2/5 se conservan para textos y píldora.
+   - `ESCENAS`: solo E0 → E1 → E2 → E5 (ids 1/2/5 se conservan).  
+   - `TOTAL = 5.1` (fuente: 8.5).  
+   - `CAPITULOS = { 1: 1.15, 2: 2.7, 5: 4.2 }`.  
+   - E3/E4/E6 fuera del scroll: `PINTA`/`GRABA`/`LENTE`/`SIN_*` con umbrales > TOTAL;  
+     `VIDEO`/`ESTILOS` reubicados al tramo E5 del prototipo.
 
-3. **E2 (comparación común vs Sigo)**  
-   Presentación: dos teléfonos con gutter explícito; rótulos en coords de teléfono; avisos «Se te escapó» / «Te espera» fuera de la pantalla (hijos de `.telefono`, encima del marco), nunca tapando el guion.  
-   Con onda de voz real (`onda.js`) en E1 y E2: mismas barras bajo ambos teléfonos;
-   en silencio se aplanan a la vez — el común sigue escapando, Sigo espera.
+3. **E0 — medidas**  
+   - Móvil: `s0` propio; Y más alto (`0.295*vh`), `rotationX: 6` (fuente peek abajo).  
+   - Escritorio: teléfono a la derecha (`x: 0.28*vw`), `s0` propio, casi entero sobre el pliegue.
 
-4. **Onda rediseñada (Apple/Sony)**  
-   Motor real `onda.js`: pocas barras redondeadas, paleta crema/`#F0C070`, silencio casi plano
-   (sin líneas punteadas). E2 alinea una onda bajo cada teléfono a la misma `t` de voz.
+4. **E2 móvil — composición bajo el bajada**  
+   - `scale = min(width-fit, height-fit)` con márgenes laterales ≥12 px y gutter 14 px.  
+   - `phoneTop` anclado al bajada (~28 px hasta badges); no se empuja al fondo.  
+   - Si el ancho limita, se acepta ese tamaño (no se desborda el viewport).  
+   - `--tel-scale` en `:root` para que los rótulos/avisos compensen el scale en CSS.
 
-El motor (`demo.js`, `pantalla.js`, `lectura.js`, `onda.js`, reduced-motion, teléfono) es el publicado.  
-`escenas.fuente.js` es la referencia byte-a-byte del fuente; no se usa en runtime.
+5. **E2 escritorio — composición producto**  
+   - Teléfonos ~64% vh (`min(0.64*vh/800, 0.28*vw/380, 0.76)`), gutter 36–64.  
+   - `phoneTop` bajo titular compacto + avisos; píldora liberada en la TL.  
+   - También escribe `--tel-scale`.
+
+6. **Timeline GSAP (tramos y saltos)**  
+   - E1→E2 y E2→E5 con tiempos de la TL corta (sin E3/E4).  
+   - Píldora se aparta en el pico E2 (`y: 72`, `autoAlpha: 0.25`) y vuelve.  
+   - Reduced-motion: busca escena por tramo (`ESCENAS.find`), no por índice fijo.
+
+7. **Onda en E2**  
+   - `ondaE2` con `medio`/`alto` por teléfono; dos tramos alineados a la misma `t` de voz.
+
+## Desvíos en `demo-real/onda.js` (vs fuente)
+
+- Dibujo Apple/Sony: menos barras, `MS_POR_BARRA`/`PX_POR_BARRA` distintos.  
+- Silencio = piso continuo (`SILENCIO` / `plano`), no fila de puntos.  
+- Paleta crema/`#F0C070`; API `dibujar` acepta `color`, `colorAhora`, `barW`, `plano`.
+
 ## Onda — qué tomamos de Apple / Sony (t122u/t123u)
 
 - **Apple Dynamic Island / AirPods product pages:** pocas barras redondeadas, amplitud suave;
@@ -34,9 +56,8 @@ El motor (`demo.js`, `pantalla.js`, `lectura.js`, `onda.js`, reduced-motion, tel
 - **Historia E2:** misma `t` de voz bajo ambos → al callar, ambas ondas se aplanan;
   el común sigue escapando, Sigo espera; al volver la voz, la onda crece y el texto de Sigo sigue.
 
-## Onda + E2 composición (post-494342f)
+## CSS del prototipo (`estilo.css`, no es copia del fuente)
 
-- Silencio E2: cápsula continua (`plano` en pausa), no fila de puntos.
-- Desk E2: teléfonos ~64% vh; titular compacto; píldora apartada en el pico;
-  avisos crema/ámbar centrados; `telefonos` z-index sobre el texto.
-- Móvil E2: empaquetado hacia la píldora; silencio = línea continua.
+- Rótulos E2: counter-scale móvil (`transform: scale(1 / var(--tel-scale))`) para ≥14 px en pantalla.  
+- Avisos crema/ámbar fuera del guion; z-index `telefonos` sobre el texto.  
+- Titular E2 desk compacto; píldora más baja en E2.
