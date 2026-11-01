@@ -167,7 +167,9 @@ export const es = {
   lecturaTerminada: 'Lectura terminada',
   avisoErrorMudo: 'El motor oyo y el archivo no tiene sonido',
   avisoMudo: 'No se oye audio en este archivo',
-  galeriaGuardada: 'Quedó en la galería del teléfono, en Películas.',
+  // -aviso-video-guardado, 01-11-2026- Javier: basta decir que quedó guardado. Además «Películas» no era
+  // exacto: el video queda en Movies/Sigo. Antes: galeriaGuardada: 'Quedó en la galería del teléfono, en Películas.',
+  galeriaGuardada: 'Tu video quedó guardado.',
   galeriaNoSeGuardo: 'No se pudo guardar en la galería',
   galeriaNoSeGuardoPorque: 'No se pudo guardar en la galería: {detalle}',
   noSeCompartio: 'No se pudo compartir',
