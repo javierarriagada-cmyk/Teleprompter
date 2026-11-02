@@ -25,6 +25,8 @@ import { abrirOferta } from '../lib/oferta'
 import { t, useTextos } from '../textos'
 import { IconoGuardar, IconoCompartir, IconoRepetir, IconoCerrar, IconoTacho, IconoEmpezar, IconoPausa } from './IconosApp'
 // EL VISOR DE LADO -tarea 90-. Ver lib/visorDeLado.ts y styles-visor-de-lado.css.
+// El indicador solo refleja apretado/avance; guardarToma conserva toda su lógica y su finally.
+import { IndicadorGuardado } from './DockListo'
 import useLayout from '../hooks/useLayout'
 import useBordesSeguros, { LecturaBordes } from '../hooks/useBordesSeguros'
 import { FormaVideo, formaDeVideo, medidasVisorDeLado, TOQUE_MINIMO, ROTULO_MINIMO, ALTO_BARRA_REPRODUCCION } from '../lib/visorDeLado'
@@ -882,14 +884,16 @@ export default function ReproductorGrabacion({
                   solo el apretado muestra el avance. Antes: disabled={guardando} y el avance en Guardar
                   con cualquiera de los dos. */}
               <button type="button" className="accion-toma" data-testid="guardar-galeria-desde-reproductor" aria-label={t('guardarEnGaleria')} disabled={guardando && apretado !== 'guardar'} aria-busy={apretado === 'guardar'} onClick={handleGuardar} style={estiloFila} {...fila}>
-                <IconoGuardar tamano={26} />
+                {/* Antes: <IconoGuardar tamano={26} /> */}
+                {apretado === 'guardar' ? <IndicadorGuardado avance={avance} /> : <IconoGuardar tamano={26} />}
                 <span data-rotulo="guardar" style={{ fontSize: ROTULO_MINIMO }}>{apretado === 'guardar' ? (avance !== null ? t('guardandoAvance', { n: Math.round(avance) }) : t('guardando')) : t('guardar')}</span>
               </button>
               {/* -tarea 87, de lado, 04-10-2026- Guardar y compartir también de lado: en la columna, una
                   fila más debajo de Guardar; en la tarjeta, en la misma fila. La misma acción que de pie
                   -handleGuardarYCompartir-, con el toque de 48 y el rótulo de 12 de la 90. */}
               <button type="button" className="accion-toma" data-testid="btn-compartir-nueva" aria-label={t('guardarYCompartir')} disabled={guardando && apretado !== 'compartir'} aria-busy={apretado === 'compartir'} onClick={handleGuardarYCompartir} style={estiloFila} {...fila}>
-                <IconoCompartir tamano={26} />
+                {/* Antes: <IconoCompartir tamano={26} /> */}
+                {apretado === 'compartir' ? <IndicadorGuardado avance={avance} /> : <IconoCompartir tamano={26} />}
                 <span data-rotulo="compartir" style={{ fontSize: ROTULO_MINIMO }}>{apretado === 'compartir' ? (avance !== null ? t('guardandoAvance', { n: Math.round(avance) }) : t('guardando')) : t('guardarYCompartir')}</span>
               </button>
               {enColumna && selector && (
@@ -1138,7 +1142,8 @@ export default function ReproductorGrabacion({
                 aria-busy={apretado === 'guardar'}
                 onClick={handleGuardar}
               >
-                <IconoGuardar tamano={26} />
+                {/* Antes: <IconoGuardar tamano={26} /> */}
+                {apretado === 'guardar' ? <IndicadorGuardado avance={avance} /> : <IconoGuardar tamano={26} />}
                 <span>{apretado === 'guardar' ? (avance !== null ? t('guardandoAvance', { n: Math.round(avance) }) : t('guardando')) : t('guardar')}</span>
               </button>
               {/* -tarea 87, E1- Guardar y compartir, en toda toma recién grabada. */}
@@ -1151,7 +1156,8 @@ export default function ReproductorGrabacion({
                 aria-busy={apretado === 'compartir'}
                 onClick={handleGuardarYCompartir}
               >
-                <IconoCompartir tamano={26} />
+                {/* Antes: <IconoCompartir tamano={26} /> */}
+                {apretado === 'compartir' ? <IndicadorGuardado avance={avance} /> : <IconoCompartir tamano={26} />}
                 <span>{apretado === 'compartir' ? (avance !== null ? t('guardandoAvance', { n: Math.round(avance) }) : t('guardando')) : t('guardarYCompartir')}</span>
               </button>
               {onRepetir && (

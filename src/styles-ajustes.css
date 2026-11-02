@@ -894,6 +894,26 @@
   background: var(--color-texto);
 }
 
+/* El visor sustituye un ícono de 26 sin mover el rótulo. El margen del indicador de carga
+   sigue sirviendo en sus avisos; aquí su posición absoluta lo deja dentro de la misma caja. */
+.indicador-guardado {
+  display: inline-block;
+  position: relative;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  line-height: 0;
+  color: var(--color-texto);
+}
+.indicador-guardado > [data-testid="indicador-carga-expressive"],
+.indicador-guardado-circulo { position: absolute; top: 0; left: 0; }
+.indicador-guardado-circulo { width: 100%; height: 100%; }
+/* La pista completa y el arco usan los mismos colores del avance de los gestos.
+   La máscara separa sus extremos sobre cualquier imagen, con trazo y hueco proporcionales a 26. */
+.indicador-guardado-pista, .indicador-guardado-arco { fill: none; stroke-width: 2.5; }
+.indicador-guardado-pista { stroke: var(--color-borde); }
+.indicador-guardado-arco { stroke: var(--color-texto); stroke-linecap: round; }
+
 /* GRABAR EN LISTO: UN SOLO DOCK DE VIDRIO -ajustes de pantallas, 10-10-2026, boceto 5-. Solo en Grabar
    con el teléfono de pie -DockListo.tsx-. Translúcido: fondo oscuro al 62 %, el fondo desenfocado
    detrás -backdrop-filter, unos 28-, borde de 1 blanco al 12 %, esquinas de 28 y 10 de margen a cada

@@ -18,7 +18,8 @@ import { FichaModoLectura } from './ControlesVelocidad'
 import type { AjustesLectura } from './FilasAjustesLectura'
 import { PanelAjustes } from './PanelAjustes'
 import { t, useTextos } from '../textos'
-import { movimientoApagado, CURVA_RESORTE } from './movimiento'
+// Antes: import { movimientoApagado, CURVA_RESORTE } from './movimiento'
+import { movimientoApagado, CURVA_RESORTE, MS_CHICO } from './movimiento'
 
 // GRABAR EN LISTO: UN SOLO DOCK DE VIDRIO -ajustes de pantallas, 10-10-2026, boceto 5-.
 //
@@ -67,6 +68,44 @@ export function IndicadorCargaExpressive({ tamano = 12 }: { tamano?: number } = 
           : 'none'
       }}
     />
+  )
+}
+
+// El visor comparte un solo indicador para sus cuatro botones, sin cambiar el guardado.
+// La caja de 26 conserva el lugar del ícono. El círculo ya está montado antes del primer
+// porcentaje para que el arco y la pista aparezcan sin salto al dejar la carga Expressive.
+export function IndicadorGuardado({ avance }: { avance: number | null }) {
+  const mascara = `avance-guardado-${React.useId().replace(/:/g, '')}`
+  const animar = !movimientoApagado()
+  const porcentaje = Math.round(avance ?? 0)
+  const arco = {
+    strokeDashoffset: 100 - porcentaje,
+    transition: animar ? `stroke-dashoffset ${MS_CHICO}ms ${CURVA_RESORTE}` : 'none'
+  }
+  return (
+    <span className="indicador-guardado" data-testid="indicador-guardado" data-estado={avance === null ? 'carga' : 'determinado'} aria-hidden="true">
+      {avance === null && <IndicadorCargaExpressive tamano={26} />}
+      <svg
+        className="indicador-guardado-circulo"
+        viewBox="0 0 26 26"
+        data-testid="circulo-avance-guardado"
+        data-avance={avance === null ? undefined : porcentaje}
+        aria-hidden="true"
+        focusable="false"
+        style={{ opacity: avance === null ? 0 : 1, transition: animar ? `opacity ${MS_CHICO}ms ${CURVA_RESORTE}` : 'none' }}
+      >
+        <defs>
+          {/* Blanco y negro solo operan la máscara: dejan ver el video en el hueco de 1,
+              sin añadir colores visibles ni pintar un fondo falso sobre él. */}
+          <mask id={mascara} maskUnits="userSpaceOnUse" x="0" y="0" width="26" height="26">
+            <rect width="26" height="26" fill="white" />
+            <circle cx="13" cy="13" r="10.5" fill="none" stroke="black" strokeWidth="4.5" pathLength="100" strokeDasharray="100" strokeLinecap="round" transform="rotate(-90 13 13)" style={{ ...arco, opacity: porcentaje > 0 ? 1 : 0 }} />
+          </mask>
+        </defs>
+        <circle className="indicador-guardado-pista" cx="13" cy="13" r="10.5" mask={`url(#${mascara})`} />
+        <circle className="indicador-guardado-arco" cx="13" cy="13" r="10.5" pathLength="100" strokeDasharray="100" transform="rotate(-90 13 13)" style={{ ...arco, opacity: porcentaje > 0 ? 1 : 0 }} />
+      </svg>
+    </span>
   )
 }
 
