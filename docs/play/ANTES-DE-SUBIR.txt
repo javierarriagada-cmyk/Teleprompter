@@ -154,13 +154,24 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
    privacidad con RevenueCat publicada en los tres idiomas y la función de borrado activa, probada y
    desplegada el 31-10-2026.
 
-12. LOS 11 PAÍSES DE PRODUCCIÓN -decisión de Javier, 31-10-2026; repetida el 01-11-2026-: SOLO AR, AU, BR, CA,
-   CL, CO, ES, GB, MX, PE y US, los que tienen precio de Sigo+. La prueba cerrada está en 177: nada de eso
-   se arrastra a producción. Antes de iniciar el lanzamiento: Prueba y lanza > Producción > pestaña
-   «Países o regiones» > «Agregar países o regiones» o «Editar países o regiones», y guardar. Por omisión
-   la prueba cerrada se sincroniza con producción: mirar en su «Administrar segmento» > «Países o regiones»
-   si queda con esos mismos 11 o si está aparte. Ayuda oficial, leída el 01-11-2026:
-   support.google.com/googleplay/android-developer/answer/7550024.
+12. LOS 37 PAÍSES DE PRODUCCIÓN -Javier, 02-11-2026: los 11 de antes y la UE completa-. Son AR, AU, BR, CA, CL, CO,
+   GB, MX, PE y US, más los 27 de la UE: AT, BE, BG, CY, CZ, DE, DK, EE, ES, FI, FR, GR, HR, HU, IE, IT, LT,
+   LU, LV, MT, NL, PL, PT, RO, SE, SI y SK. Cada uno tiene precio de Sigo+ en los dos planes y la prueba de 7
+   días abierta. La lista de precios está en teleprom/04-monetizacion/ESTRATEGIA.txt, sección 3.
+   Por qué la UE completa: al lanzar, Play avisó del Reglamento (UE) 2018/302 sobre bloqueo geográfico, y su
+   Ayuda pide que una app distribuida en la UE sea «accesible en toda la UE» -answer/6223646-. España era el
+   único país de la UE. La lengua no lo justifica: el reglamento pone «la elección de lengua» entre las señales
+   de discriminación. Un país nuevo de la UE entra con su precio en los dos planes y en prueba-7-dias, por la
+   API -scratchpad del 02-11, precios-ue-cargar.mjs-, antes de agregarlo en la consola.
+   Dónde: Prueba y lanza > Producción > pestaña «Países o regiones» > «Agregar países o regiones» o «Editar
+   países o regiones», y guardar. La prueba cerrada se sincroniza con producción: el 02-11 quedó en los mismos
+   37, y el resumen de la publicación lo avisa con «Afecta a otros segmentos». Ayuda oficial, leída el
+   01-11-2026: support.google.com/googleplay/android-developer/answer/7550024.
+   Antes -hasta el 02-11-2026-: «12. LOS 11 PAÍSES DE PRODUCCIÓN -decisión de Javier, 31-10-2026; repetida el
+   01-11-2026-: SOLO AR, AU, BR, CA, CL, CO, ES, GB, MX, PE y US, los que tienen precio de Sigo+. La prueba
+   cerrada está en 177: nada de eso se arrastra a producción. […] Por omisión la prueba cerrada se sincroniza
+   con producción: mirar en su «Administrar segmento» > «Países o regiones» si queda con esos mismos 11 o si
+   está aparte.»
 
 Conocido y aceptado: la advertencia de símbolos de depuración por las .so de Vosk, que vienen sin
 símbolos. No bloquea.
@@ -267,9 +278,15 @@ B. EN LA CONSOLA -Javier-. `npm run play -- subir` solo sabe la PRUEBA INTERNA y
 B2. LA PRIMERA VERSIÓN DE PRODUCCIÓN -Javier-. Nombres de la Ayuda, leída el 01-11-2026: answer/9859348.
   Prueba y lanza > Producción > «Crear una versión nueva». Se suben el AAB y las notas, «Guardar como
   borrador» y «Siguiente». La primera versión no tiene porcentaje de lanzamiento. El botón final es «Iniciar
-  lanzamiento de versión en producción». Antes de eso: los 11 países del punto 12. Publicar lo decide Javier.
+  lanzamiento de versión en producción». Antes de eso: los 37 países del punto 12. Publicar lo decide Javier.
+  Antes -hasta el 02-11-2026-: «los 11 países del punto 12».
   El mismo día que quede pública: el punto 8 y PLAY_PUBLICADO = true en sitio/armar.mjs, con el sitio rearmado
   y publicado -docs/el-sitio.md-.
+  -02-11-2026- Así se hizo la primera: la 1.0 (792) se probó antes en la prueba cerrada. En producción no se
+  vuelve a subir, porque Play rechaza un versionCode ya usado: en los paquetes se usa «Agregar desde la
+  biblioteca». Las notas son las mismas. El informe previo al lanzamiento no se generó nunca para Sigo, y no
+  frena. El envío se hace en Descripción general de la publicación, que primero corre unas «verificaciones
+  rápidas» de hasta 14 minutos. Quedó «En revisión» como envío 14, el 02-11 a las 16:10.
 
 C. DESPUÉS DE PUBLICADA -Javier-: instalar desde Play en el g86 y hacer la toma larga del punto 5, con
    voz, gestos, pausa, guardar, visor, subtítulos y filtro. Lo que falle va a la próxima versión. Si el g86
