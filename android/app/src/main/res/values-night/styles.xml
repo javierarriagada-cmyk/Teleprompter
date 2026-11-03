@@ -4,7 +4,10 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <!-- Mismo motivo que en values/styles.xml: el fondo es lo que se ve detras
-             de las barras de sistema, y statusBarColor ya no existe en SDK 36. -->
+             de las barras de sistema, y statusBarColor ya no existe en SDK 36.
+             -borde-a-borde, 03-11-2026-: statusBarColor/navigationBarColor se ignoran
+             solo en Android 15+; en 10-14 pintaban las franjas. Desde esta tarea
+             esas versiones también van de borde a borde -ver values/styles.xml-. -->
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowLightStatusBar">false</item>
