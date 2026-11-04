@@ -45,6 +45,15 @@ import { build, createServer } from 'vite'
 // Antes: const PLAY_PUBLICADO = false
 const PLAY_PUBLICADO = true
 const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.sigoteleprompter.app'
+// -utm-mapa, 04-11-2026- POR QUÉ ENLACE LLEGA LA GENTE A PLAY. Cada enlace a la ficha lleva una etiqueta utm
+// dentro de referrer=, que es el formato de Google Play Install Referrer. Play Console muestra solo «Fuente de
+// UTM» y «Campaña de UTM», en Análisis de conversiones, y lo que tiene pocos visitantes lo junta en «Otro»
+// -Ayuda de Play Console 9859173, leída el 04-11-. Por eso el lugar va en la campaña y no en utm_medium, que la
+// consola no muestra, y no se agrega el idioma, que Play ya separa: dos campañas en vez de seis, con el poco
+// tráfico que tiene el sitio. La Ayuda de la consola no dice el formato del vínculo, así que hay que comprobarlo
+// en la consola unos días después de publicar. El & va como &amp; porque el enlace queda dentro de un href.
+// Antes: los dos enlaces iban a PLAY_URL sin etiqueta.
+const playCon = (lugar) => `${PLAY_URL}&amp;referrer=${encodeURIComponent(`utm_source=web&utm_campaign=${lugar}`)}`
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const FUENTE = path.join(RAIZ, 'sitio/fuente')
@@ -238,7 +247,7 @@ function pie(t, pagina) {
 function franja(t) {
   if (PLAY_PUBLICADO) return `<div class="franja-prueba franja-play" id="franja-play">
   ${selector(t, 'portada', 'franja')}
-  <a class="franja-boton" href="${PLAY_URL}">${t.nuevaPortada.playBoton}&nbsp;→</a>
+  <a class="franja-boton" href="${playCon('franja')}">${t.nuevaPortada.playBoton}&nbsp;→</a>
 </div>`
   return `<div class="franja-prueba" id="franja-prueba">
   ${selector(t, 'portada', 'franja')}
@@ -251,7 +260,7 @@ function franja(t) {
 function accionPlay(t) {
   if (!PLAY_PUBLICADO) return textos(leer('sitio/fuente/invitacion.html'), t, 'invitacion.html')
   const idioma = { es: 'Spanish-LATAM', en: 'English', pt: 'Portuguese-Brazil' }[t.idioma]
-  return `<a class="cierre-play" href="${PLAY_URL}"><img src="/activos/google-play/GetItOnGooglePlay_Badge_Web_color_${idioma}.svg" alt="${t.nuevaPortada.playAlt}" height="56"></a>`
+  return `<a class="cierre-play" href="${playCon('insignia')}"><img src="/activos/google-play/GetItOnGooglePlay_Badge_Web_color_${idioma}.svg" alt="${t.nuevaPortada.playAlt}" height="56"></a>`
 }
 
 // Llena las marcas {{clave}} con los textos del idioma. Las listas de privacidad y soporte se
@@ -393,7 +402,8 @@ for (const [idioma, t] of Object.entries(IDIOMAS)) {
 
 // Lo que arma este script, y nada mas: lo que quede de un armado anterior se borra.
 // -18-10-2026- Y las fotos del manual, en capturas. Antes: [..., 'sitio.js', 'fuentes', 'vendor', 'icono.png']
-const armados = new Set([...Object.keys(paginas).map((a) => a.split('/')[0]), 'sitio.js', 'fuentes', 'vendor', 'icono.png', 'capturas', 'activos'])
+// -utm-mapa, 04-11-2026- Y robots.txt y sitemap.xml, que se arman abajo. Antes: [..., 'capturas', 'activos'])
+const armados = new Set([...Object.keys(paginas).map((a) => a.split('/')[0]), 'sitio.js', 'fuentes', 'vendor', 'icono.png', 'capturas', 'activos', 'robots.txt', 'sitemap.xml'])
 // Antes de limpiar se comprueba el destino absoluto: una ruta ajena al sitio nunca se borra.
 if (path.resolve(PUBLICO) !== path.resolve(RAIZ, 'sitio/public')) throw new Error('Destino de armado fuera de sitio/public.')
 for (const viejo of fs.readdirSync(PUBLICO)) {
@@ -433,6 +443,23 @@ for (const [archivo, html] of Object.entries(paginas)) {
 }
 fs.writeFileSync(path.join(PUBLICO, 'sitio.js'), codigo)
 console.log('sitio/public/sitio.js', Buffer.byteLength(codigo), 'bytes')
+
+// -utm-mapa, 04-11-2026- ROBOTS Y MAPA DEL SITIO, armados con las mismas rutas que las páginas: si se agrega una
+// página, entra sola. Hasta hoy los dos daban 404. Según Google, un sitio de unas 500 páginas o menos y bien
+// enlazado no necesariamente necesita mapa -Search Central, «Información general sobre los sitemaps», leída el
+// 04-11-. Igual cuesta poco y sirve para enviarlo a Search Console, donde el dominio ya está verificado.
+// El mapa no repite hreflang, porque ya va en el <head> de cada página. Tampoco lleva lastmod, para no poner una
+// fecha que no sea la del último cambio real.
+const direcciones = PAGINAS.flatMap((p) => Object.values(IDIOMAS).map((t) => `${DOMINIO}${t.rutas[p]}`))
+const mapa = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${direcciones.map((d) => `  <url><loc>${d}</loc></url>`).join('\n')}
+</urlset>
+`
+fs.writeFileSync(path.join(PUBLICO, 'sitemap.xml'), mapa)
+console.log('sitio/public/sitemap.xml', direcciones.length, 'direcciones')
+fs.writeFileSync(path.join(PUBLICO, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${DOMINIO}/sitemap.xml\n`)
+console.log('sitio/public/robots.txt')
 
 // ---------- 5. letras y bibliotecas ----------
 

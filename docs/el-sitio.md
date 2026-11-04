@@ -53,6 +53,17 @@ Este cambio no publica nada. Hace falta volver a armar; desplegar requiere otro 
 Los SVG oficiales se guardan sin modificar en `activos/google-play/`, con origen y SHA-256.
 La insignia mide 56 px de alto y tiene 14 px de espacio libre sobre fondo liso.
 
+### Etiquetas de los enlaces a Play, robots y mapa del sitio (04-11-2026)
+
+- Los dos enlaces a la ficha llevan `referrer=utm_source=web&utm_campaign=<lugar>`: el botón de
+  arriba se marca con `franja` y la insignia del cierre, con `insignia`. Esto se arma en `playCon`, en
+  `sitio/armar.mjs`. Play Console muestra solo la fuente y la campaña de UTM, en Análisis de conversiones, y
+  junta en «Otro» lo que tiene pocos visitantes (Ayuda 9859173). Por eso no se usa `utm_medium` ni se
+  separa por idioma. Si el formato del vínculo funciona, hay que comprobarlo en la consola unos días después de
+  publicar.
+- `robots.txt` y `sitemap.xml` se arman con las mismas rutas que las páginas: son 18 direcciones, una por
+  página e idioma. Search Console ya tiene verificado el dominio. El mapa se envía desde ahí.
+
 ### Revisión local y límites
 
 Las herramientas necesarias están en `sitio/herramientas/`, con su dependencia de captura
