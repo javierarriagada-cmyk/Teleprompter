@@ -22,8 +22,10 @@ usan su misma dependencia `puppeteer-core`; no se cambia el package.json de la a
    `node sitio/herramientas/revisar-sitio.cjs`. Sirve public con direcciones limpias, genera
    evidencia fuera del repo y cierra navegador/servidor. Los JSON registran peso, idioma,
    errores y límites; no son pruebas unitarias de posición de la app.
-5. Para la vista pública: cambiar temporalmente PLAY_PUBLICADO a true, armar y ejecutar
-   la revisión con `--publicado`. Volver a false y rearmar antes de guardar el commit.
+5. Desde el 04-11-2026 PLAY_PUBLICADO queda en true, porque Sigo ya está pública en Play: la
+   revisión normal es la de la vista pública, con `--publicado`. Antes: «Para la vista pública:
+   cambiar temporalmente PLAY_PUBLICADO a true, armar y ejecutar la revisión con `--publicado`.
+   Volver a false y rearmar antes de guardar el commit.»
 
 El recorte de phone-03 se repite desde la ficha de cada idioma con la caja
 (192,514,888,1752), tamaño final 720 × 1280. La composición española anterior no tiene

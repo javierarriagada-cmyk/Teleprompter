@@ -40,7 +40,8 @@ reproducir no existe un elemento video ni se pide el MP4; el póster sí es una 
 
 ### Interruptor de Google Play
 
-En `sitio/armar.mjs`: **`const PLAY_PUBLICADO = false`**.
+En `sitio/armar.mjs`: **`const PLAY_PUBLICADO = true`** desde el 04-11-2026, el día que Sigo
+quedó pública en Play. Antes: «En `sitio/armar.mjs`: **`const PLAY_PUBLICADO = false`**.»
 
 - `false`: franja de prueba, «Pronto en Google Play» e invitación por correo, sin insignia.
 - `true`: desaparecen esos tres anuncios; arriba aparece el botón a la ficha, que es solo
@@ -60,7 +61,9 @@ ya usada en el prototipo; no se agregan dependencias a la app. Ver su `LEEME.md`
 al terminar. Revisa /, /en, /pt y los interiores a 360, 392, 768 y 1440 px. Los PNG y JSON
 de revisión van fuera del repo, en `C:\Users\56990\Desktop\sitio-real-capturas`.
 
-Se revisan ambas posiciones del interruptor y se deja **false**, con `public/` rearmado.
+Se revisan ambas posiciones del interruptor y se deja **true**, con `public/` rearmado.
+Antes, hasta el 04-11-2026: «Se revisan ambas posiciones del interruptor y se deja **false**, con
+`public/` rearmado.»
 Las pruebas de la aplicación siguen siendo de lógica, sin fijar posiciones ni tamaños.
 La captura del navegador no certifica comportamiento nativo en Android.
 

@@ -41,7 +41,9 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { build, createServer } from 'vite'
 
 // Una sola decisión habilita la tienda, sus metadatos y su aviso legal; queda apagada hasta aprobación.
-const PLAY_PUBLICADO = false
+// -04-11-2026- ENCENDIDA: ese día Sigo quedó pública en Play, con la 1.0 (792) en 37 países.
+// Antes: const PLAY_PUBLICADO = false
+const PLAY_PUBLICADO = true
 const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.sigoteleprompter.app'
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
