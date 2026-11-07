@@ -1,6 +1,8 @@
 package com.sigoteleprompter.app;
 
+import android.content.pm.PackageInfo;
 import android.graphics.Outline;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,10 +12,12 @@ import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.PathInterpolator;
+import android.webkit.WebView;
 
 import androidx.activity.BackEventCompat;
 import androidx.activity.OnBackPressedCallback;
 import androidx.core.splashscreen.SplashScreen;
+import androidx.core.view.WindowCompat;
 
 import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.JSObject;
@@ -266,6 +270,14 @@ public class MainActivity extends BridgeActivity {
         ((AtrasPredictivoPlugin) handle.getInstance()).avisar(evento, datos);
     }
 
+
+    // La versión de la WebView del teléfono -PackageInfo.versionName-, o null si no se puede leer.
+    // WebView.getCurrentWebViewPackage existe desde API 26; el minSdk de Sigo es 29.
+    private static String versionNameDeLaWebView() {
+        PackageInfo pkg = WebView.getCurrentWebViewPackage();
+        return pkg != null ? pkg.versionName : null;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // Antes:
@@ -312,6 +324,29 @@ public class MainActivity extends BridgeActivity {
                 .withEndAction(splashScreenViewProvider::remove)
                 .start();
         });
+
+        // BORDE A BORDE EN ANDROID 10 A 14 -03-11-2026-.
+        //
+        // Play avisó en la 1.0 (792) que el borde a borde no se mostraba para todos. En 15/16 el
+        // sistema ya lo fuerza con targetSdk 35; en 10-14 las barras tomaban el color del tema. Si
+        // la WebView es 140 o más -BordeABordeAntesDe15, el umbral de Capacitor-, se llama a
+        // WindowCompat.enableEdgeToEdge para dibujar detrás de las barras. Capacitor, con
+        // viewport-fit=cover, pasa entonces los bordes a la web como en 15/16.
+        //
+        // ORDEN A PROPÓSITO, ANTES de super.onCreate. El de androidx.core 1.17 -visto con javap el
+        // 03-11- deja las dos barras transparentes, les apaga el velo de contraste y fija el
+        // recorte de la cámara: SHORT_EDGES en Android 10 y ALWAYS desde el 11. No toca el estilo de
+        // los íconos. SystemBars de Capacitor carga en el puente -super.onCreate- y en
+        // initSystemBars llama a setStyle; después la web manda el de Sigo
+        // -barrasDelSistema.fijarEstiloDeLaApp-. Así, los últimos en tocar las barras siguen siendo
+        // SystemBars.setStyle y la web.
+        // Antes, 03-11, en el PR #170: «enableEdgeToEdge deja un estilo de íconos según el tema del
+        // sistema... Si corriera después, pisaría ese estilo». No era así: con 1.17 no deja estilo.
+        // A MIRAR EN EL TELÉFONO: sin el velo, la barra de 3 botones queda transparente del todo
+        // en Android 10 a 14. En 15 y 16 el sistema le pone uno.
+        if (BordeABordeAntesDe15.corresponde(Build.VERSION.SDK_INT, versionNameDeLaWebView())) {
+            WindowCompat.enableEdgeToEdge(getWindow());
+        }
 
         // Los plugins se registran ANTES de super.onCreate: despues el puente ya esta
         // armado y no los toma. Es el orden que pide Capacitor.
