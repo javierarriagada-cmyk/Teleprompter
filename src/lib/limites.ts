@@ -128,3 +128,92 @@ export function accionAlLimiteLectura(): AccionAlLimiteLectura {
   // Antes: el camino era 'forzarFija'. 27-10-2026: se pausa; la oferta se abre sola (oferta.ts).
   return 'pausar'
 }
+
+// EL AVISO ANTES DE EMPEZAR, EN LA VERSIÓN GRATIS -proxima-version, 2026-11-07-. Hoy quien no tiene Sigo+ se
+// entera del límite a mitad de la toma: grabando, al minuto 2 sale «Te queda 1 minuto» y al 3 se corta; leyendo
+// con voz, a los 4 minutos se pausa. Con un guion más largo se pierde el esfuerzo. Sigo ya sabe cuánto dura el
+// guion -el «dura aprox.» del dock-: el aviso lo dice ANTES de empezar, una vez por guion y por tipo, y solo a
+// quien le sirve. La decisión es pura: todo entra como parámetro y aquí no se lee nada de afuera.
+export interface EntradaAvisoLimite {
+  tipo: TipoToma
+  // Velocidad fija elegida: en Leer no hay límite. En Grabar no cambia nada.
+  fija: boolean
+  // Lo que dura el guion, la misma cuenta del dock -segundosDeLectura con su ritmo-.
+  segundosGuion: number
+  limites: Limites
+  conSuscripcion: boolean
+  yaVisto: boolean
+}
+export type DecisionAvisoLimite =
+  | { aviso: false }
+  | { aviso: true; tipo: TipoToma; limiteSeg: number; segundosGuion: number }
+
+export function decidirAvisoLimiteGratis(e: EntradaAvisoLimite): DecisionAvisoLimite {
+  if (e.yaVisto) return { aviso: false }
+  if (e.tipo === 'lectura' && e.fija) return { aviso: false }
+  const lim = limiteDe(e.tipo, e.limites, e.conSuscripcion)
+  if (lim === null) return { aviso: false }
+  if (!(e.segundosGuion > lim)) return { aviso: false }
+  return { aviso: true, tipo: e.tipo, limiteSeg: lim, segundosGuion: e.segundosGuion }
+}
+
+// Los segundos en reloj, como el dock: 250 → «4:10», 150 → «2:30».
+export function relojDeSegundos(segundos: number): string {
+  const s = Math.max(0, Math.round(segundos))
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
+}
+
+// LOS NÚMEROS DEL AVISO. {tiempo}: «3 minutos», «1 minuto»; {corto}: «3 min». Si no son minutos exactos, los dos
+// en reloj: «2:30». Las palabras vienen de los textos del idioma -limiteUnMinuto, limiteMinutos,
+// limiteMinutosCorto-, que entran como parámetro para que la función siga pura.
+export interface TextosNumerosLimite {
+  limiteUnMinuto: string
+  limiteMinutos: string
+  limiteMinutosCorto: string
+}
+export function formatearLimite(limiteSeg: number, textos: TextosNumerosLimite): { tiempo: string; corto: string } {
+  if (limiteSeg % 60 !== 0) {
+    const reloj = relojDeSegundos(limiteSeg)
+    return { tiempo: reloj, corto: reloj }
+  }
+  const n = limiteSeg / 60
+  const tiempo = n === 1 ? textos.limiteUnMinuto : textos.limiteMinutos.replace('{n}', String(n))
+  return { tiempo, corto: textos.limiteMinutosCorto.replace('{n}', String(n)) }
+}
+
+// SI YA SALIÓ PARA ESE GUION Y ESE TIPO. Se recuerda en localStorage, como sigo_oferta_inicial_vista en
+// oferta.ts, y queda marcado al mostrarse. Una copia en memoria por si el guardado falla: así el aviso no
+// vuelve a salir al tocar «Grabar …», que vuelve a apretar Empezar.
+const CLAVE_AVISO_LIMITE = 'sigo_aviso_limite_vistos'
+const vistosEnMemoria = new Set<string>()
+function claveDeAviso(guionId: string, tipo: TipoToma) {
+  return `${tipo}:${guionId}`
+}
+function leerVistos(): string[] {
+  try {
+    const crudo = localStorage.getItem(CLAVE_AVISO_LIMITE)
+    const lista = crudo ? JSON.parse(crudo) : []
+    return Array.isArray(lista) ? lista.filter((x) => typeof x === 'string') : []
+  } catch {
+    return []
+  }
+}
+export function yaSalioAvisoLimite(guionId: string, tipo: TipoToma): boolean {
+  const clave = claveDeAviso(guionId, tipo)
+  return vistosEnMemoria.has(clave) || leerVistos().includes(clave)
+}
+export function marcarAvisoLimiteVisto(guionId: string, tipo: TipoToma) {
+  const clave = claveDeAviso(guionId, tipo)
+  vistosEnMemoria.add(clave)
+  try {
+    const lista = leerVistos()
+    if (!lista.includes(clave)) localStorage.setItem(CLAVE_AVISO_LIMITE, JSON.stringify([...lista, clave]))
+  } catch (e) {
+    console.warn('[limites] no se guardó el aviso visto:', e)
+  }
+}
+// Para las pruebas.
+export function olvidarAvisosLimite() {
+  vistosEnMemoria.clear()
+  try { localStorage.removeItem(CLAVE_AVISO_LIMITE) } catch { /* */ }
+}

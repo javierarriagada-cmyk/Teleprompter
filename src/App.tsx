@@ -16,7 +16,9 @@ import BarraDeTiempo from './components/BarraDeTiempo'
 import { useAparecer } from './hooks/useAparecer'
 // -tarea 106- Velocidad fija: el motor que no escucha, el modo elegido y el control al leer.
 // -15-10-2026- y controlesSeVanSolos. Antes: import { crearMotorFijo } from './lib/velocidadFija'
-import { crearMotorFijo, controlesSeVanSolos } from './lib/velocidadFija'
+// -proxima-version, 2026-11-07- ppmDeNivel: el ritmo del dock para el aviso de límite. Antes:
+// import { crearMotorFijo, controlesSeVanSolos } from './lib/velocidadFija'
+import { crearMotorFijo, controlesSeVanSolos, ppmDeNivel } from './lib/velocidadFija'
 // Antes: también ritmoDeLosUltimosSegundos — 27-10-2026 retirada con la forzada a fija.
 import { useVelocidadFija } from './hooks/useVelocidadFija'
 import { ControlVelocidadLectura } from './components/ControlesVelocidad'
@@ -48,7 +50,9 @@ import { hapticaToqueMedio, hapticaToqueSuave, hapticaSeleccion } from './haptic
 import { IdMotor, MotorDeVoz, ResultadoVoz } from './motor/MotorDeVoz'
 // -ajustes de pantallas, segunda vuelta- contarPalabras para la única estimación de la pastilla. Antes:
 // import { Guion, Bloque, ResumenGuion, ResumenGrabacion, guionNuevo, generarUuid, PAREJAS_COLOR } from './datos/modelo'
-import { Guion, Bloque, ResumenGuion, ResumenGrabacion, guionNuevo, generarUuid, PAREJAS_COLOR, contarPalabras } from './datos/modelo'
+// -proxima-version, 2026-11-07- segundosDeLectura y PALABRAS_POR_MINUTO: la duración del dock para el aviso de límite. Antes:
+// import { Guion, Bloque, ResumenGuion, ResumenGrabacion, guionNuevo, generarUuid, PAREJAS_COLOR, contarPalabras } from './datos/modelo'
+import { Guion, Bloque, ResumenGuion, ResumenGrabacion, guionNuevo, generarUuid, PAREJAS_COLOR, contarPalabras, segundosDeLectura, PALABRAS_POR_MINUTO } from './datos/modelo'
 import { RepositorioGuiones } from './datos/RepositorioGuiones'
 import { RepositorioIndexedDB } from './datos/RepositorioIndexedDB'
 import { RepositorioMemoria } from './datos/RepositorioMemoria'
@@ -57,7 +61,9 @@ import { vigilarRespaldo } from './lib/respaldo'
 import { configuracionLista } from './lib/firebaseConfig'
 // -orden 1, los cimientos del cobro, 26-10-2026- RevenueCat, sin nada visible.
 import { vigilarSuscripcion, tieneSuscripcion, sincronizarLocaleUiPurchases, vigilarLocaleUiPurchases } from './lib/suscripcion'
-import { cargarLimites, limitesActuales, hayQueAvisar, llegoAlLimite, transcurridoSinPausas, accionAlLimiteLectura } from './lib/limites'
+// -proxima-version, 2026-11-07- y el aviso de límite antes de empezar. Antes:
+// import { cargarLimites, limitesActuales, hayQueAvisar, llegoAlLimite, transcurridoSinPausas, accionAlLimiteLectura } from './lib/limites'
+import { cargarLimites, limitesActuales, hayQueAvisar, llegoAlLimite, transcurridoSinPausas, accionAlLimiteLectura, decidirAvisoLimiteGratis, yaSalioAvisoLimite, marcarAvisoLimiteVisto, type TipoToma } from './lib/limites'
 // Antes: import { pausaUsaMotorFijo, tokenSeguidorAlVolverAVoz } from './lib/lecturaForzada'
 // 27-10-2026: vía forzada a fija retirada; al límite se pausa (accionAlLimiteLectura).
 import { abrirOferta, abrirOfertaInicialSiCorresponde, decidirOfertaAlLimite } from './lib/oferta'
@@ -106,6 +112,8 @@ import { PASOS_LETRA } from './components/estiloLectura'
 import { PanelAjustesFlotante } from './components/PanelAjustes'
 import type { AjustesLectura } from './components/FilasAjustesLectura'
 import { DialogoMicrofono } from './components/DialogoMicrofono'
+// -proxima-version, 2026-11-07- El aviso de límite gratis antes de grabar o leer con voz.
+import { DialogoLimiteGratis } from './components/DialogoLimiteGratis'
 import { DialogoPermiso } from './components/DialogoPermiso'
 import { tituloDeBienvenida, bloqueDeBienvenida } from './app/bienvenida'
 import type { FondoToma } from './lib/fondoToma'
@@ -280,6 +288,8 @@ export default function App({ motor, repoOverride }: AppProps) {
   // Desde donde se abrio: cada puerta muestra lo suyo -PantallaAjustes, origen-.
   const [origenAjustes, setOrigenAjustes] = useState<'portada' | 'editor' | 'leer' | 'grabar'>('portada')
   const [mostrarDialogoMicrofono, setMostrarDialogoMicrofono] = useState(false)
+  // -proxima-version, 2026-11-07- El aviso de límite gratis antes de empezar: el tipo y los números, o null.
+  const [avisoLimiteGratis, setAvisoLimiteGratis] = useState<{ tipo: TipoToma; limiteSeg: number; segundosGuion: number } | null>(null)
   // La cámara negada, igual que el micrófono -tarea 84, F-: lib/camara.ts avisa y se abre el
   // mismo diálogo, con su título y su explicación.
   const [mostrarDialogoCamara, setMostrarDialogoCamara] = useState(false)
@@ -1654,6 +1664,26 @@ export default function App({ motor, repoOverride }: AppProps) {
   async function handleEmpezarDesdeListo() {
     if (estadoToma === 'leyendo') return
     hapticaToqueMedio()
+    // -proxima-version, 2026-11-07- EL AVISO DE LÍMITE GRATIS, ANTES DEL MICRÓFONO. Sin Sigo+, si el guion dura
+    // más que el límite -de Remote Config, limitesActuales()- se dice ANTES de empezar, una vez por guion y por
+    // tipo. La duración es la del dock -«dura aprox.»-, con su mismo ritmo: el del nivel con Velocidad fija y
+    // 150 palabras por minuto sin ella -TeleprompterView, duracion de DockListo-. Queda marcado al mostrarse:
+    // «Grabar …» vuelve a llamar a esta función y ya no sale.
+    const tipoToma: TipoToma = conCamara ? 'grabacion' : 'lectura'
+    const idGuion = guionParaSeguidor.id
+    const decision = decidirAvisoLimiteGratis({
+      tipo: tipoToma,
+      fija,
+      segundosGuion: segundosDeLectura(contarPalabras(guionParaSeguidor), fija ? ppmDeNivel(velocidad.nivel) : PALABRAS_POR_MINUTO),
+      limites: limitesActuales(),
+      conSuscripcion: tieneSuscripcion(),
+      yaVisto: yaSalioAvisoLimite(idGuion, tipoToma)
+    })
+    if (decision.aviso) {
+      marcarAvisoLimiteVisto(idGuion, tipoToma)
+      setAvisoLimiteGratis({ tipo: decision.tipo, limiteSeg: decision.limiteSeg, segundosGuion: decision.segundosGuion })
+      return
+    }
     // EL PERMISO DEL MICROFONO, ANTES DE LA CUENTA -28-09-2026-. Ver MotorNativo.pedirMicrofono:
     // en la primera lectura el cartel de Android aparecia con la toma andando y tapaba el guion.
     // Si la persona lo niega, se lee igual, como antes: el motivo queda a la vista.
@@ -2125,6 +2155,11 @@ export default function App({ motor, repoOverride }: AppProps) {
   const handleVolverAtrasRef = useRef<() => Promise<void> | void>(() => {})
   useEffect(() => {
     handleVolverAtrasRef.current = async () => {
+      // -proxima-version, 2026-11-07- El aviso de límite gratis: el atrás lo cierra y queda en LISTO, sin empezar.
+      if (avisoLimiteGratis) {
+        setAvisoLimiteGratis(null)
+        return
+      }
       // El dialogo de microfono abierto es lo PRIMERO que se cierra -28-09-2026-.
       if (mostrarDialogoMicrofono) {
         setMostrarDialogoMicrofono(false)
@@ -2333,7 +2368,10 @@ export default function App({ motor, repoOverride }: AppProps) {
   // la vista. Con esto se sabe si hay adónde volver y si el gesto se anima.
   const estadoAtras: EstadoAtras = {
     vista,
-    algoAbierto: mostrarDialogoMicrofono || mostrarDialogoCamara || menuBibliotecaAbierto || seleccionEditorAbierta || ajustesAbiertos
+    // -proxima-version, 2026-11-07- y el aviso de límite gratis. Antes:
+    // algoAbierto: mostrarDialogoMicrofono || mostrarDialogoCamara || menuBibliotecaAbierto || seleccionEditorAbierta || ajustesAbiertos
+    //   || mostrarPanelCorpus || grabacionAbierta !== null,
+    algoAbierto: avisoLimiteGratis !== null || mostrarDialogoMicrofono || mostrarDialogoCamara || menuBibliotecaAbierto || seleccionEditorAbierta || ajustesAbiertos
       || mostrarPanelCorpus || grabacionAbierta !== null,
     tomaAndando: estadoToma === 'leyendo' || isRecording || cuentaRegresiva !== null,
     movimientoApagado: movimientoApagado()
@@ -3973,6 +4011,27 @@ export default function App({ motor, repoOverride }: AppProps) {
             }
             setGrabacionAbierta(null)
           }}
+        />
+      )}
+
+      {/* -proxima-version, 2026-11-07- El aviso de límite gratis antes de empezar. «Grabar …» / «Leer …» cierra y
+          empieza como siempre -el permiso, la cuenta, el aviso del último minuto y el corte siguen igual-. «Ver
+          Sigo+» cierra y abre la oferta; al volver queda en LISTO y no empieza sola. Afuera o atrás: LISTO. */}
+      {avisoLimiteGratis && (
+        <DialogoLimiteGratis
+          tipo={avisoLimiteGratis.tipo}
+          segundosGuion={avisoLimiteGratis.segundosGuion}
+          limiteSeg={avisoLimiteGratis.limiteSeg}
+          onSeguirGratis={() => {
+            setAvisoLimiteGratis(null)
+            void handleEmpezarDesdeListo()
+          }}
+          onVerSigoMas={() => {
+            const lugar = avisoLimiteGratis.tipo === 'grabacion' ? 'antesDeGrabar' : 'antesDeLeer'
+            setAvisoLimiteGratis(null)
+            void abrirOferta(lugar)
+          }}
+          onCerrar={() => setAvisoLimiteGratis(null)}
         />
       )}
 

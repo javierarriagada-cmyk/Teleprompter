@@ -11,7 +11,10 @@ import { tieneSuscripcion, asegurarConfigurado, sincronizarLocaleUiPurchases } f
 // Capacitor.isNativePlatform() y Capacitor.isPluginAvailable('RevenueCatUI'), como Purchases en
 // suscripcion.ts. Un fallo se registra con console.warn('[oferta]', ...) y Sigo sigue igual.
 
-export type LugarOferta = 'inicial' | 'limiteLectura' | 'limiteGrabacion' | 'marca' | 'ajustes'
+// -proxima-version, 2026-11-07- 'antesDeGrabar' y 'antesDeLeer': «Ver Sigo+» en el aviso de límite antes de
+// empezar -DialogoLimiteGratis.tsx-. Antes:
+// export type LugarOferta = 'inicial' | 'limiteLectura' | 'limiteGrabacion' | 'marca' | 'ajustes'
+export type LugarOferta = 'inicial' | 'limiteLectura' | 'limiteGrabacion' | 'marca' | 'ajustes' | 'antesDeGrabar' | 'antesDeLeer'
 
 // -pasada teléfono PR 157, 27-10-2026- Al llegar al límite, la oferta se pide SOLA una vez.
 // Antes: aviso tocable (limiteLectura / limiteGrabacion) y abrirOferta solo al tocar.
