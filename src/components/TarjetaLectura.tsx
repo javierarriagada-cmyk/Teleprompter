@@ -177,20 +177,37 @@ export default function TarjetaLectura({
 
       {/* Zona Inferior: Título de 44px y Botón de Acción */}
       <div style={{ zIndex: 5, display: 'flex', flexDirection: 'column', gap: 'var(--aire-3)' }}>
+        {/* -proxima-version, 2026-11-07- UNA SOLA CABECERA: «Continuar con este guion» a la izquierda y la
+            pastilla de la duración a la derecha, centradas en vertical. Javier: la tarjeta queda una fila más
+            baja y el contexto y la duración se leen juntos. Los estilos, en .cabecera-continuar -styles.css-.
+            Antes: la pastilla sola en su fila y la etiqueta debajo:
         {hayGuion && (
           <span
             data-testid="time-code-tarjeta"
-            // -portada con luz, 15-10-2026- la letra es --dato-texto, en .portada .duracion-tarjeta.
-            // Antes: style={{ color: parejaColor.letra }}
             className="duracion-tarjeta"
           >
             <IconoReloj tamano={14} />
             {timecode}
           </span>
         )}
-        {/* -mejoras-claridad, 21-10-2026- «Continuar con este guion», entre la duración y el título, justo arriba del
-            título: dice qué es la tarjeta. La letra de la etiqueta de la duración -.etiqueta-continuar-. */}
         {hayGuion && <span className="etiqueta-continuar">{t('continuarConEsteGuion')}</span>}
+        */}
+        {hayGuion && (
+          <div className="cabecera-continuar">
+            {/* -mejoras-claridad, 21-10-2026- «Continuar con este guion», entre la duración y el título, justo arriba del
+                título: dice qué es la tarjeta. La letra de la etiqueta de la duración -.etiqueta-continuar-. */}
+            <span className="etiqueta-continuar">{t('continuarConEsteGuion')}</span>
+            <span
+              data-testid="time-code-tarjeta"
+              // -portada con luz, 15-10-2026- la letra es --dato-texto, en .portada .duracion-tarjeta.
+              // Antes: style={{ color: parejaColor.letra }}
+              className="duracion-tarjeta"
+            >
+              <IconoReloj tamano={14} />
+              {timecode}
+            </span>
+          </div>
+        )}
         <h2
           data-testid="titulo-tarjeta-lectura"
           // DOS RENGLONES Y LA LETRA DE LOS TITULOS -28-09-2026-. En el moto g86 decia "Hay una

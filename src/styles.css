@@ -2977,7 +2977,26 @@ button.btn-deformable.miniatura-banda:not(:active) {
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--dato-texto);
+  /* -proxima-version, 2026-11-07- el margen negativo pasó a .cabecera-continuar, que ahora es la fila
+     que va justo arriba del título. Antes: margin-bottom: calc(-1 * var(--aire-2)); */
+  min-width: 0;
+}
+
+/* -proxima-version, 2026-11-07- LA CABECERA DE LA TARJETA: la etiqueta a la izquierda y la pastilla de la
+   duración a la derecha, en una sola fila -antes eran dos-. Si la etiqueta no cabe -en inglés «Continue with
+   this script»-, pasa a dos renglones; la pastilla no se encoge ni se corta. El margen negativo, el que antes
+   tenía .etiqueta-continuar, la junta con el título. */
+.cabecera-continuar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--aire-2);
   margin-bottom: calc(-1 * var(--aire-2));
+}
+.cabecera-continuar .duracion-tarjeta {
+  flex-shrink: 0;
+  white-space: nowrap;
+  align-self: center;
 }
 
 /* -mejoras-claridad- «+ NUEVO GUION»: el mismo botón y la misma píldora -.boton-crear-guion > span-, con
