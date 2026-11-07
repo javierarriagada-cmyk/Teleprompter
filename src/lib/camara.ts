@@ -359,6 +359,16 @@ export async function encenderCamara(
 // seguimiento, que es lo unico que nos diferencia.
 export const CALIDADES_POR_RESOLUCION = ['1080p', '720p', '480p']
 
+// -proxima-version, 2026-11-07- El nombre de cada calidad en el menú de Ajustes > Video > Calidad: «1080p»
+// solo no dice qué es. Full HD, HD y SD son iguales en los tres idiomas, por eso no van en textos/. Una
+// calidad que no esté en la lista -las relativas, «high», «medium», «low»- se muestra tal cual.
+const NOMBRE_DE_CALIDAD: Record<string, string> = { '1080p': 'Full HD', '720p': 'HD', '480p': 'SD' }
+
+export function etiquetaCalidad(q: string): string {
+  const nombre = NOMBRE_DE_CALIDAD[q]
+  return nombre ? `${q} · ${nombre}` : q
+}
+
 export function normalizarCalidades(qualities: string[]): string[] {
   const sinCuatroK = qualities.filter((q) => q !== '2160p' && q !== '4:3')
   const porResolucion = CALIDADES_POR_RESOLUCION.filter((q) => sinCuatroK.includes(q))

@@ -16,6 +16,8 @@ import {
   MenuLectura, esMenuLectura, useAnclasLectura
 } from './FilasAjustesLectura'
 import { hayCalidad } from './FichasListo'
+// -proxima-version, 2026-11-07- el nombre de cada calidad en el menú de Calidad.
+import { etiquetaCalidad } from '../lib/camara'
 import { Interruptor } from './Interruptor'
 // -tarea 106- El selector del modo de lectura y la fila Velocidad.
 import { SelectorModoLectura } from './ControlesVelocidad'
@@ -303,7 +305,9 @@ export function PanelAjustes({
                     aria-checked={video.calidadVideo === q}
                     onClick={() => elegirYCerrar(() => video.setCalidadVideo?.(q))}
                   >
-                    <span className="fila-menu-adjunto-etiqueta">{q}</span>
+                    {/* -proxima-version, 2026-11-07- cada calidad con su nombre: «1080p · Full HD». El valor de
+                        la fila sigue diciendo «1080p». Antes: <span className="fila-menu-adjunto-etiqueta">{q}</span> */}
+                    <span className="fila-menu-adjunto-etiqueta">{etiquetaCalidad(q)}</span>
                     <CheckMenu visible={video.calidadVideo === q} />
                   </button>
                 ))}
