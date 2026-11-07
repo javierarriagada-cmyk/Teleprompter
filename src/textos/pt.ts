@@ -231,6 +231,10 @@ export const pt: Textos = {
   tipoSans: 'Sans',
   tipoSerif: 'Serif',
   version: 'Versão',
+  // -proxima-version, 2026-11-07- Acerca de Sigo: calificar en Play y compartir la app.
+  calificarSigo: 'Avaliar o Sigo',
+  compartirSigo: 'Compartilhar o Sigo',
+  textoCompartirSigo: 'O Sigo é um teleprompter que acompanha a sua voz: {url}',
   privacidad: 'Privacidade',
   soporte: 'Suporte',
   licencias: 'Licenças de código aberto',

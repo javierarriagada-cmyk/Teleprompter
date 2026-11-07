@@ -27,6 +27,9 @@ export interface CamaraNativaPlugin {
   espacioLibre(): Promise<{ bytesLibres: number }>
   guardarEnGaleria(options: { ruta: string }): Promise<{ ok: boolean; uri?: string }>
   compartir(options: { uri: string }): Promise<void>
+  // -proxima-version, 2026-11-07- «Compartir Sigo»: el menú de compartir de Android con un texto -ACTION_SEND,
+  // text/plain-. Un APK viejo no lo tiene: "not implemented".
+  compartirTexto(options: { texto: string }): Promise<void>
   // Antes: -tomas-grandes, 15-10-2026- Abre la toma con el reproductor del sistema -ACTION_VIEW-. Rechaza con
   // "sin aplicacion" si no hay ninguna que abra video. Un APK viejo no lo tiene: "not implemented".
   // Antes: abrirConReproductor(options: { ruta: string }): Promise<void>

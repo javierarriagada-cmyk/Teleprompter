@@ -1,3 +1,4 @@
+import { Capacitor } from '@capacitor/core'
 import { CamaraNativa } from './camara'
 import { recetaDe, validarReceta, type RecetaExportacion } from './recetaExportacion'
 
@@ -107,6 +108,18 @@ export async function existeEnGaleria(uri: string): Promise<boolean> {
 // si esa copia se borro desde la galeria.
 export async function compartirDeGaleria(uri: string): Promise<void> {
   await CamaraNativa.compartir({ uri })
+}
+
+// -proxima-version, 2026-11-07- «Compartir Sigo» en Acerca de Sigo: abre el menú de compartir de Android con
+// el texto. En la web no hay menú de compartir del sistema: no hace nada y no falla. Si el APK es viejo y no
+// trae compartirTexto, tampoco falla, pero lo dice en la consola -nada falla en silencio-.
+export async function compartirTexto(texto: string): Promise<void> {
+  if (!Capacitor.isNativePlatform()) return
+  try {
+    await CamaraNativa.compartirTexto({ texto })
+  } catch (e) {
+    console.warn('[compartirTexto] no se abrió el menú de compartir:', e)
+  }
 }
 
 // Antes: LAS TOMAS GRANDES -tomas-grandes, 15-10-2026-. El reproductor de la WebView no lee pasado el byte

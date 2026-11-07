@@ -31,3 +31,15 @@ export const ENLACES_SITIO: Record<IdiomaApp, EnlacesSitio> = {
     correo: 'hola@sigoteleprompter.com'
   }
 }
+
+// -proxima-version, 2026-11-07- LA FICHA DE SIGO EN GOOGLE PLAY, para «Calificar Sigo» en Acerca de Sigo. Se
+// abre la ficha y no la ventana de reseña dentro de la app -In-App Review-: Google pide no lanzarla desde un
+// botón, por su cuota -developer.android.com/guide/playcore/in-app-review-.
+export const ENLACE_PLAY = 'https://play.google.com/store/apps/details?id=com.sigoteleprompter.app'
+
+// -proxima-version, 2026-11-07- EL ENLACE DE «COMPARTIR SIGO», con la etiqueta de origen como los del sitio
+// -sitio/armar.mjs, playCon-: utm_source=app y la campaña «compartir», para que Play Console separe a quien
+// llegó porque alguien lo compartió. Aquí va & y no &amp;: no queda dentro de un href.
+export function enlaceCompartirSigo(): string {
+  return `${ENLACE_PLAY}&referrer=${encodeURIComponent('utm_source=app&utm_campaign=compartir')}`
+}

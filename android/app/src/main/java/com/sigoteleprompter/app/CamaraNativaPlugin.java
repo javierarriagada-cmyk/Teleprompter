@@ -969,6 +969,24 @@ public class CamaraNativaPlugin extends Plugin {
         call.resolve();
     }
 
+    // COMPARTIR SIGO -proxima-version, 2026-11-07-. El menú de compartir de Android con un texto que trae el
+    // enlace a la ficha de Play, desde Acerca de Sigo. Igual que compartir con el video, pero text/plain y
+    // EXTRA_TEXT: sin bibliotecas nuevas.
+    @PluginMethod
+    public void compartirTexto(PluginCall call) {
+        String texto = call.getString("texto");
+        if (texto == null || texto.isEmpty()) {
+            call.reject("texto requerido");
+            return;
+        }
+        android.content.Intent envio = new android.content.Intent(android.content.Intent.ACTION_SEND);
+        envio.setType("text/plain");
+        envio.putExtra(android.content.Intent.EXTRA_TEXT, texto);
+        android.content.Intent menu = android.content.Intent.createChooser(envio, null);
+        getActivity().startActivity(menu);
+        call.resolve();
+    }
+
     // LA URI QUE OTRA APLICACION PUEDE LEER -tomas-grandes, 15-10-2026-. Una toma guardada ya es una
     // content:// de la galeria y va tal cual, como en compartir. Una sin guardar es un archivo privado en
     // files/grabaciones: va por el FileProvider del manifiesto -${applicationId}.fileprovider,

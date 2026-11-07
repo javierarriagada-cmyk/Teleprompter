@@ -9,7 +9,8 @@ import {
   // IconoAtras, IconoCerrar, IconoSubtitulos, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda, IconoCorreo,
   // Antes -hasta 2026-10-20, cuenta-google-: IconoDocumento solo, sin IconoTacho -lo usa «Borrar cuenta»-.
   IconoAtras, IconoCerrar, IconoTema, IconoIdioma, IconoInfo, IconoCandado, IconoAyuda, IconoCorreo,
-  IconoDocumento, IconoTacho, IconoEstrella, IconoRepetir
+  // -proxima-version, 2026-11-07- IconoCompartir, para «Compartir Sigo». Antes: IconoDocumento, IconoTacho, IconoEstrella, IconoRepetir
+  IconoDocumento, IconoTacho, IconoEstrella, IconoRepetir, IconoCompartir
 } from './IconosApp'
 import {
   AjustesLectura, FilaAjuste, MenuAdjuntoAjustes, CheckMenu, MuestraLectura, FilasLectura, FilasPantalla,
@@ -24,7 +25,9 @@ import { SelectorModoLectura } from './ControlesVelocidad'
 import { PantallaLicencias } from './PantallaLicencias'
 // -tomas-largas, 15-10-2026, decisión de Javier- Los subtítulos se eligen SOLO en el visor; Ajustes ya no los ofrece. Antes: import { ESTILOS_SUBTITULO, EstiloSubtitulo, estiloSubtituloGuardado, guardarEstiloSubtitulo } from '../lib/subtitulos'
 import { IdiomaApp, idiomaApp, fijarIdioma } from '../lib/idioma'
-import { ENLACES_SITIO } from '../lib/enlacesSitio'
+// -proxima-version, 2026-11-07- Antes: import { ENLACES_SITIO } from '../lib/enlacesSitio'
+import { ENLACES_SITIO, ENLACE_PLAY, enlaceCompartirSigo } from '../lib/enlacesSitio'
+import { compartirTexto } from '../lib/archivosNativos'
 // -cuenta-google, orden A- Entrar con Google, salir y borrar la cuenta.
 import { configuracionLista } from '../lib/firebaseConfig'
 import { ErrorCuenta, ResultadoCuenta, borrarCuenta, entrar, estadoCuenta, salir, suscribirCuenta } from '../lib/cuenta'
@@ -470,6 +473,21 @@ export function PanelAjustes({
                   <div className="fila-ajuste-nombre">{t('version')}</div>
                   <span className="fila-ajuste-valor">{version ?? '—'}</span>
                 </div>
+                {/* -proxima-version, 2026-11-07- Calificar y compartir, entre Versión y Privacidad. Calificar abre
+                    la ficha de Play, como «Administrar suscripción» abre la de suscripciones; no la ventana de
+                    reseña dentro de la app, que Google pide no lanzar desde un botón. */}
+                <FilaAjuste
+                  testid="fila-calificar-sigo"
+                  icono={<IconoEstrella tamano={22} />}
+                  nombre={t('calificarSigo')}
+                  onClick={() => abrirEnlace(ENLACE_PLAY)}
+                />
+                <FilaAjuste
+                  testid="fila-compartir-sigo"
+                  icono={<IconoCompartir tamano={22} />}
+                  nombre={t('compartirSigo')}
+                  onClick={() => { void compartirTexto(t('textoCompartirSigo', { url: enlaceCompartirSigo() })) }}
+                />
                 <FilaAjuste
                   testid="fila-privacidad"
                   icono={<IconoCandado tamano={22} />}
