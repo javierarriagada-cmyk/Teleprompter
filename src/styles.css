@@ -2021,11 +2021,52 @@ label.selector-aa-opcion {
 .accion-toma.de-guardar {
   background: var(--fondo-accion-guardar);
   border-color: transparent;
-  border-radius: var(--forma-media);
+  /* Antes: border-radius: var(--forma-media);
+     revisión del PR #172: 16, la forma grande, para que se lean como botones y no como casillas. */
+  border-radius: var(--forma-grande);
   overflow: visible;
 }
-.acciones-toma > .accion-toma.de-guardar + .accion-toma.de-guardar {
-  margin-left: var(--aire-2);
+/* Antes -e5677de-:
+   .acciones-toma > .accion-toma.de-guardar + .accion-toma.de-guardar { margin-left: var(--aire-2); }
+   En la columna de lado corría «Guardar y compartir» 8 px a la derecha de Guardar -medido en el g86:
+   127 contra 135 de ancho-. El aire entre los dos ahora lo da el gap de .sin-guardar. */
+/* LA FILA DE LA TOMA RECIÉN GRABADA -revisión del PR #172, 08-11-2026-. De pie y en la tarjeta de lado
+   -ReproductorGrabacion.tsx, clase sin-guardar-; la columna de lado, en styles-visor-de-lado.css.
+   En la APK 804, la foto del g86 que mandó Javier mostraba tres problemas:
+   - los fondos de guardar iban pegados al borde de la tarjeta, como baldosas cortadas;
+   - «Guardar y compartir» tocaba los lados de su fondo;
+   - Repetir y Borrar seguían con su caja de vidrio y las líneas, así que quedaban cuatro cajas de dos
+     estilos.
+   Ahora:
+   - la fila tiene 8 de aire alrededor y entre botones;
+   - los dos de guardar llevan fondo y el doble de ancho;
+   - Repetir y Borrar van sin caja ni línea, como botones de texto.
+   Se probó en vivo en el g86, de pie a 433 de ancho y emulado a 360, y en la tarjeta de lado.
+   - A 433, «Guardar y compartir» -92 px- cabe en un renglón dentro de 110.
+   - A 360 se parte en dos renglones parejos -text-wrap: balance-.
+   - Repetir y Borrar no bajan de 50 de ancho.
+   Con flex-grow 1,3 el rótulo se partía a 433, y con 1,5 tocaba los bordes.
+   La toma guardada -Compartir y Borrar con su nombre- no cambia. */
+.acciones-toma.sin-guardar {
+  padding: var(--aire-2);
+  gap: var(--aire-2);
+}
+.acciones-toma.sin-guardar > .accion-toma {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: var(--aire-3) var(--aire-2);
+}
+.acciones-toma.sin-guardar > .accion-toma:not(.de-guardar) {
+  background: transparent;
+  border: none;
+}
+.acciones-toma.sin-guardar > .accion-toma.de-guardar {
+  flex-grow: 2;
+}
+.acciones-toma.sin-guardar > .accion-toma span {
+  text-wrap: balance;
+  text-align: center;
+  line-height: 1.2;
 }
 /* COMPARTIR Y BORRAR CON SU NOMBRE AL LADO DEL ÍCONO -ajustes de pantallas, 10-10-2026, boceto 3-. El
    resto de las acciones sigue con el nombre debajo. */

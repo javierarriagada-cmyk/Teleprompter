@@ -516,7 +516,9 @@ describe('Tarea 90, guardianas: de pie no cambia nada', () => {
     // ab86ccc-: arriba visor-arriba, que se puede desplazar, con el video, la barra y el nombre; abajo,
     // fuera, las acciones fijas. Lo de lado no entra. Antes:
     // expect(Array.from(tarjeta.children).map((c) => c.className)).toEqual(['visor-video', 'barra-visor', '', 'acciones-toma'])
-    expect(Array.from(tarjeta.children).map((c) => c.getAttribute('data-testid') || c.className)).toEqual(['visor-arriba', 'acciones-toma'])
+    // -revisión del PR #172, 08-11-2026- La fila de la toma recién grabada lleva sin-guardar, que la viste
+    // -styles.css-. Antes: .toEqual(['visor-arriba', 'acciones-toma'])
+    expect(Array.from(tarjeta.children).map((c) => c.getAttribute('data-testid') || c.className)).toEqual(['visor-arriba', 'acciones-toma sin-guardar'])
     // -tarea 96, 05-10-2026- Se borra el orden de lo de adentro de visor-arriba -regla del comienzo de
     // docs/lo-que-hay-que-saber.txt-: el Filtro suma una ficha. Antes:
     // const arriba = tarjeta.querySelector('[data-testid="visor-arriba"]') as HTMLElement

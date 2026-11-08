@@ -969,7 +969,9 @@ export default function ReproductorGrabacion({
               {nombre}
               {cerrar}
             </div>
-            <div className="acciones-toma visor-lado-acciones" data-testid="visor-lado-acciones">
+            {/* -revisión del PR #172, 08-11-2026- sin-guardar, como la fila de pie: la columna de la toma
+                recién grabada -styles-visor-de-lado.css-. Antes: className="acciones-toma visor-lado-acciones". */}
+            <div className={guardada ? 'acciones-toma visor-lado-acciones' : 'acciones-toma visor-lado-acciones sin-guardar'} data-testid="visor-lado-acciones">
               {acciones(true)}
             </div>
           </div>
@@ -989,7 +991,8 @@ export default function ReproductorGrabacion({
             {selector && <div style={{ padding: 'var(--aire-2) var(--aire-3) 0' }}>{selector}</div>}
             {/* -tarea 96- El filtro debajo de Subtítulos, igual. */}
             {selectorFiltro && <div style={{ padding: 'var(--aire-2) var(--aire-3) 0' }}>{selectorFiltro}</div>}
-            <div className="acciones-toma">{acciones(false)}</div>
+            {/* -revisión del PR #172, 08-11-2026- La misma fila que de pie. Antes: className="acciones-toma". */}
+            <div className={guardada ? 'acciones-toma' : 'acciones-toma sin-guardar'}>{acciones(false)}</div>
           </div>
         </div>
       </div>
@@ -1118,7 +1121,9 @@ export default function ReproductorGrabacion({
             en la toma guardada es la primera de solo dos acciones. */}
         {/* -tarea 87, A4- Las acciones van FUERA de visor-arriba, con flexShrink 0: siempre completas
             sobre la barra del sistema. Antes: <div className="acciones-toma">. */}
-        <div className="acciones-toma" style={{ flexShrink: 0 }}>
+        {/* -revisión del PR #172, 08-11-2026- sin-guardar viste la fila de la toma recién grabada: los dos
+            de guardar con fondo y Repetir y Borrar sin caja -styles.css-. Antes: className="acciones-toma". */}
+        <div className={guardada ? 'acciones-toma' : 'acciones-toma sin-guardar'} style={{ flexShrink: 0 }}>
           {guardada ? (
             <button
               type="button"
