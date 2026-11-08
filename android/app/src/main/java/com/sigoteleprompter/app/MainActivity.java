@@ -362,6 +362,8 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(AccesosDirectosPlugin.class);
         // -cuenta-google- Entrar con Google con Credential Manager -CuentaGooglePlugin.java-.
         registerPlugin(CuentaGooglePlugin.class);
+        // Prototipo del 08-11-2026: solo la web de herramientas lo llama.
+        registerPlugin(VentanaDePruebaPlugin.class);
         super.onCreate(savedInstanceState);
         // Antes: -tomas-largas, 15-10-2026- El cliente de Capacitor con los rangos de video bien contestados: el
         // visor abre tomas de cualquier tamaño -ClienteWebDeTomas, RangoHttp-. Lo demás pasa igual.

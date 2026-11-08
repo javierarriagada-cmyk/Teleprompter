@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026: mide si Sigo puede seguir la voz mientras otra app graba video con sonido. Esta rama no va a main ni a Play. -->
+<resources>
+    <!-- styles.css: variable bg-suelo, #151312 al 88 %. -->
+    <color name="prueba_suelo">#E0151312</color>
+    <!-- styles.css: variable color-texto. -->
+    <color name="prueba_texto">#E7E1DE</color>
+    <!-- styles.css: variable color-apagado. -->
+    <color name="prueba_apagado">#CAC5C2</color>
+    <!-- styles.css: variable color-apagado al 40 %, asa de Material 3. -->
+    <color name="prueba_asa">#66CAC5C2</color>
+    <!-- styles.css: variable color-sugerencia. -->
+    <color name="prueba_sugerencia">#968F8B</color>
+    <!-- styles.css: variable aviso-fondo y variable aviso-texto. -->
+    <color name="prueba_aviso_fondo">#ECE6E0</color>
+    <color name="prueba_aviso_texto">#1D1B1A</color>
+    <!-- styles.css: variable fondo-accion-guardar: variable color-texto al 10 %. -->
+    <color name="prueba_accion">#1AE7E1DE</color>
+    <!-- .pastilla-tiempo y variable microfono-disco-borde: blanco al 35 %. -->
+    <color name="prueba_canto">#59FFFFFF</color>
+    <!-- styles.css: variable microfono-disco-fondo: negro al 72 %. -->
+    <color name="prueba_disco">#B8000000</color>
+    <!-- styles.css: variable microfono-verde y variable microfono-halo al 35 %. -->
+    <color name="prueba_verde">#7BD88F</color>
+    <color name="prueba_halo">#597BD88F</color>
+    <!-- styles.css: variable redondeo-grande y variable redondeo-pildora. -->
+    <dimen name="prueba_radio">24dp</dimen>
+    <dimen name="prueba_pildora">999dp</dimen>
+    <!-- styles.css: variable texto-meta y variable texto-cuerpo, sp para respetar el sistema. -->
+    <dimen name="prueba_meta">13sp</dimen>
+    <dimen name="prueba_cuerpo">15sp</dimen>
+    <!-- Lectura: 24 e interlineado 1,4, igual a Sigo. -->
+    <dimen name="prueba_palabras">24sp</dimen>
+    <integer name="prueba_interlineado_decimas">14</integer>
+    <!-- .microfono-disco / .microfono-halo; IconoMicrofono. -->
+    <dimen name="prueba_disco_tamano">22dp</dimen>
+    <dimen name="prueba_halo_aire">3dp</dimen>
+    <dimen name="prueba_microfono_tamano">14dp</dimen>
+    <!-- .pastilla-tiempo: canto de 1; elevación pedida para la superficie. -->
+    <dimen name="prueba_canto_grosor">1dp</dimen>
+    <dimen name="prueba_elevacion">2dp</dimen>
+    <!-- Instrumento: ancho y bordes pedidos, no son una nueva escala de Sigo. -->
+    <dimen name="prueba_ancho">300dp</dimen>
+    <dimen name="prueba_margen">16dp</dimen>
+    <dimen name="prueba_relleno">12dp</dimen>
+    <dimen name="prueba_aire">8dp</dimen>
+    <dimen name="prueba_asa_ancho">32dp</dimen>
+    <dimen name="prueba_asa_alto">4dp</dimen>
+    <dimen name="prueba_toque">48dp</dimen>
+    <dimen name="prueba_icono">18dp</dimen>
+</resources>

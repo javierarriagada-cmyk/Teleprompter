@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026: mide si Sigo puede seguir la voz mientras otra app graba video con sonido. Esta rama no va a main ni a Play. -->
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/prueba_accesibilidad_descripcion"
+    android:canRetrieveWindowContent="false"
+    android:isAccessibilityTool="false"
+    android:accessibilityFeedbackType="feedbackGeneric" />

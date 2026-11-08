@@ -128,6 +128,8 @@ import { IndicadorPrecarga } from './components/IndicadorPrecarga'
 import { PanelDiagnostico } from './components/PanelDiagnostico'
 // Las herramientas de prueba no viajan a Play -tarea 84, src/lib/herramientas.ts-.
 import { HERRAMIENTAS } from './lib/herramientas'
+// Prototipo del 08-11-2026: todos los usos se eliminan del paquete de Play.
+import { VentanaDePrueba, microfonoYaConcedidoParaPrueba, type OpcionesPruebaFlotante, type AccionPruebaFlotante } from './lib/ventanaDePrueba'
 import { guionDeLaTarjeta, avisoAlArchivar } from './lib/portada'
 
 // Cuanto se quedan los controles a la vista despues de un toque, mientras se lee.
@@ -376,6 +378,42 @@ export default function App({ motor, repoOverride }: AppProps) {
   })
   const [conCamara, setConCamara] = useState<boolean>(false)
   const [estadoToma, setEstadoToma] = useState<EstadoToma>('listo')
+  // La intención solo vive durante ESTE toque. Ni el límite ni un diálogo la pueden heredar.
+  const intencionFlotanteRef = useRef<OpcionesPruebaFlotante | null>(null)
+  const preparandoFlotanteRef = useRef(false)
+  const entrandoFlotanteRef = useRef(false)
+  const sesionFlotanteRef = useRef<number | null>(null)
+  const anteriorTomaFlotanteRef = useRef<EstadoToma>('listo')
+  const accionesFlotanteRef = useRef<(accion: AccionPruebaFlotante) => void>(() => {})
+  const [oyenteFlotanteListo, setOyenteFlotanteListo] = useState(false)
+
+  useEffect(() => {
+    if (!(HERRAMIENTAS && Capacitor.isNativePlatform())) return
+    let desmontado = false
+    let quitar: (() => Promise<void>) | undefined
+    void (async () => {
+      const oyente = await VentanaDePrueba.addListener('accion', accion => accionesFlotanteRef.current(accion))
+      if (desmontado) { await oyente.remove(); return }
+      quitar = () => oyente.remove()
+      setOyenteFlotanteListo(true)
+    })().catch(e => console.warn('SigoFlotante', 'no se pudo instalar el oyente', e))
+    return () => {
+      desmontado = true
+      void quitar?.().catch(e => console.warn('SigoFlotante', 'no se pudo quitar el oyente', e))
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!(HERRAMIENTAS && Capacitor.isNativePlatform())) return
+    const anterior = anteriorTomaFlotanteRef.current
+    anteriorTomaFlotanteRef.current = estadoToma
+    if (anterior === 'leyendo' && estadoToma === 'listo' && sesionFlotanteRef.current !== null) {
+      sesionFlotanteRef.current = null
+      void VentanaDePrueba.cerrar()
+        .catch(e => console.warn('SigoFlotante', 'cerrar falló', e))
+    }
+  }, [estadoToma])
+
   const [fondoToma, setFondoToma] = useState<FondoToma>(
     (ajustesPrevios.fondoToma === 'recuadro' || ajustesPrevios.fondoToma === 'oculta')
       ? ajustesPrevios.fondoToma
@@ -1670,7 +1708,16 @@ export default function App({ motor, repoOverride }: AppProps) {
     setVista('lectura')
   }
 
+  // Antes: 08-11-2026, la apertura comenzaba así, sin intención ni try/finally:
+  // async function handleEmpezarDesdeListo() {
+  //   if (estadoToma === 'leyendo') return
+  // Se conserva el camino de Empezar; el finally solo suelta la intención del instrumento.
   async function handleEmpezarDesdeListo() {
+    if (HERRAMIENTAS && Capacitor.isNativePlatform()) {
+      if (entrandoFlotanteRef.current || (preparandoFlotanteRef.current && !intencionFlotanteRef.current)) return
+      entrandoFlotanteRef.current = intencionFlotanteRef.current !== null
+    }
+    try {
     if (estadoToma === 'leyendo') return
     hapticaToqueMedio()
     // -proxima-version, 2026-11-07- EL AVISO DE LÍMITE GRATIS, ANTES DEL MICRÓFONO. Sin Sigo+, si el guion dura
@@ -1703,6 +1750,14 @@ export default function App({ motor, repoOverride }: AppProps) {
     // Grabar el micrófono sigue haciendo falta para el sonido del video.
     const sinOido = fija && !conCamara
     // Antes: const concedido = await pedirMicrofono()
+    if (HERRAMIENTAS && Capacitor.isNativePlatform() && intencionFlotanteRef.current) {
+      try {
+        if (!await microfonoYaConcedidoParaPrueba()) intencionFlotanteRef.current = null
+      } catch (e) {
+        intencionFlotanteRef.current = null
+        console.info('SigoFlotante', 'intento descartado: no se pudo consultar el permiso', e)
+      }
+    }
     const concedido = sinOido ? true : await pedirMicrofono()
     if (!concedido) {
       setMostrarDialogoMicrofono(true)
@@ -1763,6 +1818,17 @@ export default function App({ motor, repoOverride }: AppProps) {
     // -tarea 104- La voz ya está: si la de silencio había quedado sin conexión, que se entere -así el
     // aviso de abajo no vuelve al volver a LISTO-.
     vozEnSilencioRef.current?.reintentar(idiomaDeVoz(langMotor))
+    if (HERRAMIENTAS && Capacitor.isNativePlatform() && intencionFlotanteRef.current) {
+      const opciones = intencionFlotanteRef.current
+      intencionFlotanteRef.current = null
+      try {
+        const abierta = await VentanaDePrueba.abrir(opciones)
+        sesionFlotanteRef.current = abierta.sesion
+      } catch (e) {
+        await avisarErrorFlotante(e)
+        return
+      }
+    }
     setEstadoToma('leyendo')
     setControlesVisibles(false)
     // -tarea 91- Si la toma no logra empezar, vuelve a LISTO: antes quedaba en LEYENDO sin cuenta ni
@@ -1774,6 +1840,49 @@ export default function App({ motor, repoOverride }: AppProps) {
       console.warn('[App] la toma no pudo empezar:', e)
       cancelarCuentaRegresiva()
       setEstadoToma('listo')
+    }
+    } finally {
+      if (HERRAMIENTAS && Capacitor.isNativePlatform()) {
+        intencionFlotanteRef.current = null
+        entrandoFlotanteRef.current = false
+      }
+    }
+  }
+
+  async function avisarErrorFlotante(error: unknown) {
+    if (!(HERRAMIENTAS && Capacitor.isNativePlatform())) return
+    const e = error as { code?: string; message?: string }
+    if (e?.code === 'SIN_ACCESIBILIDAD') {
+      mostrarAviso('Activa “Sigo · prueba flotante” en Ajustes → Accesibilidad.')
+      try {
+        await VentanaDePrueba.abrirAjustesAccesibilidad()
+      } catch (ajustes) {
+        mostrarAviso(ajustes instanceof Error ? ajustes.message : String(ajustes))
+      }
+    } else if (e?.code === 'ACCESIBILIDAD_ACTIVA') {
+      mostrarAviso('Para el control C0, apaga “Sigo · prueba flotante” en Ajustes → Accesibilidad.')
+    } else mostrarAviso(e?.message || String(error))
+  }
+
+  async function empezarFlotante(opciones: OpcionesPruebaFlotante) {
+    if (!(HERRAMIENTAS && Capacitor.isNativePlatform()) || !oyenteFlotanteListo
+      || preparandoFlotanteRef.current || estadoToma !== 'listo') return
+    preparandoFlotanteRef.current = true
+    try {
+      const estado = await VentanaDePrueba.estado()
+      if (opciones.ventana && !estado.accesibilidad) {
+        await avisarErrorFlotante({ code: 'SIN_ACCESIBILIDAD' }); return
+      }
+      if (!opciones.ventana && estado.accesibilidad) {
+        await avisarErrorFlotante({ code: 'ACCESIBILIDAD_ACTIVA' }); return
+      }
+      intencionFlotanteRef.current = opciones
+      await handleEmpezarDesdeListo()
+    } catch (e) {
+      await avisarErrorFlotante(e)
+    } finally {
+      intencionFlotanteRef.current = null
+      preparandoFlotanteRef.current = false
     }
   }
 
@@ -2784,6 +2893,22 @@ export default function App({ motor, repoOverride }: AppProps) {
     if (resumen === null) avisarFinDeToma(duracionMs)
   }
 
+  // Siempre apunta a los mismos caminos reales de Pausa y Parar, sin cierres obsoletos del montaje.
+  accionesFlotanteRef.current = accion => {
+    if (!(HERRAMIENTAS && Capacitor.isNativePlatform())) return
+    console.info('SigoFlotante', `web recibió accion=${accion.tipo}`)
+    if (accion.sesion !== sesionFlotanteRef.current) {
+      console.info('SigoFlotante', `accion descartada de sesión vieja=${accion.sesion}`)
+      return
+    }
+    if (accion.tipo === 'alternar') {
+      void handleTogglePausa().catch(e => console.warn('SigoFlotante', 'alternar falló', e))
+    } else {
+      sesionFlotanteRef.current = null
+      void pararComoElBoton().catch(e => console.warn('SigoFlotante', 'parar falló', e))
+    }
+  }
+
   function ejecutarAccionPausa(a: AccionPausa, en: EntradaPausa): Promise<void> {
     const porGesto = en.tipo === 'gesto' || en.tipo === 'finCuenta'
     switch (a.tipo) {
@@ -3548,6 +3673,13 @@ export default function App({ motor, repoOverride }: AppProps) {
             ...(gestoEnLectura ? estiloAtras(gestoEnLectura) : {})
           } as React.CSSProperties}
         >
+          {HERRAMIENTAS && Capacitor.isNativePlatform() && estadoToma === 'listo' && !conCamara && !camaraActiva && !fija && (
+            <div className="prueba-flotante-casos" role="group" aria-label="Prueba flotante">
+              <button type="button" disabled={!oyenteFlotanteListo} onClick={() => void empezarFlotante({ servicio: true, ventana: true })}>Ventana (C1-C7)</button>
+              <button type="button" disabled={!oyenteFlotanteListo} onClick={() => void empezarFlotante({ servicio: false, ventana: true })}>Ventana sin servicio (C8)</button>
+              <button type="button" disabled={!oyenteFlotanteListo} onClick={() => void empezarFlotante({ servicio: true, ventana: false })}>Solo servicio (C0)</button>
+            </div>
+          )}
           {/* -controles-que-se-desvanecen- Montados mientras faseControles no es null: también mientras se
               van. Antes: {estadoToma === 'leyendo' && controlesVisibles && ( */}
           {estadoToma === 'leyendo' && faseControles !== null && (

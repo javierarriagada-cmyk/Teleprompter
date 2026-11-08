@@ -763,6 +763,7 @@ public class VoskNativoPlugin extends Plugin {
         Oido o = oido;
         if (o != null) d.put("relevos", o.relevos);
         notifyListeners(evento, d);
+        VentanaDePrueba.alOir(evento, hipotesis, rms, o != null ? o.relevos : 0, o != null ? o.grabadora.getAudioSessionId() : -1);
     }
 
     /**
