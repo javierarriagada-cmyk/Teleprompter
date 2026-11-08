@@ -1356,6 +1356,11 @@ export default function App({ motor, repoOverride }: AppProps) {
     },
     alNotificarVoz: seguidorVoz
   })
+  // -proxima-version, 2026-11-08- EL DISCO DEL MICRÓFONO de la pastilla: leyendo o grabando, con la voz -no
+  // con Velocidad fija- y con el micrófono abierto de verdad -isRecording de useASR, que pasa a false cuando
+  // el motor se detiene-. En la pausa con la voz, ejecutarAccionPausa llama stop(): el micrófono se cierra y
+  // el disco se va. En LISTO no sale.
+  const microfonoEscuchando = isRecording && !fija && estadoToma === 'leyendo'
 
   // EL MODELO DEL IDIOMA DEL GUION, CARGADO EN SILENCIO -28-09-2026-. Al abrir la app y cada vez
   // que cambia el idioma del guion en uso. Asi Empezar no espera a desempaquetar: en una
@@ -3833,7 +3838,10 @@ export default function App({ motor, repoOverride }: AppProps) {
                 {((mostrarTiempo && !(conCamara && layout === 'tel-v' && estadoToma === 'listo')) || preparandoVoz !== null) && ( */}
             {/* -cuarta vuelta- Leer, de pie en el teléfono, también tiene el dock con lo que dura. Antes:
                 {(mostrarTiempo || preparandoVoz !== null) && !(conCamara && layout === 'tel-v' && estadoToma === 'listo') && ( */}
-            {(mostrarTiempo || preparandoVoz !== null) && !(layout === 'tel-v' && estadoToma === 'listo') && (
+            {/* -proxima-version, 2026-11-08- y el disco del micrófono, que sale aunque «Mostrar tiempo» esté
+                apagado: entonces solo él, en una pastilla redonda -soloMicrofono-. Antes:
+                {(mostrarTiempo || preparandoVoz !== null) && !(layout === 'tel-v' && estadoToma === 'listo') && ( */}
+            {(mostrarTiempo || preparandoVoz !== null || microfonoEscuchando) && !(layout === 'tel-v' && estadoToma === 'listo') && (
               <BarraDeTiempo
                 motorAvance={motorAvance}
                 totalTokens={totalTokens}
@@ -3856,6 +3864,9 @@ export default function App({ motor, repoOverride }: AppProps) {
                 limiteTotalSeg={conCamara && !tieneSuscripcion() ? limitesActuales().grabacionSeg : (faseLimiteVoz === 'queda' || faseLimiteVoz === 'aviso' ? limitesActuales().lecturaSeg : null)}
                 faseLimiteVoz={faseLimiteVoz}
                 // Antes 2026-10-27: segundosQuedanVoz={...} para textoQuedaConVoz en la pastilla.
+                // -proxima-version, 2026-11-08- El disco del micrófono.
+                escuchando={microfonoEscuchando}
+                soloMicrofono={!mostrarTiempo && preparandoVoz === null}
               />
             )}
           </div>

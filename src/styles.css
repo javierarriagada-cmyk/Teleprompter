@@ -932,6 +932,9 @@ textarea::placeholder {
   left: calc(50% + 36px + 8px);
   right: calc(16px + env(safe-area-inset-right, 0px));
   justify-content: flex-end;
+  /* -proxima-version, 2026-11-08- el disco del micrófono va a la izquierda de la pastilla, centrado. */
+  align-items: center;
+  gap: 6px;
 }
 .pastilla-tiempo { letter-spacing: 0.04em; }
 /* -tarea 83, parte B, 04-10-2026- Leyendo de pie, centrada encima de la fila de la toma -el bottom lo
@@ -3044,4 +3047,57 @@ button.btn-deformable.miniatura-banda:not(:active) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+/* -proxima-version, 2026-11-08- EL DISCO DEL MICRÓFONO junto a la pastilla del tiempo -BarraDeTiempo.tsx-.
+   Mientras Sigo escucha con la voz, un micrófono verde en un disco de 22 con un ícono de 14. El halo crece
+   con el VOLUMEN -la variable --nivel-voz, 0..1, la escribe el componente-: scale(1 + nivel × 0,35). En
+   silencio queda quieto. Nunca cambia de color: el rojo en Sigo es «grabando». El disco es oscuro y opaco,
+   como la pastilla, para que el verde se lea igual sobre la lectura oscura y sobre la clara. No se toca:
+   sin área de 48. */
+:root {
+  --microfono-verde: #7BD88F;
+  --microfono-disco-fondo: rgba(0, 0, 0, 0.72);
+  --microfono-disco-borde: rgba(255, 255, 255, 0.35);
+  --microfono-halo: rgba(123, 216, 143, 0.35);
+}
+.microfono-disco {
+  --nivel-voz: 0;
+  position: relative;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: var(--microfono-disco-fondo);
+  border: 1px solid var(--microfono-disco-borde);
+  color: var(--microfono-verde);
+  box-sizing: border-box;
+}
+.microfono-disco > svg {
+  position: relative;
+  z-index: 1;
+}
+.microfono-halo {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background-color: var(--microfono-halo);
+  transform: scale(calc(1 + var(--nivel-voz) * 0.35));
+  opacity: calc(0.35 + var(--nivel-voz) * 0.65);
+}
+/* Reducir movimiento: el halo no crece, solo cambia su opacidad. */
+@media (prefers-reduced-motion: reduce) {
+  .microfono-halo {
+    transform: none;
+  }
+}
+/* «Mostrar tiempo» apagado: el micrófono solo, en una pastilla redonda. Antes era el mínimo de 150 de
+   .pastilla-tiempo; aquí no hay tiempo que mostrar. */
+.pastilla-tiempo.pastilla-microfono-sola {
+  min-width: 0;
+  padding: 6px;
+  border-radius: 50%;
 }
