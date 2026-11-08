@@ -201,6 +201,34 @@ const JuntarEspacios = Extension.create({
   }
 })
 
+// El ejemplo del editor vacío va en data-ejemplo, aparte del data-placeholder de Tiptap,
+// para poder pintarlo más chico y con otro color -tanda-08-nov, 08-11-2026-.
+const EjemploVacio = Extension.create({
+  name: 'ejemploVacio',
+  addOptions() {
+    return { texto: '' }
+  },
+  addProseMirrorPlugins() {
+    const texto = this.options.texto
+    return [
+      new Plugin({
+        props: {
+          decorations(state) {
+            if (!texto) return null
+            const { doc } = state
+            if (doc.childCount === 0 || doc.textContent.length > 0) return null
+            const primero = doc.firstChild
+            if (!primero) return null
+            return DecorationSet.create(doc, [
+              Decoration.node(0, primero.nodeSize, { 'data-ejemplo': texto })
+            ])
+          }
+        }
+      })
+    ]
+  }
+})
+
 export function EditorGuion({
   texto,
   tramos,
@@ -208,6 +236,7 @@ export function EditorGuion({
   onSeleccion,
   editorRef,
   placeholder,
+  ejemplo = '',
   fontSize,
   tipoFuente,
   colorFondo,
@@ -222,6 +251,8 @@ export function EditorGuion({
   onSeleccion: (haySeleccion: boolean) => void
   editorRef: React.MutableRefObject<Editor | null>
   placeholder: string
+  // -tanda-08-nov, 08-11-2026- El ejemplo va aparte de la invitación, en data-ejemplo.
+  ejemplo?: string
   fontSize: number
   tipoFuente: 'sans' | 'serif'
   colorFondo: string
@@ -262,7 +293,8 @@ export function EditorGuion({
       Acotaciones,
       PrimeraLinea,
       JuntarEspacios,
-      Placeholder.configure({ placeholder })
+      Placeholder.configure({ placeholder }),
+      EjemploVacio.configure({ texto: ejemplo })
     ],
     content: aDocumento(texto, tramos),
     editorProps: {

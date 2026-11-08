@@ -139,6 +139,8 @@
   --grabar-brillo: 0 4px 18px rgba(225, 29, 46, 0.28);
   --ajustes-vidrio: rgba(255, 255, 255, 0.04);
   --ajustes-borde: rgba(255, 255, 255, 0.08);
+  /* -tanda-08-nov, 08-11-2026- Fondo suave de cada botón de guardar en el visor. */
+  --fondo-accion-guardar: color-mix(in srgb, var(--color-texto) 10%, transparent);
 }
 
 [data-tema="claro"] {
@@ -1042,8 +1044,31 @@ textarea::placeholder {
   height: 0;
   /* Antes: opacity 0.45 sobre la letra -bajaba el contraste bajo 4,5:1 en Test Lab A3-.
      06-10-2026, tarea 101: color explícito de sugerencia de lectura, opacity 1. */
+  /* Antes: color: var(--color-sugerencia-lectura);
+     08-11-2026, tanda-08-nov: la invitación se mezcla a mitades con la letra del editor
+     (currentColor es colorLetraEfectiva, que hereda el párrafo) para verse más, pero
+     siempre más tenue que el texto escrito. La primera declaración queda de respaldo
+     para los WebView que no entienden color-mix. */
   color: var(--color-sugerencia-lectura);
+  color: color-mix(in srgb, var(--color-sugerencia-lectura) 50%, currentColor 50%);
   opacity: 1;
+  pointer-events: none;
+  white-space: pre-wrap;
+}
+/* El ejemplo, debajo de la invitación, a 16 px y con 12 px de aire.
+   --aire-sobre-ejemplo usa el em del párrafo -el tamaño de la letra del editor-
+   para no montarse sobre la invitación, que flota con height: 0. */
+.editor-guion p.is-editor-empty:first-child[data-ejemplo] {
+  --aire-sobre-ejemplo: calc(1em + 12px);
+}
+.editor-guion p.is-editor-empty:first-child[data-ejemplo]::after {
+  content: attr(data-ejemplo);
+  display: block;
+  clear: both;
+  margin-top: var(--aire-sobre-ejemplo);
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--color-sugerencia-lectura);
   pointer-events: none;
   white-space: pre-wrap;
 }
@@ -1967,6 +1992,18 @@ label.selector-aa-opcion {
 .accion-toma:disabled {
   opacity: 0.7;
   cursor: default;
+}
+/* -tanda-08-nov, 08-11-2026- Cada botón de guardar lleva su propio fondo suave,
+   no un grupo conectado. Repetir y Borrar siguen con .accion-toma a secas.
+   El :disabled de arriba también apaga este fondo. */
+.accion-toma.de-guardar {
+  background: var(--fondo-accion-guardar);
+  border-color: transparent;
+  border-radius: var(--forma-media);
+  overflow: visible;
+}
+.acciones-toma > .accion-toma.de-guardar + .accion-toma.de-guardar {
+  margin-left: var(--aire-2);
 }
 /* COMPARTIR Y BORRAR CON SU NOMBRE AL LADO DEL ÍCONO -ajustes de pantallas, 10-10-2026, boceto 3-. El
    resto de las acciones sigue con el nombre debajo. */

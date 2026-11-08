@@ -883,7 +883,9 @@ export default function ReproductorGrabacion({
               {/* -tarea 87, de lado, 04-10-2026- Lo mismo que de pie: desactivado si se apretó el otro, y
                   solo el apretado muestra el avance. Antes: disabled={guardando} y el avance en Guardar
                   con cualquiera de los dos. */}
-              <button type="button" className="accion-toma" data-testid="guardar-galeria-desde-reproductor" aria-label={t('guardarEnGaleria')} disabled={guardando && apretado !== 'guardar'} aria-busy={apretado === 'guardar'} onClick={handleGuardar} style={estiloFila} {...fila}>
+              {/* Antes: className="accion-toma"
+                  08-11-2026, tanda-08-nov: clase de-guardar para el fondo propio. */}
+              <button type="button" className="accion-toma de-guardar" data-testid="guardar-galeria-desde-reproductor" aria-label={t('guardarEnGaleria')} disabled={guardando && apretado !== 'guardar'} aria-busy={apretado === 'guardar'} onClick={handleGuardar} style={estiloFila} {...fila}>
                 {/* Antes: <IconoGuardar tamano={26} /> */}
                 {apretado === 'guardar' ? <IndicadorGuardado avance={avance} /> : <IconoGuardar tamano={26} />}
                 <span data-rotulo="guardar" style={{ fontSize: ROTULO_MINIMO }}>{apretado === 'guardar' ? (avance !== null ? t('guardandoAvance', { n: Math.round(avance) }) : t('guardando')) : t('guardar')}</span>
@@ -891,7 +893,9 @@ export default function ReproductorGrabacion({
               {/* -tarea 87, de lado, 04-10-2026- Guardar y compartir también de lado: en la columna, una
                   fila más debajo de Guardar; en la tarjeta, en la misma fila. La misma acción que de pie
                   -handleGuardarYCompartir-, con el toque de 48 y el rótulo de 12 de la 90. */}
-              <button type="button" className="accion-toma" data-testid="btn-compartir-nueva" aria-label={t('guardarYCompartir')} disabled={guardando && apretado !== 'compartir'} aria-busy={apretado === 'compartir'} onClick={handleGuardarYCompartir} style={estiloFila} {...fila}>
+              {/* Antes: className="accion-toma"
+                  08-11-2026, tanda-08-nov: clase de-guardar para el fondo propio. */}
+              <button type="button" className="accion-toma de-guardar" data-testid="btn-compartir-nueva" aria-label={t('guardarYCompartir')} disabled={guardando && apretado !== 'compartir'} aria-busy={apretado === 'compartir'} onClick={handleGuardarYCompartir} style={estiloFila} {...fila}>
                 {/* Antes: <IconoCompartir tamano={26} /> */}
                 {apretado === 'compartir' ? <IndicadorGuardado avance={avance} /> : <IconoCompartir tamano={26} />}
                 <span data-rotulo="compartir" style={{ fontSize: ROTULO_MINIMO }}>{apretado === 'compartir' ? (avance !== null ? t('guardandoAvance', { n: Math.round(avance) }) : t('guardando')) : t('guardarYCompartir')}</span>
@@ -1131,9 +1135,11 @@ export default function ReproductorGrabacion({
             </button>
           ) : (
             <>
+              {/* Antes: className="accion-toma"
+                  08-11-2026, tanda-08-nov: clase de-guardar para el fondo propio. */}
               <button
                 type="button"
-                className="accion-toma"
+                className="accion-toma de-guardar"
                 data-testid="guardar-galeria-desde-reproductor"
                 aria-label={t('guardarEnGaleria')}
                 // -tarea 87- Desactivado si se apretó el otro; el apretado muestra el avance y no se
@@ -1147,9 +1153,11 @@ export default function ReproductorGrabacion({
                 <span>{apretado === 'guardar' ? (avance !== null ? t('guardandoAvance', { n: Math.round(avance) }) : t('guardando')) : t('guardar')}</span>
               </button>
               {/* -tarea 87, E1- Guardar y compartir, en toda toma recién grabada. */}
+              {/* Antes: className="accion-toma"
+                  08-11-2026, tanda-08-nov: clase de-guardar para el fondo propio. */}
               <button
                 type="button"
-                className="accion-toma"
+                className="accion-toma de-guardar"
                 data-testid="btn-compartir-nueva"
                 aria-label={t('guardarYCompartir')}
                 disabled={guardando && apretado !== 'compartir'}

@@ -78,6 +78,12 @@
 .visor-lado-acciones > * + * {
   border-top: 1px solid var(--color-separador);
 }
+/* -tanda-08-nov, 08-11-2026- Sin línea entre los dos de guardar, y con aire entre ellos,
+   para que se lean como grupo. Cada uno lleva su fondo redondeado. */
+.visor-lado-acciones > .accion-toma.de-guardar + .accion-toma.de-guardar {
+  border-top: none;
+  margin-top: var(--aire-2);
+}
 /* Subtítulos en la columna: el SelectorSubtitulos de verdad vestido como .accion-toma -el CC y el
    estilo elegido debajo, sin la palabra ni la flecha-. Abierto, sus cuatro opciones salen en un panel
    de 320 a la izquierda de la columna, sobre el video, a la altura del botón -como los paneles de ficha

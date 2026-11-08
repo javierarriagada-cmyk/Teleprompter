@@ -199,7 +199,10 @@ export const en: Textos = {
   acotacion: 'Note',
   botonAcotacion: '[...] Note',
   // -pulido-1- Single-character ellipsis. Antes: placeholderGuion: 'Start writing...\n\nFor example: …' -the rest unchanged-.
-  placeholderGuion: 'Start writing…\n\nFor example: Hi, today I want to show you how to use Sigo to record your videos while looking at the camera.',
+  // Antes: placeholderGuion: 'Start writing…\n\nFor example: Hi, today I want to show you how to use Sigo to record your videos while looking at the camera.',
+  // 08-11-2026, tanda-08-nov: la invitación y el ejemplo van en dos claves, para pintarlos aparte.
+  placeholderGuion: 'Start writing…',
+  ejemploGuion: 'For example: Hi, today I want to show you how to use Sigo to record your videos while looking at the camera.',
   pegarTexto: 'Paste text',
   abrirArchivo: 'Open file',
   // -pulido-1- Single-character ellipsis. Antes: leyendoArchivo: 'Opening...',

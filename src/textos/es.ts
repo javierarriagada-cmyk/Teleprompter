@@ -216,7 +216,10 @@ export const es = {
   acotacion: 'Acotación',
   botonAcotacion: '[...] Acotación',
   // -pulido-1- Puntos suspensivos de un carácter. Antes: placeholderGuion: 'Escribe el texto...\n\nEj: …' -el resto igual-.
-  placeholderGuion: 'Escribe el texto…\n\nEj: Hola, hoy te quiero contar cómo usar Sigo para grabar tus videos mirando a la cámara.',
+  // Antes: placeholderGuion: 'Escribe el texto…\n\nEj: Hola, hoy te quiero contar cómo usar Sigo para grabar tus videos mirando a la cámara.',
+  // 08-11-2026, tanda-08-nov: la invitación y el ejemplo van en dos claves, para pintarlos aparte.
+  placeholderGuion: 'Escribe el texto…',
+  ejemploGuion: 'Ej: Hola, hoy te quiero contar cómo usar Sigo para grabar tus videos mirando a la cámara.',
   pegarTexto: 'Pegar texto',
   abrirArchivo: 'Abrir archivo',
   // -pulido-1- Puntos suspensivos de un carácter. Antes: leyendoArchivo: 'Leyendo...',

@@ -172,7 +172,10 @@ export const pt: Textos = {
   destacado: 'Destaque',
   acotacion: 'Anotação',
   botonAcotacion: '[...] Anotação',
-  placeholderGuion: 'Comece a escrever…\n\nPor exemplo: Oi, hoje quero mostrar como usar o Sigo para gravar seus vídeos olhando para a câmera.',
+  // Antes: placeholderGuion: 'Comece a escrever…\n\nPor exemplo: Oi, hoje quero mostrar como usar o Sigo para gravar seus vídeos olhando para a câmera.',
+  // 08-11-2026, tanda-08-nov: la invitación y el ejemplo van en dos claves, para pintarlos aparte.
+  placeholderGuion: 'Comece a escrever…',
+  ejemploGuion: 'Por exemplo: Oi, hoje quero mostrar como usar o Sigo para gravar seus vídeos olhando para a câmera.',
   pegarTexto: 'Colar texto',
   abrirArchivo: 'Abrir arquivo',
   leyendoArchivo: 'Abrindo…',
