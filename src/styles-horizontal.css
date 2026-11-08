@@ -187,6 +187,12 @@
   bottom: calc(14px + env(safe-area-inset-bottom, 0px));
   width: 100px;
   justify-content: center;
+  /* -proxima-version, revisión del 08-11-2026- EL DISCO DEL MICRÓFONO VA ENCIMA DE LA PASTILLA, centrado
+     en el riel. Al lado no cabe: el lugar mide 100 y el disco -22-, su aire -6- y la pastilla -100- piden
+     128. Se pasaba por 28, la pastilla se corría 14 hacia afuera y quedaba pegada al borde de la
+     pantalla. Encima le sobra alto: el círculo de Parar está al centro del riel. Antes, sin esta línea,
+     iba en fila -el lugar es flex por BarraDeTiempo-. */
+  flex-direction: column;
 }
 .layout-tel-h .pastilla-tiempo {
   min-width: 100px;

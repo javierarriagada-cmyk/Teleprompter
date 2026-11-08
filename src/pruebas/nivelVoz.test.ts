@@ -1,7 +1,9 @@
 // -proxima-version, 2026-11-08- Las pruebas de lógica del nivel del micrófono -lib/nivelVoz.ts-: el paso del
 // rms a 0..1, el suavizado, la vuelta a 0 sin eventos y el canal. Cómo se ve el disco lo juzga Javier.
 import { describe, expect, test } from 'vitest'
-import { rmsANivel, suavizarNivel, objetivoNivel, publicarNivelVoz, suscribirNivelVoz, SIN_EVENTOS_MS } from '../lib/nivelVoz'
+// -revisión del 08-11-2026- y discoMicrofonoVisible, cuándo se ve el disco. Antes:
+// import { rmsANivel, suavizarNivel, objetivoNivel, publicarNivelVoz, suscribirNivelVoz, SIN_EVENTOS_MS } from '../lib/nivelVoz'
+import { rmsANivel, suavizarNivel, objetivoNivel, publicarNivelVoz, suscribirNivelVoz, SIN_EVENTOS_MS, discoMicrofonoVisible } from '../lib/nivelVoz'
 
 const rmsDeDb = (db: number) => Math.pow(10, db / 20)
 
@@ -53,5 +55,21 @@ describe('nivelVoz - el canal', () => {
     salir()
     publicarNivelVoz(0.3, 3)
     expect(recibidos).toEqual([0.1, 0.2])
+  })
+})
+
+// -revisión del 08-11-2026- La prueba que pedía la orden y no venía en la entrega.
+describe('nivelVoz - cuándo se ve el disco', () => {
+  test('con la voz y el micrófono abierto, leyendo o grabando, sí', () => {
+    expect(discoMicrofonoVisible({ microfonoAbierto: true, fija: false, estadoToma: 'leyendo' })).toBe(true)
+  })
+  test('con Velocidad fija, no', () => {
+    expect(discoMicrofonoVisible({ microfonoAbierto: true, fija: true, estadoToma: 'leyendo' })).toBe(false)
+  })
+  test('en LISTO, no', () => {
+    expect(discoMicrofonoVisible({ microfonoAbierto: true, fija: false, estadoToma: 'listo' })).toBe(false)
+  })
+  test('con el micrófono cerrado -también en la pausa con la voz-, no', () => {
+    expect(discoMicrofonoVisible({ microfonoAbierto: false, fija: false, estadoToma: 'leyendo' })).toBe(false)
   })
 })

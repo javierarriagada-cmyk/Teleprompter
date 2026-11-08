@@ -36,6 +36,14 @@ export function objetivoNivel(ultimoRms: number, ultimoEventoMs: number | null, 
   return rmsANivel(ultimoRms)
 }
 
+// CUÁNDO SE VE EL DISCO -revisión del 08-11-2026-. Leyendo o grabando -estadoToma 'leyendo', que es el mismo en
+// Leer y en Grabar-, con la voz -no con Velocidad fija- y con el micrófono abierto de verdad -isRecording de
+// useASR, que pasa a false al detener el motor y en la pausa con la voz-. Estaba suelto en App.tsx y no tenía
+// prueba; la orden la pedía. Antes, en App: const microfonoEscuchando = isRecording && !fija && estadoToma === 'leyendo'
+export function discoMicrofonoVisible(p: { microfonoAbierto: boolean; fija: boolean; estadoToma: 'listo' | 'leyendo' }): boolean {
+  return p.microfonoAbierto && !p.fija && p.estadoToma === 'leyendo'
+}
+
 // EL CANAL. publicar y suscribir; suscribir devuelve la desuscripción.
 type OyenteNivel = (rms: number, tMs: number) => void
 const oyentes = new Set<OyenteNivel>()

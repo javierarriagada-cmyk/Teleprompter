@@ -64,6 +64,8 @@ import { vigilarSuscripcion, tieneSuscripcion, sincronizarLocaleUiPurchases, vig
 // -proxima-version, 2026-11-07- y el aviso de límite antes de empezar. Antes:
 // import { cargarLimites, limitesActuales, hayQueAvisar, llegoAlLimite, transcurridoSinPausas, accionAlLimiteLectura } from './lib/limites'
 import { cargarLimites, limitesActuales, hayQueAvisar, llegoAlLimite, transcurridoSinPausas, accionAlLimiteLectura, decidirAvisoLimiteGratis, yaSalioAvisoLimite, marcarAvisoLimiteVisto, type TipoToma } from './lib/limites'
+// -revisión del 08-11-2026- Cuándo se ve el disco del micrófono de la pastilla.
+import { discoMicrofonoVisible } from './lib/nivelVoz'
 // Antes: import { pausaUsaMotorFijo, tokenSeguidorAlVolverAVoz } from './lib/lecturaForzada'
 // 27-10-2026: vía forzada a fija retirada; al límite se pausa (accionAlLimiteLectura).
 import { abrirOferta, abrirOfertaInicialSiCorresponde, decidirOfertaAlLimite } from './lib/oferta'
@@ -1360,7 +1362,9 @@ export default function App({ motor, repoOverride }: AppProps) {
   // con Velocidad fija- y con el micrófono abierto de verdad -isRecording de useASR, que pasa a false cuando
   // el motor se detiene-. En la pausa con la voz, ejecutarAccionPausa llama stop(): el micrófono se cierra y
   // el disco se va. En LISTO no sale.
-  const microfonoEscuchando = isRecording && !fija && estadoToma === 'leyendo'
+  // -revisión del 08-11-2026- La condición vive en lib/nivelVoz.ts, con su prueba. Antes:
+  //   const microfonoEscuchando = isRecording && !fija && estadoToma === 'leyendo'
+  const microfonoEscuchando = discoMicrofonoVisible({ microfonoAbierto: isRecording, fija, estadoToma })
 
   // EL MODELO DEL IDIOMA DEL GUION, CARGADO EN SILENCIO -28-09-2026-. Al abrir la app y cada vez
   // que cambia el idioma del guion en uso. Asi Empezar no espera a desempaquetar: en una

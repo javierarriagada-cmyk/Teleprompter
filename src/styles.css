@@ -3096,7 +3096,14 @@ button.btn-deformable.miniatura-banda:not(:active) {
 }
 /* «Mostrar tiempo» apagado: el micrófono solo, en una pastilla redonda. Antes era el mínimo de 150 de
    .pastilla-tiempo; aquí no hay tiempo que mostrar. */
-.pastilla-tiempo.pastilla-microfono-sola {
+/* -revisión del 08-11-2026- CON UNA CLASE MÁS, PARA QUE GANE. styles-horizontal.css y styles-tableta.css se
+   cargan después -main.tsx- y sus .layout-tel-h / .layout-tab-v / .layout-tab-h .pastilla-tiempo pesan lo
+   mismo: su ancho mínimo de 100, 130 y 128 y su relleno ganaban, y de lado la pastilla redonda salía
+   ovalada. display flex: sin renglón de letra adentro, el alto es el del disco más el relleno, igual que el
+   ancho -36 x 36-. Antes:
+   .pastilla-tiempo.pastilla-microfono-sola { min-width: 0; padding: 6px; border-radius: 50%; } */
+.pastilla-tiempo-lugar .pastilla-tiempo.pastilla-microfono-sola {
+  display: flex;
   min-width: 0;
   padding: 6px;
   border-radius: 50%;
