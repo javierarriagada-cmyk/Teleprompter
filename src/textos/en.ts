@@ -264,7 +264,8 @@ export const en: Textos = {
   // -proxima-version, 2026-11-07- Acerca de Sigo: calificar en Play y compartir la app.
   // -08-11-2026- El texto sale de Google Play: el botón para reseñar dice «Write a review», bajo «Tell others
   // what you think» -en-US-. Ver es.ts. Antes: calificarSigo: 'Rate Sigo',
-  calificarSigo: 'Write a review',
+  // -08-11-2026, más tarde- Vuelve «Rate Sigo», por decisión de Javier. Ver es.ts. Antes: calificarSigo: 'Write a review',
+  calificarSigo: 'Rate Sigo',
   compartirSigo: 'Share Sigo',
   textoCompartirSigo: 'Sigo is a teleprompter that follows your voice: {url}',
   // -proxima-version, 2026-11-07- El aviso de límite gratis antes de grabar o leer con voz -DialogoLimiteGratis.tsx-.

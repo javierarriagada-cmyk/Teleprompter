@@ -234,7 +234,8 @@ export const pt: Textos = {
   // -proxima-version, 2026-11-07- Acerca de Sigo: calificar en Play y compartir la app.
   // -08-11-2026- El texto sale de Google Play: el botón para reseñar dice «Escreva uma avaliação», bajo «Dê sua
   // opinião» -pt-BR-. Aquí en infinitivo, como «Compartilhar o Sigo». Ver es.ts. Antes: calificarSigo: 'Avaliar o Sigo',
-  calificarSigo: 'Escrever uma avaliação',
+  // -08-11-2026, más tarde- Vuelve «Avaliar o Sigo», por decisión de Javier. Ver es.ts. Antes: calificarSigo: 'Escrever uma avaliação',
+  calificarSigo: 'Avaliar o Sigo',
   compartirSigo: 'Compartilhar o Sigo',
   textoCompartirSigo: 'O Sigo é um teleprompter que acompanha a sua voz: {url}',
   // -proxima-version, 2026-11-07- El aviso de límite gratis antes de grabar o leer con voz -DialogoLimiteGratis.tsx-.

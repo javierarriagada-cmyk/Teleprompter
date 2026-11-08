@@ -284,7 +284,10 @@ export const es = {
   // opinión», bajo «Comparte tu opinión con otros usuarios» -es-419-. Aquí va en infinitivo, como «Compartir Sigo».
   // Javier, ante «Calificar Sigo»: «casi le decimos danos buena o mala nota». La clave queda igual.
   // Antes: calificarSigo: 'Calificar Sigo',
-  calificarSigo: 'Escribir una opinión',
+  // -08-11-2026, más tarde- VUELVE «Calificar Sigo». «Escribir una opinión» se confundía con «Enviar comentarios»
+  // -el correo privado, en Ajustes-, y el estudio de Grok el chat volvió con poco acceso a las apps. Javier: «por
+  // mientras dejemoslo tal cual, calificar sigo y punto». Antes: calificarSigo: 'Escribir una opinión',
+  calificarSigo: 'Calificar Sigo',
   compartirSigo: 'Compartir Sigo',
   textoCompartirSigo: 'Sigo es un teleprompter que sigue tu voz: {url}',
   // -proxima-version, 2026-11-07- El aviso de límite gratis antes de grabar o leer con voz -DialogoLimiteGratis.tsx-.
