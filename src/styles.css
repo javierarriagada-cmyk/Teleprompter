@@ -292,6 +292,11 @@
      aunque la app esté en claro (menus-dock / panel). Sin esta variable heredaban
      el marrón de [data-tema="claro"]. Antes: sin --menu-elegida-fondo aquí. */
   --menu-elegida-fondo: color-mix(in srgb, #ECE6E0 11%, transparent);
+  /* -revisión del PR #172, 08-11-2026- El visor de lado vive en data-tema="oscuro" aunque la app esté
+     en claro, igual que los menús de arriba. Declarada solo en :root, la variable llegaba ya resuelta
+     con la letra oscura del tema claro, y los dos botones de guardar quedaban sin caja sobre el visor
+     oscuro. Se comprobó en la web: rgba de #1A1815 al 10 %. Antes: sin --fondo-accion-guardar aquí. */
+  --fondo-accion-guardar: color-mix(in srgb, var(--color-texto) 10%, transparent);
 }
 
 body {
@@ -1056,16 +1061,33 @@ textarea::placeholder {
   white-space: pre-wrap;
 }
 /* El ejemplo, debajo de la invitación, a 16 px y con 12 px de aire.
+   Antes -e5677de-:
    --aire-sobre-ejemplo usa el em del párrafo -el tamaño de la letra del editor-
-   para no montarse sobre la invitación, que flota con height: 0. */
-.editor-guion p.is-editor-empty:first-child[data-ejemplo] {
-  --aire-sobre-ejemplo: calc(1em + 12px);
+   para no montarse sobre la invitación, que flota con height: 0.
+   .editor-guion p.is-editor-empty:first-child[data-ejemplo] {
+     --aire-sobre-ejemplo: calc(1em + 12px);
+   }
+   y en el ::after: margin-top: var(--aire-sobre-ejemplo);
+   08-11-2026, revisión del PR #172. Medido en la web a 360 de ancho:
+   - el aire era 1em + 12 y no 12, porque el <br> del párrafo vacío ya ocupa un renglón: 28 px
+     con la letra a 24;
+   - a 42 px la invitación se partía en dos renglones y el segundo se montaba sobre el ejemplo.
+   Ahora, solo cuando hay ejemplo:
+   - la invitación flota con su alto real y margin-right: -100%. Así no le quita ancho al renglón
+     del cursor, que sigue al inicio.
+   - el clear del ejemplo la salta entera, tenga uno o dos renglones.
+   - el aire va como padding: un margin después de un clear se puede perder en el despeje.
+   Medido: 12 px con la letra a 14, 18, 24, 32 y 42. */
+.editor-guion p.is-editor-empty:first-child[data-ejemplo]::before {
+  height: auto;
+  max-width: 100%;
+  margin-right: -100%;
 }
 .editor-guion p.is-editor-empty:first-child[data-ejemplo]::after {
   content: attr(data-ejemplo);
   display: block;
   clear: both;
-  margin-top: var(--aire-sobre-ejemplo);
+  padding-top: 12px;
   font-size: 16px;
   line-height: 1.4;
   color: var(--color-sugerencia-lectura);
