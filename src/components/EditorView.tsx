@@ -819,9 +819,11 @@ export default function EditorView({
             texto...')-. O sea que el texto que ve el usuario era, sin que nadie lo
             decidiera, una llave de las pruebas: no se podia mejorar una palabra sin
             romper seis archivos. El testid corta ese amarre.
-            El ejemplo va adentro del placeholder y no como un parrafo aparte: un
-            parrafo de ayuda ocupa lugar para siempre, el placeholder desaparece
-            solo con la primera letra.
+            El ejemplo y la invitación desaparecen con la primera letra, como el
+            placeholder de antes. 08-11-2026, tanda-08-nov: el ejemplo pasa a su
+            propia clave y se pinta aparte, más chico. Antes: el ejemplo iba adentro
+            del placeholder y no como un párrafo aparte: un párrafo de ayuda ocupa
+            lugar para siempre, el placeholder desaparece solo con la primera letra.
             "Sigo" va con mayuscula inicial y no "SIGO": es un nombre, no una sigla.
             24-09-2026: el textarea se fue -Tarea 73, Tiptap-. El editor lleva
             data-testid="editor-guion" y las pruebas escriben en el con
@@ -833,6 +835,7 @@ export default function EditorView({
           onSeleccion={setHayTextoSeleccionado}
           editorRef={editorRef}
           placeholder={t('placeholderGuion')}
+          ejemplo={t('ejemploGuion')}
           fontSize={fontSize}
           tipoFuente={tipoFuente}
           colorFondo={colorFondo}

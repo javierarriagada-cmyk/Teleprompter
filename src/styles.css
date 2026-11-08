@@ -139,6 +139,8 @@
   --grabar-brillo: 0 4px 18px rgba(225, 29, 46, 0.28);
   --ajustes-vidrio: rgba(255, 255, 255, 0.04);
   --ajustes-borde: rgba(255, 255, 255, 0.08);
+  /* -tanda-08-nov, 08-11-2026- Fondo suave de cada botón de guardar en el visor. */
+  --fondo-accion-guardar: color-mix(in srgb, var(--color-texto) 10%, transparent);
 }
 
 [data-tema="claro"] {
@@ -290,6 +292,11 @@
      aunque la app esté en claro (menus-dock / panel). Sin esta variable heredaban
      el marrón de [data-tema="claro"]. Antes: sin --menu-elegida-fondo aquí. */
   --menu-elegida-fondo: color-mix(in srgb, #ECE6E0 11%, transparent);
+  /* -revisión del PR #172, 08-11-2026- El visor de lado vive en data-tema="oscuro" aunque la app esté
+     en claro, igual que los menús de arriba. Declarada solo en :root, la variable llegaba ya resuelta
+     con la letra oscura del tema claro, y los dos botones de guardar quedaban sin caja sobre el visor
+     oscuro. Se comprobó en la web: rgba de #1A1815 al 10 %. Antes: sin --fondo-accion-guardar aquí. */
+  --fondo-accion-guardar: color-mix(in srgb, var(--color-texto) 10%, transparent);
 }
 
 body {
@@ -1042,8 +1049,48 @@ textarea::placeholder {
   height: 0;
   /* Antes: opacity 0.45 sobre la letra -bajaba el contraste bajo 4,5:1 en Test Lab A3-.
      06-10-2026, tarea 101: color explícito de sugerencia de lectura, opacity 1. */
+  /* Antes: color: var(--color-sugerencia-lectura);
+     08-11-2026, tanda-08-nov: la invitación se mezcla a mitades con la letra del editor
+     (currentColor es colorLetraEfectiva, que hereda el párrafo) para verse más, pero
+     siempre más tenue que el texto escrito. La primera declaración queda de respaldo
+     para los WebView que no entienden color-mix. */
   color: var(--color-sugerencia-lectura);
+  color: color-mix(in srgb, var(--color-sugerencia-lectura) 50%, currentColor 50%);
   opacity: 1;
+  pointer-events: none;
+  white-space: pre-wrap;
+}
+/* El ejemplo, debajo de la invitación, a 16 px y con 12 px de aire.
+   Antes -e5677de-:
+   --aire-sobre-ejemplo usa el em del párrafo -el tamaño de la letra del editor-
+   para no montarse sobre la invitación, que flota con height: 0.
+   .editor-guion p.is-editor-empty:first-child[data-ejemplo] {
+     --aire-sobre-ejemplo: calc(1em + 12px);
+   }
+   y en el ::after: margin-top: var(--aire-sobre-ejemplo);
+   08-11-2026, revisión del PR #172. Medido en la web a 360 de ancho:
+   - el aire era 1em + 12 y no 12, porque el <br> del párrafo vacío ya ocupa un renglón: 28 px
+     con la letra a 24;
+   - a 42 px la invitación se partía en dos renglones y el segundo se montaba sobre el ejemplo.
+   Ahora, solo cuando hay ejemplo:
+   - la invitación flota con su alto real y margin-right: -100%. Así no le quita ancho al renglón
+     del cursor, que sigue al inicio.
+   - el clear del ejemplo la salta entera, tenga uno o dos renglones.
+   - el aire va como padding: un margin después de un clear se puede perder en el despeje.
+   Medido: 12 px con la letra a 14, 18, 24, 32 y 42. */
+.editor-guion p.is-editor-empty:first-child[data-ejemplo]::before {
+  height: auto;
+  max-width: 100%;
+  margin-right: -100%;
+}
+.editor-guion p.is-editor-empty:first-child[data-ejemplo]::after {
+  content: attr(data-ejemplo);
+  display: block;
+  clear: both;
+  padding-top: 12px;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--color-sugerencia-lectura);
   pointer-events: none;
   white-space: pre-wrap;
 }
@@ -1967,6 +2014,59 @@ label.selector-aa-opcion {
 .accion-toma:disabled {
   opacity: 0.7;
   cursor: default;
+}
+/* -tanda-08-nov, 08-11-2026- Cada botón de guardar lleva su propio fondo suave,
+   no un grupo conectado. Repetir y Borrar siguen con .accion-toma a secas.
+   El :disabled de arriba también apaga este fondo. */
+.accion-toma.de-guardar {
+  background: var(--fondo-accion-guardar);
+  border-color: transparent;
+  /* Antes: border-radius: var(--forma-media);
+     revisión del PR #172: 16, la forma grande, para que se lean como botones y no como casillas. */
+  border-radius: var(--forma-grande);
+  overflow: visible;
+}
+/* Antes -e5677de-:
+   .acciones-toma > .accion-toma.de-guardar + .accion-toma.de-guardar { margin-left: var(--aire-2); }
+   En la columna de lado corría «Guardar y compartir» 8 px a la derecha de Guardar -medido en el g86:
+   127 contra 135 de ancho-. El aire entre los dos ahora lo da el gap de .sin-guardar. */
+/* LA FILA DE LA TOMA RECIÉN GRABADA -revisión del PR #172, 08-11-2026-. De pie y en la tarjeta de lado
+   -ReproductorGrabacion.tsx, clase sin-guardar-; la columna de lado, en styles-visor-de-lado.css.
+   En la APK 804, la foto del g86 que mandó Javier mostraba tres problemas:
+   - los fondos de guardar iban pegados al borde de la tarjeta, como baldosas cortadas;
+   - «Guardar y compartir» tocaba los lados de su fondo;
+   - Repetir y Borrar seguían con su caja de vidrio y las líneas, así que quedaban cuatro cajas de dos
+     estilos.
+   Ahora:
+   - la fila tiene 8 de aire alrededor y entre botones;
+   - los dos de guardar llevan fondo y el doble de ancho;
+   - Repetir y Borrar van sin caja ni línea, como botones de texto.
+   Se probó en vivo en el g86, de pie a 433 de ancho y emulado a 360, y en la tarjeta de lado.
+   - A 433, «Guardar y compartir» -92 px- cabe en un renglón dentro de 110.
+   - A 360 se parte en dos renglones parejos -text-wrap: balance-.
+   - Repetir y Borrar no bajan de 50 de ancho.
+   Con flex-grow 1,3 el rótulo se partía a 433, y con 1,5 tocaba los bordes.
+   La toma guardada -Compartir y Borrar con su nombre- no cambia. */
+.acciones-toma.sin-guardar {
+  padding: var(--aire-2);
+  gap: var(--aire-2);
+}
+.acciones-toma.sin-guardar > .accion-toma {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: var(--aire-3) var(--aire-2);
+}
+.acciones-toma.sin-guardar > .accion-toma:not(.de-guardar) {
+  background: transparent;
+  border: none;
+}
+.acciones-toma.sin-guardar > .accion-toma.de-guardar {
+  flex-grow: 2;
+}
+.acciones-toma.sin-guardar > .accion-toma span {
+  text-wrap: balance;
+  text-align: center;
+  line-height: 1.2;
 }
 /* COMPARTIR Y BORRAR CON SU NOMBRE AL LADO DEL ÍCONO -ajustes de pantallas, 10-10-2026, boceto 3-. El
    resto de las acciones sigue con el nombre debajo. */

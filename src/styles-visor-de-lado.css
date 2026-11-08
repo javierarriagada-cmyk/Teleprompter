@@ -78,6 +78,50 @@
 .visor-lado-acciones > * + * {
   border-top: 1px solid var(--color-separador);
 }
+/* -tanda-08-nov, 08-11-2026- Sin línea entre los dos de guardar, y con aire entre ellos,
+   para que se lean como grupo. Cada uno lleva su fondo redondeado.
+   Antes -e5677de-:
+   .visor-lado-acciones > .accion-toma.de-guardar + .accion-toma.de-guardar {
+     border-top: none;
+     margin-top: var(--aire-2);
+   }
+   LA COLUMNA DE LA TOMA RECIÉN GRABADA -revisión del PR #172, 08-11-2026-. Es la misma idea que la fila
+   de styles.css, clase sin-guardar: los dos de guardar con fondo, y el filtro, Repetir y Borrar sin caja
+   ni línea. Medido en vivo en el g86 con una toma grabada de lado:
+   - En la 804, Guardar tocaba los bordes de la columna y «Guardar y compartir» iba corrido 8 px.
+     Repetir y Borrar seguían con caja.
+   - Emulado a 720 x 360, «Guardar y compartir» se parte en dos renglones. Con flex 1 1 0 y el
+     min-height de 48 en línea, el botón se achicaba bajo su contenido y el ícono se encogía. Por eso
+     los de guardar no bajan de su contenido -min-height: auto con !important, porque el 48 viene en
+     línea desde ReproductorGrabacion.tsx-.
+   - Emulado a 640 x 330, Borrar se salía 15 px. Con la pantalla de 360 de alto o menos, el aire baja
+     a 2-4 px y la columna puede desplazarse como respaldo.
+   Medido: en el g86, los botones miden 70 de alto y el filtro 62. A 720 x 360, 52, 67, 48, 52 y 52.
+   A 640 x 330, 49, 63, 48, 49 y 49. En los tres casos todo cabe sin desbordar. */
+.visor-lado-acciones.sin-guardar {
+  gap: var(--aire-1);
+  overflow-y: auto;
+}
+.visor-lado-acciones.sin-guardar > * + * {
+  border-top: none;
+}
+.visor-lado-acciones.sin-guardar > .accion-toma {
+  padding: var(--aire-1) var(--aire-2);
+}
+.visor-lado-acciones.sin-guardar > .accion-toma.de-guardar {
+  flex-grow: 1;
+  min-height: auto !important;
+}
+@media (max-height: 360px) {
+  .visor-lado-acciones.sin-guardar {
+    padding: var(--aire-1) var(--aire-2);
+    gap: 2px;
+  }
+  .visor-lado-acciones.sin-guardar > .accion-toma {
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+}
 /* Subtítulos en la columna: el SelectorSubtitulos de verdad vestido como .accion-toma -el CC y el
    estilo elegido debajo, sin la palabra ni la flecha-. Abierto, sus cuatro opciones salen en un panel
    de 320 a la izquierda de la columna, sobre el video, a la altura del botón -como los paneles de ficha

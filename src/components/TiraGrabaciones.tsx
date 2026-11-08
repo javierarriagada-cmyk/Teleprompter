@@ -1,7 +1,7 @@
 import React from 'react'
 import { Capacitor } from '@capacitor/core'
 import { ResumenGrabacion, ResumenGuion } from '../datos/modelo'
-import { t, useTextos, tituloVisible, tituloOInicio, fechaCortaDosDigitos } from '../textos'
+import { t, useTextos, tituloVisible, tituloOInicio, fechaCortaDosDigitos, horaCorta } from '../textos'
 import { IconoSinVideos, IconoEmpezar } from './IconosApp'
 import { duracionVisible } from '../lib/tramos'
 
@@ -40,9 +40,11 @@ export function formatearDuracionMs(ms: number): string {
 }
 
 // Por idioma desde la tarea 75: 07/09 en espanol, Sep 7 en ingles -textos/index.ts-.
+// Antes: return fechaCortaDosDigitos(ts)
+// 08-11-2026, tanda-08-nov: la tarjeta pasa a decir fecha y hora, siempre, unidas con « · ».
 export function formatearFechaCorta(ts: number): string {
   if (!ts) return ''
-  return fechaCortaDosDigitos(ts)
+  return `${fechaCortaDosDigitos(ts)} · ${horaCorta(ts)}`
 }
 
 import { estiloComprimirPorAviso, useMantenerApretado } from './mantenerApretado'

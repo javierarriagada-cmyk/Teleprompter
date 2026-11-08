@@ -96,6 +96,20 @@ export function fechaCortaDosDigitos(ts: number, idioma: IdiomaApp = idiomaApp()
   return `${parte('day')}/${parte('month')}`
 }
 
+// -tanda-08-nov, 08-11-2026- La hora de las tarjetas de video, hermana de fechaCortaDosDigitos.
+// En es y pt, a 24 horas y con dos cifras (18:42, 09:05). En inglés, la forma de Intl para 'en',
+// sin armarla a mano: Intl pone un espacio angosto especial antes de PM.
+export function horaCorta(ts: number, idioma: IdiomaApp = idiomaApp()): string {
+  const fecha = new Date(ts)
+  if (idioma === 'en') {
+    return new Intl.DateTimeFormat('en', { hour: 'numeric', minute: '2-digit' }).format(fecha)
+  }
+  const locale = esPortugues(idioma) ? 'pt' : 'es'
+  const partes = new Intl.DateTimeFormat(locale, { hour: 'numeric', minute: 'numeric', hourCycle: 'h23' }).formatToParts(fecha)
+  const parte = (tipo: string) => (partes.find((p) => p.type === tipo)?.value || '').padStart(2, '0')
+  return `${parte('hour')}:${parte('minute')}`
+}
+
 export function numeroLocal(n: number, idioma: IdiomaApp = idiomaApp()): string {
   // -portugues-app, punto 2, 2026-10-22- Con 'pt-BR': 1.234. Antes: return n.toLocaleString(idioma === 'es' ? 'es' : 'en-US')
   return n.toLocaleString(LOCALE_INTL[idioma])

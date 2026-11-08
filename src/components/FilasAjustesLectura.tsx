@@ -450,6 +450,9 @@ export function MenuLectura({
               aria-checked={tipoFuente === o.v}
               onClick={() => elegirYCerrar(() => setTipoFuente(o.v))}
             >
+              {/* -tanda-08-nov, 08-11-2026- Muestra «Aa» con la fuente de ESA opción, como el menú
+                  de tamaño de letra. Antes: solo <span className="fila-menu-adjunto-etiqueta">{o.n}</span> */}
+              <span style={{ fontFamily: familiaLectura(o.v) }} aria-hidden="true">Aa</span>
               <span className="fila-menu-adjunto-etiqueta">{o.n}</span>
               <CheckMenu visible={tipoFuente === o.v} />
             </button>
