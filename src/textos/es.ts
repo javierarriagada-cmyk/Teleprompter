@@ -279,6 +279,28 @@ export const es = {
   tipoSans: 'Sans',
   tipoSerif: 'Serif',
   version: 'Versión',
+  // -proxima-version, 2026-11-07- Acerca de Sigo: calificar en Play y compartir la app.
+  // -08-11-2026- El texto sale de Google Play: en la ficha de cada app, el botón para reseñar dice «Escribe una
+  // opinión», bajo «Comparte tu opinión con otros usuarios» -es-419-. Aquí va en infinitivo, como «Compartir Sigo».
+  // Javier, ante «Calificar Sigo»: «casi le decimos danos buena o mala nota». La clave queda igual.
+  // Antes: calificarSigo: 'Calificar Sigo',
+  // -08-11-2026, más tarde- VUELVE «Calificar Sigo». «Escribir una opinión» se confundía con «Enviar comentarios»
+  // -el correo privado, en Ajustes-, y el estudio de Grok el chat volvió con poco acceso a las apps. Javier: «por
+  // mientras dejemoslo tal cual, calificar sigo y punto». Antes: calificarSigo: 'Escribir una opinión',
+  calificarSigo: 'Calificar Sigo',
+  compartirSigo: 'Compartir Sigo',
+  textoCompartirSigo: 'Sigo es un teleprompter que sigue tu voz: {url}',
+  // -proxima-version, 2026-11-07- El aviso de límite gratis antes de grabar o leer con voz -DialogoLimiteGratis.tsx-.
+  limiteUnMinuto: "1 minuto",
+  limiteMinutos: "{n} minutos",
+  limiteMinutosCorto: "{n} min",
+  avisoLimiteTitulo: "Tu guion dura aprox. {d}",
+  avisoLimiteTextoGrabar: "Gratis, cada toma dura hasta {tiempo}. Con Sigo+ grabas tomas completas, sin marca de agua.",
+  avisoLimiteTextoLeer: "Gratis, Sigo sigue tu voz hasta {tiempo}. Con velocidad fija, sin límite. Con Sigo+, Sigo te sigue hasta el final.",
+  avisoLimitePrueba: "7 días gratis.",
+  avisoLimiteGrabar: "Grabar {corto}",
+  avisoLimiteLeer: "Leer {corto}",
+  avisoLimiteVerSigoMas: "Ver Sigo+",
   privacidad: 'Privacidad',
   soporte: 'Soporte',
   licencias: 'Licencias de código abierto',

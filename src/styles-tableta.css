@@ -465,6 +465,10 @@
   bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   width: 128px;
   justify-content: center;
+  /* -proxima-version, revisión del 08-11-2026- El disco del micrófono, encima de la pastilla: al lado
+     pedía 128 + 28 en un lugar de 128 y la sacaba del centro del riel. Lo mismo que en el teléfono de
+     lado -styles-horizontal.css-. Antes, sin esta línea, iba en fila. */
+  flex-direction: column;
 }
 .layout-tab-h .pastilla-tiempo {
   min-width: 128px;

@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { MotorDeAvance } from '../lib/avance'
 import { t, useTextos } from '../textos'
 import { PALABRAS_POR_MINUTO, segundosDeLectura } from '../datos/modelo'
-import { IconoVelocimetro } from './IconosApp'
+// -proxima-version, 2026-11-08- IconoMicrofono, para el disco del micrófono. Antes: import { IconoVelocimetro } from './IconosApp'
+import { IconoVelocimetro, IconoMicrofono } from './IconosApp'
+import { objetivoNivel, suavizarNivel, suscribirNivelVoz } from '../lib/nivelVoz'
 import { modoTextoPastillaLimite } from '../lib/avisoLimite'
 
 export interface BarraDeTiempoProps {
@@ -41,6 +43,49 @@ export interface BarraDeTiempoProps {
   faseLimiteVoz?: 'aviso' | 'queda' | null
   // Antes: segundos para textoQuedaConVoz. 2026-10-27: ya no se usa en el texto de la pastilla.
   segundosQuedanVoz?: number | null
+  // -proxima-version, 2026-11-08- EL DISCO DEL MICRÓFONO: true mientras Sigo escucha de verdad -con la voz y
+  // el micrófono abierto-. Lo decide App con lo que ya existe: isRecording de useASR, fija y estadoToma.
+  escuchando?: boolean
+  // Con «Mostrar tiempo» apagado: solo el micrófono, en una pastilla redonda.
+  soloMicrofono?: boolean
+}
+
+// -proxima-version, 2026-11-08- EL DISCO DEL MICRÓFONO, a la izquierda de la pastilla. Un micrófono verde en
+// un disco de 22 con un halo que crece con el VOLUMEN -lib/nivelVoz.ts-, nunca con lo reconocido. Sin textos
+// ni estados, y nunca cambia de color: el rojo en Sigo es «grabando». No se toca: sin área de 48. El nivel
+// va a la variable --nivel-voz con una ref, en un cuadro de animación: sin setState por evento, React no se
+// vuelve a dibujar con cada trozo de audio. Los colores y medidas, en .microfono-disco -styles.css, T209-.
+function DiscoMicrofono() {
+  const ref = useRef<HTMLSpanElement>(null)
+  useEffect(() => {
+    let ultimoRms = 0
+    let ultimoEventoMs: number | null = null
+    let nivel = 0
+    let antes = performance.now()
+    const desuscribir = suscribirNivelVoz((rms, tMs) => {
+      ultimoRms = rms
+      ultimoEventoMs = tMs
+    })
+    let cuadro = 0
+    const paso = () => {
+      const ahora = performance.now()
+      nivel = suavizarNivel(nivel, objetivoNivel(ultimoRms, ultimoEventoMs, ahora), ahora - antes)
+      antes = ahora
+      ref.current?.style.setProperty('--nivel-voz', nivel.toFixed(3))
+      cuadro = requestAnimationFrame(paso)
+    }
+    cuadro = requestAnimationFrame(paso)
+    return () => {
+      cancelAnimationFrame(cuadro)
+      desuscribir()
+    }
+  }, [])
+  return (
+    <span ref={ref} className="microfono-disco" data-testid="disco-microfono" aria-hidden="true">
+      <span className="microfono-halo" />
+      <IconoMicrofono tamano={14} />
+    </span>
+  )
 }
 
 // El mismo ritmo que usa el editor para decir "1 min", y el que usa esta
@@ -81,8 +126,13 @@ function Pastilla({
   enRiel = false,
   encimaDeLaFila = false,
   porcentaje,
-  conIconoFija = false
+  conIconoFija = false,
+  escuchando = false,
+  soloMicrofono = false
 }: {
+  // -proxima-version, 2026-11-08- El disco del micrófono a la izquierda; o solo él, sin el tiempo.
+  escuchando?: boolean
+  soloMicrofono?: boolean
   // -tarea 104- Con porcentaje, el número va a la derecha de la barra -segundo renglón-.
   porcentaje?: string
   texto: string
@@ -124,6 +174,15 @@ function Pastilla({
         pointerEvents: 'none'
       }}
     >
+      {/* -proxima-version, 2026-11-08- El disco del micrófono. Con «Mostrar tiempo» apagado queda solo, en
+          una pastilla redonda -.pastilla-microfono-sola-. */}
+      {escuchando && soloMicrofono && (
+        <div className="pastilla-tiempo pastilla-microfono-sola" data-testid="pastilla-microfono-sola">
+          <DiscoMicrofono />
+        </div>
+      )}
+      {escuchando && !soloMicrofono && <DiscoMicrofono />}
+      {!soloMicrofono && (
       <div
         data-testid={testid}
         aria-label={etiqueta}
@@ -173,6 +232,7 @@ function Pastilla({
         {porcentaje && <span style={{ letterSpacing: 0 }}>{porcentaje}</span>}
         </div>
       </div>
+      )}
     </div>
   )
 }
@@ -189,7 +249,9 @@ export default function BarraDeTiempo({
   msPausadoAhora,
   preparandoVoz = null,
   limiteTotalSeg = null,
-  faseLimiteVoz = null
+  faseLimiteVoz = null,
+  escuchando = false,
+  soloMicrofono = false
   // Antes 2026-10-27: también segundosQuedanVoz = null (textoQuedaConVoz en la pastilla).
 }: BarraDeTiempoProps) {
   useTextos()
@@ -209,6 +271,14 @@ export default function BarraDeTiempo({
     return () => clearInterval(interval)
   }, [tInicioLecturaMs, totalTokens, motorAvance])
 
+  // -proxima-version, 2026-11-08- «Mostrar tiempo» apagado: solo el micrófono, mientras escucha. Va después de los
+  // ganchos para no cambiar su orden.
+  if (soloMicrofono) {
+    return escuchando ? (
+      <Pastilla texto="" progresoPct={0} etiqueta="" conTestidsDeProgreso={false} enRiel={enRiel}
+        encimaDeLaFila={encimaDeLaFila} escuchando soloMicrofono />
+    ) : null
+  }
   if (!tInicioLecturaMs || totalTokens === 0 || !motorAvance) {
     // "MOSTRAR TIEMPO" TIENE QUE VERSE AL TOCARLO. Tarea 72.
     // Antes de empezar no hay reloj, y la barra devolvia null: en el estado
@@ -323,6 +393,7 @@ export default function BarraDeTiempo({
       enRiel={enRiel}
       encimaDeLaFila={encimaDeLaFila}
       conIconoFija={conIconoFija}
+      escuchando={escuchando}
     />
   )
 }

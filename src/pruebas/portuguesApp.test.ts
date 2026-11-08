@@ -36,7 +36,11 @@ const IGUALES_PERMITIDOS: Record<string, string> = {
   tarjetaSigoTitulo: '«Sigo+» es el nombre del producto, igual en los tres',
   restaurarCompras: '«Restaurar compras» se escribe igual en portugues',
   // -idioma/ubicación Sigo+, 2026-10-29-
-  seccionSigo: '«Sigo+» es el nombre del producto, igual en los tres'
+  seccionSigo: '«Sigo+» es el nombre del producto, igual en los tres',
+  // -proxima-version, 2026-11-07- Los números del aviso de límite gratis: «minuto» y «min» son iguales en pt y es.
+  limiteUnMinuto: '«1 minuto» se escribe igual en portugues',
+  limiteMinutos: '«{n} minutos» se escribe igual en portugues',
+  limiteMinutosCorto: '«{n} min» es igual en los tres'
 }
 
 

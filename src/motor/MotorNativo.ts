@@ -4,6 +4,8 @@ import { anotar, msDelRegistro, generacionDiagnostico } from '../lib/diagnostico
 import { HERRAMIENTAS } from '../lib/herramientas'
 // -portugues-voz, 2026-10-22- La única regla del idioma de la voz.
 import { idiomaDeVoz, IdiomaVoz } from '../lib/vozAPedido'
+// -proxima-version, 2026-11-08- El rms de cada evento, al disco del micrófono de la pastilla.
+import { publicarNivelVoz } from '../lib/nivelVoz'
 
 // EL AUDIO QUE ESCUCHO VOSK, GUARDADO -24-09-2026-. Es el instrumento del plan del
 // motor: con el se afina el reconocedor en el PC contra lecturas reales. Quedan los
@@ -255,6 +257,8 @@ export class MotorNativo implements MotorDeVoz {
       await Nativo.addListener('parcial', (d) => {
         const texto = textoDe(d.json, 'partial')
         this.anotarLlegada(d, false)
+        // -proxima-version, 2026-11-08- Solo el volumen, no lo reconocido: el halo del disco del micrófono.
+        if (typeof d.rms === 'number') publicarNivelVoz(d.rms)
         this.anotarPalabras(d.json, false)
         if (texto.trim()) {
           this.listenersParcial.forEach((cb) => cb({ texto }))
@@ -266,6 +270,7 @@ export class MotorNativo implements MotorDeVoz {
       await Nativo.addListener('final', (d) => {
         const texto = textoDe(d.json, 'text')
         this.anotarLlegada(d, true)
+        if (typeof d.rms === 'number') publicarNivelVoz(d.rms)
         this.anotarPalabras(d.json, true)
         if (texto.trim()) {
           // Vosk nativo no entrega marcas de tiempo por palabra salvo que se le pida
@@ -349,6 +354,8 @@ export class MotorNativo implements MotorDeVoz {
 
   async detener(): Promise<void> {
     this.ceroAudioPerf = null
+    // -proxima-version, 2026-11-08- Al cerrar el micrófono el nivel vuelve a 0.
+    publicarNivelVoz(0)
     await Nativo.detener()
     for (const s of this.suscripciones) {
       await s.remove()
