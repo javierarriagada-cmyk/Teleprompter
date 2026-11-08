@@ -280,7 +280,11 @@ export const es = {
   tipoSerif: 'Serif',
   version: 'Versión',
   // -proxima-version, 2026-11-07- Acerca de Sigo: calificar en Play y compartir la app.
-  calificarSigo: 'Calificar Sigo',
+  // -08-11-2026- El texto sale de Google Play: en la ficha de cada app, el botón para reseñar dice «Escribe una
+  // opinión», bajo «Comparte tu opinión con otros usuarios» -es-419-. Aquí va en infinitivo, como «Compartir Sigo».
+  // Javier, ante «Calificar Sigo»: «casi le decimos danos buena o mala nota». La clave queda igual.
+  // Antes: calificarSigo: 'Calificar Sigo',
+  calificarSigo: 'Escribir una opinión',
   compartirSigo: 'Compartir Sigo',
   textoCompartirSigo: 'Sigo es un teleprompter que sigue tu voz: {url}',
   // -proxima-version, 2026-11-07- El aviso de límite gratis antes de grabar o leer con voz -DialogoLimiteGratis.tsx-.
