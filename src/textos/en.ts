@@ -385,9 +385,14 @@ export const en: Textos = {
   // PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026.
   ventanaFlotante: 'Floating window',
   transparenciaFondo: 'Background transparency',
-  accesibilidadFlotanteTitulo: 'To follow your voice over other apps',
-  accesibilidadFlotanteTexto: 'Android only lets Sigo hear you while another app is recording if you turn on “Sigo · prueba flotante” in Accessibility. Sigo doesn\'t read your screen or what you type.',
-  irAActivarlo: 'Turn it on',
+  // Banda A, 09-11-2026: el aviso aprobado en los bocetos. Antes: accesibilidadFlotanteTitulo: 'To follow your voice over other apps'
+  accesibilidadFlotanteTitulo: 'Read over other apps',
+  // Antes: accesibilidadFlotanteTexto: 'Android only lets Sigo hear you while another app is recording if you turn on “Sigo · prueba flotante” in Accessibility. Sigo doesn\'t read your screen or what you type.'
+  accesibilidadFlotanteTexto: 'Sigo uses the microphone to follow your voice while you record in another app. In Accessibility, turn on “Sigo · prueba flotante”, then return to Sigo. This service doesn’t read your screen or what you type.',
+  // Antes: irAActivarlo: 'Turn it on' -la clave cambió de nombre con el texto-.
+  abrirAccesibilidad: 'Open Accessibility settings',
+  consecuenciaFlotante: 'Read on top of the camera or another app',
+  accesibilidadFlotanteInactivo: '“Sigo · prueba flotante” is still off.',
   lecturaEnVentanaFlotante: 'Your reading is in the floating window',
   cerrarLaVentana: 'Close the window',
   volverASigo: 'Back to Sigo',

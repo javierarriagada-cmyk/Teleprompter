@@ -15,6 +15,8 @@ export interface PreferenciasFlotante {
   y?: number
   w?: number
   h?: number
+  // -banda A, 09-11-2026- El ancho en dp de la banda que se abriría ahora: la guardada de esta orientación o la de A.
+  anchoVentana?: number
 }
 export interface EstadoFlotante {
   accesibilidad: boolean

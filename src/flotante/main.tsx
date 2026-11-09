@@ -16,6 +16,11 @@ import '../styles-tableta.css'
 import '../styles-visor-de-lado.css'
 import './flotante.css'
 import { PaginaFlotante } from './PaginaFlotante'
+import { PanelAaFlotante } from './PanelAaFlotante'
 
 const el = document.getElementById('root')!
-createRoot(el).render(<PaginaFlotante />)
+// Antes -08-11-2026-: createRoot(el).render(<PaginaFlotante />)
+// -banda A, 09-11-2026- La misma página sirve a las dos ventanas: la banda y, con ?panel=aa, el menú de Aa.
+const esMenuAa = new URLSearchParams(window.location.search).get('panel') === 'aa'
+if (esMenuAa) document.documentElement.classList.add('flotante-documento-menu')
+createRoot(el).render(esMenuAa ? <PanelAaFlotante /> : <PaginaFlotante />)

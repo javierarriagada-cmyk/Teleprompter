@@ -14,13 +14,18 @@ interface Props {
   fontSize: number
   onTransparencia: (n: number) => void
   onLetra: (n: number) => void
+  // -banda A, 09-11-2026- De lado y con espacio, el menú de Aa pone los dos controles uno al lado del otro.
+  enFila?: boolean
 }
 
-export function AjustesFlotante({ transparencia, fontSize, onTransparencia, onLetra }: Props) {
+// Antes -08-11-2026-: export function AjustesFlotante({ transparencia, fontSize, onTransparencia, onLetra }: Props) {
+export function AjustesFlotante({ transparencia, fontSize, onTransparencia, onLetra, enFila = false }: Props) {
   const idx = Math.max(0, PASOS_LETRA.indexOf(limitarTamanoLetra(fontSize, PASOS_LETRA)))
   const ultimo = PASOS_LETRA.length - 1
   return (
-    <div className="ajustes-flotante">
+    // Antes -08-11-2026-: <div className="ajustes-flotante"> con los dos controles seguidos, sin mitades.
+    <div className={`ajustes-flotante${enFila ? ' en-fila' : ''}`}>
+      <div className="ajustes-flotante-mitad">
       <div className="panel-ficha-cabeza">
         <span>{t('transparenciaFondo')}</span>
         <span>{transparencia} %</span>
@@ -36,6 +41,8 @@ export function AjustesFlotante({ transparencia, fontSize, onTransparencia, onLe
         style={{ ['--relleno' as string]: `${transparencia}%` }}
         onChange={(e) => onTransparencia(limitarTransparencia(Number(e.target.value)))}
       />
+      </div>
+      <div className="ajustes-flotante-mitad">
       <div className="panel-ficha-cabeza">
         <span>{t('tamanoLetra')}</span>
         <span>{PASOS_LETRA[idx]}</span>
@@ -73,6 +80,7 @@ export function AjustesFlotante({ transparencia, fontSize, onTransparencia, onLe
         >
           +
         </button>
+      </div>
       </div>
     </div>
   )

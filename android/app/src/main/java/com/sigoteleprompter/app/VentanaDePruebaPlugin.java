@@ -121,8 +121,12 @@ public class VentanaDePruebaPlugin extends Plugin {
         VentanaDePrueba.enviarAPagina(raw == null ? "{}" : raw.toString());
         call.resolve();
     }
+    // Antes -hasta el 08-11-2026-: call.resolve(VentanaDePrueba.preferencias(getContext())), sin el ancho de la banda.
     @PluginMethod public void preferencias(PluginCall call) {
-        call.resolve(VentanaDePrueba.preferencias(getContext()));
+        JSObject r = VentanaDePrueba.preferencias(getContext());
+        try { r.put("anchoVentana", VentanaDePrueba.anchoDeLaBandaDp(getActivity())); }
+        catch (Exception e) { VentanaDePrueba.anotar(VentanaDePrueba.numero(), "no se pudo medir el ancho de la banda: " + e); }
+        call.resolve(r);
     }
     @PluginMethod public void guardarPreferencias(PluginCall call) {
         VentanaDePrueba.guardarPreferencias(getContext(), call.getData());

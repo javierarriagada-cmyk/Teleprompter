@@ -86,8 +86,9 @@ import { AnclajeZona, calcularBanda, calcularBgVelo, calcularTramosVelo } from '
 // -recuadro-arrastre- Antes: import { RecuadroCamara, EsquinaRecuadroH } from './RecuadroCamara'
 import { RecuadroCamara, EsquinaRecuadroH, aceptarPosicionRecuadro } from './RecuadroCamara'
 import type { FondoToma } from '../lib/fondoToma'
+// Antes -hasta el 09-11-2026-: sin IconoVentanaFlotante.
 import {
-  IconoAtras, IconoEmpezar, IconoEmpezarAPausa
+  IconoAtras, IconoEmpezar, IconoEmpezarAPausa, IconoVentanaFlotante
 } from './IconosApp'
 import { movimientoApagado } from './movimiento'
 // Antes: import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA, MARGEN_RENGLON_LECTURA_PX } from './estiloLectura'
@@ -332,6 +333,14 @@ interface TeleprompterViewProps {
   ocultarCromoDeLeer?: boolean
   // Antes: .lectura-sobre-imagen solo iba con la cámara de Sigo o el recuadro de lado.
   sobreImagenAjena?: boolean
+  // PROTOTIPO DE LA VENTANA FLOTANTE, banda A, 09-11-2026. Con «Arriba», a cuántos px del borde queda el renglón
+  // que se lee: en la ventana, 52 -bajo la cabecera de 48-, con o sin controles. Antes: siempre 0 -calcularBanda
+  // con paddingSuperior 0-.
+  margenBandaArribaPx?: number
+  // PROTOTIPO, 09-11-2026. El selector «Ventana flotante» del dock -App lo arma- y la marca chica en Empezar cuando
+  // está elegido. Antes: no existían; la ficha iba suelta arriba, en App.
+  selectorFlotante?: React.ReactNode
+  flotanteElegido?: boolean
 }
 
 // LA SANGRÍA DE LA PRIMERA LÍNEA -ajustes de pantallas, 10-10-2026, boceto 2-. Con el teléfono de pie,
@@ -448,7 +457,10 @@ export default function TeleprompterView({
   hayDialogoPermiso = false,
   hayAvisoDescargaVoz = false,
   ocultarCromoDeLeer = false,
-  sobreImagenAjena = false
+  sobreImagenAjena = false,
+  margenBandaArribaPx = 0,
+  selectorFlotante,
+  flotanteElegido = false
 }: TeleprompterViewProps) {
   useTextos()
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -658,7 +670,8 @@ export default function TeleprompterView({
   const { topBanda, altoBanda } = altoContenedor > 0
     // ARRIBA, SIN HOLGURA -24-09-2026-. Eran 20 px entre el borde de arriba del texto y
     // la ventana. Ver REFERENCIA DEL RENGLON VIVO, en el lazo.
-    ? calcularBanda(altoContenedor, filaPx, lineasZona, anclajeZona, 0, 20, altoLineaViva)
+    // Antes -hasta el 09-11-2026-: calcularBanda(altoContenedor, filaPx, lineasZona, anclajeZona, 0, 20, altoLineaViva)
+    ? calcularBanda(altoContenedor, filaPx, lineasZona, anclajeZona, margenBandaArribaPx, 20, altoLineaViva)
     : { topBanda: 0, altoBanda: 0 }
 
   const isWhiteBg = colorFondo.toUpperCase() === '#FFFFFF'
@@ -1465,7 +1478,9 @@ export default function TeleprompterView({
       aria-label={t('empezar')}
       onClick={(e) => {
         e.stopPropagation()
-        setBotonTransformado(true)
+        // PROTOTIPO, 09-11-2026: con «Ventana flotante» elegida Empezar abre la hoja de la ventana y no empieza aquí;
+        // el play no se vuelve pausa. Antes: setBotonTransformado(true) siempre.
+        if (!flotanteElegido) setBotonTransformado(true)
         onEmpezar?.()
       }}
       style={{
@@ -1485,6 +1500,10 @@ export default function TeleprompterView({
         <span className={`punto-grabar${botonTransformado ? ' cuadrado' : ''}`} aria-hidden="true" />
       ) : (
         <IconoEmpezarAPausa esPlay={!botonTransformado} tamano={30} />
+      )}
+      {/* PROTOTIPO, 09-11-2026: la marca de que esta lectura va a la ventana flotante -boceto A-. */}
+      {flotanteElegido && (
+        <span className="marca-empezar-flotante" aria-hidden="true"><IconoVentanaFlotante tamano={14} /></span>
       )}
     </button>
   )
@@ -2008,6 +2027,8 @@ export default function TeleprompterView({
               <div className="riel-fondo" aria-hidden="true" />
               {botonVolverListo}
               {!arrastrandoRecuadro && fichasListo(true)}
+              {/* PROTOTIPO, 09-11-2026: de lado, el selector de la ventana flotante va al pie del riel izquierdo. */}
+              {!arrastrandoRecuadro && selectorFlotante && <div className="riel-lugar-selector-flotante">{selectorFlotante}</div>}
             </div>
           ) : tabletaVertical ? (
             // LA BARRA DE ARRIBA DE LA TABLETA VERTICAL -tarea 83, 30-09-2026-. 72 de alto más el
@@ -2097,6 +2118,7 @@ export default function TeleprompterView({
             // va y vuelve el contador de hoy -la pastilla de BarraDeTiempo, la monta App-.
             <DockListo
               fichas={(abrirAjustes) => fichasListo(false, abrirAjustes)}
+              encabezado={selectorFlotante}
               botonGrabar={botonEmpezar}
               onVoltear={onVoltear}
               // La misma condición del Voltear del panel de la cámara: la ficha Cámara está con la cámara.

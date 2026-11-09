@@ -133,3 +133,9 @@ export function fijarIdioma(idioma: IdiomaApp): void {
     console.warn('[idioma] no se pudo guardar el idioma elegido; al reiniciar vuelve el del navegador:', e)
   }
 }
+
+// PARA LA VENTANA FLOTANTE -banda A, 09-11-2026-: su página y la del menú de Aa viven en otro origen y no ven el
+// idioma elegido en Sigo; lo reciben en el contrato y lo muestran sin guardarlo, porque la elección es de Sigo.
+export function mostrarIdiomaSinGuardar(idioma: IdiomaApp): void {
+  cambiar(idioma)
+}

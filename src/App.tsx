@@ -105,7 +105,9 @@ import { confirmadorNuevo, revisar as revisarGesto } from './lib/confirmadorGest
 import { vigiaNuevo, oirParcial, oirFinal, debePedir, alPedir, alResponder, Vigia } from './lib/vigiaGestos'
 // -tarea 88, segunda vuelta- El fin de la última palabra del FINAL, para el corte de la palma.
 import { tomarFinUltimaPalabraEpochMs } from './lib/diagnostico'
-import { IconoAtras, IconoPausa, IconoParar, IconoTacho, IconoEmpezar, IconoEmpezarAPausa, IconoVentanaFlotante } from './components/IconosApp'
+// Antes -hasta el 09-11-2026-, sin IconoCerrar, que usa la nota de inactivo de la hoja:
+// import { IconoAtras, IconoPausa, IconoParar, IconoTacho, IconoEmpezar, IconoEmpezarAPausa, IconoVentanaFlotante } from './components/IconosApp'
+import { IconoAtras, IconoPausa, IconoParar, IconoTacho, IconoEmpezar, IconoEmpezarAPausa, IconoVentanaFlotante, IconoCerrar } from './components/IconosApp'
 import { t, useTextos, TITULO_SIN_NOMBRE, idiomaEnFrase } from './textos'
 import { idiomaApp, leerIdiomaDelTelefono } from './lib/idioma'
 import { PASOS_LETRA } from './components/estiloLectura'
@@ -130,8 +132,10 @@ import { PanelDiagnostico } from './components/PanelDiagnostico'
 import { HERRAMIENTAS } from './lib/herramientas'
 // Prototipo del 08-11-2026: todos los usos se eliminan del paquete de Play.
 import { VentanaDePrueba, type OpcionesPruebaFlotante, type AccionPruebaFlotante } from './lib/ventanaDePrueba'
-import { tokenAlVolver, limitarTransparencia, limitarTamanoLetra, colorConAlfa } from './lib/flotante'
+// Antes -08-11-2026-: import { tokenAlVolver, limitarTransparencia, limitarTamanoLetra, colorConAlfa } from './lib/flotante'
+import { tokenAlVolver, limitarTransparencia, limitarTamanoLetra, colorConAlfa, siguienteHojaFlotante, type HojaFlotante } from './lib/flotante'
 import { AjustesFlotante } from './flotante/AjustesFlotante'
+import { SelectorFlotante } from './flotante/SelectorFlotante'
 import { guionDeLaTarjeta, avisoAlArchivar } from './lib/portada'
 
 // Cuanto se quedan los controles a la vista despues de un toque, mientras se lee.
@@ -389,7 +393,15 @@ export default function App({ motor, repoOverride }: AppProps) {
   const anteriorTomaFlotanteRef = useRef<EstadoToma>('listo')
   const accionesFlotanteRef = useRef<(accion: AccionPruebaFlotante) => void>(() => {})
   const [oyenteFlotanteListo, setOyenteFlotanteListo] = useState(false)
-  const [hojaFlotante, setHojaFlotante] = useState<null | 'preparacion' | 'accesibilidad'>(null)
+  // Antes -08-11-2026-: const [hojaFlotante, setHojaFlotante] = useState<null | 'preparacion' | 'accesibilidad'>(null). Ahora la hoja sabe si se fue a
+  // Ajustes y si volvió sin activar -lib/flotante.ts, siguienteHojaFlotante-.
+  const [hojaFlotante, setHojaFlotante] = useState<HojaFlotante>(null)
+  // LA ELECCIÓN DEL DOCK -banda A, 09-11-2026-. Vale para esta lectura: vive solo en memoria y no va a los ajustes
+  // guardados -sigo_ajustes-. Empezar con ella abre la autorización o la preparación.
+  const [flotanteElegido, setFlotanteElegido] = useState(false)
+  // El ancho de la banda que se va a abrir -VentanaDePrueba.anchoDeLaBandaDp-: la muestra de la preparación lo usa
+  // para que se vea lo que se leerá. 358 es el de A de pie en la referencia de 390.
+  const [anchoBandaFlotante, setAnchoBandaFlotante] = useState(358)
   const [transparenciaFlotante, setTransparenciaFlotante] = useState(0)
   const [fontSizeFlotante, setFontSizeFlotante] = useState(24)
   const [ventanaFlotanteAbierta, setVentanaFlotanteAbierta] = useState(false)
@@ -423,14 +435,24 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
   }, [estadoToma])
 
+  // AL VOLVER DE AJUSTES SE CONSULTA EL ESTADO REAL -banda A, 09-11-2026-. Activo: la preparación. Inactivo: el mismo
+  // aviso con la nota de que sigue desactivado, para reintentar o desistir. Antes -08-11-2026-, con la hoja
+  // 'accesibilidad': if (!e.accesibilidad) return -en silencio- y, si estaba activo, setHojaFlotante('preparacion').
+  // Las líneas de entonces:
+  //   if (!(HERRAMIENTAS && Capacitor.isNativePlatform()) || hojaFlotante !== 'accesibilidad') return
+  //   void VentanaDePrueba.estado().then(e => {
+  //     if (!e.accesibilidad) return
+  //     console.info('SigoFlotante', `volvió a Sigo volvioSolo=${e.volvioSolo ?? false} página=${e.paginaAjustes || ''}`)
+  //     setHojaFlotante('preparacion')
+  //   })
+  const esperandoAccesibilidad = hojaFlotante?.tipo === 'autorizacion' && hojaFlotante.esperando
   useEffect(() => {
-    if (!(HERRAMIENTAS && Capacitor.isNativePlatform()) || hojaFlotante !== 'accesibilidad') return
+    if (!(HERRAMIENTAS && Capacitor.isNativePlatform()) || !esperandoAccesibilidad) return
     const sub: any = CapacitorApp.addListener('appStateChange', ({ isActive }) => {
       if (!isActive) return
       void VentanaDePrueba.estado().then(e => {
-        if (!e.accesibilidad) return
-        console.info('SigoFlotante', `volvió a Sigo volvioSolo=${e.volvioSolo ?? false} página=${e.paginaAjustes || ''}`)
-        setHojaFlotante('preparacion')
+        console.info('SigoFlotante', `volvió a Sigo accesibilidad=${e.accesibilidad} volvioSolo=${e.volvioSolo ?? false} página=${e.paginaAjustes || ''}`)
+        setHojaFlotante(h => siguienteHojaFlotante(h, { tipo: 'volver', accesibilidad: e.accesibilidad }))
       }).catch(err => console.warn('SigoFlotante', 'no se pudo leer estado al volver', err))
     })
     return () => {
@@ -439,7 +461,8 @@ export default function App({ motor, repoOverride }: AppProps) {
         else if (sub && typeof sub.remove === 'function') sub.remove()
       } catch {}
     }
-  }, [hojaFlotante])
+    // Antes -08-11-2026-: }, [hojaFlotante])
+  }, [esperandoAccesibilidad])
 
   const [fondoToma, setFondoToma] = useState<FondoToma>(
     (ajustesPrevios.fondoToma === 'recuadro' || ajustesPrevios.fondoToma === 'oculta')
@@ -1759,6 +1782,15 @@ export default function App({ motor, repoOverride }: AppProps) {
   //   if (estadoToma === 'leyendo') return
   // Se conserva el camino de Empezar; el finally solo suelta la intención del instrumento.
   async function handleEmpezarDesdeListo() {
+    // -banda A, 09-11-2026- Con «Ventana flotante» elegida en el dock, Empezar no empieza aquí: abre la autorización
+    // o la preparación, y es el Empezar de la preparación el que llega con la intención. Antes no existía: la hoja se
+    // abría desde el botón suelto de arriba.
+    if (HERRAMIENTAS && Capacitor.isNativePlatform() && flotanteElegido && !intencionFlotanteRef.current
+      && estadoToma === 'listo' && !conCamara && !fija) {
+      hapticaToqueMedio()
+      await abrirHojaFlotante()
+      return
+    }
     if (HERRAMIENTAS && Capacitor.isNativePlatform()) {
       if (entrandoFlotanteRef.current || (preparandoFlotanteRef.current && !intencionFlotanteRef.current)) return
       entrandoFlotanteRef.current = intencionFlotanteRef.current !== null
@@ -1882,7 +1914,10 @@ export default function App({ motor, repoOverride }: AppProps) {
           anclajeZona,
           transparencia: transparenciaFlotante,
           tokenInicial,
-          mostrarTiempo
+          // Antes -08-11-2026-: mostrarTiempo
+          mostrarTiempo,
+          // -banda A, 09-11-2026- La página de la ventana no ve el idioma de la app: va en el contrato.
+          idiomaApp: idiomaApp()
         })
         console.info('SigoFlotante', `contrato enviado sesion=${abierta.sesion} tokenInicial=${tokenInicial}`)
       } catch (e) {
@@ -1918,7 +1953,8 @@ export default function App({ motor, repoOverride }: AppProps) {
     const e = error as { code?: string; message?: string }
     if (e?.code === 'SIN_ACCESIBILIDAD') {
       console.info('SigoFlotante', 'hoja de accesibilidad mostrada')
-      setHojaFlotante('accesibilidad')
+      // Antes -08-11-2026-: setHojaFlotante('accesibilidad')
+      setHojaFlotante(h => siguienteHojaFlotante(h, { tipo: 'empezar', accesibilidad: false }))
     } else mostrarAviso(e?.message || String(error))
   }
 
@@ -1932,19 +1968,20 @@ export default function App({ motor, repoOverride }: AppProps) {
       const prefs = await VentanaDePrueba.preferencias()
       setTransparenciaFlotante(limitarTransparencia(prefs.transparencia ?? 0))
       setFontSizeFlotante(limitarTamanoLetra(prefs.fontSize ?? fontSize, PASOS_LETRA))
+      if (typeof prefs.anchoVentana === 'number' && prefs.anchoVentana > 0) setAnchoBandaFlotante(prefs.anchoVentana)
       const estado = await VentanaDePrueba.estado()
-      if (estado.accesibilidad) setHojaFlotante('preparacion')
-      else {
-        console.info('SigoFlotante', 'hoja de accesibilidad mostrada')
-        setHojaFlotante('accesibilidad')
-      }
+      // Antes -08-11-2026-: if (estado.accesibilidad) setHojaFlotante('preparacion') y, si no, 'accesibilidad'.
+      if (!estado.accesibilidad) console.info('SigoFlotante', 'hoja de accesibilidad mostrada')
+      setHojaFlotante(h => siguienteHojaFlotante(h, { tipo: 'empezar', accesibilidad: estado.accesibilidad }))
     } catch (e) {
       await avisarErrorFlotante(e)
     }
   }
 
   async function irAActivarAccesibilidad() {
-    console.info('SigoFlotante', 'Ir a activarlo')
+    // Antes -08-11-2026-: console.info('SigoFlotante', 'Ir a activarlo'), sin marcar la espera.
+    console.info('SigoFlotante', 'Abrir Accesibilidad')
+    setHojaFlotante(h => siguienteHojaFlotante(h, { tipo: 'abrirAjustes' }))
     try {
       const r = await VentanaDePrueba.abrirAjustesAccesibilidad()
       console.info('SigoFlotante', `página abierta=${r.pagina}`)
@@ -1955,7 +1992,8 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   function ahoraNoAccesibilidad() {
     console.info('SigoFlotante', 'Ahora no')
-    setHojaFlotante(null)
+    // Antes -08-11-2026-: setHojaFlotante(null)
+    setHojaFlotante(h => siguienteHojaFlotante(h, { tipo: 'desistir' }))
   }
 
   async function empezarDesdeHojaFlotante() {
@@ -3796,6 +3834,7 @@ export default function App({ motor, repoOverride }: AppProps) {
             ...(gestoEnLectura ? estiloAtras(gestoEnLectura) : {})
           } as React.CSSProperties}
         >
+          {/* -banda A, 09-11-2026- La entrada pasó al dock: SelectorFlotante, que se pasa a TeleprompterView. Antes:
           {HERRAMIENTAS && Capacitor.isNativePlatform() && estadoToma === 'listo' && !conCamara && !camaraActiva && !fija && (
             <div className="prueba-flotante-casos" role="group" aria-label={t('ventanaFlotante')}>
               <button type="button" disabled={!oyenteFlotanteListo} onClick={() => void abrirHojaFlotante()}>
@@ -3803,9 +3842,11 @@ export default function App({ motor, repoOverride }: AppProps) {
                 {t('ventanaFlotante')}
               </button>
             </div>
-          )}
+          )} */}
           {HERRAMIENTAS && Capacitor.isNativePlatform() && ventanaFlotanteAbierta && (
             <div className="flotante-panel-sigo" role="status">
+              {/* -banda A, 09-11-2026- El ícono y el aviso abajo, donde la banda -arriba- no los tapa. Antes: sin ícono. */}
+              <IconoVentanaFlotante tamano={36} />
               <p>{t('lecturaEnVentanaFlotante')}</p>
               <button type="button" className="boton-dialogo lleno" onClick={() => void cerrarVentanaDesdeSigo()}>
                 {t('cerrarLaVentana')}
@@ -3991,6 +4032,12 @@ export default function App({ motor, repoOverride }: AppProps) {
               }}
               onEmpezar={handleEmpezarDesdeListo}
               onVolverListo={handleVolverDesdeListo}
+              // -banda A, 09-11-2026- El selector de la ventana flotante, en el dock o en el riel. Solo en la APK de
+              // prueba y en las mismas condiciones del botón de antes.
+              selectorFlotante={HERRAMIENTAS && Capacitor.isNativePlatform() && estadoToma === 'listo' && !conCamara && !camaraActiva && !fija
+                ? <SelectorFlotante elegido={flotanteElegido} disponible={oyenteFlotanteListo} onCambiar={(v) => { hapticaSeleccion(); setFlotanteElegido(v) }} />
+                : undefined}
+              flotanteElegido={HERRAMIENTAS && Capacitor.isNativePlatform() && flotanteElegido && !conCamara && !fija}
               onToggleControles={() => {
                 if (estadoToma !== 'leyendo') return
                 // -tarea 106- Con Velocidad fija tocar el texto pausa y sigue -con los controles a la
@@ -4296,45 +4343,148 @@ export default function App({ motor, repoOverride }: AppProps) {
       {/* -proxima-version, 2026-11-07- El aviso de límite gratis antes de empezar. «Grabar …» / «Leer …» cierra y
           empieza como siempre -el permiso, la cuenta, el aviso del último minuto y el corte siguen igual-. «Ver
           Sigo+» cierra y abre la oferta; al volver queda en LISTO y no empieza sola. Afuera o atrás: LISTO. */}
+      {/* -banda A, 09-11-2026- LA AUTORIZACIÓN Y LA PREPARACIÓN DE LA VENTANA.
+          La autorización: el ícono, el aviso aprobado con el nombre literal del servicio y, si volvió de Ajustes sin
+          activarlo, la nota de que sigue desactivado; «Ahora no» o tocar afuera vuelve a LISTO y «Abrir Accesibilidad»
+          se puede repetir. La preparación: la muestra con el pasaje donde está LISTO, su formato y la banda, al ancho
+          de la banda que se abrirá y con tres renglones de alto a la letra elegida, sobre la mitad clara y la oscura;
+          debajo -o al lado, con el teléfono de lado- la transparencia y la letra, y Empezar. En el tema claro las
+          barras toman el oscuro de Empezar -styles.css, .hoja-flotante-: la crema daba 1,15 a 1 sobre el blanco.
+          Antes -08-11-2026-, la hoja entera:
+                {HERRAMIENTAS && Capacitor.isNativePlatform() && hojaFlotante && (
+                  <div className="capa-dialogo-microfono" onClick={() => { if (hojaFlotante === 'preparacion') setHojaFlotante(null) }}>
+                    <div
+                      className="dialogo-ajustes hoja-flotante"
+                      role="dialog"
+                      aria-modal="true"
+                      aria-label={hojaFlotante === 'accesibilidad' ? t('accesibilidadFlotanteTitulo') : t('ventanaFlotante')}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {hojaFlotante === 'accesibilidad' ? (
+                        <>
+                          <h3 className="dialogo-ajustes-titulo">{t('accesibilidadFlotanteTitulo')}</h3>
+                          <p className="texto-dialogo">{t('accesibilidadFlotanteTexto')}</p>
+                          <div className="botones-dialogo">
+                            <button type="button" className="boton-dialogo" onClick={ahoraNoAccesibilidad}>{t('ahoraNo')}</button>
+                            <button type="button" className="boton-dialogo lleno" onClick={() => void irAActivarAccesibilidad()}>{t('irAActivarlo')}</button>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="flotante-previa">
+                            <div className="flotante-previa-mitades" aria-hidden="true" />
+                            {/* La muestra es la lectura de la ventana -la orden: no un dibujo aparte-. Antes -957fc97-: un div con
+                                el texto de los bloques unido, sin formato, y la letra en var(--fuente-serif) y var(--fuente-sans),
+                                que no existen: salía con la letra del sistema. * /}
+                            <div
+                              className="flotante-previa-lectura"
+                              style={{ background: colorConAlfa(colorFondo, 1 - transparenciaFlotante / 100) }}
+                            >
+                              {guionActual && (
+                                <TeleprompterView
+                                  script={guionActual}
+                                  currentBlockIndex={0}
+                                  currentLineIndex={0}
+                                  currentWordIndex={0}
+                                  fontSize={fontSizeFlotante}
+                                  marginPercent={marginPercent}
+                                  lineasZona={lineasZona}
+                                  anclajeZona={anclajeZona}
+                                  columnaAngosta={columnaAngosta}
+                                  colorFondo={colorFondo}
+                                  colorLetra={colorLetra}
+                                  tipoFuente={tipoFuente}
+                                  estadoToma="leyendo"
+                                  controlesVisibles={false}
+                                  ocultarCromoDeLeer
+                                  sobreImagenAjena
+                                />
+                              )}
+                            </div>
+                          </div>
+                          {/* Antes -957fc97-: dos <label> con <input type="range"> sin clase -la bolita azul del navegador-.
+                              Ahora los controles de Aa de Sigo, compartidos con la ventana -AjustesFlotante-. * /}
+                          <AjustesFlotante
+                            transparencia={transparenciaFlotante}
+                            fontSize={fontSizeFlotante}
+                            onTransparencia={(v) => {
+                              setTransparenciaFlotante(v)
+                              void VentanaDePrueba.guardarPreferencias({ transparencia: v }).catch(() => {})
+                            }}
+                            onLetra={(v) => {
+                              setFontSizeFlotante(v)
+                              void VentanaDePrueba.guardarPreferencias({ fontSize: v }).catch(() => {})
+                            }}
+                          />
+                          <div className="botones-dialogo">
+                            <button type="button" className="boton-dialogo lleno" onClick={() => void empezarDesdeHojaFlotante()}>
+                              {t('empezar')}
+                            </button>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
+      */}
       {HERRAMIENTAS && Capacitor.isNativePlatform() && hojaFlotante && (
-        <div className="capa-dialogo-microfono" onClick={() => { if (hojaFlotante === 'preparacion') setHojaFlotante(null) }}>
+        // -banda A, 09-11-2026- capa-hoja-flotante: la hoja va abajo, como en el boceto. Antes: className="capa-dialogo-microfono".
+        <div className="capa-dialogo-microfono capa-hoja-flotante" onClick={() => setHojaFlotante(h => siguienteHojaFlotante(h, { tipo: 'desistir' }))}>
           <div
-            className="dialogo-ajustes hoja-flotante"
+            className={`dialogo-ajustes hoja-flotante hoja-flotante-${hojaFlotante.tipo}`}
             role="dialog"
             aria-modal="true"
-            aria-label={hojaFlotante === 'accesibilidad' ? t('accesibilidadFlotanteTitulo') : t('ventanaFlotante')}
+            aria-label={hojaFlotante.tipo === 'autorizacion' ? t('accesibilidadFlotanteTitulo') : t('ventanaFlotante')}
             onClick={(e) => e.stopPropagation()}
           >
-            {hojaFlotante === 'accesibilidad' ? (
+            {hojaFlotante.tipo === 'autorizacion' ? (
               <>
+                <div className="hoja-flotante-icono" aria-hidden="true"><IconoVentanaFlotante tamano={22} /></div>
                 <h3 className="dialogo-ajustes-titulo">{t('accesibilidadFlotanteTitulo')}</h3>
                 <p className="texto-dialogo">{t('accesibilidadFlotanteTexto')}</p>
+                {hojaFlotante.inactivo && (
+                  <div className="hoja-flotante-nota" role="status" data-testid="nota-flotante-inactivo">
+                    <IconoCerrar tamano={18} />
+                    <span>{t('accesibilidadFlotanteInactivo')}</span>
+                  </div>
+                )}
                 <div className="botones-dialogo">
                   <button type="button" className="boton-dialogo" onClick={ahoraNoAccesibilidad}>{t('ahoraNo')}</button>
-                  <button type="button" className="boton-dialogo lleno" onClick={() => void irAActivarAccesibilidad()}>{t('irAActivarlo')}</button>
+                  <button type="button" className="boton-dialogo lleno" onClick={() => void irAActivarAccesibilidad()}>{t('abrirAccesibilidad')}</button>
                 </div>
               </>
             ) : (
-              <>
-                <div className="flotante-previa">
+              <div className="hoja-flotante-cuerpo">
+                <div
+                  className="flotante-previa"
+                  // El ancho de la banda va también aquí: la muestra mide lo que la banda -styles.css-.
+                  style={{
+                    ['--alto-previa' as string]: `${Math.round(3 * fontSizeFlotante * 1.4 + 16)}px`,
+                    ['--ancho-previa' as string]: `${anchoBandaFlotante}px`
+                  }}
+                >
                   <div className="flotante-previa-mitades" aria-hidden="true" />
-                  {/* La muestra es la lectura de la ventana -la orden: no un dibujo aparte-. Antes -957fc97-: un div con
-                      el texto de los bloques unido, sin formato, y la letra en var(--fuente-serif) y var(--fuente-sans),
-                      que no existen: salía con la letra del sistema. */}
+                  {/* La muestra es la lectura de la ventana -la orden: no un dibujo aparte-, con el ancho de la banda. */}
                   <div
                     className="flotante-previa-lectura"
-                    style={{ background: colorConAlfa(colorFondo, 1 - transparenciaFlotante / 100) }}
+                    style={{
+                      background: colorConAlfa(colorFondo, 1 - transparenciaFlotante / 100),
+                      ['--ancho-previa' as string]: `${anchoBandaFlotante}px`
+                    }}
                   >
                     {guionActual && (
                       <TeleprompterView
                         script={guionActual}
-                        currentBlockIndex={0}
-                        currentLineIndex={0}
-                        currentWordIndex={0}
+                        currentBlockIndex={bloqueActual}
+                        currentLineIndex={lineaActual}
+                        currentWordIndex={palabraActual}
                         fontSize={fontSizeFlotante}
                         marginPercent={marginPercent}
                         lineasZona={lineasZona}
-                        anclajeZona={anclajeZona}
+                        anclajeZona="arriba"
+                        margenBandaArribaPx={8}
+                        // El subrayado de la palabra en que va: la muestra lee el motor, no lo mueve -estadoEn-.
+                        motorAvance={motorAvance}
                         columnaAngosta={columnaAngosta}
                         colorFondo={colorFondo}
                         colorLetra={colorLetra}
@@ -4347,26 +4497,27 @@ export default function App({ motor, repoOverride }: AppProps) {
                     )}
                   </div>
                 </div>
-                {/* Antes -957fc97-: dos <label> con <input type="range"> sin clase -la bolita azul del navegador-.
-                    Ahora los controles de Aa de Sigo, compartidos con la ventana -AjustesFlotante-. */}
-                <AjustesFlotante
-                  transparencia={transparenciaFlotante}
-                  fontSize={fontSizeFlotante}
-                  onTransparencia={(v) => {
-                    setTransparenciaFlotante(v)
-                    void VentanaDePrueba.guardarPreferencias({ transparencia: v }).catch(() => {})
-                  }}
-                  onLetra={(v) => {
-                    setFontSizeFlotante(v)
-                    void VentanaDePrueba.guardarPreferencias({ fontSize: v }).catch(() => {})
-                  }}
-                />
-                <div className="botones-dialogo">
-                  <button type="button" className="boton-dialogo lleno" onClick={() => void empezarDesdeHojaFlotante()}>
-                    {t('empezar')}
-                  </button>
+                <div className="hoja-flotante-controles">
+                  <AjustesFlotante
+                    transparencia={transparenciaFlotante}
+                    fontSize={fontSizeFlotante}
+                    onTransparencia={(v) => {
+                      setTransparenciaFlotante(v)
+                      void VentanaDePrueba.guardarPreferencias({ transparencia: v }).catch(() => {})
+                    }}
+                    onLetra={(v) => {
+                      setFontSizeFlotante(v)
+                      void VentanaDePrueba.guardarPreferencias({ fontSize: v }).catch(() => {})
+                    }}
+                  />
+                  <div className="botones-dialogo">
+                    <button type="button" className="boton-dialogo lleno boton-con-icono" onClick={() => void empezarDesdeHojaFlotante()}>
+                      <IconoEmpezar tamano={18} />
+                      {t('empezar')}
+                    </button>
+                  </div>
                 </div>
-              </>
+              </div>
             )}
           </div>
         </div>

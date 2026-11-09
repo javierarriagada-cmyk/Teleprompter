@@ -8,12 +8,17 @@ import { PASOS_LETRA } from '../components/estiloLectura'
 import { IconoCerrar, IconoEmpezar, IconoPausa, IconoTamanoLetra } from '../components/IconosApp'
 import { AnclajeZona } from '../components/banda'
 import { Guion } from '../datos/modelo'
-import { limitarTamanoLetra, limitarTransparencia } from '../lib/flotante'
+// Antes -08-11-2026-: import { limitarTamanoLetra, limitarTransparencia } from '../lib/flotante'
+import {
+  limitarTamanoLetra, limitarTransparencia, colocarMenuAa, disenoVentana, ANCLA_RENGLON_VENTANA,
+  ALTO_CABECERA_VENTANA, ALTO_PIE_VENTANA, type AreaSegura
+} from '../lib/flotante'
+import { mostrarIdiomaSinGuardar, idiomaApp, normalizarIdioma } from '../lib/idioma'
 import { controlesSeVanSolos } from '../lib/velocidadFija'
 import useASR from '../hooks/useASR'
 import { useSeguidor } from '../hooks/useSeguidor'
 import { MotorFlotante } from '../motor/MotorFlotante'
-import { AjustesFlotante } from './AjustesFlotante'
+// Antes -08-11-2026-: import { AjustesFlotante } from './AjustesFlotante' -el menú de Aa ahora es PanelAaFlotante.tsx-
 import { t, useTextos } from '../textos'
 
 type Contrato = {
@@ -32,7 +37,12 @@ type Contrato = {
   transparencia: number
   tokenInicial: number
   mostrarTiempo: boolean
+  // -banda A, 09-11-2026- El idioma de la app: esta página vive en otro origen y no ve el que se eligió en Sigo.
+  idiomaApp?: string
 }
+
+// Dónde está la ventana en la pantalla, en dp -VentanaDePrueba.enviarGeometria-. Sirve para poner el menú de Aa.
+type Geometria = { x: number; y: number; w: number; h: number; seguro: AreaSegura }
 
 type EstadoApp = {
   tipo: 'estado'
@@ -73,6 +83,11 @@ export function PaginaFlotante() {
   const [controlesVisibles, setControlesVisibles] = useState(true)
   const [tInicio, setTInicio] = useState<number | null>(null)
   const tokenInicialHecho = useRef(false)
+  // -banda A, 09-11-2026- La geometría la manda lo nativo; el ancho de la página es el de la ventana.
+  const [geometria, setGeometria] = useState<Geometria | null>(null)
+  const [ancho, setAncho] = useState(() => (typeof window !== 'undefined' ? window.innerWidth : 358))
+  const aaRef = useRef<HTMLButtonElement | null>(null)
+  const sesionRef = useRef(0)
 
   const {
     bloqueActual, lineaActual, palabraActual, totalTokens,
@@ -103,6 +118,8 @@ export function PaginaFlotante() {
       if (datos.tipo === 'contrato') {
         const c = datos as unknown as Contrato
         motor.fijarSesion(c.sesion)
+        sesionRef.current = c.sesion
+        if (typeof c.idiomaApp === 'string' && normalizarIdioma(c.idiomaApp) !== idiomaApp()) mostrarIdiomaSinGuardar(normalizarIdioma(c.idiomaApp))
         setContrato(c)
         setTransparencia(limitarTransparencia(c.transparencia))
         setFontSize(limitarTamanoLetra(c.fontSize, PASOS_LETRA))
@@ -120,6 +137,23 @@ export function PaginaFlotante() {
       }
       if (datos.tipo === 'micro') {
         setSilenciado(datos.silenciado === true)
+        return
+      }
+      // -banda A, 09-11-2026- Lo que llega de la ventana nativa y del menú de Aa. El cambio de letra solo cambia la
+      // letra: el seguidor, el avance y el token no se tocan, así que la misma palabra sigue activa aunque el
+      // renglón se rearme. Lo mismo al abrir o cerrar Aa: el menú va en otra ventana y la lectura no cambia de alto.
+      if (datos.tipo === 'geometria') {
+        const g = datos as unknown as Geometria
+        if ([g.x, g.y, g.w, g.h].every((n) => typeof n === 'number') && g.seguro) setGeometria(g)
+        return
+      }
+      if (datos.tipo === 'aaCerrado') {
+        setAaAbierto(false)
+        return
+      }
+      if (datos.tipo === 'ajusteAa') {
+        if (typeof datos.fontSize === 'number') setFontSize(limitarTamanoLetra(datos.fontSize, PASOS_LETRA))
+        if (typeof datos.transparencia === 'number') setTransparencia(limitarTransparencia(datos.transparencia))
         return
       }
       if (datos.tipo === 'voz') {
@@ -165,22 +199,68 @@ export function PaginaFlotante() {
     enviar({ tipo, sesion: contrato?.sesion ?? 0, token: tokenActual() })
   }, [contrato, motorAvance])
 
-  function cambiarTransparencia(n: number) {
-    const v = limitarTransparencia(n)
-    setTransparencia(v)
-    enviar({ tipo: 'ajuste', sesion: contrato?.sesion ?? 0, transparencia: v, token: tokenActual() })
+  // Antes -08-11-2026-: el panel Aa vivía en esta página y sus controles llamaban a:
+  // function cambiarTransparencia(n: number) {
+  //   const v = limitarTransparencia(n)
+  //   setTransparencia(v)
+  //   enviar({ tipo: 'ajuste', sesion: contrato?.sesion ?? 0, transparencia: v, token: tokenActual() })
+  // }
+  // function cambiarLetra(n: number) {
+  //   const v = limitarTamanoLetra(n, PASOS_LETRA)
+  //   setFontSize(v)
+  //   enviar({ tipo: 'ajuste', sesion: contrato?.sesion ?? 0, fontSize: v, token: tokenActual() })
+  // }
+  // Ahora el menú es la página ?panel=aa -PanelAaFlotante.tsx- y lo nativo guarda y reenvía -'ajusteAa'-.
+
+  useEffect(() => {
+    const alCambiar = () => setAncho(window.innerWidth)
+    window.addEventListener('resize', alCambiar)
+    return () => window.removeEventListener('resize', alCambiar)
+  }, [])
+
+  // EL MENÚ DE Aa, AFUERA Y PEGADO A Aa -banda A, 09-11-2026-. Con la geometría de la ventana y la caja de Aa se
+  // calcula el lugar -colocarMenuAa- y lo nativo pone ahí la ventana del menú. Se recalcula al mover o cambiar el
+  // tamaño de la banda, así el menú se pasa de lado al acercarse a un borde. Los valores van solo al abrir: mientras
+  // se arrastra una barra del menú, devolverle cada eco haría saltar el tirador.
+  const valoresAlAbrir = useRef({ transparencia, fontSize })
+  valoresAlAbrir.current = { transparencia, fontSize }
+  useEffect(() => {
+    if (!aaAbierto || !geometria || !aaRef.current) return
+    const r = aaRef.current.getBoundingClientRect()
+    const lugar = colocarMenuAa(
+      { x: geometria.x, y: geometria.y, w: geometria.w, h: geometria.h },
+      { x: geometria.x + r.left, y: geometria.y + r.top, w: r.width, h: r.height },
+      geometria.seguro
+    )
+    enviar({
+      tipo: 'aa', abierto: true, sesion: sesionRef.current, ...lugar,
+      transparencia: valoresAlAbrir.current.transparencia, fontSize: valoresAlAbrir.current.fontSize, idiomaApp: idiomaApp()
+    })
+  }, [aaAbierto, geometria, ancho])
+
+  function alternarAa() {
+    setAaAbierto((abierto) => {
+      if (abierto) enviar({ tipo: 'aa', abierto: false, sesion: sesionRef.current })
+      return !abierto
+    })
   }
 
-  function cambiarLetra(n: number) {
-    const v = limitarTamanoLetra(n, PASOS_LETRA)
-    setFontSize(v)
-    enviar({ tipo: 'ajuste', sesion: contrato?.sesion ?? 0, fontSize: v, token: tokenActual() })
+  // Tocar la ventana: con Aa abierto lo cierra -como tocar fuera de un menú de Material 3- y deja los controles;
+  // si no, muestra u oculta los controles como antes.
+  function tocarVentana() {
+    if (aaAbierto) {
+      setAaAbierto(false)
+      enviar({ tipo: 'aa', abierto: false, sesion: sesionRef.current })
+      return
+    }
+    if (seVan) setControlesVisibles((v) => !v)
   }
 
   const colorFondo = contrato?.colorFondo || '#000000'
   const colorLetra = contrato?.colorLetra || '#FFFFFF'
   const { r, g, b } = hexRgb(colorFondo)
   const alfa = 1 - transparencia / 100
+  const diseno = disenoVentana(ancho)
 
   const ultimoPuntero = useRef({ x: 0, y: 0 })
 
@@ -211,86 +291,171 @@ export function PaginaFlotante() {
     delete (e.currentTarget as HTMLElement).dataset.gesto
   }
 
+  // Antes -08-11-2026-, el dibujo de la ventana -cabecera, panel Aa adentro, lectura entre las dos barras y pie-:
+  //   const cromo = controlesVisibles ? '' : ' flotante-oculto'
+  //
+  //   return (
+  //     <div
+  //       className="flotante-raiz"
+  //       style={{
+  //         background: `rgba(${r}, ${g}, ${b}, ${alfa})`,
+  //         color: colorLetra,
+  //         ['--color-texto' as string]: colorLetra
+  //       }}
+  //       onClick={() => {
+  //         if (seVan) setControlesVisibles((v) => !v)
+  //       }}
+  //     >
+  //       <div className={`flotante-barra${cromo}`} onClick={(e) => e.stopPropagation()}>
+  //         <button
+  //           type="button"
+  //           className="flotante-asa-hit"
+  //           aria-label={t('moverVentana')}
+  //           onPointerDown={(e) => iniciarGesto(e, 'mover')}
+  //           onPointerMove={moverGesto}
+  //           onPointerUp={finGesto}
+  //           onPointerCancel={finGesto}
+  //         >
+  //           <span className="flotante-asa" aria-hidden="true" />
+  //         </button>
+  //         {contrato?.mostrarTiempo ? (
+  //           <BarraDeTiempo
+  //             motorAvance={motorAvance}
+  //             totalTokens={totalTokens}
+  //             tInicioLecturaMs={tInicio}
+  //             enPausa={estado.enPausa}
+  //             escuchando={estado.escuchando && !estado.enPausa}
+  //             vistaPrevia={tInicio === null}
+  //           />
+  //         ) : (
+  //           <BarraDeTiempo
+  //             motorAvance={motorAvance}
+  //             totalTokens={totalTokens}
+  //             tInicioLecturaMs={tInicio}
+  //             enPausa={estado.enPausa}
+  //             escuchando={estado.escuchando && !estado.enPausa}
+  //             soloMicrofono
+  //           />
+  //         )}
+  //         <button
+  //           type="button"
+  //           className="flotante-icono"
+  //           aria-label={t('tamanoLetra')}
+  //           aria-pressed={aaAbierto}
+  //           onClick={() => setAaAbierto((v) => !v)}
+  //         >
+  //           <IconoTamanoLetra tamano={22} />
+  //         </button>
+  //         <button
+  //           type="button"
+  //           className="flotante-icono"
+  //           aria-label={t('cerrar')}
+  //           onClick={() => accion('cerrar')}
+  //         >
+  //           <IconoCerrar tamano={22} />
+  //         </button>
+  //       </div>
+  //
+  //       {aaAbierto && controlesVisibles && (
+  //         <div className="flotante-aa" onClick={(e) => e.stopPropagation()}>
+  //           {/* Antes -957fc97-: dos <label> con <input type="range"> sin clase. Ahora los de la preparación. */}
+  //           <AjustesFlotante
+  //             transparencia={transparencia}
+  //             fontSize={fontSize}
+  //             onTransparencia={cambiarTransparencia}
+  //             onLetra={cambiarLetra}
+  //           />
+  //         </div>
+  //       )}
+  //
+  //       {/* Antes -957fc97-: {estado.silenciado && ( */}
+  //       {silenciado && (
+  //         <div className="flotante-aviso-micro">{t('avisoMicrofonoQuitado')}</div>
+  //       )}
+  //
+  //       <div className="flotante-lectura">
+  //         {contrato && (
+  //           <TeleprompterView
+  //             script={contrato.guion}
+  //             currentBlockIndex={bloqueActual}
+  //             currentLineIndex={lineaActual}
+  //             currentWordIndex={palabraActual}
+  //             fontSize={fontSize}
+  //             marginPercent={contrato.marginPercent}
+  //             lineasZona={contrato.lineasZona}
+  //             anclajeZona={contrato.anclajeZona}
+  //             motorAvance={motorAvance}
+  //             columnaAngosta={contrato.columnaAngosta}
+  //             colorFondo={colorFondo}
+  //             colorLetra={colorLetra}
+  //             tipoFuente={contrato.tipoFuente}
+  //             isRecording={estado.escuchando && !estado.enPausa}
+  //             estadoToma="leyendo"
+  //             ocultarCromoDeLeer
+  //             sobreImagenAjena
+  //             mostrarTiempo={contrato.mostrarTiempo}
+  //             controlesVisibles={controlesVisibles}
+  //             enPausa={estado.enPausa}
+  //           />
+  //         )}
+  //         {estado.cuenta !== null && (
+  //           <div className="flotante-cuenta">
+  //             <CuentaRegresiva valor={estado.cuenta} />
+  //           </div>
+  //         )}
+  //       </div>
+  //
+  //       <div className={`flotante-pie${cromo}`} onClick={(e) => e.stopPropagation()}>
+  //         <button
+  //           type="button"
+  //           className="flotante-pildora"
+  //           aria-label={estado.enPausa ? t('seguir') : t('pausa')}
+  //           onClick={() => accion(estado.enPausa ? 'seguir' : 'pausa')}
+  //         >
+  //           {estado.enPausa ? <IconoEmpezar tamano={22} /> : <IconoPausa tamano={22} />}
+  //           {estado.enPausa ? t('seguir') : t('pausa')}
+  //         </button>
+  //         <button
+  //           type="button"
+  //           className="flotante-texto"
+  //           onClick={() => accion('volver')}
+  //         >
+  //           {t('volverASigo')}
+  //         </button>
+  //         <button
+  //           type="button"
+  //           className="flotante-esquina"
+  //           aria-label={t('cambiarTamano')}
+  //           onPointerDown={(e) => iniciarGesto(e, 'tamano')}
+  //           onPointerMove={moverGesto}
+  //           onPointerUp={finGesto}
+  //           onPointerCancel={finGesto}
+  //         />
+  //       </div>
+  //     </div>
+  //   )
+  // -banda A, 09-11-2026- La lectura ocupa toda la ventana y su renglón vivo queda fijo a 52 px del borde de arriba
+  // -ANCLA_RENGLON_VENTANA-, con o sin controles: así el pasaje no salta cuando las barras se van o vuelven. Con los
+  // controles a la vista, la lectura se recorta bajo la cabecera y el pie para que el texto no pase por debajo de los
+  // botones. La transparencia cambia solo la capa del fondo -flotante-fondo-; letra, controles y halo no.
   const cromo = controlesVisibles ? '' : ' flotante-oculto'
+  const altoCuenta = Math.round(Math.min(120, (geometria?.h ?? 224) * 0.55))
 
   return (
     <div
-      className="flotante-raiz"
+      className={`flotante-raiz flotante-${diseno}${controlesVisibles ? ' con-controles' : ''}`}
       style={{
-        background: `rgba(${r}, ${g}, ${b}, ${alfa})`,
         color: colorLetra,
-        ['--color-texto' as string]: colorLetra
+        ['--color-texto' as string]: colorLetra,
+        ['--fondo-ventana' as string]: `rgba(${r}, ${g}, ${b}, ${alfa})`,
+        ['--fondo-lectura-ventana' as string]: colorFondo,
+        ['--alto-cabecera-ventana' as string]: `${ALTO_CABECERA_VENTANA}px`,
+        ['--alto-pie-ventana' as string]: `${ALTO_PIE_VENTANA}px`,
+        ['--alto-cuenta-ventana' as string]: `${altoCuenta}px`
       }}
-      onClick={() => {
-        if (seVan) setControlesVisibles((v) => !v)
-      }}
+      onClick={tocarVentana}
     >
-      <div className={`flotante-barra${cromo}`} onClick={(e) => e.stopPropagation()}>
-        <button
-          type="button"
-          className="flotante-asa-hit"
-          aria-label={t('moverVentana')}
-          onPointerDown={(e) => iniciarGesto(e, 'mover')}
-          onPointerMove={moverGesto}
-          onPointerUp={finGesto}
-          onPointerCancel={finGesto}
-        >
-          <span className="flotante-asa" aria-hidden="true" />
-        </button>
-        {contrato?.mostrarTiempo ? (
-          <BarraDeTiempo
-            motorAvance={motorAvance}
-            totalTokens={totalTokens}
-            tInicioLecturaMs={tInicio}
-            enPausa={estado.enPausa}
-            escuchando={estado.escuchando && !estado.enPausa}
-            vistaPrevia={tInicio === null}
-          />
-        ) : (
-          <BarraDeTiempo
-            motorAvance={motorAvance}
-            totalTokens={totalTokens}
-            tInicioLecturaMs={tInicio}
-            enPausa={estado.enPausa}
-            escuchando={estado.escuchando && !estado.enPausa}
-            soloMicrofono
-          />
-        )}
-        <button
-          type="button"
-          className="flotante-icono"
-          aria-label={t('tamanoLetra')}
-          aria-pressed={aaAbierto}
-          onClick={() => setAaAbierto((v) => !v)}
-        >
-          <IconoTamanoLetra tamano={22} />
-        </button>
-        <button
-          type="button"
-          className="flotante-icono"
-          aria-label={t('cerrar')}
-          onClick={() => accion('cerrar')}
-        >
-          <IconoCerrar tamano={22} />
-        </button>
-      </div>
-
-      {aaAbierto && controlesVisibles && (
-        <div className="flotante-aa" onClick={(e) => e.stopPropagation()}>
-          {/* Antes -957fc97-: dos <label> con <input type="range"> sin clase. Ahora los de la preparación. */}
-          <AjustesFlotante
-            transparencia={transparencia}
-            fontSize={fontSize}
-            onTransparencia={cambiarTransparencia}
-            onLetra={cambiarLetra}
-          />
-        </div>
-      )}
-
-      {/* Antes -957fc97-: {estado.silenciado && ( */}
-      {silenciado && (
-        <div className="flotante-aviso-micro">{t('avisoMicrofonoQuitado')}</div>
-      )}
+      <div className="flotante-fondo" aria-hidden="true" />
 
       <div className="flotante-lectura">
         {contrato && (
@@ -302,7 +467,8 @@ export function PaginaFlotante() {
             fontSize={fontSize}
             marginPercent={contrato.marginPercent}
             lineasZona={contrato.lineasZona}
-            anclajeZona={contrato.anclajeZona}
+            anclajeZona="arriba"
+            margenBandaArribaPx={ANCLA_RENGLON_VENTANA}
             motorAvance={motorAvance}
             columnaAngosta={contrato.columnaAngosta}
             colorFondo={colorFondo}
@@ -317,22 +483,79 @@ export function PaginaFlotante() {
             enPausa={estado.enPausa}
           />
         )}
-        {estado.cuenta !== null && (
-          <div className="flotante-cuenta">
-            <CuentaRegresiva valor={estado.cuenta} />
-          </div>
-        )}
+      </div>
+
+      {estado.cuenta !== null && (
+        <div className="flotante-cuenta">
+          <CuentaRegresiva valor={estado.cuenta} />
+        </div>
+      )}
+
+      {silenciado && (
+        <div className="flotante-aviso-micro">{t('avisoMicrofonoQuitado')}</div>
+      )}
+
+      <div className={`flotante-barra${cromo}`} onClick={(e) => e.stopPropagation()}>
+        {contrato?.mostrarTiempo ? (
+            <BarraDeTiempo
+              motorAvance={motorAvance}
+              totalTokens={totalTokens}
+              tInicioLecturaMs={tInicio}
+              enPausa={estado.enPausa}
+              escuchando={estado.escuchando && !estado.enPausa}
+              vistaPrevia={tInicio === null}
+            />
+          ) : (
+            <BarraDeTiempo
+              motorAvance={motorAvance}
+              totalTokens={totalTokens}
+              tInicioLecturaMs={tInicio}
+              enPausa={estado.enPausa}
+              escuchando={estado.escuchando && !estado.enPausa}
+              soloMicrofono
+            />
+          )}
+        <button
+          type="button"
+          className="flotante-asa-hit"
+          aria-label={t('moverVentana')}
+          onPointerDown={(e) => iniciarGesto(e, 'mover')}
+          onPointerMove={moverGesto}
+          onPointerUp={finGesto}
+          onPointerCancel={finGesto}
+        >
+          <span className="flotante-asa" aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          ref={aaRef}
+          className={`flotante-icono flotante-aa-boton${aaAbierto ? ' abierto' : ''}`}
+          aria-label={t('tamanoLetra')}
+          aria-pressed={aaAbierto}
+          data-testid="flotante-aa"
+          onClick={alternarAa}
+        >
+          <IconoTamanoLetra tamano={22} />
+        </button>
+        <button
+          type="button"
+          className="flotante-icono"
+          aria-label={t('cerrar')}
+          onClick={() => accion('cerrar')}
+        >
+          <IconoCerrar tamano={22} />
+        </button>
       </div>
 
       <div className={`flotante-pie${cromo}`} onClick={(e) => e.stopPropagation()}>
         <button
           type="button"
-          className="flotante-pildora"
+          className={diseno === 'amplia' ? 'flotante-pildora' : 'flotante-icono'}
           aria-label={estado.enPausa ? t('seguir') : t('pausa')}
           onClick={() => accion(estado.enPausa ? 'seguir' : 'pausa')}
         >
-          {estado.enPausa ? <IconoEmpezar tamano={22} /> : <IconoPausa tamano={22} />}
-          {estado.enPausa ? t('seguir') : t('pausa')}
+          {estado.enPausa ? <IconoEmpezar tamano={20} /> : <IconoPausa tamano={20} />}
+          {diseno === 'amplia' && (estado.enPausa ? t('seguir') : t('pausa'))}
         </button>
         <button
           type="button"
