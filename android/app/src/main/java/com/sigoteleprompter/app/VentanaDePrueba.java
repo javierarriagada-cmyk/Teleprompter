@@ -155,9 +155,16 @@ final class VentanaDePrueba {
         });
     }
 
+    // AL HILO PRINCIPAL -revisión del 957fc97, 08-11-2026-. Llega desde el plugin, en el hilo CapacitorPlugins, y la
+    // WebView solo acepta llamadas del principal. Medido en el g86: cada estado -la cuenta, la pausa- fallaba con
+    // «A WebView method was called on thread 'CapacitorPlugins'» y la ventana nunca lo recibía. El contrato pasaba
+    // de casualidad, porque llegaba antes de que cargara la página y se mandaba desde onPageFinished.
+    // Antes: Sesion s = actual; if (s != null) s.enviar(json);
     static void enviarAPagina(String json) {
-        Sesion s = actual;
-        if (s != null) s.enviar(json);
+        PRINCIPAL.post(() -> {
+            Sesion s = actual;
+            if (s != null) s.enviar(json);
+        });
     }
 
     static JSObject preferencias(Context ctx) {
@@ -286,9 +293,11 @@ final class VentanaDePrueba {
                 @Override public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest req) {
                     return cargador.shouldInterceptRequest(req.getUrl());
                 }
+                // LA COLA SE VACÍA CUANDO LA PÁGINA DICE «listo», NO AL TERMINAR DE CARGAR -revisión del 957fc97,
+                // 08-11-2026-. En el g86 la carga terminó a las 12.234 y la página puso su oyente de mensajes recién
+                // a las 12.256 -React lo pone después de dibujar-: el contrato, con el guion, se mandó en ese hueco y
+                // se perdió, y la ventana quedó vacía. Antes: aquí paginaLista = true y se vaciaba colaPagina.
                 @Override public void onPageFinished(WebView view, String url) {
-                    paginaLista = true;
-                    while (!colaPagina.isEmpty()) postear(colaPagina.removeFirst());
                     anotar(numero, "página cargada");
                 }
                 @Override public void onReceivedError(WebView view, WebResourceRequest req, android.webkit.WebResourceError error) {
@@ -405,7 +414,9 @@ final class VentanaDePrueba {
                 String tipo = o.optString("tipo", "");
                 if (o.has("token")) ultimoToken = o.optLong("token", ultimoToken);
                 if ("listo".equals(tipo)) {
-                    anotar(numero, "página lista");
+                    anotar(numero, "página lista; se mandan " + colaPagina.size() + " mensajes en espera");
+                    paginaLista = true;
+                    while (!colaPagina.isEmpty()) postear(colaPagina.removeFirst());
                 } else if ("mover".equals(tipo) && posicion != null) {
                     float d = recursos.getDisplayMetrics().density;
                     posicion.x += Math.round((float) o.optDouble("dx", 0) * d);

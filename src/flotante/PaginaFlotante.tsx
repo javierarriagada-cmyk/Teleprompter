@@ -13,6 +13,7 @@ import { controlesSeVanSolos } from '../lib/velocidadFija'
 import useASR from '../hooks/useASR'
 import { useSeguidor } from '../hooks/useSeguidor'
 import { MotorFlotante } from '../motor/MotorFlotante'
+import { AjustesFlotante } from './AjustesFlotante'
 import { t, useTextos } from '../textos'
 
 type Contrato = {
@@ -276,26 +277,13 @@ export function PaginaFlotante() {
 
       {aaAbierto && controlesVisibles && (
         <div className="flotante-aa" onClick={(e) => e.stopPropagation()}>
-          <label>
-            {t('transparenciaFondo')}
-            <input
-              type="range"
-              min={0}
-              max={100}
-              value={transparencia}
-              onChange={(e) => cambiarTransparencia(Number(e.target.value))}
-            />
-          </label>
-          <label>
-            {t('tamanoLetra')}
-            <input
-              type="range"
-              min={0}
-              max={PASOS_LETRA.length - 1}
-              value={Math.max(0, PASOS_LETRA.indexOf(fontSize))}
-              onChange={(e) => cambiarLetra(PASOS_LETRA[Number(e.target.value)])}
-            />
-          </label>
+          {/* Antes -957fc97-: dos <label> con <input type="range"> sin clase. Ahora los de la preparación. */}
+          <AjustesFlotante
+            transparencia={transparencia}
+            fontSize={fontSize}
+            onTransparencia={cambiarTransparencia}
+            onLetra={cambiarLetra}
+          />
         </div>
       )}
 

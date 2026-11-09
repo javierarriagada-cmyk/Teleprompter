@@ -131,6 +131,7 @@ import { HERRAMIENTAS } from './lib/herramientas'
 // Prototipo del 08-11-2026: todos los usos se eliminan del paquete de Play.
 import { VentanaDePrueba, type OpcionesPruebaFlotante, type AccionPruebaFlotante } from './lib/ventanaDePrueba'
 import { tokenAlVolver, limitarTransparencia, limitarTamanoLetra, colorConAlfa } from './lib/flotante'
+import { AjustesFlotante } from './flotante/AjustesFlotante'
 import { guionDeLaTarjeta, avisoAlArchivar } from './lib/portada'
 
 // Cuanto se quedan los controles a la vista despues de un toque, mientras se lee.
@@ -4346,35 +4347,20 @@ export default function App({ motor, repoOverride }: AppProps) {
                     )}
                   </div>
                 </div>
-                <label>
-                  {t('transparenciaFondo')}
-                  <input
-                    type="range"
-                    min={0}
-                    max={100}
-                    value={transparenciaFlotante}
-                    onChange={(e) => {
-                      const v = limitarTransparencia(Number(e.target.value))
-                      setTransparenciaFlotante(v)
-                      void VentanaDePrueba.guardarPreferencias({ transparencia: v }).catch(() => {})
-                    }}
-                  />
-                </label>
-                <label>
-                  {t('tamanoLetra')}
-                  <input
-                    type="range"
-                    min={0}
-                    max={PASOS_LETRA.length - 1}
-                    step={1}
-                    value={Math.max(0, PASOS_LETRA.indexOf(fontSizeFlotante))}
-                    onChange={(e) => {
-                      const v = PASOS_LETRA[Number(e.target.value)] ?? fontSizeFlotante
-                      setFontSizeFlotante(v)
-                      void VentanaDePrueba.guardarPreferencias({ fontSize: v }).catch(() => {})
-                    }}
-                  />
-                </label>
+                {/* Antes -957fc97-: dos <label> con <input type="range"> sin clase -la bolita azul del navegador-.
+                    Ahora los controles de Aa de Sigo, compartidos con la ventana -AjustesFlotante-. */}
+                <AjustesFlotante
+                  transparencia={transparenciaFlotante}
+                  fontSize={fontSizeFlotante}
+                  onTransparencia={(v) => {
+                    setTransparenciaFlotante(v)
+                    void VentanaDePrueba.guardarPreferencias({ transparencia: v }).catch(() => {})
+                  }}
+                  onLetra={(v) => {
+                    setFontSizeFlotante(v)
+                    void VentanaDePrueba.guardarPreferencias({ fontSize: v }).catch(() => {})
+                  }}
+                />
                 <div className="botones-dialogo">
                   <button type="button" className="boton-dialogo lleno" onClick={() => void empezarDesdeHojaFlotante()}>
                     {t('empezar')}

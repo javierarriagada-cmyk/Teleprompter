@@ -34,12 +34,29 @@ public class VentanaDePruebaPlugin extends Plugin {
                 Intent detalles = new Intent("android.settings.ACCESSIBILITY_DETAILS_SETTINGS");
                 detalles.putExtra(Intent.EXTRA_COMPONENT_NAME, componente);
                 detalles.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                String pagina;
+                String pagina = null;
+                // EN EL MOTO G86, ANDROID 16 -revisión del 957fc97, 08-11-2026-: la página del servicio existe
+                // -resolveActivity la encuentra- pero abrirla pide OPEN_ACCESSIBILITY_DETAILS_SETTINGS, un permiso
+                // que solo tienen las apps del sistema: SecurityException, y el botón no hacía nada. Ahora, si falla,
+                // va a la lista. Antes -957fc97-: if (resolveActivity != null) startActivity(detalles) sin respaldo.
                 if (detalles.resolveActivity(ctx.getPackageManager()) != null) {
-                    ctx.startActivity(detalles);
-                    pagina = "ACCESSIBILITY_DETAILS_SETTINGS";
-                } else {
+                    try {
+                        ctx.startActivity(detalles);
+                        pagina = "ACCESSIBILITY_DETAILS_SETTINGS";
+                    } catch (SecurityException negada) {
+                        VentanaDePrueba.anotar(VentanaDePrueba.numero(), "página del servicio negada: " + negada.getMessage());
+                    }
+                }
+                if (pagina == null) {
                     Intent lista = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                    // La lista de Ajustes resalta la fila cuya clave llega aquí; en AOSP la clave de cada servicio
+                    // es su componente. Si el teléfono no lo respeta, se abre la lista igual. Idea mía, sin verificar
+                    // en el g86 al escribirla.
+                    String clave = componente.flattenToString();
+                    android.os.Bundle argumentos = new android.os.Bundle();
+                    argumentos.putString(":settings:fragment_args_key", clave);
+                    lista.putExtra(":settings:fragment_args_key", clave);
+                    lista.putExtra(":settings:show_fragment_args", argumentos);
                     lista.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     ctx.startActivity(lista);
                     pagina = "ACTION_ACCESSIBILITY_SETTINGS";

@@ -3261,18 +3261,28 @@ button.btn-deformable.miniatura-banda:not(:active) {
   background: var(--color-fondo, #111);
   color: var(--color-texto, #fff);
 }
-.hoja-flotante label {
-  display: block;
-  margin: 12px 0;
+/* Antes -957fc97-: .hoja-flotante label { display: block; margin: 12px 0; } y
+   .hoja-flotante input[type="range"] { display: block; width: 100%; min-height: 48px; }, para los dos
+   deslizadores sin clase. Ahora van los controles de Aa de Sigo -AjustesFlotante, .barra-pasos y
+   .barra-brillo de styles-ajustes.css-, con el aire del panel de la ficha entre uno y otro. */
+.ajustes-flotante {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
-.hoja-flotante input[type="range"] {
-  display: block;
+.ajustes-flotante .fila-deslizador-letra,
+.ajustes-flotante .barra-brillo {
+  margin-bottom: 12px;
+}
+.ajustes-flotante .barra-brillo {
+  flex: none;
   width: 100%;
-  min-height: 48px;
 }
+/* La muestra: tres renglones enteros a la letra elegida. Antes -957fc97-: height: 7.5em, que cortaba el
+   tercero por la mitad en el g86. */
 .flotante-previa {
   position: relative;
-  height: 7.5em;
+  height: 10em;
   border-radius: var(--redondeo, 12px);
   overflow: hidden;
   margin-bottom: 16px;
