@@ -338,3 +338,24 @@ html.flotante-documento-menu #root { background: transparent; }
 .flotante-raiz .flotante-lectura > div { background: transparent !important; }
 /* En la ventana mínima el asa tiene menos de 48: la raya no se monta sobre Aa. */
 .flotante-raiz .flotante-asa { width: min(32px, calc(100% - 8px)); }
+
+/* -09-11-2026- EL AVISO Y EL LÍMITE DE LECTURA EN LA VENTANA: los mismos textos de Leer, que manda Android. */
+.flotante-raiz .flotante-aviso-limite {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: calc(var(--alto-cabecera-ventana) + 4px);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 8px 12px;
+  border-radius: var(--redondeo-grande, 16px);
+  background: var(--aviso-fondo);
+  color: var(--aviso-texto, inherit);
+  font-size: 14px;
+}
+.flotante-aviso-limite-titulo { font-weight: 600; }
+.flotante-aviso-limite-nota { font-weight: 400; font-size: 13px; }
+.flotante-aviso-limite-boton { min-height: 48px; padding: 0 8px; margin-left: -8px; }

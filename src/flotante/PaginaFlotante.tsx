@@ -20,6 +20,7 @@ import { useSeguidor } from '../hooks/useSeguidor'
 import { MotorFlotante } from '../motor/MotorFlotante'
 // Antes -08-11-2026-: import { AjustesFlotante } from './AjustesFlotante' -el menú de Aa ahora es PanelAaFlotante.tsx-
 import { t, useTextos } from '../textos'
+import { opcionesAvisoQuedaMinuto } from '../lib/avisoLimite'
 
 type Contrato = {
   tipo: 'contrato'
@@ -39,7 +40,13 @@ type Contrato = {
   mostrarTiempo: boolean
   // -banda A, 09-11-2026- El idioma de la app: esta página vive en otro origen y no ve el que se eligió en Sigo.
   idiomaApp?: string
+  // -09-11-2026- El límite gratis lo cuenta Android -SesionVentana-; null con Sigo+ o velocidad fija.
+  limite?: { lecturaSeg: number; avisoAntesSeg: number } | null
+  leidosSeg?: number
 }
+
+// -09-11-2026- El aviso y el límite de lectura que manda Android -VentanaDePrueba.revisarLimite-.
+type FaseLimite = 'ninguno' | 'aviso' | 'limite'
 
 // Dónde está la ventana en la pantalla, en dp -VentanaDePrueba.enviarGeometria-. Sirve para poner el menú de Aa.
 type Geometria = { x: number; y: number; w: number; h: number; seguro: AreaSegura }
@@ -82,6 +89,7 @@ export function PaginaFlotante() {
   const [silenciado, setSilenciado] = useState(false)
   const [controlesVisibles, setControlesVisibles] = useState(true)
   const [tInicio, setTInicio] = useState<number | null>(null)
+  const [faseLimite, setFaseLimite] = useState<FaseLimite>('ninguno')
   const tokenInicialHecho = useRef(false)
   // -banda A, 09-11-2026- La geometría la manda lo nativo; el ancho de la página es el de la ventana.
   const [geometria, setGeometria] = useState<Geometria | null>(null)
@@ -137,6 +145,11 @@ export function PaginaFlotante() {
       }
       if (datos.tipo === 'micro') {
         setSilenciado(datos.silenciado === true)
+        return
+      }
+      if (datos.tipo === 'limite') {
+        const f = datos.fase
+        setFaseLimite(f === 'aviso' || f === 'limite' ? f : 'ninguno')
         return
       }
       // -banda A, 09-11-2026- Lo que llega de la ventana nativa y del menú de Aa. El cambio de letra solo cambia la
@@ -195,7 +208,16 @@ export function PaginaFlotante() {
     return () => window.clearTimeout(id)
   }, [seVan, aaAbierto, estado.enPausa, estado.cuenta])
 
-  const accion = useCallback((tipo: 'pausa' | 'seguir' | 'volver' | 'cerrar') => {
+  // El aviso «te queda 1 minuto» dura lo mismo que en Leer -opcionesAvisoQuedaMinuto, 8 s-; el del límite queda
+  // hasta Seguir o «Ver Sigo+».
+  useEffect(() => {
+    if (faseLimite !== 'aviso') return
+    const id = window.setTimeout(() => setFaseLimite((f) => (f === 'aviso' ? 'ninguno' : f)), opcionesAvisoQuedaMinuto().duracionMs)
+    return () => window.clearTimeout(id)
+  }, [faseLimite])
+
+  // Antes -2026-11-09-: const accion = useCallback((tipo: 'pausa' | 'seguir' | 'volver' | 'cerrar') => {
+  const accion = useCallback((tipo: 'pausa' | 'seguir' | 'volver' | 'cerrar' | 'verSigoMas') => {
     enviar({ tipo, sesion: contrato?.sesion ?? 0, token: tokenActual() })
   }, [contrato, motorAvance])
 
@@ -509,6 +531,21 @@ export function PaginaFlotante() {
 
       {silenciado && (
         <div className="flotante-aviso-micro">{t('avisoMicrofonoQuitado')}</div>
+      )}
+
+      {faseLimite === 'aviso' && (
+        <div className="flotante-aviso-limite" role="status" data-testid="flotante-aviso-limite">
+          <span className="flotante-aviso-limite-titulo">{t('avisoQuedaMinutoVoz')}</span>
+          <span className="flotante-aviso-limite-nota">{t('avisoQuedaMinutoVozNota')}</span>
+        </div>
+      )}
+      {faseLimite === 'limite' && (
+        <div className="flotante-aviso-limite" role="status" data-testid="flotante-limite" onClick={(e) => e.stopPropagation()}>
+          <span className="flotante-aviso-limite-titulo">{t('limiteLectura')}</span>
+          <button type="button" className="flotante-texto flotante-aviso-limite-boton" onClick={() => accion('verSigoMas')}>
+            {t('avisoLimiteVerSigoMas')}
+          </button>
+        </div>
       )}
 
       <div className={`flotante-barra${cromo}`} onClick={(e) => e.stopPropagation()}>

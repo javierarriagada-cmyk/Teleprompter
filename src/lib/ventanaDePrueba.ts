@@ -18,6 +18,16 @@ export interface PreferenciasFlotante {
   // -banda A, 09-11-2026- El ancho en dp de la banda que se abriría ahora: la guardada de esta orientación o la de A.
   anchoVentana?: number
 }
+// -09-11-2026- Lo que Android dejó de la sesión de la ventana, para la vuelta a Sigo. hay=false si nunca hubo una.
+export interface EstadoSesionFlotante {
+  hay: boolean
+  sesion?: number
+  abierta?: boolean
+  enPausa?: boolean
+  leidosSeg?: number
+  llegoAlLimite?: boolean
+  token?: number
+}
 export interface EstadoFlotante {
   accesibilidad: boolean
   volvioSolo?: boolean
@@ -31,6 +41,7 @@ interface PluginVentanaDePrueba {
   preferencias(): Promise<PreferenciasFlotante>
   guardarPreferencias(prefs: PreferenciasFlotante): Promise<void>
   enviar(mensaje: Record<string, unknown>): Promise<void>
+  estadoSesion(): Promise<EstadoSesionFlotante>
   addListener(evento: 'accion', oyente: (accion: AccionPruebaFlotante) => void): Promise<PluginListenerHandle>
 }
 export const VentanaDePrueba = /* @__PURE__ */ registerPlugin<PluginVentanaDePrueba>('VentanaDePrueba')
