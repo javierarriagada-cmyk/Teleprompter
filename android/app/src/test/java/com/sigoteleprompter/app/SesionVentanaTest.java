@@ -15,6 +15,8 @@ public class SesionVentanaTest {
     static SesionVentana conLimite() { return new SesionVentana(true, LECTURA, AVISO, 0); }
 
     // Pausa en t y Seguir hasta volver a escuchar, con la cuenta entera: devuelve la hora al terminar la cuenta.
+    // -9-nov-2026- Con el micrófono confirmado en ese mismo instante: antes la cuenta terminaba escuchando sola.
+    // Antes: después de assertEquals(0, s.pasoDeCuenta(u + 3000)); venía return u + 3000;
     static long pausaYSeguir(SesionVentana s, long t, long pausaMs) {
         assertTrue(s.pausar(t));
         long u = t + pausaMs;
@@ -22,6 +24,7 @@ public class SesionVentanaTest {
         assertEquals(2, s.pasoDeCuenta(u + 1000));
         assertEquals(1, s.pasoDeCuenta(u + 2000));
         assertEquals(0, s.pasoDeCuenta(u + 3000));
+        assertEquals(SesionVentana.Apertura.ESCUCHANDO, s.alAbrirMicrofono(s.intentoPedido(), true, u + 3000));
         return u + 3000;
     }
 
@@ -77,11 +80,13 @@ public class SesionVentanaTest {
         assertTrue(s.escuchando());
     }
 
+    // -9-nov-2026- Igual que pausaYSeguir: con el micrófono confirmado al terminar. Antes terminaba en return u + 3000.
     static long pausaYSeguirDesdePausa(SesionVentana s, long u) {
         assertEquals(3, s.seguir());
         s.pasoDeCuenta(u + 1000);
         s.pasoDeCuenta(u + 2000);
         assertEquals(0, s.pasoDeCuenta(u + 3000));
+        assertEquals(SesionVentana.Apertura.ESCUCHANDO, s.alAbrirMicrofono(s.intentoPedido(), true, u + 3000));
         return u + 3000;
     }
 
@@ -92,6 +97,85 @@ public class SesionVentanaTest {
         for (long t = 0; t <= 3_600_000; t += 250) assertEquals(SesionVentana.Evento.NADA, s.revisar(t));
         assertTrue(s.escuchando());
         assertFalse(s.llegoAlLimite());
+    }
+
+    // -9-nov-2026, orden «Tres correcciones», fallo 2- Al terminar el «1» se PIDE el micrófono: hasta que Vosk confirme
+    // la apertura, la ventana no dice «escuchando» y el reloj del límite no corre. Antes se ponía a escuchar de una, y
+    // si el micrófono no abría, la ventana y el reloj quedaban como si la persona estuviera leyendo.
+    @Test public void alTerminarLaCuentaNoEscuchaNiCuentaHastaQueAbraElMicrofono() {
+        SesionVentana s = conLimite();
+        s.empezarLectura(0);
+        s.pausar(10_000);
+        s.seguir();
+        s.pasoDeCuenta(11_000);
+        s.pasoDeCuenta(12_000);
+        assertEquals(0, s.pasoDeCuenta(13_000));
+        assertFalse("sin la confirmación del micrófono no se publica «escuchando»", s.escuchando());
+        assertEquals("sin micrófono no corren los segundos leídos", 10_000, s.leidosMs(60_000));
+        long intento = s.intentoPedido();
+        assertTrue(intento > 0);
+        // Falla: vuelve a Pausa, sin contar, y Seguir se puede tocar otra vez.
+        assertEquals(SesionVentana.Apertura.PAUSA, s.alAbrirMicrofono(intento, false, 61_000));
+        assertTrue(s.enPausa());
+        assertEquals(10_000, s.leidosMs(90_000));
+        // Una respuesta repetida o vieja ya no hace nada.
+        assertEquals(SesionVentana.Apertura.DESCARTADA, s.alAbrirMicrofono(intento, true, 91_000));
+        assertTrue(s.enPausa());
+        assertEquals(3, s.seguir());
+        s.pasoDeCuenta(101_000);
+        s.pasoDeCuenta(102_000);
+        assertEquals(0, s.pasoDeCuenta(103_000));
+        long otro = s.intentoPedido();
+        assertTrue(otro != intento);
+        // La del intento anterior llega tarde: descartada, y el nuevo sigue esperando.
+        assertEquals(SesionVentana.Apertura.DESCARTADA, s.alAbrirMicrofono(intento, true, 104_000));
+        assertFalse(s.escuchando());
+        // La del nuevo: escucha y cuenta desde la confirmación, no desde el «1».
+        assertEquals(SesionVentana.Apertura.ESCUCHANDO, s.alAbrirMicrofono(otro, true, 105_000));
+        assertTrue(s.escuchando());
+        assertEquals(15_000, s.leidosMs(110_000));
+        // El límite solo mira lo escuchado: esperando el micrófono no hay aviso.
+        SesionVentana l = conLimite();
+        l.empezarLectura(0);
+        l.pausar(170_000);
+        l.seguir();
+        l.pasoDeCuenta(171_000);
+        l.pasoDeCuenta(172_000);
+        l.pasoDeCuenta(173_000);
+        assertEquals(SesionVentana.Evento.NADA, l.revisar(900_000));
+    }
+
+    // -9-nov-2026- Pausa -o pantalla apagada- y cierre con la apertura pendiente: la respuesta que llega después se
+    // descarta y nunca vuelve a poner «escuchando».
+    @Test public void pausaOCierreConLaAperturaPendienteLaDescartan() {
+        SesionVentana s = conLimite();
+        s.empezarLectura(0);
+        s.pausar(1000);
+        s.seguir();
+        s.pasoDeCuenta(2000);
+        s.pasoDeCuenta(3000);
+        s.pasoDeCuenta(4000);
+        long intento = s.intentoPedido();
+        assertTrue(s.pausar(4500));
+        assertEquals(0, s.intentoPedido());
+        assertEquals(SesionVentana.Apertura.DESCARTADA, s.alAbrirMicrofono(intento, true, 5000));
+        assertTrue(s.enPausa());
+        assertEquals(1000, s.leidosMs(60_000));
+
+        SesionVentana c = conLimite();
+        c.empezarLectura(0);
+        c.pausar(1000);
+        c.seguir();
+        c.pasoDeCuenta(2000);
+        c.pasoDeCuenta(3000);
+        c.pasoDeCuenta(4000);
+        long i2 = c.intentoPedido();
+        assertTrue(c.cerrar(4500));
+        assertFalse(c.cerrar(4600));
+        assertEquals(SesionVentana.Apertura.DESCARTADA, c.alAbrirMicrofono(i2, true, 5000));
+        assertFalse(c.escuchando());
+        assertEquals(0, c.seguir());
+        assertEquals(1000, c.leidosMs(60_000));
     }
 
     @Test public void pausaYSeguirPasanPorLaCuenta() {
@@ -108,6 +192,9 @@ public class SesionVentanaTest {
         assertEquals(1, s.pasoDeCuenta(3000));
         assertFalse(s.escuchando());
         assertEquals(0, s.pasoDeCuenta(4000));
+        // Antes -9-nov-2026-: assertTrue(s.escuchando()); justo al terminar la cuenta. Ahora, con Vosk confirmando.
+        assertFalse(s.escuchando());
+        assertEquals(SesionVentana.Apertura.ESCUCHANDO, s.alAbrirMicrofono(s.intentoPedido(), true, 4000));
         assertTrue(s.escuchando());
         // Seguir sin pausa no hace nada; un paso viejo de la cuenta tampoco.
         assertEquals(0, s.seguir());

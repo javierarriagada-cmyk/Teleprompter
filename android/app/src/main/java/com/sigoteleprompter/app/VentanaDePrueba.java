@@ -172,6 +172,21 @@ final class VentanaDePrueba {
         });
     }
 
+    // LA RESPUESTA DE VOSK A SEGUIR -9-nov-2026, orden «Tres correcciones», fallo 2-. Llega del hilo de los plugins
+    // -VoskNativoPlugin.reanudarParaVentana- con el intento que se pidió al terminar la cuenta y la captura abierta, o 0
+    // con el motivo. Si la sesión ya no está, la captura que alcanzó a abrirse se suelta: es de esta sesión cerrada.
+    static void aperturaDelMicrofono(long numero, long intento, long captura, String error) {
+        PRINCIPAL.post(() -> {
+            Sesion s = actual;
+            if (s != null && s.numero == numero && !s.cerrada) {
+                s.alAbrirMicrofono(intento, captura, error);
+                return;
+            }
+            anotar(numero, "apertura del micrófono descartada: sesión cerrada o vieja, intento=" + intento + " captura=" + captura);
+            if (captura != 0) VoskNativoPlugin.liberarCaptura(numero, captura, "apertura tardía de una sesión cerrada");
+        });
+    }
+
     // EL ESTADO DE LA SESIÓN, PARA LA VUELTA A SIGO -09-11-2026-. La página de Sigo lo pide al volver: la pausa, los
     // segundos leídos sin pausas, si llegó al límite y el marcador. Si la ventana sigue abierta se mide ahora; si ya se
     // cerró, es lo que quedó al cerrar.
@@ -286,6 +301,11 @@ final class VentanaDePrueba {
         final Runnable pasoCuenta = new Runnable() {
             @Override public void run() { darPasoDeCuenta(); }
         };
+        // -9-nov-2026, orden «Tres correcciones»- El cierre común, una vez -CierreDeSesion-, y si la última apertura
+        // del micrófono de Seguir falló: la ventana lo dice con su aviso de micrófono -'micro', avisoMicrofonoQuitado-
+        // hasta el próximo Seguir.
+        final CierreDeSesion cierre = new CierreDeSesion();
+        boolean microFallo;
 
         Sesion(long n, VentanaDePruebaPlugin p, boolean servicio, AccesibilidadDePrueba a) {
             numero=n; plugin=p; contexto=p.getContext().getApplicationContext();
@@ -851,7 +871,8 @@ final class VentanaDePrueba {
                     cerrar(tipo);
                 } else if ("cerrar".equals(tipo)) {
                     anotar(numero, "acción cerrar token=" + ultimoToken);
-                    VoskNativoPlugin.pausarParaVentana(numero, "X");
+                    // Antes -9-nov-2026-: VoskNativoPlugin.pausarParaVentana(numero, "X");
+                    // Motivo -fallo 3-: el micrófono lo libera el cierre común, para la X y para todas las otras rutas.
                     plugin.accion(numero, "cerrar", ultimoToken);
                     cerrar("cerrar");
                 }
@@ -1014,6 +1035,8 @@ final class VentanaDePrueba {
             int n = reglas.seguir();
             if (n == 0) { anotar(numero, "seguir ignorado: fase=" + reglas.fase()); return; }
             if (!"ninguno".equals(limiteVisible)) enviarLimite("ninguno");
+            // -9-nov-2026- Otro intento: el aviso del fallo anterior se retira.
+            if (microFallo) { microFallo = false; enviarMicro(); }
             PRINCIPAL.removeCallbacks(pasoCuenta);
             enviarEstado();
             PRINCIPAL.postDelayed(pasoCuenta, 1000);
@@ -1029,9 +1052,40 @@ final class VentanaDePrueba {
                 PRINCIPAL.postDelayed(pasoCuenta, 1000);
                 return;
             }
-            VoskNativoPlugin.reanudarParaVentana(numero);
+            // Antes -hasta el 9-nov-2026-:
+            //     VoskNativoPlugin.reanudarParaVentana(numero);
+            //     enviarEstado();
+            //     anotar(numero, "cuenta terminada: escuchando");
+            // Motivo -orden «Tres correcciones», fallo 2-: se publicaba «escuchando» y corría el reloj antes de saber si
+            // el micrófono abría. Ahora la cuenta se va -estado sin cuenta, sin escuchar- y se pide la apertura con el
+            // intento de esta cuenta; «escuchando» lo publica alAbrirMicrofono.
+            long intento = reglas.intentoPedido();
             enviarEstado();
-            anotar(numero, "cuenta terminada: escuchando");
+            VoskNativoPlugin.reanudarParaVentana(numero, intento);
+            anotar(numero, "cuenta terminada: se pide el micrófono intento=" + intento);
+        }
+
+        // La respuesta de Vosk -aperturaDelMicrofono-. Solo la del intento que se espera vale: «escuchando» y el reloj
+        // con la apertura hecha; Pausa y el aviso de micrófono si falló, y Seguir se puede tocar otra vez. Una respuesta
+        // descartada -Pausa, pantalla apagada u otro Seguir entre medio- suelta su captura si alcanzó a abrirse.
+        void alAbrirMicrofono(long intento, long captura, String error) {
+            SesionVentana.Apertura r = reglas.alAbrirMicrofono(intento, captura != 0, SystemClock.elapsedRealtime());
+            if (r == SesionVentana.Apertura.ESCUCHANDO) {
+                if (microFallo) { microFallo = false; enviarMicro(); }
+                enviarEstado();
+                anotar(numero, "micrófono confirmado: escuchando intento=" + intento + " captura=" + captura);
+            } else if (r == SesionVentana.Apertura.PAUSA) {
+                // La reanudación soltó la marca de pausa del micrófono: se vuelve a poner, así un escuchar tardío de la
+                // página de Sigo tampoco lo abre. No hay nada abierto que cerrar.
+                VoskNativoPlugin.pausarParaVentana(numero, "falló la apertura de Seguir");
+                microFallo = true;
+                enviarMicro();
+                enviarEstado();
+                anotar(numero, "el micrófono no abrió: vuelve a Pausa intento=" + intento + " error=" + error);
+            } else {
+                anotar(numero, "apertura descartada intento=" + intento + " captura=" + captura + " fase=" + reglas.fase());
+                if (captura != 0) VoskNativoPlugin.liberarCaptura(numero, captura, "apertura descartada");
+            }
         }
 
         void revisarLimite(long ahora) {
@@ -1071,19 +1125,51 @@ final class VentanaDePrueba {
                     JSONObject msg = new JSONObject();
                     msg.put("tipo", "micro");
                     msg.put("sesion", numero);
-                    msg.put("silenciado", EstadoDelMicrofono.SILENCIADO.equals(estado));
+                    // Antes -9-nov-2026-: msg.put("silenciado", EstadoDelMicrofono.SILENCIADO.equals(estado));
+                    // Motivo: el fallo al reabrir el micrófono en Seguir se dice con el mismo aviso -enviarMicro-.
+                    msg.put("silenciado", EstadoDelMicrofono.SILENCIADO.equals(estado) || microFallo);
                     enviar(msg.toString());
                 } catch (Exception ignored) {}
             }
             if (inmediato || cambio) ultimaPintura = ahora;
         }
 
+        // El aviso de micrófono de la ventana, ahora: con el fallo de Seguir no se espera a que cambie el estado.
+        void enviarMicro() {
+            try {
+                JSONObject msg = new JSONObject();
+                msg.put("tipo", "micro");
+                msg.put("sesion", numero);
+                msg.put("silenciado", EstadoDelMicrofono.SILENCIADO.equals(estado) || microFallo);
+                enviar(msg.toString());
+            } catch (Exception e) { anotar(numero, "no se pudo mandar el aviso de micrófono: " + e); }
+        }
+
+        // EL CIERRE COMÚN -9-nov-2026, orden «Tres correcciones», fallo 3-. Todas las rutas llegan aquí: la X, volver,
+        // «Ver Sigo+», la desconexión del servicio, Sigo destruido, cerrar desde la web. CierreDeSesion lo hace una vez:
+        // cancela la cuenta, ordena a Vosk liberar el micrófono de esta sesión -en su hilo, sin la página de Sigo- y
+        // retira la ventana y Aa -quitarVentanas, lo que antes era todo el cierre-.
+        // Antes -hasta el 9-nov-2026-, el comienzo:
+        //     void cerrar(String motivo) {
+        //         if (!vigente()) return;
+        //         anotar(numero, "cerrar motivo=" + motivo);
+        //         // -09-11-2026- Lo que queda para la vuelta a Sigo, y la cuenta de Seguir no sigue después de cerrar.
+        //         PRINCIPAL.removeCallbacks(pasoCuenta);
+        //         ultimoEstadoSesion = estadoDeLaSesion(false);
+        //         cerrada = true;
         void cerrar(String motivo) {
             if (!vigente()) return;
             anotar(numero, "cerrar motivo=" + motivo);
             // -09-11-2026- Lo que queda para la vuelta a Sigo, y la cuenta de Seguir no sigue después de cerrar.
-            PRINCIPAL.removeCallbacks(pasoCuenta);
             ultimoEstadoSesion = estadoDeLaSesion(false);
+            cierre.cerrar(numero, motivo, reglas, SystemClock.elapsedRealtime(), new CierreDeSesion.Acciones() {
+                @Override public void cancelarCuenta() { PRINCIPAL.removeCallbacks(pasoCuenta); }
+                @Override public void liberarMicrofono(long sesion, String m) { VoskNativoPlugin.liberarDeVentana(sesion, m); }
+                @Override public void quitarVentanas(String m) { Sesion.this.quitarVentanas(m); }
+            });
+        }
+
+        void quitarVentanas(String motivo) {
             cerrada = true;
             actual = null;
             PRINCIPAL.removeCallbacks(cuadro);
