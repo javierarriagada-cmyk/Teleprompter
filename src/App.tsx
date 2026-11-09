@@ -131,7 +131,8 @@ import { PanelDiagnostico } from './components/PanelDiagnostico'
 // Las herramientas de prueba no viajan a Play -tarea 84, src/lib/herramientas.ts-.
 import { HERRAMIENTAS } from './lib/herramientas'
 // Prototipo del 08-11-2026: todos los usos se eliminan del paquete de Play.
-import { VentanaDePrueba, type OpcionesPruebaFlotante, type AccionPruebaFlotante } from './lib/ventanaDePrueba'
+// Antes -2026-11-09-: import { VentanaDePrueba, type OpcionesPruebaFlotante, type AccionPruebaFlotante } from './lib/ventanaDePrueba'
+import { VentanaDePrueba, type OpcionesPruebaFlotante, type AccionPruebaFlotante, type EstadoSesionFlotante } from './lib/ventanaDePrueba'
 // Antes -08-11-2026-: import { tokenAlVolver, limitarTransparencia, limitarTamanoLetra, colorConAlfa } from './lib/flotante'
 import { tokenAlVolver, limitarTransparencia, limitarTamanoLetra, colorConAlfa, siguienteHojaFlotante, type HojaFlotante } from './lib/flotante'
 import { AjustesFlotante } from './flotante/AjustesFlotante'
@@ -406,6 +407,16 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [fontSizeFlotante, setFontSizeFlotante] = useState(24)
   const [ventanaFlotanteAbierta, setVentanaFlotanteAbierta] = useState(false)
   const cuentaFlotanteInicioRef = useRef<number | null>(null)
+  // MIENTRAS LA VENTANA ESTÁ ABIERTA, LA SESIÓN LA MANDA ANDROID -09-11-2026-. Medido en el g86: la página de Sigo,
+  // atrás, deja de correr al minuto -ver el informe del PR-, y Pausa, Seguir y el límite dejaban de andar. Sigo solo
+  // manda los estados de la cuenta de Empezar; después, Android -VentanaDePrueba, SesionVentana-.
+  const estadoFlotanteRef = useRef({ vioCuenta: false, terminada: false })
+  // De qué LISTO se entró a la ventana: al volver, Sigo queda en ese -Leer o Grabar-.
+  const origenFlotanteRef = useRef<'leer' | 'grabar' | null>(null)
+  // Desde Grabar, Empezar espera a que la cámara se apague -setConCamara(false)- y entonces abre la ventana.
+  const [empezarFlotanteSinCamara, setEmpezarFlotanteSinCamara] = useState(false)
+  // Con la X desde Grabar, la cámara vuelve cuando Sigo vuelve al frente, no en segundo plano.
+  const grabarAlVolverAlFrenteRef = useRef(false)
 
   useEffect(() => {
     if (!(HERRAMIENTAS && Capacitor.isNativePlatform())) return
@@ -1469,6 +1480,11 @@ export default function App({ motor, repoOverride }: AppProps) {
   useEffect(() => {
     if (!(HERRAMIENTAS && Capacitor.isNativePlatform())) return
     if (sesionFlotanteRef.current == null) return
+    // -09-11-2026- Después de la cuenta de Empezar el estado de la ventana es de Android: Sigo ya no lo manda.
+    const ef = estadoFlotanteRef.current
+    if (ef.terminada) return
+    if (cuentaRegresiva !== null) ef.vioCuenta = true
+    else if (ef.vioCuenta && !enPausa) ef.terminada = true
     void VentanaDePrueba.enviar({
       tipo: 'estado',
       sesion: sesionFlotanteRef.current,
@@ -1785,8 +1801,10 @@ export default function App({ motor, repoOverride }: AppProps) {
     // -banda A, 09-11-2026- Con «Ventana flotante» elegida en el dock, Empezar no empieza aquí: abre la autorización
     // o la preparación, y es el Empezar de la preparación el que llega con la intención. Antes no existía: la hoja se
     // abría desde el botón suelto de arriba.
+    // Antes -2026-11-09-: && estadoToma === 'listo' && !conCamara && !fija) {
+    // Motivo: la ventana también se abre desde el LISTO de Grabar; Sigo apaga su cámara antes de abrirla.
     if (HERRAMIENTAS && Capacitor.isNativePlatform() && flotanteElegido && !intencionFlotanteRef.current
-      && estadoToma === 'listo' && !conCamara && !fija) {
+      && estadoToma === 'listo' && !fija) {
       hapticaToqueMedio()
       await abrirHojaFlotante()
       return
@@ -1895,6 +1913,8 @@ export default function App({ motor, repoOverride }: AppProps) {
       intencionFlotanteRef.current = null
       try {
         const abierta = await VentanaDePrueba.abrir(opciones)
+        estadoFlotanteRef.current = { vioCuenta: false, terminada: false }
+        if (origenFlotanteRef.current === null) origenFlotanteRef.current = 'leer'
         sesionFlotanteRef.current = abierta.sesion
         setVentanaFlotanteAbierta(true)
         setHojaFlotante(null)
@@ -1917,12 +1937,22 @@ export default function App({ motor, repoOverride }: AppProps) {
           // Antes -08-11-2026-: mostrarTiempo
           mostrarTiempo,
           // -banda A, 09-11-2026- La página de la ventana no ve el idioma de la app: va en el contrato.
-          idiomaApp: idiomaApp()
+          idiomaApp: idiomaApp(),
+          // -09-11-2026- El límite gratis de Leer lo cuenta Android: sin Sigo+ y sin Velocidad fija. Siempre el de
+          // lectura, también desde Grabar: en la ventana se lee con la voz y Sigo no graba toma.
+          limite: !tieneSuscripcion() && !fija
+            ? { lecturaSeg: limitesActuales().lecturaSeg, avisoAntesSeg: limitesActuales().avisoAntesSeg }
+            : null,
+          // Cada toma empieza de cero -ver el fin de la cuenta-: al abrir no hay segundos leídos.
+          leidosSeg: 0
         })
         console.info('SigoFlotante', `contrato enviado sesion=${abierta.sesion} tokenInicial=${tokenInicial}`)
       } catch (e) {
         sesionFlotanteRef.current = null
         setVentanaFlotanteAbierta(false)
+        // -09-11-2026- Si se entró desde Grabar y no abrió, vuelve la cámara.
+        if (origenFlotanteRef.current === 'grabar') setConCamara(true)
+        origenFlotanteRef.current = null
         await avisarErrorFlotante(e)
         return
       }
@@ -2006,8 +2036,37 @@ export default function App({ motor, repoOverride }: AppProps) {
     } catch (e) {
       console.warn('SigoFlotante', 'no se pudieron guardar preferencias', e)
     }
+    // -09-11-2026- Desde Grabar: primero la cámara y su vista previa se apagan por el camino de salir de Grabar
+    // -conCamara en false, el efecto de la cámara-, y con eso Empezar sigue como en Leer -ver el efecto de abajo-.
+    if (conCamara) {
+      origenFlotanteRef.current = 'grabar'
+      console.info('SigoFlotante', 'desde Grabar: se apaga la cámara antes de abrir la ventana')
+      setConCamara(false)
+      setEmpezarFlotanteSinCamara(true)
+      return
+    }
+    origenFlotanteRef.current = 'leer'
     await handleEmpezarDesdeListo()
   }
+
+  useEffect(() => {
+    if (!empezarFlotanteSinCamara || conCamara || camaraActiva) return
+    setEmpezarFlotanteSinCamara(false)
+    void handleEmpezarDesdeListo()
+  // handleEmpezarDesdeListo se lee fresco: ya con conCamara en false.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [empezarFlotanteSinCamara, conCamara, camaraActiva])
+
+  // Con la X desde Grabar, la cámara vuelve al volver Sigo al frente.
+  useEffect(() => {
+    if (!(HERRAMIENTAS && Capacitor.isNativePlatform())) return
+    const sub: any = CapacitorApp.addListener('appStateChange', ({ isActive }) => {
+      if (!isActive || !grabarAlVolverAlFrenteRef.current) return
+      grabarAlVolverAlFrenteRef.current = false
+      setConCamara(true)
+    })
+    return () => { void Promise.resolve(sub).then((h: any) => h?.remove?.()) }
+  }, [])
 
   async function volverDesdeFlotante(token: number | undefined) {
     const destino = tokenAlVolver(token, totalTokens)
@@ -2023,6 +2082,26 @@ export default function App({ motor, repoOverride }: AppProps) {
     setControlesVisibles(false)
     setFaseLimiteVoz(null)
     setVentanaFlotanteAbierta(false)
+    // -09-11-2026- Al LISTO del que se entró: desde Grabar vuelve la cámara.
+    if (origenFlotanteRef.current === 'grabar') setConCamara(true)
+    origenFlotanteRef.current = null
+  }
+
+  // LA VUELTA A SIGO, CON EL ESTADO DE ANDROID -09-11-2026-. La página de Sigo pudo dormir toda la lectura: lo que
+  // pasó -la pausa, los segundos, el límite, la palabra- lo sabe Android. Sigo queda en LISTO en la palabra y, si se
+  // llegó al límite, abre la oferta como al límite de Leer.
+  async function volverConEstadoDeAndroid(tokenAccion: number | undefined) {
+    let estadoAndroid: EstadoSesionFlotante | null = null
+    try { estadoAndroid = await VentanaDePrueba.estadoSesion() } catch (e) { console.warn('SigoFlotante', 'estadoSesion falló', e) }
+    const token = estadoAndroid?.hay && typeof estadoAndroid.token === 'number' && estadoAndroid.token >= 0
+      ? estadoAndroid.token
+      : tokenAccion
+    console.info('SigoFlotante', `estado de Android enPausa=${estadoAndroid?.enPausa} leidosSeg=${estadoAndroid?.leidosSeg} límite=${estadoAndroid?.llegoAlLimite} token=${token}`)
+    await volverDesdeFlotante(token)
+    if (estadoAndroid?.hay && estadoAndroid.llegoAlLimite) {
+      const lugar = decidirOfertaAlLimite('lectura', false)
+      if (lugar) await abrirOferta(lugar)
+    }
   }
 
   async function cerrarVentanaDesdeSigo() {
@@ -2891,6 +2970,8 @@ export default function App({ motor, repoOverride }: AppProps) {
   useEffect(() => {
     if (estadoToma !== 'leyendo' || tInicioLecturaMs === null || enPausa) return
     if (tieneSuscripcion()) return
+    // -09-11-2026- Con la ventana abierta el límite lo cuenta Android -SesionVentana-: el reloj de Sigo no corre.
+    if (ventanaFlotanteAbierta) return
     const id = setInterval(() => {
       if (limiteAplicadoRef.current) return
       const lim = limitesActuales()
@@ -2961,7 +3042,8 @@ export default function App({ motor, repoOverride }: AppProps) {
   // handleStop / avisarFinDeToma / stop se leen frescos; no van en deps para no rearmar cada render.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   // Antes: también lecturaForzadaAFija, motorDeLaVoz, motorFijo en deps.
-  }, [estadoToma, tInicioLecturaMs, enPausa, conCamara, fija])
+  // Antes -2026-11-09-: }, [estadoToma, tInicioLecturaMs, enPausa, conCamara, fija])
+  }, [estadoToma, tInicioLecturaMs, enPausa, conCamara, fija, ventanaFlotanteAbierta])
 
   // Antes: alTocarLimiteLectura — pausaba si hacía falta, abría oferta al tocar el aviso, y al
   // suscribirse limpiaba fase/límite (antes aún reanudaba con tokenSeguidorAlVolverAVoz).
@@ -3054,18 +3136,29 @@ export default function App({ motor, repoOverride }: AppProps) {
       console.info('SigoFlotante', `accion descartada de sesión vieja=${accion.sesion}`)
       return
     }
-    if (accion.tipo === 'pausa') {
-      if (!enPausa) void handleTogglePausa().catch(e => console.warn('SigoFlotante', 'pausa falló', e))
-    } else if (accion.tipo === 'seguir') {
-      if (enPausa) void handleTogglePausa().catch(e => console.warn('SigoFlotante', 'seguir falló', e))
-    } else if (accion.tipo === 'alternar') {
-      void handleTogglePausa().catch(e => console.warn('SigoFlotante', 'alternar falló', e))
+    // Antes -2026-11-09-:
+    // if (accion.tipo === 'pausa') {
+    //   if (!enPausa) void handleTogglePausa().catch(e => console.warn('SigoFlotante', 'pausa falló', e))
+    // } else if (accion.tipo === 'seguir') {
+    //   if (enPausa) void handleTogglePausa().catch(e => console.warn('SigoFlotante', 'seguir falló', e))
+    // } else if (accion.tipo === 'alternar') {
+    //   void handleTogglePausa().catch(e => console.warn('SigoFlotante', 'alternar falló', e))
+    // } else if (accion.tipo === 'volver') {
+    //   sesionFlotanteRef.current = null
+    //   void volverDesdeFlotante(accion.token).catch(e => console.warn('SigoFlotante', 'volver falló', e))
+    // } else {
+    // Motivo: con la ventana abierta, Pausa y Seguir los hace Android; la vuelta toma su estado.
+    if (accion.tipo === 'pausa' || accion.tipo === 'seguir' || accion.tipo === 'alternar') {
+      console.info('SigoFlotante', `accion=${accion.tipo} ignorada: la sesión la manda Android`)
     } else if (accion.tipo === 'volver') {
       sesionFlotanteRef.current = null
-      void volverDesdeFlotante(accion.token).catch(e => console.warn('SigoFlotante', 'volver falló', e))
+      void volverConEstadoDeAndroid(accion.token).catch(e => console.warn('SigoFlotante', 'volver falló', e))
     } else {
       sesionFlotanteRef.current = null
       setVentanaFlotanteAbierta(false)
+      // -09-11-2026- La X desde Grabar: la cámara vuelve con Sigo al frente.
+      if (origenFlotanteRef.current === 'grabar') grabarAlVolverAlFrenteRef.current = true
+      origenFlotanteRef.current = null
       void pararComoElBoton().catch(e => console.warn('SigoFlotante', 'parar falló', e))
     }
   }
@@ -4034,10 +4127,12 @@ export default function App({ motor, repoOverride }: AppProps) {
               onVolverListo={handleVolverDesdeListo}
               // -banda A, 09-11-2026- El selector de la ventana flotante, en el dock o en el riel. Solo en la APK de
               // prueba y en las mismas condiciones del botón de antes.
-              selectorFlotante={HERRAMIENTAS && Capacitor.isNativePlatform() && estadoToma === 'listo' && !conCamara && !camaraActiva && !fija
+              // Antes -2026-11-09-: estadoToma === 'listo' && !conCamara && !camaraActiva && !fija, y flotanteElegido con
+              // && !conCamara && !fija. Motivo: el mismo selector va también en el LISTO de Grabar.
+              selectorFlotante={HERRAMIENTAS && Capacitor.isNativePlatform() && estadoToma === 'listo' && !fija
                 ? <SelectorFlotante elegido={flotanteElegido} disponible={oyenteFlotanteListo} onCambiar={(v) => { hapticaSeleccion(); setFlotanteElegido(v) }} />
                 : undefined}
-              flotanteElegido={HERRAMIENTAS && Capacitor.isNativePlatform() && flotanteElegido && !conCamara && !fija}
+              flotanteElegido={HERRAMIENTAS && Capacitor.isNativePlatform() && flotanteElegido && !fija}
               onToggleControles={() => {
                 if (estadoToma !== 'leyendo') return
                 // -tarea 106- Con Velocidad fija tocar el texto pausa y sigue -con los controles a la
