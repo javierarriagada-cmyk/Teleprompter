@@ -2110,6 +2110,10 @@ export default function TeleprompterView({
             >
               {!arrastrandoRecuadro && fichasListo(false)}
               {!arrastrandoRecuadro && <div className="tab-lugar-empezar">{botonEmpezar}</div>}
+              {/* PROTOTIPO, 09-11-2026, corrección de la banda A: en la tableta vertical el selector de la ventana
+                  flotante faltaba. Va en su propio lugar, a la izquierda de Empezar y en su misma fila -la pastilla
+                  está a la derecha-, sin tapar las fichas ni Empezar. Las condiciones son las de App, que lo entrega. */}
+              {!arrastrandoRecuadro && selectorFlotante && <div className="tab-lugar-selector-flotante">{selectorFlotante}</div>}
             </div>
           ) : conDock ? (
             // GRABAR EN LISTO, DE PIE EN EL TELÉFONO: UN SOLO DOCK DE VIDRIO -ajustes de pantallas,

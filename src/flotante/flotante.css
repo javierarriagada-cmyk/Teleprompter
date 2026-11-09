@@ -171,6 +171,10 @@ html, body, #root {
   --forma-ventana-flotante: 16px;
   display: block;
   border-radius: var(--forma-ventana-flotante);
+  /* -2026-11-09, corrección de la banda A- Antes heredaba overflow: hidden de la primera .flotante-raiz. Motivo: con el
+     radio de 16, el recorte también recortaba el toque: Pausa y la esquina de tamaño perdían su rincón. El redondeo
+     visible lo siguen poniendo .flotante-fondo y .flotante-lectura, que recortan por su cuenta. */
+  overflow: visible;
 }
 .flotante-fondo {
   position: absolute;
@@ -210,18 +214,49 @@ html, body, #root {
 .flotante-raiz .flotante-asa {
   filter: drop-shadow(0 0 1px var(--fondo-lectura-ventana)) drop-shadow(0 0 2px var(--fondo-lectura-ventana)) drop-shadow(0 0 3px var(--fondo-lectura-ventana));
 }
+/* Antes -hasta 2026-11-09-: .flotante-raiz .flotante-asa-hit { flex: 1 1 auto; min-width: 24px; }. Motivo: en la ventana
+   mínima con el tiempo visible el asa quedaba en 28,5 de ancho. Sigue ocupando lo que sobra entre la pastilla y Aa
+   -la raya no se mueve-, y su ::before alarga la zona de toque hacia la izquierda hasta 48, por encima del final de la
+   pastilla, que no recibe toques -pointer-events: none, BarraDeTiempo-. Hacia la derecha no crece: Aa y × no se tocan. */
 .flotante-raiz .flotante-asa-hit { flex: 1 1 auto; min-width: 24px; }
+.flotante-raiz .flotante-barra > .flotante-asa-hit { position: relative !important; }
+.flotante-raiz .flotante-asa-hit::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: max(100%, 48px);
+}
 .flotante-raiz .flotante-asa {
   background: color-mix(in srgb, var(--color-texto) 60%, transparent);
 }
 .flotante-raiz .flotante-texto { font-size: 15px; font-weight: 600; white-space: nowrap; padding: 0 8px; }
+/* Antes -hasta 2026-11-09, corrección de la banda A-: .flotante-raiz .flotante-pildora { min-height: 40px; ... } con el
+   fondo de color-mix en el mismo botón -.flotante-pildora-. Motivo: el botón medía 40 de alto y, con el radio de
+   píldora, el toque en sus esquinas no llegaba. Ahora el botón tiene los 48 del pie y es un rectángulo; la píldora
+   visible de 40 es su ::before, 4 arriba y 4 abajo. */
 .flotante-raiz .flotante-pildora {
-  min-height: 40px;
+  position: relative;
+  isolation: isolate;
+  align-self: stretch;
+  min-height: 48px;
+  border-radius: 0;
+  background: transparent;
   padding: 0 14px 0 10px;
   font-size: 15px;
   font-weight: 600;
   gap: 6px;
   margin-right: 4px;
+}
+.flotante-raiz .flotante-pildora::before {
+  content: "";
+  position: absolute;
+  inset: 4px 0;
+  z-index: -1;
+  border-radius: var(--redondeo-pildora, 999px);
+  background: color-mix(in srgb, var(--color-texto, #fff) 12%, transparent);
+  pointer-events: none;
 }
 .flotante-raiz .flotante-esquina { margin-left: auto; }
 .flotante-raiz .flotante-esquina::after {
