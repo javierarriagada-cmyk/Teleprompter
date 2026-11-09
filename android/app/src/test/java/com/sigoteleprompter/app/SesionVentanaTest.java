@@ -206,4 +206,111 @@ public class SesionVentanaTest {
         assertEquals(-1, s.pasoDeCuenta(7000));
         assertTrue(s.enPausa());
     }
+
+    // -9-nov-2026, orden t160u, punto 4- EL PRIMER EMPEZAR NECESITA DOS CONFIRMACIONES: terminó la cuenta de Sigo y abrió
+    // el micrófono -la página de Sigo, con el intento inicial-. En cualquier orden; Pausa o cierre entre medio invalidan.
+    static final long INICIAL = SesionVentana.INTENTO_INICIAL;
+    static final SesionVentana.Inicial REENVIAR = SesionVentana.Inicial.REENVIAR;
+
+    @Test public void alTerminarLaCuentaDeEmpezarNoEscuchaNiCuentaHastaQueAbraElMicrofono() {
+        SesionVentana s = conLimite();
+        assertEquals(REENVIAR, s.estadoDeSigo(true, false, false, 0));
+        assertEquals(REENVIAR, s.estadoDeSigo(true, false, false, 1000));
+        // Fin de la cuenta, sin micrófono todavía: Android manda su estado, sin escuchar y sin reloj.
+        assertEquals(SesionVentana.Inicial.ESPERANDO_MICRO, s.estadoDeSigo(false, true, false, 3000));
+        assertFalse(s.escuchando());
+        assertEquals(0, s.leidosMs(60_000));
+        assertEquals(SesionVentana.Evento.NADA, s.revisar(300_000));
+        // Más estados de Sigo ya no pasan.
+        assertEquals(SesionVentana.Inicial.DESCARTAR, s.estadoDeSigo(false, true, false, 3500));
+        // La confirmación: desde ahí escucha y cuenta.
+        assertEquals(SesionVentana.Apertura.ESCUCHANDO, s.alAbrirMicrofono(INICIAL, true, 5000));
+        assertTrue(s.escuchando());
+        assertEquals(1000, s.leidosMs(6000));
+    }
+
+    @Test public void conElMicrofonoAbiertoAntesDelFinDeLaCuentaEscuchaAlTerminarla() {
+        SesionVentana s = conLimite();
+        s.estadoDeSigo(true, false, false, 0);
+        assertEquals(SesionVentana.Apertura.ANOTADA, s.alAbrirMicrofono(INICIAL, true, 1000));
+        // Abrió, pero la cuenta sigue: no escucha ni cuenta.
+        assertFalse(s.escuchando());
+        assertEquals(0, s.leidosMs(2500));
+        assertEquals(REENVIAR, s.estadoDeSigo(true, false, false, 2000));
+        assertEquals(SesionVentana.Inicial.ESCUCHANDO, s.estadoDeSigo(false, true, false, 3000));
+        assertTrue(s.escuchando());
+        assertEquals(1000, s.leidosMs(4000));
+    }
+
+    @Test public void siLaAperturaDelPrimerEmpezarFallaQuedaEnPausaYSeguirLaReintenta() {
+        // Antes del fin de la cuenta.
+        SesionVentana a = conLimite();
+        a.estadoDeSigo(true, false, false, 0);
+        assertEquals(SesionVentana.Apertura.ANOTADA, a.alAbrirMicrofono(INICIAL, false, 1000));
+        assertEquals(SesionVentana.Inicial.PAUSA, a.estadoDeSigo(false, true, false, 3000));
+        assertTrue(a.enPausa());
+        assertEquals(0, a.leidosMs(10_000));
+        assertEquals(3, a.seguir());
+        // Después del fin de la cuenta.
+        SesionVentana b = conLimite();
+        b.estadoDeSigo(true, false, false, 0);
+        b.estadoDeSigo(false, true, false, 3000);
+        assertEquals(SesionVentana.Apertura.PAUSA, b.alAbrirMicrofono(INICIAL, false, 3500));
+        assertTrue(b.enPausa());
+        assertEquals(0, b.leidosMs(10_000));
+        assertEquals(3, b.seguir());
+    }
+
+    @Test public void pausaOCierreEnElPrimerEmpezarInvalidanLaConfirmacion() {
+        // Pausa en plena cuenta de Sigo: la confirmación que llega después se descarta -la ventana suelta la captura-.
+        SesionVentana a = conLimite();
+        a.estadoDeSigo(true, false, false, 0);
+        assertTrue(a.pausar(1000));
+        assertEquals(SesionVentana.Apertura.DESCARTADA, a.alAbrirMicrofono(INICIAL, true, 1500));
+        assertEquals(SesionVentana.Inicial.DESCARTAR, a.estadoDeSigo(false, true, false, 3000));
+        assertTrue(a.enPausa());
+        // Ni durante la cuenta del Seguir que viene después.
+        assertEquals(3, a.seguir());
+        assertEquals(SesionVentana.Apertura.DESCARTADA, a.alAbrirMicrofono(INICIAL, true, 4000));
+        assertEquals(2, a.pasoDeCuenta(5000));
+        // Pausa esperando el micrófono, con la cuenta ya terminada.
+        SesionVentana b = conLimite();
+        b.estadoDeSigo(true, false, false, 0);
+        b.estadoDeSigo(false, true, false, 3000);
+        assertTrue(b.pausar(3200));
+        assertEquals(SesionVentana.Apertura.DESCARTADA, b.alAbrirMicrofono(INICIAL, true, 3500));
+        assertTrue(b.enPausa());
+        assertEquals(0, b.leidosMs(10_000));
+        // Cierre: todo se descarta.
+        SesionVentana c = conLimite();
+        c.estadoDeSigo(true, false, false, 0);
+        c.cerrar(1000);
+        assertEquals(SesionVentana.Apertura.DESCARTADA, c.alAbrirMicrofono(INICIAL, true, 1500));
+        assertEquals(SesionVentana.Inicial.DESCARTAR, c.estadoDeSigo(false, true, false, 3000));
+        assertFalse(c.escuchando());
+    }
+
+    @Test public void unaAperturaDeLaPaginaConLaVentanaYaEscuchandoNoSeToca() {
+        SesionVentana s = conLimite();
+        s.estadoDeSigo(true, false, false, 0);
+        s.estadoDeSigo(false, true, false, 3000);
+        assertEquals(SesionVentana.Apertura.ESCUCHANDO, s.alAbrirMicrofono(INICIAL, true, 3100));
+        // Otra vez la página -un escuchar repetido-: el oído es el de la lectura, no se suelta.
+        assertEquals(SesionVentana.Apertura.IGNORADA, s.alAbrirMicrofono(INICIAL, true, 4000));
+        // Y después de un Seguir confirmado, la de la página tampoco cuenta como la de Seguir.
+        long t = pausaYSeguir(s, 5000, 1000);
+        assertEquals(SesionVentana.Apertura.IGNORADA, s.alAbrirMicrofono(INICIAL, true, t + 100));
+        assertTrue(s.escuchando());
+    }
+
+    @Test public void dosEstadosJuntosEsperanElMicrofonoYSinCuentaNiEscucharSoloPasan() {
+        SesionVentana s = conLimite();
+        // Sin ver la cuenta y sin escuchar: un estado previo, pasa.
+        assertEquals(REENVIAR, s.estadoDeSigo(false, false, false, 0));
+        // En pausa tampoco termina la cuenta.
+        assertEquals(REENVIAR, s.estadoDeSigo(false, true, true, 100));
+        // La cuenta y su fin juntos: Sigo ya escucha.
+        assertEquals(SesionVentana.Inicial.ESPERANDO_MICRO, s.estadoDeSigo(false, true, false, 3000));
+        assertFalse(s.escuchando());
+    }
 }

@@ -68,4 +68,45 @@ public class MicrofonoDeVentanaTest {
         m.liberarSesion(1);
         assertEquals(0, m.pausa());
     }
+
+    // -9-nov-2026, orden t160u, punto 3- Una orden vieja de detener no corta la voz de una lectura nueva.
+    @Test public void elDetenerAtrasadoDeLaLecturaViejaNoCierraLaNueva() {
+        MicrofonoDeVentana m = new MicrofonoDeVentana();
+        long vieja = m.abrio(0);
+        // La lectura nueva pide escuchar con el oído todavía abierto: se queda con él, con número nuevo.
+        long nueva = m.renovar(0);
+        assertTrue(nueva != 0 && nueva != vieja);
+        assertEquals(nueva, m.captura());
+        // Llega el detener de la vieja: no cierra.
+        assertFalse(m.cierraElDetener(vieja));
+        assertTrue(m.abierto());
+        // El de la nueva sí.
+        assertTrue(m.cierraElDetener(nueva));
+        m.cerro();
+        // Repetido, ya no hay nada que cerrar; y el 0 -escuchar que no abrió nada suyo- nunca cierra.
+        assertFalse(m.cierraElDetener(nueva));
+        m.abrio(0);
+        assertFalse(m.cierraElDetener(0));
+        // Sin captura -una página vieja- cierra lo que haya, como antes.
+        assertTrue(m.cierraElDetener(-1));
+    }
+
+    @Test public void renovarSoloConElOidoAbiertoYDelMismoDueno() {
+        MicrofonoDeVentana m = new MicrofonoDeVentana();
+        assertEquals(0, m.renovar(0));
+        long c = m.abrio(3);
+        // Lo abierto es de la ventana 3: la página sin esa ventana no se lo lleva.
+        assertEquals(0, m.renovar(0));
+        assertEquals(c, m.captura());
+        assertEquals(3, m.sesion());
+    }
+
+    @Test public void laCapturaPedidaLlegaComoIntegerOLong() {
+        assertEquals(-1, MicrofonoDeVentana.capturaPedida(null));
+        assertEquals(-1, MicrofonoDeVentana.capturaPedida("3"));
+        assertEquals(3, MicrofonoDeVentana.capturaPedida(Integer.valueOf(3)));
+        assertEquals(5_000_000_000L, MicrofonoDeVentana.capturaPedida(Long.valueOf(5_000_000_000L)));
+        assertEquals(0, MicrofonoDeVentana.capturaPedida(Integer.valueOf(0)));
+        assertEquals(-1, MicrofonoDeVentana.capturaPedida(Integer.valueOf(-2)));
+    }
 }

@@ -397,6 +397,9 @@ export const en: Textos = {
   cerrarLaVentana: 'Close the window',
   volverASigo: 'Back to Sigo',
   avisoMicrofonoQuitado: 'Android took the microphone from Sigo. The text is waiting here.',
+  // -9-nov-2026, orden t160u, punto 5-
+  avisoCamaraNoSeApago: "The camera couldn't be turned off, so the floating window didn't open. Tap Start to try again.",
+  avisoMicrofonoNoAbrio: "The microphone couldn't be opened. Tap Resume to try again.",
   moverVentana: 'Move the window',
   cambiarTamano: 'Resize',
   cerrarSeleccion: 'Close selection'

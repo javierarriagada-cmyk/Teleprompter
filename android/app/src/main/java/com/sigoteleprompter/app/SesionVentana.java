@@ -23,7 +23,18 @@ final class SesionVentana {
     enum Fase { CUENTA_INICIAL, ESCUCHANDO, PAUSA, CUENTA, ABRIENDO }
     enum Evento { NADA, AVISO, LIMITE }
     // Qué hacer con la respuesta de Vosk: publicar «escuchando», volver a Pausa con el aviso, o descartarla.
-    enum Apertura { ESCUCHANDO, PAUSA, DESCARTADA }
+    // Antes -9-nov-2026, orden t160u, punto 4-: enum Apertura { ESCUCHANDO, PAUSA, DESCARTADA }
+    // Razón: la apertura del primer Empezar la hace la página de Sigo y puede llegar antes que el fin de la cuenta.
+    // ANOTADA: se guarda para cuando termine la cuenta, sin publicar nada y sin soltar la captura. IGNORADA: una
+    // apertura de la página con la ventana ya escuchando -el oído es el de la lectura de la ventana-: no se toca.
+    enum Apertura { ESCUCHANDO, PAUSA, DESCARTADA, ANOTADA, IGNORADA }
+    // -9-nov-2026, orden t160u, punto 4- Qué hacer con un estado de Sigo durante la cuenta de Empezar: pasarlo a la
+    // ventana, descartarlo -la sesión ya es de Android-, o, al terminar la cuenta, mandar el de Android: escuchando si
+    // el micrófono ya se confirmó, esperando su confirmación, o en Pausa si su apertura falló.
+    enum Inicial { REENVIAR, DESCARTAR, ESCUCHANDO, ESPERANDO_MICRO, PAUSA }
+    // El intento de la apertura del primer Empezar: la pide la página de Sigo -escuchar-, no una cuenta de Android.
+    // Los de Seguir son 1, 2, …: una respuesta de la página que llega después de un Seguir no se confunde con ellos.
+    static final long INTENTO_INICIAL = 0;
 
     static final int SEGUNDOS_CUENTA = 3;
 
@@ -37,6 +48,9 @@ final class SesionVentana {
     // El intento de apertura del micrófono que se pidió al terminar la última cuenta. Sube con cada cuenta terminada.
     private long intento;
     private boolean cerrada;
+    // -9-nov-2026, orden t160u, punto 4- La cuenta de Empezar: si ya se vio un número, y lo que respondió Vosk a la
+    // apertura de la página mientras tanto. Antes cuentaInicialVista vivía en VentanaDePrueba.Sesion.
+    private boolean cuentaInicialVista, microInicialAbierto, microInicialFallo;
 
     // leidosSeg: lo ya leído sin pausas al abrir -0 en una toma nueva-.
     SesionVentana(boolean conLimite, int lecturaSeg, int avisoAntesSeg, double leidosSeg) {
@@ -58,11 +72,47 @@ final class SesionVentana {
     }
 
     // La cuenta inicial la lleva Sigo, que está al frente al tocar Empezar. Cuando termina, empieza la lectura.
+    // -9-nov-2026, orden t160u, punto 4- VentanaDePrueba ya no la llama directo: pasa por estadoDeSigo, que la llama
+    // recién con las dos confirmaciones. Queda para eso y para las pruebas que necesitan una sesión escuchando.
     boolean empezarLectura(long ahoraMs) {
         if (cerrada || fase != Fase.CUENTA_INICIAL) return false;
         fase = Fase.ESCUCHANDO;
         desdeMs = ahoraMs;
         return true;
+    }
+
+    // EL PRIMER EMPEZAR NECESITA DOS CONFIRMACIONES -9-nov-2026, orden t160u, punto 4-: terminó la cuenta de Sigo y abrió
+    // el micrófono. Antes el primer estado sin cuenta de Sigo -después de verla, o ya escuchando si llegaron juntos-
+    // ponía ESCUCHANDO y echaba a andar el reloj aunque Vosk no hubiera abierto nada. Ahora, al terminar la cuenta: con
+    // el micrófono ya confirmado, ESCUCHANDO; con su apertura fallida, PAUSA -Seguir lo reintenta como siempre-; sin
+    // respuesta todavía, ABRIENDO con el intento inicial, igual que el fin de la cuenta de Seguir, y alAbrirMicrofono
+    // decide. Pausa o cierre entre medio la invalidan: fase y cerrada ya no lo permiten.
+    // Antes -hasta el 9-nov-2026-, en VentanaDePrueba.Sesion.deSigo:
+    //     if (conCuenta) cuentaInicialVista = true;
+    //     else if ((cuentaInicialVista || o.optBoolean("escuchando", false)) && !o.optBoolean("enPausa", false)) {
+    //         reglas.empezarLectura(SystemClock.elapsedRealtime());
+    //         anotar(numero, "lectura empezada: cuenta Android");
+    //     }
+    //     return true;
+    Inicial estadoDeSigo(boolean conCuenta, boolean escuchando, boolean enPausa, long ahoraMs) {
+        if (cerrada || fase != Fase.CUENTA_INICIAL) return Inicial.DESCARTAR;
+        if (conCuenta) {
+            cuentaInicialVista = true;
+            return Inicial.REENVIAR;
+        }
+        // Sin haber visto la cuenta -dos estados juntos-, basta con que Sigo ya escuche.
+        if (!(cuentaInicialVista || escuchando) || enPausa) return Inicial.REENVIAR;
+        if (microInicialAbierto) {
+            empezarLectura(ahoraMs);
+            return Inicial.ESCUCHANDO;
+        }
+        if (microInicialFallo) {
+            fase = Fase.PAUSA;
+            desdeMs = -1;
+            return Inicial.PAUSA;
+        }
+        fase = Fase.ABRIENDO;
+        return Inicial.ESPERANDO_MICRO;
     }
 
     // Pausa -el botón, la pantalla apagada o el límite-. Devuelve si cambió algo. En la cuenta, la corta. Esperando el
@@ -105,8 +155,23 @@ final class SesionVentana {
     long intentoPedido() { return !cerrada && fase == Fase.ABRIENDO ? intento : 0; }
 
     // La respuesta de Vosk para un intento: abierto o no. Solo la del intento que se espera cambia algo.
+    // -9-nov-2026, orden t160u, punto 4- La del intento inicial -la página de Sigo abrió en el primer Empezar-: durante
+    // la cuenta se anota; con la cuenta terminada -ABRIENDO del intento inicial- decide como la de Seguir; con la
+    // ventana escuchando no se toca -ese oído es el de la lectura-; en Pausa o en la cuenta de Seguir se descarta.
+    // Antes -hasta el 9-nov-2026- empezaba directo con:
+    //     if (cerrada || fase != Fase.ABRIENDO || intentoDeLaRespuesta != intento) return Apertura.DESCARTADA;
+    // Razón: el cerrado va primero y aparte, y en medio las respuestas del intento inicial.
     Apertura alAbrirMicrofono(long intentoDeLaRespuesta, boolean abierto, long ahoraMs) {
-        if (cerrada || fase != Fase.ABRIENDO || intentoDeLaRespuesta != intento) return Apertura.DESCARTADA;
+        if (cerrada) return Apertura.DESCARTADA;
+        if (intentoDeLaRespuesta == INTENTO_INICIAL && fase == Fase.CUENTA_INICIAL) {
+            microInicialAbierto = abierto;
+            microInicialFallo = !abierto;
+            return Apertura.ANOTADA;
+        }
+        if (intentoDeLaRespuesta == INTENTO_INICIAL && (intento != INTENTO_INICIAL || fase != Fase.ABRIENDO)) {
+            return fase == Fase.ESCUCHANDO || fase == Fase.ABRIENDO ? Apertura.IGNORADA : Apertura.DESCARTADA;
+        }
+        if (fase != Fase.ABRIENDO || intentoDeLaRespuesta != intento) return Apertura.DESCARTADA;
         if (!abierto) {
             fase = Fase.PAUSA;
             desdeMs = -1;

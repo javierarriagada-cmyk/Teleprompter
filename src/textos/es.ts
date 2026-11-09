@@ -428,6 +428,10 @@ export const es = {
   cerrarLaVentana: 'Cerrar la ventana',
   volverASigo: 'Volver a Sigo',
   avisoMicrofonoQuitado: 'Android le quitó el micrófono a Sigo. El texto espera aquí.',
+  // -9-nov-2026, orden t160u, punto 5- Los dos fallos que se pueden reintentar, aparte del micrófono quitado:
+  // la cámara que no se apagó al abrir la ventana desde Grabar, y el micrófono que no abrió en la ventana.
+  avisoCamaraNoSeApago: 'No se pudo apagar la cámara, así que la ventana flotante no se abrió. Toca Empezar para intentarlo de nuevo.',
+  avisoMicrofonoNoAbrio: 'No se pudo abrir el micrófono. Toca Seguir para intentarlo de nuevo.',
   moverVentana: 'Mover la ventana',
   cambiarTamano: 'Cambiar el tamaño',
   cerrarSeleccion: 'Cerrar selección'

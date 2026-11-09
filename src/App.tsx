@@ -419,8 +419,19 @@ export default function App({ motor, repoOverride }: AppProps) {
   const [empezarFlotanteSinCamara, setEmpezarFlotanteSinCamara] = useState(false)
   // -9-nov-2026- Mientras se espera el cierre nativo de la cámara desde Grabar: un segundo toque no pide otro cierre.
   // El intento lo sube la salida de Grabar: un cierre que se confirma después de salir ya no abre la ventana.
-  const apagandoParaFlotanteRef = useRef(false)
+  // Antes -9-nov-2026, orden t160u, punto 1-: const apagandoParaFlotanteRef = useRef(false)
+  // Razón: con esa marca, un Empezar después de cancelar la preparación no hacía nada -«el cierre ya está pedido»- y
+  // el cierre pendiente, ya cancelado, tampoco abría: quedaba sin ventana y sin cámara. Ahora el cierre pendiente es
+  // una promesa compartida: cada Empezar la espera con su propio intento, y solo el último vivo abre la ventana.
+  const cierreCamaraFlotanteRef = useRef<Promise<{ cerrada: boolean; fallo: unknown }> | null>(null)
   const intentoApagadoFlotanteRef = useRef(0)
+  // El intento que todavía espera el cierre para abrir la ventana; null si se canceló -cerrar la preparación, salir de
+  // Grabar- o ya se resolvió. Con null al confirmarse el cierre, nadie necesita la cámara apagada.
+  const intentoEnEsperaFlotanteRef = useRef<number | null>(null)
+  // Si la persona sigue en el LISTO de Grabar: lo mira el cierre cancelado para decidir si vuelve la vista previa.
+  const enListoDeGrabarRef = useRef(false)
+  // Lo sube el cierre cancelado para que el efecto de la cámara la vuelva a encender -ver ese efecto-.
+  const [reencenderCamara, setReencenderCamara] = useState(0)
   // Con la X desde Grabar, la cámara vuelve cuando Sigo vuelve al frente, no en segundo plano.
   const grabarAlVolverAlFrenteRef = useRef(false)
 
@@ -1358,7 +1369,14 @@ export default function App({ motor, repoOverride }: AppProps) {
         })
       }
     }
-  }, [vista, cancelarCuentaRegresiva, conCamara, ladoCamara, fondoToma, recuadroX, recuadroY, estabilizar])
+  // Antes -9-nov-2026, orden t160u, punto 1-: }, [vista, cancelarCuentaRegresiva, conCamara, ladoCamara, fondoToma, recuadroX, recuadroY, estabilizar])
+  // Razón: reencenderCamara -la preparación flotante cancelada con la cámara ya cerrada- vuelve a pasar por aquí y,
+  // con la persona todavía en Grabar, la cámara se enciende como siempre.
+  }, [vista, cancelarCuentaRegresiva, conCamara, ladoCamara, fondoToma, recuadroX, recuadroY, estabilizar, reencenderCamara])
+
+  useEffect(() => {
+    enListoDeGrabarRef.current = vista === 'lectura' && conCamara && estadoToma === 'listo'
+  }, [vista, conCamara, estadoToma])
 
   useEffect(() => {
     if (camaraActiva && (fondoToma === 'detras' || fondoToma === 'recuadro') && vista === 'lectura') {
@@ -2029,7 +2047,52 @@ export default function App({ motor, repoOverride }: AppProps) {
   function ahoraNoAccesibilidad() {
     console.info('SigoFlotante', 'Ahora no')
     // Antes -08-11-2026-: setHojaFlotante(null)
+    // Antes -9-nov-2026-: setHojaFlotante(h => siguienteHojaFlotante(h, { tipo: 'desistir' }))
+    desistirDeHojaFlotante()
+  }
+
+  // CERRAR LA PREPARACIÓN CANCELA LA APERTURA PENDIENTE -9-nov-2026, orden t160u, punto 1-. Desde Grabar, Empezar
+  // espera el cierre de la cámara con la hoja a la vista; si la persona la cerraba -tocar fuera, «Ahora no»- la hoja
+  // se iba pero el cierre, al confirmarse, abría la ventana igual. Ahora cerrar la hoja invalida ese intento. Si el
+  // cierre de la cámara sigue pendiente, al terminar vuelve la vista previa -ver esperarCierreParaFlotante-.
+  function desistirDeHojaFlotante() {
+    if (intentoEnEsperaFlotanteRef.current !== null) {
+      console.info('SigoFlotante', `preparación cerrada: se cancela la apertura pendiente intento=${intentoEnEsperaFlotanteRef.current}`)
+      intentoEnEsperaFlotanteRef.current = null
+      intentoApagadoFlotanteRef.current++
+      soltarIntencionFlotante()
+      origenFlotanteRef.current = null
+    }
     setHojaFlotante(h => siguienteHojaFlotante(h, { tipo: 'desistir' }))
+  }
+
+  // El cierre de la cámara para la ventana, uno solo aunque haya varios Empezar: el segundo espera el mismo. Al
+  // terminar, si ningún intento lo espera -se canceló- y la persona sigue en el LISTO de Grabar, vuelve la vista
+  // previa. Corre una vez por cierre, antes que los intentos que lo esperan: ve el intento vivo sin soltar todavía.
+  function esperarCierreParaFlotante(): Promise<{ cerrada: boolean; fallo: unknown }> {
+    if (cierreCamaraFlotanteRef.current) {
+      console.info('SigoFlotante', 'desde Grabar: el cierre de la cámara ya está pedido; se espera el mismo')
+      return cierreCamaraFlotanteRef.current
+    }
+    const cierre = (async () => {
+      try {
+        const cerrada = (await apagarCamara({ conservarSiFalla: true })) === true
+        return { cerrada, fallo: cerrada ? null : new Error(errorDelUltimoApagado() || t('camaraSigueEncendida')) }
+      } catch (e) {
+        return { cerrada: false, fallo: e as unknown }
+      }
+    })()
+    cierreCamaraFlotanteRef.current = cierre
+    void cierre.then(({ cerrada }) => {
+      if (cierreCamaraFlotanteRef.current === cierre) cierreCamaraFlotanteRef.current = null
+      if (intentoEnEsperaFlotanteRef.current !== null) return
+      setCamaraActiva(camaraEncendida())
+      if (cerrada && enListoDeGrabarRef.current) {
+        console.info('SigoFlotante', 'desde Grabar: apertura cancelada con la cámara ya cerrada; vuelve la vista previa')
+        setReencenderCamara(n => n + 1)
+      }
+    })
+    return cierre
   }
 
   async function empezarDesdeHojaFlotante() {
@@ -2059,24 +2122,32 @@ export default function App({ motor, repoOverride }: AppProps) {
     // cierre- y el efecto de abajo abre la ventana. Si el cierre falla, Grabar queda como estaba, con su cámara
     // -conservarSiFalla-, sin toma y sin intención flotante, y el fallo se dice con el aviso de la ventana.
     if (conCamara) {
-      if (apagandoParaFlotanteRef.current) {
-        console.info('SigoFlotante', 'desde Grabar: el cierre de la cámara ya está pedido')
-        return
-      }
-      apagandoParaFlotanteRef.current = true
+      // Antes -9-nov-2026, orden t160u, punto 1-:
+      // if (apagandoParaFlotanteRef.current) {
+      //   console.info('SigoFlotante', 'desde Grabar: el cierre de la cámara ya está pedido')
+      //   return
+      // }
+      // apagandoParaFlotanteRef.current = true
+      // const intento = ++intentoApagadoFlotanteRef.current
+      // origenFlotanteRef.current = 'grabar'
+      // console.info('SigoFlotante', 'desde Grabar: se apaga la cámara y se espera su cierre antes de abrir la ventana')
+      // let cerrada = false
+      // let fallo: unknown = null
+      // try {
+      //   cerrada = (await apagarCamara({ conservarSiFalla: true })) === true
+      //   if (!cerrada) fallo = new Error(errorDelUltimoApagado() || t('camaraSigueEncendida'))
+      // } catch (e) {
+      //   fallo = e
+      // } finally {
+      //   apagandoParaFlotanteRef.current = false
+      // }
+      // Razón: ver cierreCamaraFlotanteRef y desistirDeHojaFlotante.
       const intento = ++intentoApagadoFlotanteRef.current
+      intentoEnEsperaFlotanteRef.current = intento
       origenFlotanteRef.current = 'grabar'
-      console.info('SigoFlotante', 'desde Grabar: se apaga la cámara y se espera su cierre antes de abrir la ventana')
-      let cerrada = false
-      let fallo: unknown = null
-      try {
-        cerrada = (await apagarCamara({ conservarSiFalla: true })) === true
-        if (!cerrada) fallo = new Error(errorDelUltimoApagado() || t('camaraSigueEncendida'))
-      } catch (e) {
-        fallo = e
-      } finally {
-        apagandoParaFlotanteRef.current = false
-      }
+      console.info('SigoFlotante', `desde Grabar: se apaga la cámara y se espera su cierre antes de abrir la ventana intento=${intento}`)
+      const { cerrada, fallo } = await esperarCierreParaFlotante()
+      if (intentoEnEsperaFlotanteRef.current === intento) intentoEnEsperaFlotanteRef.current = null
       if (intento !== intentoApagadoFlotanteRef.current) {
         console.info('SigoFlotante', `desde Grabar: cierre de la cámara ${cerrada ? 'hecho' : 'fallido'} después de salir; no se abre`)
         return
@@ -2086,7 +2157,11 @@ export default function App({ motor, repoOverride }: AppProps) {
         soltarIntencionFlotante()
         origenFlotanteRef.current = null
         setCamaraActiva(camaraEncendida())
-        await avisarErrorFlotante(fallo)
+        // Antes -9-nov-2026, orden t160u, punto 5-: await avisarErrorFlotante(fallo)
+        // Razón: a la persona le llegaba el mensaje técnico de CameraPreview.stop(). Ahora un texto que dice qué pasó y
+        // que Empezar lo reintenta; el detalle técnico queda en el registro -la línea de arriba y esta-.
+        console.info('SigoFlotante', `cámara no apagada, detalle: ${fallo instanceof Error ? fallo.message : String(fallo)}`)
+        mostrarAviso(t('avisoCamaraNoSeApago'))
         return
       }
       setCamaraActiva(false)
@@ -2164,6 +2239,8 @@ export default function App({ motor, repoOverride }: AppProps) {
     hapticaToqueMedio()
     // -9-nov-2026- Si la ventana esperaba el cierre de la cámara de Grabar, ya no se abre al confirmarse.
     intentoApagadoFlotanteRef.current++
+    // -9-nov-2026, orden t160u, punto 1- Y nadie la espera: al salir de Grabar la vista previa no vuelve.
+    intentoEnEsperaFlotanteRef.current = null
     // Si la voz en inglés se estaba bajando, sigue bajando -Play la termina igual y queda para la
     // próxima-, pero la lectura ya no parte sola al terminar -tarea 84, D3-.
     intentoVozRef.current++
@@ -4575,7 +4652,10 @@ export default function App({ motor, repoOverride }: AppProps) {
       */}
       {HERRAMIENTAS && Capacitor.isNativePlatform() && hojaFlotante && (
         // -banda A, 09-11-2026- capa-hoja-flotante: la hoja va abajo, como en el boceto. Antes: className="capa-dialogo-microfono".
-        <div className="capa-dialogo-microfono capa-hoja-flotante" onClick={() => setHojaFlotante(h => siguienteHojaFlotante(h, { tipo: 'desistir' }))}>
+        // -9-nov-2026, orden t160u, punto 1- Antes:
+        // <div className="capa-dialogo-microfono capa-hoja-flotante" onClick={() => setHojaFlotante(h => siguienteHojaFlotante(h, { tipo: 'desistir' }))}>
+        // Razón: cerrar la preparación también cancela la apertura pendiente -desistirDeHojaFlotante-.
+        <div className="capa-dialogo-microfono capa-hoja-flotante" onClick={() => desistirDeHojaFlotante()}>
           <div
             className={`dialogo-ajustes hoja-flotante hoja-flotante-${hojaFlotante.tipo}`}
             role="dialog"

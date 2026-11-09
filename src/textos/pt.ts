@@ -349,6 +349,9 @@ export const pt: Textos = {
   cerrarLaVentana: 'Fechar a janela',
   volverASigo: 'Voltar ao Sigo',
   avisoMicrofonoQuitado: 'O Android tirou o microfone do Sigo. O texto está esperando aqui.',
+  // -9-nov-2026, orden t160u, punto 5-
+  avisoCamaraNoSeApago: 'Não foi possível desligar a câmera, então a janela flutuante não abriu. Toque em Começar para tentar de novo.',
+  avisoMicrofonoNoAbrio: 'Não foi possível abrir o microfone. Toque em Continuar para tentar de novo.',
   moverVentana: 'Mover a janela',
   cambiarTamano: 'Redimensionar',
   cerrarSeleccion: 'Fechar seleção'

@@ -87,6 +87,9 @@ export function PaginaFlotante() {
   // cada estado de App no lo borre. Antes -957fc97-: se leía estado.silenciado, que App nunca manda, y el
   // mensaje 'micro' se ignoraba: el aviso no salía nunca.
   const [silenciado, setSilenciado] = useState(false)
+  // -9-nov-2026, orden t160u, punto 5- Por qué sale el aviso: 'noAbrio' -la apertura del micrófono falló; Seguir lo
+  // reintenta- o 'silenciado' -Android silenció la captura abierta, el aviso de siempre-. Un APK sin motivo: el de siempre.
+  const [motivoMicro, setMotivoMicro] = useState<string>('')
   const [controlesVisibles, setControlesVisibles] = useState(true)
   const [tInicio, setTInicio] = useState<number | null>(null)
   const [faseLimite, setFaseLimite] = useState<FaseLimite>('ninguno')
@@ -145,6 +148,7 @@ export function PaginaFlotante() {
       }
       if (datos.tipo === 'micro') {
         setSilenciado(datos.silenciado === true)
+        setMotivoMicro(typeof datos.motivo === 'string' ? datos.motivo : '')
         return
       }
       if (datos.tipo === 'limite') {
@@ -529,8 +533,12 @@ export function PaginaFlotante() {
         </div>
       )}
 
+      {/* Antes -9-nov-2026, orden t160u, punto 5-: <div className="flotante-aviso-micro">{t('avisoMicrofonoQuitado')}</div>
+          Razón: el micrófono que no abrió no es el que Android quitó: cada uno con su texto -motivoMicro-. */}
       {silenciado && (
-        <div className="flotante-aviso-micro">{t('avisoMicrofonoQuitado')}</div>
+        <div className="flotante-aviso-micro" data-testid="flotante-aviso-micro">
+          {motivoMicro === 'noAbrio' ? t('avisoMicrofonoNoAbrio') : t('avisoMicrofonoQuitado')}
+        </div>
       )}
 
       {faseLimite === 'aviso' && (

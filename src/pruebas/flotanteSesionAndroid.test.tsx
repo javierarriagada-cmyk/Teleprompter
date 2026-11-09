@@ -289,6 +289,17 @@ describe('5. desde Grabar, la ventana espera el cierre nativo de la cámara', ()
     return cierre
   }
 
+  test('revisión: cerrar la preparación cancela la apertura pendiente', async () => {
+    const cierre = await pedirLaVentanaDesdeGrabar()
+    const capa = document.querySelector('.capa-hoja-flotante')!
+    fireEvent.click(capa)
+    await esperar(50)
+    expect(document.querySelector('.hoja-flotante-preparacion')).toBeNull()
+    await act(async () => { cierre.resolver(true) })
+    await esperar(300)
+    expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
+  })
+
   test('5a. con el cierre pendiente no se abre; al confirmarse se abre una sola vez, con la cámara ya apagada', async () => {
     const cierre = await pedirLaVentanaDesdeGrabar()
     // Más que la cuenta de Empezar entera: con el cierre pendiente, nada abre la ventana.
@@ -317,8 +328,12 @@ describe('5. desde Grabar, la ventana espera el cierre nativo de la cámara', ()
       expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
       await act(async () => { fallar(cierre) })
       await esperar(100)
-      // Se dice con el aviso de siempre de la ventana -avisarErrorFlotante, mostrarAviso-, antes de que se vaya solo.
-      expect(within(screen.getByTestId('region-aviso')).getByText(/CameraPreview\.stop falló/)).toBeTruthy()
+      // Antes -9-nov-2026, orden t160u, punto 5-:
+      // // Se dice con el aviso de siempre de la ventana -avisarErrorFlotante, mostrarAviso-, antes de que se vaya solo.
+      // expect(within(screen.getByTestId('region-aviso')).getByText(/CameraPreview\.stop falló/)).toBeTruthy()
+      // Razón: el motivo técnico va al registro; a la persona, el texto de la cámara que no se apagó, con Empezar.
+      expect(within(screen.getByTestId('region-aviso')).getByText(es.avisoCamaraNoSeApago)).toBeTruthy()
+      expect(screen.queryByText(/CameraPreview\.stop falló/)).toBeNull()
       for (let i = 0; i < 6; i++) await esperar(450)
       expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
       // La salida de Grabar sigue: su LISTO con la cámara, sin toma y con una sola orden de apagado.
@@ -329,6 +344,40 @@ describe('5. desde Grabar, la ventana espera el cierre nativo de la cámara', ()
       expect(apagarCamara).toHaveBeenCalledTimes(1)
     }, 30000)
   }
+
+  // -9-nov-2026, orden t160u, punto 1- Lo que la prueba «revisión:» no mira: después de cancelar, la vista previa de
+  // Grabar vuelve si el cierre se confirma, y un Empezar nuevo con el mismo cierre pendiente sí abre, una vez.
+  test('5c. cancelada la preparación con el cierre pendiente, al confirmarse vuelve la vista previa de Grabar', async () => {
+    const cierre = await pedirLaVentanaDesdeGrabar()
+    fireEvent.click(document.querySelector('.capa-hoja-flotante')!)
+    await esperar(50)
+    await act(async () => { cierre.resolver(true) })
+    await esperar(300)
+    expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
+    expect(h.orden.slice(h.orden.lastIndexOf('apagar'))).toEqual(['apagar', 'encender'])
+    expect(h.encendida).toBe(true)
+    expect(screen.getByTestId('btn-empezar-toma')).toBeTruthy()
+    expect(document.querySelector('.punto-grabar')).not.toBeNull()
+  }, 30000)
+
+  test('5d. cancelar y volver a Empezar con el mismo cierre pendiente: abre una vez y la cámara no vuelve', async () => {
+    const cierre = await pedirLaVentanaDesdeGrabar()
+    fireEvent.click(document.querySelector('.capa-hoja-flotante')!)
+    await esperar(50)
+    fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+    await esperar(80)
+    const hoja = document.querySelector('.hoja-flotante-preparacion') as HTMLElement
+    expect(hoja).not.toBeNull()
+    fireEvent.click(within(hoja).getByRole('button', { name: es.empezar }))
+    await esperar(100)
+    expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
+    await act(async () => { cierre.resolver(true) })
+    for (let i = 0; i < 8; i++) await esperar(450)
+    expect(VentanaDePrueba.abrir).toHaveBeenCalledTimes(1)
+    expect(h.camaraAlAbrir).toBe(false)
+    expect(apagarCamara).toHaveBeenCalledTimes(1)
+    expect(h.orden.slice(h.orden.lastIndexOf('apagar'))).toEqual(['apagar', 'abrir'])
+  }, 30000)
 })
 
 describe('4. la ventana muestra el aviso y el límite con sus claves', () => {
@@ -376,6 +425,35 @@ describe('4. la ventana muestra el aviso y el límite con sus claves', () => {
       aLaPagina({ tipo: 'limite', sesion: 1, fase: 'ninguno' })
       await esperar(30)
       expect(screen.queryByTestId('flotante-limite')).toBeNull()
+    })
+  }
+
+  // -9-nov-2026, orden t160u, punto 5- Los dos avisos del micrófono, cada uno con su texto: el que no abrió -Seguir
+  // lo reintenta- y el que Android quitó -el de siempre, también sin motivo, como manda un APK viejo-.
+  for (const [idioma, textos] of [['es', es], ['en', en], ['pt', pt]] as const) {
+    test(`el micrófono que no abrió y el que Android quitó, en ${idioma}`, async () => {
+      render(<PaginaFlotante />)
+      aLaPagina({
+        tipo: 'contrato', sesion: 1, guion, idioma: 'es-ES', fontSize: 24, tipoFuente: 'sans',
+        colorFondo: '#000000', colorLetra: '#FFFFFF', marginPercent: 5, columnaAngosta: false, lineasZona: 3,
+        anclajeZona: 'medio', transparencia: 16, tokenInicial: 0, mostrarTiempo: true, idiomaApp: idioma,
+        limite: null, leidosSeg: 0
+      })
+      aLaPagina({ tipo: 'micro', sesion: 1, silenciado: true, motivo: 'noAbrio' })
+      await esperar(30)
+      expect(screen.getByTestId('flotante-aviso-micro').textContent).toBe(textos.avisoMicrofonoNoAbrio)
+      aLaPagina({ tipo: 'micro', sesion: 1, silenciado: true, motivo: 'silenciado' })
+      await esperar(30)
+      expect(screen.getByTestId('flotante-aviso-micro').textContent).toBe(textos.avisoMicrofonoQuitado)
+      aLaPagina({ tipo: 'micro', sesion: 1, silenciado: true })
+      await esperar(30)
+      expect(screen.getByTestId('flotante-aviso-micro').textContent).toBe(textos.avisoMicrofonoQuitado)
+      aLaPagina({ tipo: 'micro', sesion: 1, silenciado: false, motivo: '' })
+      await esperar(30)
+      expect(screen.queryByTestId('flotante-aviso-micro')).toBeNull()
+      expect(textos.avisoMicrofonoNoAbrio).not.toBe(textos.avisoMicrofonoQuitado)
+      expect(textos.avisoCamaraNoSeApago).toContain(textos.empezar)
+      expect(textos.avisoMicrofonoNoAbrio).toContain(textos.seguir)
     })
   }
 

@@ -177,6 +177,14 @@ export function errorDelUltimoApagado(): string | null {
 }
 
 export async function apagarCamara(opciones?: { conservarSiFalla?: boolean }): Promise<boolean> {
+  // -9-nov-2026, orden t160u, punto 2- Primero el arranque pendiente, si lo hay: ver encenderCamara.
+  await esperarArranques()
+  return apagarSinEsperarArranque(opciones)
+}
+
+// El cierre de siempre. Lo usa también encenderCamaraSinAnotar al cambiar de cámara: ese arranque ya está anotado,
+// y si esperara a los arranques se esperaría a sí mismo.
+async function apagarSinEsperarArranque(opciones?: { conservarSiFalla?: boolean }): Promise<boolean> {
   if (grabandoVideoNativo) {
     try {
       await cortarGrabacionVideo()
@@ -271,12 +279,51 @@ export function esPermisoDeCamaraNegado(err: unknown): boolean {
   return typeof e.message === 'string' && /camera permission denied/i.test(e.message)
 }
 
-export async function encenderCamara(
+// EL CIERRE ESPERA AL ARRANQUE -9-nov-2026, orden t160u, punto 2-. apagarCamara() miraba estaEncendida, y esa marca
+// recién se pone cuando CameraPreview.start() termina. Con start() todavía pendiente, el cierre veía la cámara como
+// apagada, no llamaba a stop() y devolvía true; después start() terminaba y la cámara quedaba encendida detrás de la
+// ventana flotante. Ahora cada arranque queda anotado en arranqueEnCurso hasta que termina -bien o mal-, y
+// apagarCamara() lo espera antes de decidir si hay algo que cerrar. No es una espera fija: es la promesa del propio
+// arranque. El cuerpo de siempre pasó, sin cambios, a encenderCamaraSinAnotar.
+// Antes -hasta el 9-nov-2026-:
+// export async function encenderCamara(
+//   lado: LadoCamara,
+//   config?: OpcionesConfigCamara
+// ): Promise<MediaStream | null> {
+let arranqueEnCurso: Promise<unknown> | null = null
+
+export function encenderCamara(lado: LadoCamara, config?: OpcionesConfigCamara): Promise<MediaStream | null> {
+  const arranque = encenderCamaraSinAnotar(lado, config)
+  arranqueEnCurso = arranque
+  const soltar = () => {
+    if (arranqueEnCurso === arranque) arranqueEnCurso = null
+  }
+  arranque.then(soltar, soltar)
+  return arranque
+}
+
+// Espera a que termine el arranque anotado, y a los que se anoten mientras tanto. encenderCamaraSinAnotar nunca
+// rechaza -los errores devuelven null-, pero por las dudas un rechazo cuenta como terminado.
+async function esperarArranques(): Promise<void> {
+  let visto: Promise<unknown> | null = null
+  while (arranqueEnCurso && arranqueEnCurso !== visto) {
+    visto = arranqueEnCurso
+    try {
+      await visto
+    } catch {
+      // terminó: con eso alcanza
+    }
+  }
+}
+
+async function encenderCamaraSinAnotar(
   lado: LadoCamara,
   config?: OpcionesConfigCamara
 ): Promise<MediaStream | null> {
   if (estaEncendida) {
-    await apagarCamara()
+    // Antes -hasta el 9-nov-2026-: await apagarCamara()
+    // Razón: apagarCamara ahora espera los arranques anotados, y este es uno; ver apagarSinEsperarArranque.
+    await apagarSinEsperarArranque()
   }
 
   ladoEstado = lado

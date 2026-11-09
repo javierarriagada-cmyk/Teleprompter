@@ -63,7 +63,33 @@ final class MicrofonoDeVentana {
     }
 
     // Una confirmación descartada -fallo 2-: si esa captura sigue abierta, se libera; si no, no se toca nada.
+    // -9-nov-2026, orden t160u, punto 3- También el detener de la página con su captura: solo cierra si lo abierto
+    // sigue siendo esa captura.
     long liberarCaptura(long capturaDescartada) {
         return capturaDescartada != 0 && captura == capturaDescartada ? captura : 0;
+    }
+
+    // UNA ORDEN VIEJA DE DETENER NO CORTA LA LECTURA NUEVA -9-nov-2026, orden t160u, punto 3-. Un escuchar de la página
+    // que encuentra el oído ya abierto -la lectura anterior todavía no mandó su detener- se queda con ese oído, y ahora
+    // con un número de captura nuevo: el detener atrasado de la anterior nombra la captura vieja y no cierra nada. Solo
+    // si lo abierto es del mismo dueño -la misma sesión de la ventana, o 0 sin ventana-; si no, 0 y no se toca nada.
+    long renovar(long sesionDuena) {
+        if (captura == 0 || sesion != sesionDuena) return 0;
+        captura = ++ultimaCaptura;
+        return captura;
+    }
+
+    // El detener de la página: cierra si no nombra captura -como antes- o si nombra la que está abierta.
+    boolean cierraElDetener(long pedida) {
+        return pedida < 0 || liberarCaptura(pedida) != 0;
+    }
+
+    // La captura que nombra un detener de la página: -1 si no nombra ninguna -una página vieja: cierra lo que haya,
+    // como antes-. El número llega del JSON de Capacitor como Integer o Long según su tamaño: por eso Number, y no
+    // PluginCall.getLong, que con un Integer devuelve null.
+    static long capturaPedida(Object valor) {
+        if (!(valor instanceof Number)) return -1;
+        long n = ((Number) valor).longValue();
+        return n < 0 ? -1 : n;
     }
 }

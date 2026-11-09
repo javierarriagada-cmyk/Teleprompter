@@ -62,3 +62,62 @@ describe('apagarCamara dice si la cámara se cerró', () => {
     expect(CameraPreview.stop).not.toHaveBeenCalled()
   })
 })
+
+test('revisión: una apertura pendiente no puede revivir la cámara tras un cierre confirmado', async () => {
+  await apagarCamara()
+  let terminar!: (v: any) => void
+  vi.mocked(CameraPreview.start).mockImplementationOnce(() => new Promise(r => { terminar = r }))
+  const apertura = encenderCamara('frontal')
+  const cierre = apagarCamara({ conservarSiFalla: true })
+  terminar({ width: 360, height: 640, x: 0, y: 0 })
+  await Promise.all([apertura, cierre])
+  expect(await cierre).toBe(true)
+  expect(camaraEncendida()).toBe(false)
+})
+
+// -9-nov-2026, orden t160u, punto 2- Lo que la prueba «revisión:» no mira: el cierre espera también un arranque que
+// falla, y cambiar de cámara con la cámara encendida -encenderCamara cierra la anterior- no se espera a sí mismo.
+describe('el cierre espera al arranque pendiente', () => {
+  beforeEach(async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {})
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    stop.impl = async () => {}
+    await apagarCamara()
+    vi.mocked(CameraPreview.stop).mockClear()
+  })
+
+  test('con start() pendiente, stop() no se llama hasta que start() termina, y se llama después', async () => {
+    let terminar!: (v: any) => void
+    vi.mocked(CameraPreview.start).mockImplementationOnce(() => new Promise(r => { terminar = r }))
+    const apertura = encenderCamara('frontal')
+    const cierre = apagarCamara({ conservarSiFalla: true })
+    await new Promise((r) => setTimeout(r, 20))
+    expect(CameraPreview.stop).not.toHaveBeenCalled()
+    terminar({ width: 360, height: 640, x: 0, y: 0 })
+    await apertura
+    expect(await cierre).toBe(true)
+    expect(CameraPreview.stop).toHaveBeenCalledTimes(1)
+    expect(camaraEncendida()).toBe(false)
+  })
+
+  test('con start() pendiente que falla: el cierre espera, no hay nada que cerrar y da true', async () => {
+    let fallar!: (e: unknown) => void
+    vi.mocked(CameraPreview.start).mockImplementationOnce(() => new Promise((_r, rej) => { fallar = rej }))
+    const apertura = encenderCamara('frontal')
+    const cierre = apagarCamara({ conservarSiFalla: true })
+    fallar(new Error('cámara ocupada'))
+    await apertura
+    expect(await cierre).toBe(true)
+    expect(CameraPreview.stop).not.toHaveBeenCalled()
+    expect(camaraEncendida()).toBe(false)
+  })
+
+  test('encender con la cámara ya encendida termina: cierra la anterior sin esperarse a sí mismo', async () => {
+    await encenderCamara('frontal')
+    const otra = encenderCamara('trasera')
+    const resultado = await Promise.race([otra.then(() => 'terminó'), new Promise((r) => setTimeout(() => r('colgada'), 500))])
+    expect(resultado).toBe('terminó')
+    expect(CameraPreview.stop).toHaveBeenCalledTimes(1)
+    expect(camaraEncendida()).toBe(true)
+  })
+})

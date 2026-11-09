@@ -448,8 +448,23 @@ public class VoskNativoPlugin extends Plugin {
             call.reject("El modelo no esta cargado: llamar a iniciar() primero");
             return;
         }
+        // Antes -9-nov-2026, orden t160u, punto 3-:
+        // if (oido != null) {
+        //     call.resolve();
+        //     return;
+        // }
+        // Razón: la lectura nueva se quedaba con el oído de la anterior sin número propio, y el detener atrasado de la
+        // anterior se lo cortaba. Ahora la captura se renueva -MicrofonoDeVentana.renovar- y se devuelve: su detener
+        // la nombra. 0 si el oído abierto es de otro dueño: esa lectura no tiene nada que cerrar.
         if (oido != null) {
-            call.resolve();
+            long renovada = mic.renovar(VentanaDePrueba.numero());
+            if (renovada != 0) oido.captura = renovada;
+            android.util.Log.i("VoskNativo", "escuchar con el oído ya abierto: captura " + (renovada != 0 ? renovada + " -renovada-" : "0 -es de la sesión " + mic.sesion() + "-"));
+            // -9-nov-2026, orden t160u, punto 4- Con la ventana abierta, también es la confirmación del primer Empezar.
+            if (renovada != 0 && mic.sesion() != 0) avisarAperturaDeLaPagina(mic.sesion(), renovada, null);
+            JSObject r = new JSObject();
+            r.put("captura", renovada);
+            call.resolve(r);
             return;
         }
         // -prototipo flotante, 09-11-2026- Los parámetros de este escuchar, para que Seguir en la ventana abra igual.
@@ -463,14 +478,44 @@ public class VoskNativoPlugin extends Plugin {
         //     VentanaDePrueba.anotar(pausaDeVentana, "escuchar de la página ignorado: la ventana está en pausa");
         if (mic.pausa() != 0 && VentanaDePrueba.esActual(mic.pausa())) {
             VentanaDePrueba.anotar(mic.pausa(), "escuchar de la página ignorado: la ventana está en pausa");
-            call.resolve();
+            // Antes -9-nov-2026, orden t160u, punto 3-: call.resolve();
+            // Razón: sin oído abierto no hay captura que detener: 0, y su detener no cierra nada.
+            JSObject r = new JSObject();
+            r.put("captura", 0);
+            call.resolve(r);
             return;
         }
+        // Antes -9-nov-2026, orden t160u, punto 4-:
+        // try {
+        //     call.resolve(abrirOido(fuentePedida, frecuenciaPedida, guardarPedido));
+        // } catch (Exception e) {
+        //     call.reject("No se pudo abrir el microfono".equals(e.getMessage()) ? e.getMessage() : "No se pudo abrir el microfono: " + e.getMessage());
+        // }
+        // Razón: con la ventana abierta, este escuchar es la apertura del primer Empezar, y la ventana recién escucha y
+        // cuenta con su confirmación -SesionVentana.estadoDeSigo-. Se le avisa como a Seguir: la captura, o 0 y el
+        // motivo. La página recibe lo mismo que antes.
+        long sesionDeLaVentana = VentanaDePrueba.numero();
         try {
-            call.resolve(abrirOido(fuentePedida, frecuenciaPedida, guardarPedido));
+            JSObject r = abrirOido(fuentePedida, frecuenciaPedida, guardarPedido);
+            // La dueña es la que anotó abrirOido -la ventana abierta en ese momento-.
+            long duena = mic.sesion();
+            if (duena != 0) {
+                boolean graba = oido != null && oido.grabadora.getRecordingState() == AudioRecord.RECORDSTATE_RECORDING;
+                avisarAperturaDeLaPagina(duena, graba ? mic.captura() : 0, graba ? null : "AudioRecord no quedó grabando");
+            }
+            call.resolve(r);
         } catch (Exception e) {
+            if (sesionDeLaVentana != 0) avisarAperturaDeLaPagina(sesionDeLaVentana, 0, String.valueOf(e.getMessage()));
             call.reject("No se pudo abrir el microfono".equals(e.getMessage()) ? e.getMessage() : "No se pudo abrir el microfono: " + e.getMessage());
         }
+    }
+
+    // LA APERTURA DEL PRIMER EMPEZAR, A LA VENTANA -9-nov-2026, orden t160u, punto 4-. Con el intento inicial: la ventana
+    // la anota si la cuenta de Sigo no terminó, o la decide si ya terminó; si llega tarde -Pausa, la X- la descarta y
+    // suelta la captura -VentanaDePrueba.aperturaDelMicrofono-.
+    private static void avisarAperturaDeLaPagina(long sesion, long captura, String error) {
+        VentanaDePrueba.anotar(sesion, "apertura de la página: captura=" + captura + (error != null ? " error=" + error : ""));
+        VentanaDePrueba.aperturaDelMicrofono(sesion, SesionVentana.INTENTO_INICIAL, captura, error);
     }
 
     // Antes -2026-11-09-: todo esto vivía dentro de arrancarServicio(PluginCall call), con try/catch y call.reject /
@@ -555,6 +600,8 @@ public class VoskNativoPlugin extends Plugin {
             r.put("fuente", fuente);
             r.put("frecuenciaMic", frecuenciaMic);
             if (rutaAudio != null) r.put("rutaAudio", rutaAudio);
+            // -9-nov-2026, orden t160u, punto 3- La captura abierta: el detener de esta lectura la nombra.
+            r.put("captura", oido.captura);
             // Antes -2026-11-09-: call.resolve(r);
             //     } catch (Exception e) {
             //         call.reject("No se pudo abrir el microfono: " + e.getMessage());
@@ -703,10 +750,26 @@ public class VoskNativoPlugin extends Plugin {
         });
     }
 
+    // Antes -9-nov-2026, orden t160u, punto 3-:
+    // @PluginMethod
+    // public void detener(PluginCall call) {
+    //     pararOido();
+    //     call.resolve();
+    // }
+    // Razón: cerraba lo que estuviera abierto. Un detener atrasado de una lectura vieja cortaba la voz de la lectura
+    // nueva. Ahora el detener nombra su captura -la que devolvió escuchar- y solo cierra si lo abierto es esa. Sin
+    // captura -una página vieja- cierra lo que haya, como antes. Responde si cerró.
     @PluginMethod
     public void detener(PluginCall call) {
-        pararOido();
-        call.resolve();
+        long pedida = MicrofonoDeVentana.capturaPedida(call.getData().opt("captura"));
+        boolean cierra = mic.cierraElDetener(pedida);
+        if (pedida >= 0) {
+            android.util.Log.i("VoskNativo", "detener captura=" + pedida + (cierra ? ": cerrada" : ": ignorado, lo abierto es la captura " + mic.captura()));
+        }
+        if (cierra) pararOido();
+        JSObject r = new JSObject();
+        r.put("detenido", cierra);
+        call.resolve(r);
     }
 
     /**
