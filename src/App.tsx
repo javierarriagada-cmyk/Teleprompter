@@ -1484,7 +1484,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     const ef = estadoFlotanteRef.current
     if (ef.terminada) return
     if (cuentaRegresiva !== null) ef.vioCuenta = true
-    else if (ef.vioCuenta && !enPausa) ef.terminada = true
+    else if ((ef.vioCuenta || isRecording) && !enPausa) ef.terminada = true
     void VentanaDePrueba.enviar({
       tipo: 'estado',
       sesion: sesionFlotanteRef.current,

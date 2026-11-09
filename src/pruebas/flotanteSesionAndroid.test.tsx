@@ -115,7 +115,8 @@ async function abrirLaVentana() {
   const hoja = document.querySelector('.hoja-flotante-preparacion') as HTMLElement
   expect(hoja).not.toBeNull()
   fireEvent.click(within(hoja).getByRole('button', { name: es.empezar }))
-  await esperar(3600)
+  // La cuenta de Empezar, de a pasos: un solo act largo juntaría el 3, 2, 1 en un solo dibujo.
+  for (let i = 0; i < 8; i++) await esperar(450)
 }
 
 function enviados(tipo: string) {
@@ -164,6 +165,20 @@ describe('la página de Sigo con la ventana abierta', () => {
     expect(motor.iniciados).toBe(iniciados)
     // Y después de la cuenta de Empezar, Sigo no le manda estados a la ventana.
     expect(enviados('estado').length).toBe(estados)
+  }, 30000)
+
+  test('1b. después de la cuenta de Empezar, Sigo no le manda estados a la ventana aunque cambie el suyo', async () => {
+    await abrirListo('btn-leer-tarjeta')
+    await abrirLaVentana()
+    const estados = enviados('estado')
+    // Los de la cuenta de Empezar sí pasaron, y el último es el fin de la cuenta.
+    expect(estados.some((m) => m.cuenta === 3)).toBe(true)
+    expect(estados.at(-1)?.cuenta).toBeNull()
+    // La pausa propia de Sigo -su botón, detrás de la ventana- cambia su estado: a la ventana no le llega.
+    fireEvent.click(screen.getByTestId('teleprompter-view-container'))
+    await act(async () => { fireEvent.click(await screen.findByTestId('btn-pausa-lectura')) })
+    await esperar(200)
+    expect(enviados('estado').length).toBe(estados.length)
   }, 30000)
 
   test('2. al volver toma el estado de Android: la palabra y, con el límite, la oferta', async () => {

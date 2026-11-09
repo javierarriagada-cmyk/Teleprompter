@@ -964,7 +964,8 @@ final class VentanaDePrueba {
                 }
                 boolean conCuenta = o.has("cuenta") && !o.isNull("cuenta");
                 if (conCuenta) cuentaInicialVista = true;
-                else if (cuentaInicialVista && !o.optBoolean("enPausa", false)) {
+                // Sin haber visto la cuenta -dos estados juntos-, basta con que Sigo ya escuche.
+                else if ((cuentaInicialVista || o.optBoolean("escuchando", false)) && !o.optBoolean("enPausa", false)) {
                     reglas.empezarLectura(SystemClock.elapsedRealtime());
                     anotar(numero, "lectura empezada: cuenta Android");
                 }
