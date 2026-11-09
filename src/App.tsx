@@ -42,7 +42,9 @@ import { Pantalla, movimientoApagado, MS_PANTALLA, MS_CHICO, MS_PANEL, CURVA_ENT
 // -corrección del PR 94- Suma camaraConElGesto. Antes:
 // import { pluginAtras, hayAdondeVolver as hayAdondeVolverAtras, conAnimacionAtras, leerBorde, leerAvance, escalaAtras, corrimientoAtras, type BordeAtras, type EstadoAtras } from './lib/atrasPredictivo'
 import { pluginAtras, hayAdondeVolver as hayAdondeVolverAtras, conAnimacionAtras, camaraConElGesto, leerBorde, leerAvance, escalaAtras, corrimientoAtras, type BordeAtras, type EstadoAtras } from './lib/atrasPredictivo'
-import { encenderCamara, apagarCamara, camaraEncendida, ladoActual, LadoCamara, obtenerCalidadesSoportadas, fijarCalidadVideo, alNegarseLaCamara, estabilizacionSoportada } from './lib/camara'
+// Antes -9-nov-2026-: import { encenderCamara, apagarCamara, camaraEncendida, ladoActual, LadoCamara, obtenerCalidadesSoportadas, fijarCalidadVideo, alNegarseLaCamara, estabilizacionSoportada } from './lib/camara'
+// Motivo: la ventana desde Grabar dice por qué no se cerró la cámara -errorDelUltimoApagado-.
+import { encenderCamara, apagarCamara, camaraEncendida, ladoActual, LadoCamara, obtenerCalidadesSoportadas, fijarCalidadVideo, alNegarseLaCamara, estabilizacionSoportada, errorDelUltimoApagado } from './lib/camara'
 import { ladosCarrilAviso } from './lib/recuadroAbajoTelH'
 import { obtenerEspacioLibre, escucharMediciones } from './lib/archivosNativos'
 import { calcularMinutosDisponibles } from './lib/espacio'
@@ -415,6 +417,10 @@ export default function App({ motor, repoOverride }: AppProps) {
   const origenFlotanteRef = useRef<'leer' | 'grabar' | null>(null)
   // Desde Grabar, Empezar espera a que la cámara se apague -setConCamara(false)- y entonces abre la ventana.
   const [empezarFlotanteSinCamara, setEmpezarFlotanteSinCamara] = useState(false)
+  // -9-nov-2026- Mientras se espera el cierre nativo de la cámara desde Grabar: un segundo toque no pide otro cierre.
+  // El intento lo sube la salida de Grabar: un cierre que se confirma después de salir ya no abre la ventana.
+  const apagandoParaFlotanteRef = useRef(false)
+  const intentoApagadoFlotanteRef = useRef(0)
   // Con la X desde Grabar, la cámara vuelve cuando Sigo vuelve al frente, no en segundo plano.
   const grabarAlVolverAlFrenteRef = useRef(false)
 
@@ -2038,9 +2044,52 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
     // -09-11-2026- Desde Grabar: primero la cámara y su vista previa se apagan por el camino de salir de Grabar
     // -conCamara en false, el efecto de la cámara-, y con eso Empezar sigue como en Leer -ver el efecto de abajo-.
+    // Antes -9-nov-2026-:
+    // if (conCamara) {
+    //   origenFlotanteRef.current = 'grabar'
+    //   console.info('SigoFlotante', 'desde Grabar: se apaga la cámara antes de abrir la ventana')
+    //   setConCamara(false)
+    //   setEmpezarFlotanteSinCamara(true)
+    //   return
+    // }
+    // Motivo -orden «Tres correcciones», fallo 1-: el efecto de la cámara llamaba a apagarCamara() sin esperarla y
+    // enseguida setCamaraActiva(false), así que la ventana se abría con CameraPreview.stop() pendiente -la prueba 3
+    // con un cierre de 750 ms dio la cámara encendida al abrir-. Ahora se apaga aquí y se ESPERA la confirmación:
+    // solo con la cámara cerrada se sale de Grabar -conCamara en false; el efecto ya la ve apagada y no pide otro
+    // cierre- y el efecto de abajo abre la ventana. Si el cierre falla, Grabar queda como estaba, con su cámara
+    // -conservarSiFalla-, sin toma y sin intención flotante, y el fallo se dice con el aviso de la ventana.
     if (conCamara) {
+      if (apagandoParaFlotanteRef.current) {
+        console.info('SigoFlotante', 'desde Grabar: el cierre de la cámara ya está pedido')
+        return
+      }
+      apagandoParaFlotanteRef.current = true
+      const intento = ++intentoApagadoFlotanteRef.current
       origenFlotanteRef.current = 'grabar'
-      console.info('SigoFlotante', 'desde Grabar: se apaga la cámara antes de abrir la ventana')
+      console.info('SigoFlotante', 'desde Grabar: se apaga la cámara y se espera su cierre antes de abrir la ventana')
+      let cerrada = false
+      let fallo: unknown = null
+      try {
+        cerrada = (await apagarCamara({ conservarSiFalla: true })) === true
+        if (!cerrada) fallo = new Error(errorDelUltimoApagado() || t('camaraSigueEncendida'))
+      } catch (e) {
+        fallo = e
+      } finally {
+        apagandoParaFlotanteRef.current = false
+      }
+      if (intento !== intentoApagadoFlotanteRef.current) {
+        console.info('SigoFlotante', `desde Grabar: cierre de la cámara ${cerrada ? 'hecho' : 'fallido'} después de salir; no se abre`)
+        return
+      }
+      if (!cerrada) {
+        console.warn('SigoFlotante', 'desde Grabar: la cámara no se cerró; la ventana no se abre', fallo)
+        soltarIntencionFlotante()
+        origenFlotanteRef.current = null
+        setCamaraActiva(camaraEncendida())
+        await avisarErrorFlotante(fallo)
+        return
+      }
+      setCamaraActiva(false)
       setConCamara(false)
       setEmpezarFlotanteSinCamara(true)
       return
@@ -2113,6 +2162,8 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   function handleVolverDesdeListo() {
     hapticaToqueMedio()
+    // -9-nov-2026- Si la ventana esperaba el cierre de la cámara de Grabar, ya no se abre al confirmarse.
+    intentoApagadoFlotanteRef.current++
     // Si la voz en inglés se estaba bajando, sigue bajando -Play la termina igual y queda para la
     // próxima-, pero la lectura ya no parte sola al terminar -tarea 84, D3-.
     intentoVozRef.current++

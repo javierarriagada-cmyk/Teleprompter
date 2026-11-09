@@ -146,7 +146,37 @@ export function streamActual(): MediaStream | null {
   return null
 }
 
-export async function apagarCamara(): Promise<void> {
+// EL CIERRE CONFIRMADO, PARA LA VENTANA FLOTANTE -9-nov-2026, orden «Tres correcciones», fallo 1-. Desde Grabar,
+// la ventana se abría con CameraPreview.stop() todavía pendiente -App.tsx no esperaba esta promesa- y, si stop()
+// fallaba, el error se anotaba y la cámara quedaba marcada como apagada igual: nadie podía distinguir un cierre
+// hecho de uno fallido. Ahora devuelve true si la cámara quedó cerrada -o no había nada que cerrar- y false si
+// stop() falló, con el motivo en errorDelUltimoApagado(). Con conservarSiFalla -lo usa la ventana- un cierre fallido
+// deja la cámara marcada como encendida: no se sabe si se apagó, y así Grabar la sigue tratando como suya y al salir
+// de Grabar se vuelve a pedir el cierre. Sin la opción todo sigue como antes: marcada como apagada pase lo que pase.
+// Antes -hasta el 9-nov-2026-:
+// export async function apagarCamara(): Promise<void> {
+//   if (grabandoVideoNativo) {
+//     try {
+//       await cortarGrabacionVideo()
+//     } catch (e) {
+//       console.warn('[Camara] Error al cortar grabacion antes de apagar:', e)
+//     }
+//   }
+//   if (estaEncendida) {
+//     try {
+//       await CameraPreview.stop()
+//     } catch (e) {
+//       console.warn('[Camara] Error al apagar CameraPreview:', e)
+//     }
+//   }
+//   estaEncendida = false
+// }
+let ultimoErrorApagado: string | null = null
+export function errorDelUltimoApagado(): string | null {
+  return ultimoErrorApagado
+}
+
+export async function apagarCamara(opciones?: { conservarSiFalla?: boolean }): Promise<boolean> {
   if (grabandoVideoNativo) {
     try {
       await cortarGrabacionVideo()
@@ -154,14 +184,19 @@ export async function apagarCamara(): Promise<void> {
       console.warn('[Camara] Error al cortar grabacion antes de apagar:', e)
     }
   }
+  let cerrada = true
+  ultimoErrorApagado = null
   if (estaEncendida) {
     try {
       await CameraPreview.stop()
     } catch (e) {
       console.warn('[Camara] Error al apagar CameraPreview:', e)
+      cerrada = false
+      ultimoErrorApagado = e instanceof Error ? e.message : String(e)
     }
   }
-  estaEncendida = false
+  if (cerrada || !opciones?.conservarSiFalla) estaEncendida = false
+  return cerrada
 }
 
 /**

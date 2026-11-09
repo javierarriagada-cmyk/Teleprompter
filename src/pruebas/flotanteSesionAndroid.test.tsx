@@ -8,6 +8,9 @@
 // 3. el selector está en el LISTO de Leer y en el de Grabar, y desde Grabar abre la ventana con la cámara de Sigo
 //    apagada y sin toma;
 // 4. la ventana muestra el aviso y el límite con sus claves, en es, en y pt.
+// 5. -9-nov-2026, orden «Tres correcciones»- desde Grabar, la ventana espera a que la cámara de Sigo confirme su
+//    cierre: mientras CameraPreview.stop() no termina no se abre; al terminar se abre una vez; si falla, no se abre,
+//    Sigo queda en el LISTO de Grabar y el fallo se dice con el aviso de siempre.
 import React from 'react'
 import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest'
 import { render, screen, fireEvent, act, within, cleanup } from '@testing-library/react'
@@ -18,7 +21,8 @@ const h = vi.hoisted(() => ({
   encendida: false,
   camaraAlAbrir: null as null | boolean,
   orden: [] as string[],
-  estadoSesion: { hay: false } as Record<string, unknown>
+  estadoSesion: { hay: false } as Record<string, unknown>,
+  errorApagado: null as null | string
 }))
 
 vi.mock('@capgo/camera-preview', () => ({
@@ -40,11 +44,14 @@ vi.mock('../lib/camara', async (importOriginal) => {
     camaraEncendida: () => h.encendida,
     ladoActual: () => 'frontal',
     encenderCamara: vi.fn(async () => { h.encendida = true; h.orden.push('encender') }),
-    apagarCamara: vi.fn(async () => { h.encendida = false; h.orden.push('apagar') }),
+    // Antes -9-nov-2026-: apagarCamara: vi.fn(async () => { h.encendida = false; h.orden.push('apagar') }),
+    // Motivo: apagarCamara dice ahora si la cámara se cerró -true- o si CameraPreview.stop() falló -false-.
+    apagarCamara: vi.fn(async () => { h.encendida = false; h.orden.push('apagar'); return true }),
     empezarGrabacionVideo: vi.fn(async () => { h.orden.push('grabar') }),
     grabacionNativaEnCurso: () => false,
     cortarGrabacionVideo: async () => null,
-    errorDelUltimoCorte: () => null
+    errorDelUltimoCorte: () => null,
+    errorDelUltimoApagado: () => h.errorApagado
   }
 })
 vi.mock('../lib/oferta', async (importOriginal) => {
@@ -230,6 +237,98 @@ describe('la página de Sigo con la ventana abierta', () => {
     expect(h.encendida).toBe(true)
     expect(empezarGrabacionVideo).not.toHaveBeenCalled()
   }, 30000)
+})
+
+// Una promesa que la prueba resuelve o rechaza cuando quiere: el cierre nativo de la cámara, pendiente.
+function diferido<T>() {
+  let resolver!: (v: T) => void
+  let rechazar!: (e: unknown) => void
+  const promesa = new Promise<T>((res, rej) => { resolver = res; rechazar = rej })
+  return { promesa, resolver, rechazar }
+}
+
+describe('5. desde Grabar, la ventana espera el cierre nativo de la cámara', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    h.oyente = null
+    h.encendida = false
+    h.camaraAlAbrir = null
+    h.orden = []
+    h.estadoSesion = { hay: false }
+    h.errorApagado = null
+    vi.mocked(VentanaDePrueba.enviar).mockClear()
+    vi.mocked(VentanaDePrueba.abrir).mockClear()
+    vi.mocked(empezarGrabacionVideo).mockClear()
+    vi.mocked(apagarCamara).mockClear()
+    vi.spyOn(console, 'info').mockImplementation(() => {})
+  })
+  afterEach(() => {
+    cleanup()
+    vi.restoreAllMocks()
+  })
+
+  // Grabar con su cámara, «Ventana flotante», Empezar y el Empezar de la preparación, con el cierre de la cámara en
+  // las manos de la prueba: lo que hace CameraPreview.stop() lo decide `cierre`.
+  async function pedirLaVentanaDesdeGrabar() {
+    await abrirListo('btn-grabar-tarjeta')
+    expect(h.encendida).toBe(true)
+    const cierre = diferido<boolean>()
+    vi.mocked(apagarCamara).mockImplementationOnce(async () => {
+      h.orden.push('apagar')
+      const ok = await cierre.promesa
+      if (ok) h.encendida = false
+      return ok
+    })
+    fireEvent.click(await screen.findByTestId('selector-flotante'))
+    await esperar(30)
+    fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+    await esperar(80)
+    const hoja = document.querySelector('.hoja-flotante-preparacion') as HTMLElement
+    expect(hoja).not.toBeNull()
+    fireEvent.click(within(hoja).getByRole('button', { name: es.empezar }))
+    return cierre
+  }
+
+  test('5a. con el cierre pendiente no se abre; al confirmarse se abre una sola vez, con la cámara ya apagada', async () => {
+    const cierre = await pedirLaVentanaDesdeGrabar()
+    // Más que la cuenta de Empezar entera: con el cierre pendiente, nada abre la ventana.
+    for (let i = 0; i < 5; i++) await esperar(400)
+    expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
+    expect(apagarCamara).toHaveBeenCalledTimes(1)
+    await act(async () => { cierre.resolver(true) })
+    for (let i = 0; i < 8; i++) await esperar(450)
+    expect(VentanaDePrueba.abrir).toHaveBeenCalledTimes(1)
+    expect(h.camaraAlAbrir).toBe(false)
+    // Una sola orden de apagado, y ninguna toma.
+    expect(apagarCamara).toHaveBeenCalledTimes(1)
+    expect(empezarGrabacionVideo).not.toHaveBeenCalled()
+  }, 30000)
+
+  for (const [caso, fallar] of [
+    ['rechazada', (c: ReturnType<typeof diferido<boolean>>) => c.rechazar(new Error('CameraPreview.stop falló'))],
+    ['con stop() fallido -apagarCamara da false-', (c: ReturnType<typeof diferido<boolean>>) => {
+      h.errorApagado = 'CameraPreview.stop falló'
+      c.resolver(false)
+    }]
+  ] as const) {
+    test(`5b. con el cierre ${caso}, la ventana sigue cerrada y Sigo queda en el LISTO de Grabar`, async () => {
+      const cierre = await pedirLaVentanaDesdeGrabar()
+      await esperar(300)
+      expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
+      await act(async () => { fallar(cierre) })
+      await esperar(100)
+      // Se dice con el aviso de siempre de la ventana -avisarErrorFlotante, mostrarAviso-, antes de que se vaya solo.
+      expect(within(screen.getByTestId('region-aviso')).getByText(/CameraPreview\.stop falló/)).toBeTruthy()
+      for (let i = 0; i < 6; i++) await esperar(450)
+      expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
+      // La salida de Grabar sigue: su LISTO con la cámara, sin toma y con una sola orden de apagado.
+      expect(screen.getByTestId('btn-empezar-toma')).toBeTruthy()
+      expect(document.querySelector('.punto-grabar')).not.toBeNull()
+      expect(h.encendida).toBe(true)
+      expect(empezarGrabacionVideo).not.toHaveBeenCalled()
+      expect(apagarCamara).toHaveBeenCalledTimes(1)
+    }, 30000)
+  }
 })
 
 describe('4. la ventana muestra el aviso y el límite con sus claves', () => {
