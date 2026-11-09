@@ -258,6 +258,10 @@ final class VentanaDePrueba {
         final ArrayDeque<String> colaMenu = new ArrayDeque<>();
         // La orientación con que se puso la geometría: al girar, cada orientación tiene la suya.
         boolean deLado;
+        // EL ARRASTRE POR EL ASA -09-11-2026-: lo mide lo nativo, en la pantalla. Ver ArrastreVentana y alTocarBanda.
+        final ArrastreVentana arrastre = new ArrastreVentana();
+        // Dónde estaba el menú de Aa respecto de la ventana al empezar: se mueve con ella, en el mismo paso.
+        int menuDx, menuDy;
 
         Sesion(long n, VentanaDePruebaPlugin p, boolean servicio, AccesibilidadDePrueba a) {
             numero=n; plugin=p; contexto=p.getContext().getApplicationContext();
@@ -304,7 +308,9 @@ final class VentanaDePrueba {
             PRINCIPAL.post(cuadro);
         }
 
-        @SuppressLint("SetJavaScriptEnabled")
+        // Antes -2026-11-09-: @SuppressLint("SetJavaScriptEnabled"). Motivo: ahora la banda tiene un OnTouchListener que
+        // solo mira -devuelve false-; los clics siguen siendo de la página.
+        @SuppressLint({"SetJavaScriptEnabled", "ClickableViewAccessibility"})
         void mostrarWeb() {
             ventanas = accesibilidad.ventanas();
             if (ventanas == null) throw new IllegalStateException("El servicio de accesibilidad no tiene WindowManager");
@@ -346,6 +352,11 @@ final class VentanaDePrueba {
                     String data = message.getData();
                     PRINCIPAL.post(() -> recibirDePagina(data));
                 });
+            // -09-11-2026- Los toques de la banda, para el arrastre: devuelve false y la página los recibe todos igual.
+            web.setOnTouchListener((v, ev) -> {
+                alTocarBanda(ev);
+                return false;
+            });
             posicion = new WindowManager.LayoutParams(
                 dp(240), dp(180),
                 WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
@@ -461,11 +472,85 @@ final class VentanaDePrueba {
             Rect seguro = areaSegura();
             boolean ahora = seguro.width() > seguro.height();
             if (ahora != deLado) {
+                // -09-11-2026- Si gira con el dedo arrastrando, el arrastre termina: se guarda donde quedó, en la
+                // orientación de antes, y la ventana toma la banda de la nueva.
+                terminarArrastre("giro", false);
                 cerrarMenuAa("giro", true);
                 aplicarTamanoInicial();
                 anotar(numero, "giro: " + (ahora ? "de lado" : "de pie"));
             }
             encuadrar();
+        }
+
+        // EL ARRASTRE, CON EL DEDO EN LA PANTALLA -09-11-2026-. Medido en el g86 -APK 808-: la ventana temblaba al
+        // moverla por el asa -y = 570, 551, 538, 535, 521, 520, 535, 546…-. La página medía el dedo relativo a la propia
+        // ventana y mandaba cada paso como 'mover'; con la ventana moviéndose entre medio, el error se sumaba, y con Aa
+        // abierto cada paso además recolocaba el menú pasando por la página. Ahora la página solo avisa 'moverInicio'
+        // al apoyar el dedo en el asa, y la posición sale de getRawX/getRawY desde el DOWN -ArrastreVentana-. Durante
+        // el arrastre no se guarda ni se avisa a la página; al soltar, una vez cada cosa. Solo cuenta el primer dedo.
+        void alTocarBanda(MotionEvent ev) {
+            if (posicion == null) return;
+            int accion = ev.getActionMasked();
+            if (accion == MotionEvent.ACTION_DOWN) {
+                if (arrastre.activo()) terminarArrastre("toque nuevo", true);
+                arrastre.alApoyar(ev.getPointerId(0), ev.getRawX(), ev.getRawY(), posicion.x, posicion.y);
+            } else if (accion == MotionEvent.ACTION_MOVE) {
+                if (!arrastre.activo()) return;
+                int i = ev.findPointerIndex(arrastre.dedo());
+                if (i < 0) return;
+                // getRawX(int) es de Android 10; antes solo hay la del dedo 0, que es el primero mientras siga apoyado.
+                float rx, ry;
+                if (Build.VERSION.SDK_INT >= 29) { rx = ev.getRawX(i); ry = ev.getRawY(i); }
+                else if (i == 0) { rx = ev.getRawX(); ry = ev.getRawY(); }
+                else return;
+                moverArrastre(rx, ry);
+            } else if (accion == MotionEvent.ACTION_POINTER_UP) {
+                if (ev.getPointerId(ev.getActionIndex()) == arrastre.dedo()) terminarArrastre("primer dedo arriba", true);
+            } else if (accion == MotionEvent.ACTION_UP || accion == MotionEvent.ACTION_CANCEL) {
+                terminarArrastre(accion == MotionEvent.ACTION_UP ? "soltar" : "cancelado", true);
+            }
+        }
+
+        // 'moverInicio' de la página: empieza solo si el dedo de ese toque sigue apoyado.
+        void empezarArrastre() {
+            if (!arrastre.empezar()) {
+                anotar(numero, "arrastre: moverInicio sin dedo apoyado, no se mueve");
+                return;
+            }
+            if (menuPuesto && menuPos != null) {
+                menuDx = menuPos.x - posicion.x;
+                menuDy = menuPos.y - posicion.y;
+            }
+            anotar(numero, "arrastre: desde x=" + arrastre.x0() + " y=" + arrastre.y0());
+        }
+
+        void moverArrastre(float rawX, float rawY) {
+            if (web == null || ventanas == null || !web.isAttachedToWindow()) return;
+            Rect seguro = areaSegura();
+            int[] p = arrastre.alMover(rawX, rawY, posicion.width, posicion.height, seguro.left, seguro.top,
+                seguro.right, seguro.bottom, dp(GeometriaVentana.MIN_ANCHO), dp(GeometriaVentana.MIN_ALTO));
+            if (p == null || (p[0] == posicion.x && p[1] == posicion.y)) return;
+            posicion.x = p[0];
+            posicion.y = p[1];
+            try { ventanas.updateViewLayout(web, posicion); }
+            catch (Exception e) { anotar(numero, "arrastre: no se pudo mover la ventana: " + e); }
+            // El menú de Aa con el mismo desplazamiento, en el mismo paso y sin pasar por la página. Al soltar, la
+            // página lo recoloca -colocarMenuAa- por si tiene que cambiarse de lado.
+            if (menuPuesto && menuPos != null && menuWeb != null) {
+                menuPos.x = posicion.x + menuDx;
+                menuPos.y = posicion.y + menuDy;
+                try { ventanas.updateViewLayout(menuWeb, menuPos); }
+                catch (Exception e) { anotar(numero, "arrastre: no se pudo mover el menú de Aa: " + e); }
+            }
+        }
+
+        // Al soltar: guardar la geometría y mandarla a la página, una vez. En el giro la manda encuadrar() después.
+        void terminarArrastre(String motivo, boolean avisar) {
+            int pasos = arrastre.pasos();
+            if (!arrastre.terminar()) return;
+            guardarGeometria();
+            anotar(numero, "arrastre: hasta x=" + posicion.x + " y=" + posicion.y + ", " + pasos + " pasos (" + motivo + ")");
+            if (avisar) encuadrar();
         }
 
         void enviarGeometria() {
@@ -680,13 +765,18 @@ final class VentanaDePrueba {
                     paginaLista = true;
                     while (!colaPagina.isEmpty()) postear(colaPagina.removeFirst());
                     enviarGeometria();
+                } else if ("moverInicio".equals(tipo) && posicion != null) {
+                    empezarArrastre();
                 } else if ("mover".equals(tipo) && posicion != null) {
+                    // -09-11-2026- La página ya no manda 'mover': el arrastre lo mide lo nativo -alTocarBanda-. El caso
+                    // queda para una página vieja en caché, sin el registro por paso.
                     float d = recursos.getDisplayMetrics().density;
                     posicion.x += Math.round((float) o.optDouble("dx", 0) * d);
                     posicion.y += Math.round((float) o.optDouble("dy", 0) * d);
                     encuadrar();
                     guardarGeometria();
-                    anotar(numero, "posición x=" + posicion.x + " y=" + posicion.y);
+                    // Antes -2026-11-09-: anotar(numero, "posición x=" + posicion.x + " y=" + posicion.y);
+                    // Motivo: una línea por paso; ahora el arrastre anota una al empezar y otra al terminar.
                 } else if ("tamano".equals(tipo) && posicion != null) {
                     float d = recursos.getDisplayMetrics().density;
                     posicion.width += Math.round((float) o.optDouble("dw", 0) * d);
@@ -824,6 +914,9 @@ final class VentanaDePrueba {
             // El menú de Aa se va con la sesión: sin esto quedaría una ventana suelta sobre la otra app.
             cerrarMenuAa("cerrar " + motivo, false);
             if (menuWeb != null) { menuWeb.destroy(); menuWeb = null; }
+            // -09-11-2026- El arrastre y su oyente se van con la sesión.
+            arrastre.terminar();
+            if (web != null) web.setOnTouchListener(null);
             if (web != null && ventanas != null) {
                 try { if (web.isAttachedToWindow()) ventanas.removeView(web); }
                 catch (Exception e) { anotar(numero, "no se pudo quitar ventana: " + e); }

@@ -264,15 +264,31 @@ export function PaginaFlotante() {
 
   const ultimoPuntero = useRef({ x: 0, y: 0 })
 
+  // EL ARRASTRE POR EL ASA LO MIDE LO NATIVO -09-11-2026-. Medido en el g86 -APK 808-: la ventana temblaba al moverla.
+  // clientX/clientY son relativos a esta misma ventana, que se movía entre un paso y el siguiente, y cada paso mandado
+  // como 'mover' se sumaba con su error. Ahora el asa avisa una sola vez, al apoyar el dedo, y VentanaDePrueba sigue
+  // el dedo en la pantalla -getRawX/getRawY, ArrastreVentana-. La esquina sigue igual: 'tamano' en cada paso, porque
+  // ahí la ventana no se corre y no tiembla.
+  // Antes -2026-11-09-:
+  //   function iniciarGesto(e: React.PointerEvent, tipo: 'mover' | 'tamano') {
+  //     e.currentTarget.setPointerCapture(e.pointerId)
+  //     ultimoPuntero.current = { x: e.clientX, y: e.clientY }
+  //     ;(e.currentTarget as HTMLElement).dataset.gesto = tipo
+  //   }
+  //   y moverGesto mandaba también tipo 'mover' con dx y dy.
   function iniciarGesto(e: React.PointerEvent, tipo: 'mover' | 'tamano') {
+    // Un segundo dedo en el asa no vuelve a avisar: solo cuenta el primero, como en lo nativo.
+    if (tipo === 'mover' && e.isPrimary === false) return
     e.currentTarget.setPointerCapture(e.pointerId)
     ultimoPuntero.current = { x: e.clientX, y: e.clientY }
     ;(e.currentTarget as HTMLElement).dataset.gesto = tipo
+    if (tipo === 'mover') enviar({ tipo: 'moverInicio', sesion: contrato?.sesion ?? 0 })
   }
 
   function moverGesto(e: React.PointerEvent) {
     const tipo = (e.currentTarget as HTMLElement).dataset.gesto
-    if (!tipo) return
+    // El arrastre de la ventana ya no pasa por aquí -ver iniciarGesto-. Antes -2026-11-09-: if (!tipo) return
+    if (!tipo || tipo === 'mover') return
     const dx = e.clientX - ultimoPuntero.current.x
     const dy = e.clientY - ultimoPuntero.current.y
     ultimoPuntero.current = { x: e.clientX, y: e.clientY }
