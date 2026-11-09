@@ -1,10 +1,12 @@
 // PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026: mide si Sigo puede seguir la voz mientras otra app graba video con sonido. Esta rama no va a main ni a Play.
 package com.sigoteleprompter.app;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.provider.Settings;
 import android.os.Handler;
 import android.os.Looper;
+import androidx.webkit.WebViewFeature;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
@@ -20,13 +22,34 @@ public class VentanaDePruebaPlugin extends Plugin {
     @PluginMethod public void estado(PluginCall call) {
         JSObject r = new JSObject();
         r.put("accesibilidad", AccesibilidadDePrueba.vigente != null);
+        r.put("volvioSolo", VentanaDePrueba.volvioSolo());
+        r.put("paginaAjustes", VentanaDePrueba.paginaAjustes());
         call.resolve(r);
     }
     @PluginMethod public void abrirAjustesAccesibilidad(PluginCall call) {
         principal.post(() -> {
             try {
-                getActivity().startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
-                call.resolve();
+                android.content.Context ctx = getContext();
+                ComponentName componente = new ComponentName(ctx, AccesibilidadDePrueba.class);
+                Intent detalles = new Intent("android.settings.ACCESSIBILITY_DETAILS_SETTINGS");
+                detalles.putExtra(Intent.EXTRA_COMPONENT_NAME, componente);
+                detalles.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                String pagina;
+                if (detalles.resolveActivity(ctx.getPackageManager()) != null) {
+                    ctx.startActivity(detalles);
+                    pagina = "ACCESSIBILITY_DETAILS_SETTINGS";
+                } else {
+                    Intent lista = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                    lista.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    ctx.startActivity(lista);
+                    pagina = "ACTION_ACCESSIBILITY_SETTINGS";
+                }
+                VentanaDePrueba.marcarPaginaAjustes(pagina);
+                VentanaDePrueba.marcarVolvioSolo(false);
+                VentanaDePrueba.anotar(VentanaDePrueba.numero(), "ajustes de accesibilidad página=" + pagina);
+                JSObject r = new JSObject();
+                r.put("pagina", pagina);
+                call.resolve(r);
             } catch (Exception e) {
                 VentanaDePrueba.anotar(VentanaDePrueba.numero(), "no se abrieron ajustes: " + e);
                 call.reject(e.getMessage(), e);
@@ -43,15 +66,15 @@ public class VentanaDePruebaPlugin extends Plugin {
                 return;
             }
             AccesibilidadDePrueba accesibilidad = AccesibilidadDePrueba.vigente;
-            if (ventana && accesibilidad == null) {
+            if (accesibilidad == null) {
                 VentanaDePrueba.anotar(0, "abrir rechazado: SIN_ACCESIBILIDAD");
                 call.reject("Sin accesibilidad conectada", "SIN_ACCESIBILIDAD");
-            } else if (!ventana && accesibilidad != null) {
-                VentanaDePrueba.anotar(0, "abrir rechazado: ACCESIBILIDAD_ACTIVA");
-                call.reject("El control C0 requiere accesibilidad apagada", "ACCESIBILIDAD_ACTIVA");
+            } else if (!WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)) {
+                VentanaDePrueba.anotar(0, "WEB_MESSAGE_LISTENER no disponible");
+                call.reject("Este teléfono no puede abrir la ventana flotante.");
             } else {
                 try {
-                    VentanaDePrueba.abrir(this, servicio, ventana ? accesibilidad : null);
+                    VentanaDePrueba.abrir(this, servicio, accesibilidad);
                     JSObject r = new JSObject();
                     r.put("sesion", VentanaDePrueba.numero());
                     call.resolve(r);
@@ -62,7 +85,8 @@ public class VentanaDePruebaPlugin extends Plugin {
     @PluginMethod public void cerrar(PluginCall call) {
         principal.post(() -> { VentanaDePrueba.cerrarDelPlugin(this, "cerrar desde la web"); call.resolve(); });
     }
-    void accion(long numero, String tipo) {
+    void accion(long numero, String tipo) { accion(numero, tipo, -1); }
+    void accion(long numero, String tipo, long token) {
         // Cerrar ya soltó la sesión: la generación evita enviar una acción vieja a una nueva.
         if (destruido || !VentanaDePrueba.esUltimaGeneracion(numero)) {
             VentanaDePrueba.anotar(numero, "acción descartada: plugin destruido o generación vieja " + tipo);
@@ -71,7 +95,20 @@ public class VentanaDePruebaPlugin extends Plugin {
         JSObject d = new JSObject();
         d.put("tipo", tipo);
         d.put("sesion", numero);
+        if (token >= 0) d.put("token", token);
         notifyListeners("accion", d);
+    }
+    @PluginMethod public void enviar(PluginCall call) {
+        JSObject raw = call.getData();
+        VentanaDePrueba.enviarAPagina(raw == null ? "{}" : raw.toString());
+        call.resolve();
+    }
+    @PluginMethod public void preferencias(PluginCall call) {
+        call.resolve(VentanaDePrueba.preferencias(getContext()));
+    }
+    @PluginMethod public void guardarPreferencias(PluginCall call) {
+        VentanaDePrueba.guardarPreferencias(getContext(), call.getData());
+        call.resolve();
     }
     @Override protected void handleOnDestroy() {
         destruido = true;

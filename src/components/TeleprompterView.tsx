@@ -327,6 +327,11 @@ interface TeleprompterViewProps {
   // -ajustes de pantallas, segunda vuelta, 10-10-2026- La voz bajándose en LISTO -fracción 0..1, o null-,
   // la misma que recibe la pastilla de BarraDeTiempo. Con el dock va adentro, en el lugar de la duración.
   preparandoVoz?: number | null
+  // PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026. Antes: estas props no existían; Empezar, el dock,
+  // la flecha de volver y los paneles de la toma se dibujaban siempre que LISTO lo pidiera.
+  ocultarCromoDeLeer?: boolean
+  // Antes: .lectura-sobre-imagen solo iba con la cámara de Sigo o el recuadro de lado.
+  sobreImagenAjena?: boolean
 }
 
 // LA SANGRÍA DE LA PRIMERA LÍNEA -ajustes de pantallas, 10-10-2026, boceto 2-. Con el teléfono de pie,
@@ -441,7 +446,9 @@ export default function TeleprompterView({
   ajustesLectura,
   preparandoVoz = null,
   hayDialogoPermiso = false,
-  hayAvisoDescargaVoz = false
+  hayAvisoDescargaVoz = false,
+  ocultarCromoDeLeer = false,
+  sobreImagenAjena = false
 }: TeleprompterViewProps) {
   useTextos()
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -1343,7 +1350,8 @@ export default function TeleprompterView({
   // horizontal y en tableta, por ahora, solo cambia el orden de las fichas -FichasListo-.
   // -cuarta vuelta, 10-10-2026- Leer también: el mismo dock, con TEXTO, PANTALLA y el engranaje arriba y el
   // play de hoy abajo al centro. Antes: const conDock = conCamara && !horizontal && !tableta
-  const conDock = !horizontal && !tableta
+  // Antes: const conDock = !horizontal && !tableta
+  const conDock = !ocultarCromoDeLeer && !horizontal && !tableta
   // Sin ajustesLectura -las pruebas que montan TeleprompterView sola- el panel muestra los valores que
   // llegan; lo que no tiene manejador acá no cambia y lo dice en la consola. App siempre los pasa.
   const sinManejador = (que: string) => () => {
@@ -1356,7 +1364,7 @@ export default function TeleprompterView({
     mirror, setMirror: (v) => setMirror?.(v), mostrarTiempo, setMostrarTiempo: (v) => setMostrarTiempo?.(v)
   }
 
-  const botonVolverListo = (
+  const botonVolverListo = ocultarCromoDeLeer ? null : (
     <>
       {/* La flecha usa el tratamiento comun de 32 -btn-flotante-32, styles.css-,
           igual que la flecha del estado leyendo en App.tsx. Hasta la revision
@@ -1397,7 +1405,7 @@ export default function TeleprompterView({
   // Ajustes de pantallas: con abrirAjustesToma son las fichas del dock -enDock- y el engranaje abre el
   // panel de Ajustes de la toma en vez de la pantalla de Ajustes.
   const fichasListo = (enRiel: boolean, abrirAjustesToma?: () => void) => (
-      <FichasListo
+      ocultarCromoDeLeer ? null : <FichasListo
         fontSize={fontSize}
         onLetraMenos={onLetraMenos}
         onLetraMas={onLetraMas}
@@ -1434,7 +1442,7 @@ export default function TeleprompterView({
       />
   )
 
-  const botonEmpezar = (
+  const botonEmpezar = ocultarCromoDeLeer ? null : (
     <button
       data-testid="btn-empezar-toma"
       type="button"
@@ -1796,7 +1804,8 @@ export default function TeleprompterView({
            el texto pasa sobre la imagen del recuadro —mismo halo que «detrás»— sin
            tocar textoSobreImagen (velo, banda y panel siguen igual). Antes: la clase
            solo iba con textoSobreImagen (= cámara detrás). */
-        className={(textoSobreImagen || sinCarrilRecuadroTelH(diseno, recuadroEnPantalla, esquinaRecuadroH))
+        // Antes: className={(textoSobreImagen || sinCarrilRecuadroTelH(...)) ? `lectura-sobre-imagen...`}
+        className={(textoSobreImagen || sobreImagenAjena || sinCarrilRecuadroTelH(diseno, recuadroEnPantalla, esquinaRecuadroH))
           ? `lectura-sobre-imagen${isWhiteBg ? ' letra-oscura' : ''}`
           : undefined}
         style={{

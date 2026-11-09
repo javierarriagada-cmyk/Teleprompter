@@ -1,0 +1,152 @@
+/* PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026: la lectura de Sigo sobre otra app, siguiendo la voz mientras esa app graba. Esta rama no va a main ni a Play. */
+
+html, body, #root {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+}
+
+.flotante-raiz {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.flotante-lectura {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+.flotante-barra,
+.flotante-pie {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  min-height: 48px;
+  flex-shrink: 0;
+  pointer-events: auto;
+}
+
+.flotante-barra { justify-content: space-between; }
+.flotante-pie { justify-content: space-between; }
+
+.flotante-asa {
+  width: 32px;
+  height: 4px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--color-texto, #fff) 40%, transparent);
+}
+
+.flotante-asa-hit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+  flex: 1;
+  cursor: grab;
+  touch-action: none;
+}
+
+.flotante-icono {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.flotante-pildora {
+  border: 0;
+  border-radius: var(--redondeo-pildora, 999px);
+  min-height: 48px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: color-mix(in srgb, var(--color-texto, #fff) 12%, transparent);
+  color: inherit;
+  font: inherit;
+}
+
+.flotante-texto {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  min-height: 48px;
+  padding: 0 12px;
+}
+
+.flotante-esquina {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 10px;
+  touch-action: none;
+  cursor: nwse-resize;
+}
+
+.flotante-esquina::after {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  opacity: 0.5;
+}
+
+.flotante-aa {
+  padding: 8px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.flotante-aa label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.flotante-aviso-micro {
+  margin: 8px 16px;
+  padding: 10px 14px;
+  border-radius: var(--redondeo-grande, 16px);
+  background: var(--aviso-fondo);
+  color: var(--aviso-texto, inherit);
+  font-size: 14px;
+}
+
+.flotante-oculto {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.flotante-cuenta {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.flotante-barra > * { position: static !important; }

@@ -413,6 +413,18 @@ export const es = {
   // Arreglos chicos de uso -estudio 1-.
   nadaCopiado: 'No hay texto copiado',
   abrirEnEditor: 'Abrir en el editor',
+  // PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026.
+  ventanaFlotante: 'Ventana flotante',
+  transparenciaFondo: 'Transparencia del fondo',
+  accesibilidadFlotanteTitulo: 'Para seguir tu voz sobre otras apps',
+  accesibilidadFlotanteTexto: 'Android solo deja que Sigo te escuche mientras otra app graba si activas “Sigo · prueba flotante” en Accesibilidad. Sigo no lee tu pantalla ni lo que escribes.',
+  irAActivarlo: 'Ir a activarlo',
+  lecturaEnVentanaFlotante: 'La lectura está en la ventana flotante',
+  cerrarLaVentana: 'Cerrar la ventana',
+  volverASigo: 'Volver a Sigo',
+  avisoMicrofonoQuitado: 'Android le quitó el micrófono a Sigo. El texto espera aquí.',
+  moverVentana: 'Mover la ventana',
+  cambiarTamano: 'Cambiar el tamaño',
   cerrarSeleccion: 'Cerrar selección'
 }
 

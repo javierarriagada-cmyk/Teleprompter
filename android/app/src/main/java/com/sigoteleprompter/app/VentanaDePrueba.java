@@ -1,65 +1,92 @@
-// PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026: mide si Sigo puede seguir la voz mientras otra app graba video con sonido. Esta rama no va a main ni a Play.
+// PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026: la lectura de Sigo sobre otra app, siguiendo la voz mientras esa app graba. Esta rama no va a main ni a Play.
 package com.sigoteleprompter.app;
 
-import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Insets;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.media.AudioManager;
 import android.media.AudioRecordingConfiguration;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
+import android.view.WindowMetrics;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import androidx.core.content.ContextCompat;
+import androidx.webkit.WebMessageCompat;
+import androidx.webkit.WebViewAssetLoader;
+import androidx.webkit.WebViewCompat;
+import androidx.webkit.WebViewFeature;
+import com.getcapacitor.JSObject;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
+import org.json.JSONObject;
 
-/** La sesión nativa vive en el hilo principal, independiente de que responda la WebView. */
 final class VentanaDePrueba {
+    static final String ORIGEN = "https://appassets.androidplatform.net";
+    static final String URL_PAGINA = ORIGEN + "/flotante.html";
+    static final String PREFS = "sigo_flotante";
+
     private static final Handler PRINCIPAL = new Handler(Looper.getMainLooper());
     private static volatile Sesion actual;
     private static volatile long generacion;
+    private static volatile boolean volvioSolo;
+    private static volatile String paginaAjustes = "";
 
     static void anotar(long n, String texto) {
         Log.i("SigoFlotante", System.currentTimeMillis() + " sesion=" + n + " " + texto);
     }
     static long numero() { Sesion s = actual; return s == null ? 0 : s.numero; }
     static long numeroDeAccesibilidad(AccesibilidadDePrueba servicio) {
-        Sesion s=actual;
+        Sesion s = actual;
         return s != null && s.accesibilidad == servicio ? s.numero : 0;
     }
     static boolean esActual(long n) { Sesion s = actual; return s != null && s.numero == n; }
     static boolean seEsperaServicio() {
-        Sesion s=actual;
+        Sesion s = actual;
         return s != null && s.conServicio && s.servicioPedido;
     }
     static boolean esUltimaGeneracion(long n) { return generacion == n; }
+    static boolean volvioSolo() { return volvioSolo; }
+    static String paginaAjustes() { return paginaAjustes; }
+    static void marcarPaginaAjustes(String p) { paginaAjustes = p == null ? "" : p; }
+    static void marcarVolvioSolo(boolean v) { volvioSolo = v; }
 
-    // Único trabajo en el hilo de Vosk: guardar. Ni JSON, ni sistema, ni registro, ni vistas.
+    static boolean intentarTraerSigo(Context ctx) {
+        try {
+            Intent i = new Intent(ctx, MainActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            ctx.startActivity(i);
+            anotar(numero(), "Sigo traído al frente");
+            return true;
+        } catch (Exception e) {
+            anotar(numero(), "no se pudo traer Sigo: " + e);
+            return false;
+        }
+    }
+
     static void alOir(String evento, String json, double rms, int relevos, int sesionAudio) {
         Sesion s = actual;
         if (s == null) return;
@@ -67,7 +94,12 @@ final class VentanaDePrueba {
             if (!s.cerrada) s.pendientes.add(new Dato(evento, json, rms, relevos, sesionAudio));
         }
     }
+
     static void abrir(VentanaDePruebaPlugin plugin, boolean servicio, AccesibilidadDePrueba accesibilidad) {
+        if (accesibilidad != null && !WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)) {
+            anotar(0, "WEB_MESSAGE_LISTENER no disponible");
+            throw new IllegalStateException("Este teléfono no puede abrir la ventana flotante.");
+        }
         if (actual != null) {
             anotar(actual.numero, "abrir duplicado: se conserva la sesión existente");
             return;
@@ -78,9 +110,10 @@ final class VentanaDePrueba {
         catch (Exception e) {
             anotar(s.numero, "abrir falló: " + e);
             s.cerrar("apertura incompleta");
-            throw e;
+            throw e instanceof RuntimeException ? (RuntimeException) e : new RuntimeException(e);
         }
     }
+
     static void cerrarDelPlugin(VentanaDePruebaPlugin plugin, String motivo) {
         Sesion s = actual;
         if (s != null && s.plugin == plugin) s.cerrar(motivo);
@@ -101,7 +134,7 @@ final class VentanaDePrueba {
     }
     static void reencuadrar(AccesibilidadDePrueba servicio) {
         Sesion s = actual;
-        if (s != null && s.accesibilidad == servicio && s.vista != null) s.vista.encuadrar(false);
+        if (s != null && s.accesibilidad == servicio) s.encuadrar();
     }
     static void servicioConfirmado(long numero, boolean activo, String error) {
         PRINCIPAL.post(() -> {
@@ -115,6 +148,34 @@ final class VentanaDePrueba {
             s.pintar(true);
         });
     }
+
+    static void enviarAPagina(String json) {
+        Sesion s = actual;
+        if (s != null) s.enviar(json);
+    }
+
+    static JSObject preferencias(Context ctx) {
+        SharedPreferences p = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        JSObject o = new JSObject();
+        if (p.contains("transparencia")) o.put("transparencia", p.getInt("transparencia", 0));
+        if (p.contains("fontSize")) o.put("fontSize", p.getInt("fontSize", 24));
+        if (p.contains("x")) o.put("x", p.getInt("x", 0));
+        if (p.contains("y")) o.put("y", p.getInt("y", 0));
+        if (p.contains("w")) o.put("w", p.getInt("w", 0));
+        if (p.contains("h")) o.put("h", p.getInt("h", 0));
+        return o;
+    }
+    static void guardarPreferencias(Context ctx, JSObject o) {
+        SharedPreferences.Editor e = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit();
+        if (o.has("transparencia")) e.putInt("transparencia", o.optInt("transparencia"));
+        if (o.has("fontSize")) e.putInt("fontSize", o.optInt("fontSize"));
+        if (o.has("x")) e.putInt("x", o.optInt("x"));
+        if (o.has("y")) e.putInt("y", o.optInt("y"));
+        if (o.has("w")) e.putInt("w", o.optInt("w"));
+        if (o.has("h")) e.putInt("h", o.optInt("h"));
+        e.apply();
+    }
+
     private static final class Dato {
         final String evento, json;
         final double rms;
@@ -123,38 +184,45 @@ final class VentanaDePrueba {
         final long hora = System.currentTimeMillis();
         Dato(String e, String j, double r, int v, int a) { evento=e; json=j; rms=r; relevos=v; audio=a; }
     }
+
     private static final class Sesion {
         final long numero;
         final VentanaDePruebaPlugin plugin;
         final Context contexto;
+        final Resources recursos;
         final boolean conServicio;
         final AccesibilidadDePrueba accesibilidad;
         final long inicio = SystemClock.elapsedRealtime();
         final ArrayDeque<Dato> pendientes = new ArrayDeque<>();
+        final ArrayDeque<String> colaPagina = new ArrayDeque<>();
         volatile boolean cerrada;
         AudioManager audioManager;
         AudioManager.AudioRecordingCallback callback;
         List<AudioRecordingConfiguration> configuraciones;
         List<EstadoDelMicrofono.Grabacion> grabaciones;
-        VentanaDePrueba vista;
-        String palabras = "", hipotesis = "", estado = "", estadoServicio;
-        long ultimoEvento = -1, ultimoCambio = -1, horaCambio, utiles, resumenUtiles, proximoResumen = inicio + 5000;
-        long ultimaPintura = -200, ultimoCuadro = inicio, ocultaHasta;
-        int sesionAudio = -1, relevos;
-        double rms, nivel;
-        boolean servicioPedido;
+        WebView web;
+        WindowManager ventanas;
+        WindowManager.LayoutParams posicion;
+        BroadcastReceiver receptorPantalla;
+        String hipotesis = "", estado = "", estadoServicio, ultimoJsonTexto = "";
+        long ultimoEvento = -1, horaCambio, utiles, resumenUtiles, proximoResumen = inicio + 5000;
+        long ultimaPintura = -200, ultimoCuadro = inicio, ultimoToken;
+        int sesionAudio = -1, relevos, eventos, resumenEventos, eventosConTexto, resumenConTexto;
+        double rms;
+        boolean servicioPedido, paginaLista;
 
         Sesion(long n, VentanaDePruebaPlugin p, boolean servicio, AccesibilidadDePrueba a) {
-            numero=n; plugin=p; contexto=p.getContext().getApplicationContext(); conServicio=servicio; accesibilidad=a;
-            estadoServicio = servicio ? "servicio pedido" : "C8: sin servicio, a propósito";
+            numero=n; plugin=p; contexto=p.getContext().getApplicationContext();
+            recursos=contexto.getResources(); conServicio=servicio; accesibilidad=a;
+            estadoServicio = servicio ? "servicio pedido" : "sin servicio";
         }
         boolean vigente() { return actual == this && !cerrada; }
+        int dp(int v) { return Math.round(v * recursos.getDisplayMetrics().density); }
+
         void abrir() {
-            anotar(numero, "abrir caso=" + (accesibilidad == null ? "C0" : conServicio ? "C1-C7" : "C8")
-                + " servicio=" + conServicio + " ventana=" + (accesibilidad != null));
+            anotar(numero, "abrir ventana=" + (accesibilidad != null) + " servicio=" + conServicio);
             audioManager = (AudioManager) contexto.getSystemService(Context.AUDIO_SERVICE);
             if (audioManager == null) throw new IllegalStateException("No hay AudioManager para medir");
-            // Mismo mecanismo de CamaraNativaPlugin.vigilarRecursos; no cierra la lectura.
             callback = new AudioManager.AudioRecordingCallback() {
                 @Override public void onRecordingConfigChanged(List<AudioRecordingConfiguration> configs) {
                     if (!vigente()) { anotar(numero, "callback descartado: sesión vieja"); return; }
@@ -174,13 +242,196 @@ final class VentanaDePrueba {
                     anotar(numero, "micrófono falló al pedir error=" + e);
                 }
             }
-            if (accesibilidad != null) {
-                vista = new VentanaDePrueba(this);
-                vista.mostrar("mostrada");
-            }
+            if (accesibilidad != null) mostrarWeb();
+            receptorPantalla = new BroadcastReceiver() {
+                @Override public void onReceive(Context c, Intent i) {
+                    if (Intent.ACTION_SCREEN_OFF.equals(i.getAction()) && vigente()) {
+                        anotar(numero, "pantalla apagada: se pide pausa y se guarda el marcador token=" + ultimoToken);
+                        plugin.accion(numero, "pausa", ultimoToken);
+                    }
+                }
+            };
+            contexto.registerReceiver(receptorPantalla, new IntentFilter(Intent.ACTION_SCREEN_OFF));
             pintar(true);
             PRINCIPAL.post(cuadro);
         }
+
+        @SuppressLint("SetJavaScriptEnabled")
+        void mostrarWeb() {
+            ventanas = accesibilidad.ventanas();
+            if (ventanas == null) throw new IllegalStateException("El servicio de accesibilidad no tiene WindowManager");
+            web = new WebView(accesibilidad);
+            web.setBackgroundColor(Color.TRANSPARENT);
+            web.setOverScrollMode(View.OVER_SCROLL_NEVER);
+            WebSettings ajustes = web.getSettings();
+            ajustes.setJavaScriptEnabled(true);
+            ajustes.setDomStorageEnabled(true);
+            ajustes.setAllowFileAccess(false);
+            ajustes.setAllowContentAccess(false);
+            WebViewAssetLoader.AssetsPathHandler assets = new WebViewAssetLoader.AssetsPathHandler(accesibilidad);
+            WebViewAssetLoader cargador = new WebViewAssetLoader.Builder()
+                .setDomain("appassets.androidplatform.net")
+                .addPathHandler("/", path -> {
+                    String rel = path.startsWith("/") ? path.substring(1) : path;
+                    return assets.handle("public/" + rel);
+                })
+                .build();
+            web.setWebViewClient(new WebViewClient() {
+                @Override public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest req) {
+                    return cargador.shouldInterceptRequest(req.getUrl());
+                }
+                @Override public void onPageFinished(WebView view, String url) {
+                    paginaLista = true;
+                    while (!colaPagina.isEmpty()) postear(colaPagina.removeFirst());
+                    anotar(numero, "página cargada");
+                }
+                @Override public void onReceivedError(WebView view, WebResourceRequest req, android.webkit.WebResourceError error) {
+                    if (req.isForMainFrame()) {
+                        anotar(numero, "WebView no pudo abrir la página: " + error.getDescription());
+                    }
+                }
+            });
+            WebViewCompat.addWebMessageListener(web, "sigo", Collections.singleton(ORIGEN),
+                (view, message, sourceOrigin, isMainFrame, reply) -> {
+                    String data = message.getData();
+                    PRINCIPAL.post(() -> recibirDePagina(data));
+                });
+            posicion = new WindowManager.LayoutParams(
+                dp(240), dp(180),
+                WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                    | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+                PixelFormat.TRANSLUCENT);
+            posicion.gravity = Gravity.TOP | Gravity.START;
+            aplicarTamanoInicial();
+            try {
+                ventanas.addView(web, posicion);
+                anotar(numero, "ventana mostrada w=" + posicion.width + " h=" + posicion.height
+                    + " x=" + posicion.x + " y=" + posicion.y);
+            } catch (Exception e) {
+                anotar(numero, "pantalla protegida u overlay bloqueado: " + e);
+                throw new IllegalStateException("No se pudo mostrar la ventana sobre otras apps.");
+            }
+            web.loadUrl(URL_PAGINA);
+        }
+
+        void aplicarTamanoInicial() {
+            Rect seguro = areaSegura();
+            SharedPreferences p = contexto.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+            int ancho = p.getInt("w", 0);
+            int alto = p.getInt("h", 0);
+            if (ancho < dp(240) || alto < dp(180)) {
+                ancho = Math.min(dp(480), Math.max(dp(240), seguro.width() - dp(32)));
+                alto = Math.max(dp(180), seguro.height() / 3);
+            }
+            posicion.width = ancho;
+            posicion.height = alto;
+            if (p.contains("x") && p.contains("y")) {
+                posicion.x = p.getInt("x", seguro.left);
+                posicion.y = p.getInt("y", seguro.top);
+            } else {
+                posicion.x = seguro.left + Math.max(0, (seguro.width() - ancho) / 2);
+                posicion.y = seguro.top + dp(8);
+            }
+            acotar();
+        }
+
+        Rect areaSegura() {
+            if (Build.VERSION.SDK_INT >= 30 && ventanas != null) {
+                WindowMetrics wm = ventanas.getCurrentWindowMetrics();
+                Rect b = new Rect(wm.getBounds());
+                android.graphics.Insets ins = wm.getWindowInsets().getInsets(
+                    WindowInsets.Type.statusBars() | WindowInsets.Type.navigationBars() | WindowInsets.Type.displayCutout());
+                b.left += ins.left; b.top += ins.top; b.right -= ins.right; b.bottom -= ins.bottom;
+                return b;
+            }
+            DisplayMetrics m = recursos.getDisplayMetrics();
+            Rect b = new Rect(0, 0, m.widthPixels, m.heightPixels);
+            int id = recursos.getIdentifier("status_bar_height", "dimen", "android");
+            if (id > 0) b.top += recursos.getDimensionPixelSize(id);
+            return b;
+        }
+
+        void acotar() {
+            if (posicion == null) return;
+            Rect seguro = areaSegura();
+            posicion.width = Math.max(dp(240), Math.min(posicion.width, Math.max(dp(240), seguro.width())));
+            posicion.height = Math.max(dp(180), Math.min(posicion.height, Math.max(dp(180), seguro.height())));
+            posicion.x = Math.max(seguro.left, Math.min(posicion.x, seguro.right - posicion.width));
+            posicion.y = Math.max(seguro.top, Math.min(posicion.y, seguro.bottom - posicion.height));
+        }
+
+        void encuadrar() {
+            if (web == null || posicion == null || ventanas == null || !web.isAttachedToWindow()) return;
+            acotar();
+            try { ventanas.updateViewLayout(web, posicion); }
+            catch (Exception e) { anotar(numero, "no se pudo reencuadrar: " + e); }
+        }
+
+        void guardarGeometria() {
+            if (posicion == null) return;
+            SharedPreferences.Editor e = contexto.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit();
+            e.putInt("x", posicion.x); e.putInt("y", posicion.y);
+            e.putInt("w", posicion.width); e.putInt("h", posicion.height);
+            e.apply();
+        }
+
+        void enviar(String json) {
+            if (!paginaLista) { colaPagina.add(json); return; }
+            postear(json);
+        }
+        void postear(String json) {
+            if (web == null) return;
+            try {
+                WebViewCompat.postWebMessage(web, new WebMessageCompat(json), Uri.parse(ORIGEN));
+            } catch (Exception e) {
+                anotar(numero, "no se pudo enviar a la página: " + e);
+            }
+        }
+
+        void recibirDePagina(String data) {
+            if (!vigente()) return;
+            try {
+                JSONObject o = new JSONObject(data);
+                String tipo = o.optString("tipo", "");
+                if (o.has("token")) ultimoToken = o.optLong("token", ultimoToken);
+                if ("listo".equals(tipo)) {
+                    anotar(numero, "página lista");
+                } else if ("mover".equals(tipo) && posicion != null) {
+                    float d = recursos.getDisplayMetrics().density;
+                    posicion.x += Math.round((float) o.optDouble("dx", 0) * d);
+                    posicion.y += Math.round((float) o.optDouble("dy", 0) * d);
+                    encuadrar();
+                    guardarGeometria();
+                    anotar(numero, "posición x=" + posicion.x + " y=" + posicion.y);
+                } else if ("tamano".equals(tipo) && posicion != null) {
+                    float d = recursos.getDisplayMetrics().density;
+                    posicion.width += Math.round((float) o.optDouble("dw", 0) * d);
+                    posicion.height += Math.round((float) o.optDouble("dh", 0) * d);
+                    encuadrar();
+                    guardarGeometria();
+                    anotar(numero, "tamaño w=" + posicion.width + " h=" + posicion.height);
+                } else if ("ajuste".equals(tipo)) {
+                    JSObject pref = new JSObject();
+                    if (o.has("transparencia")) pref.put("transparencia", o.optInt("transparencia"));
+                    if (o.has("fontSize")) pref.put("fontSize", o.optInt("fontSize"));
+                    guardarPreferencias(contexto, pref);
+                    anotar(numero, "ajuste transparencia=" + o.optInt("transparencia", -1) + " fontSize=" + o.optInt("fontSize", -1));
+                } else if ("seguir".equals(tipo) || "pausa".equals(tipo) || "volver".equals(tipo) || "cerrar".equals(tipo)) {
+                    anotar(numero, "acción " + tipo + " token=" + ultimoToken);
+                    plugin.accion(numero, tipo, ultimoToken);
+                    if ("volver".equals(tipo)) {
+                        intentarTraerSigo(contexto);
+                        cerrar("volver");
+                    } else if ("cerrar".equals(tipo)) {
+                        cerrar("cerrar");
+                    }
+                }
+            } catch (Exception e) {
+                anotar(numero, "mensaje de la página ilegible: " + e);
+            }
+        }
+
         void consultar(String motivo) {
             try { recibirConfiguraciones(audioManager.getActiveRecordingConfigurations(), motivo); }
             catch (Exception e) {
@@ -200,16 +451,15 @@ final class VentanaDePrueba {
                     + " audioSesion=" + id + " " + (id == sesionAudio ? "Vosk" : "ajena") + " voskSesion=" + sesionAudio);
             }
         }
+
         final Runnable cuadro = new Runnable() {
             @Override public void run() {
                 if (!vigente()) return;
                 ArrayDeque<Dato> datos;
                 synchronized (pendientes) { datos = new ArrayDeque<>(pendientes); pendientes.clear(); }
-                boolean huboNivel = false;
                 for (Dato d : datos) {
                     if (d.audio != sesionAudio) {
                         sesionAudio = d.audio;
-                        // El callback inicial puede haber llegado antes de que Vosk abriese su AudioRecord.
                         consultar("cambió sesión de Vosk=" + sesionAudio);
                     }
                     if (d.relevos != relevos) {
@@ -218,37 +468,48 @@ final class VentanaDePrueba {
                     }
                     ultimoEvento = d.monotono;
                     rms = d.rms;
-                    huboNivel = true;
+                    eventos++;
                     String util = UltimasPalabras.de(d.json, Integer.MAX_VALUE);
-                    if (!util.isEmpty() && !util.equals(hipotesis)) {
-                        hipotesis = util;
-                        palabras = UltimasPalabras.de(d.json, 4);
-                        ultimoCambio = d.monotono;
-                        horaCambio = d.hora;
-                        utiles++;
+                    if (!util.isEmpty()) {
+                        eventosConTexto++;
+                        String recorte = d.json.replace('\n', ' ').replace('\r', ' ');
+                        if (recorte.length() > 80) recorte = recorte.substring(0, 80);
+                        ultimoJsonTexto = recorte;
+                        if (!util.equals(hipotesis)) {
+                            hipotesis = util;
+                            horaCambio = d.hora;
+                            utiles++;
+                        }
                     }
+                    try {
+                        JSONObject msg = new JSONObject();
+                        msg.put("tipo", "voz");
+                        msg.put("sesion", numero);
+                        msg.put("evento", d.evento);
+                        msg.put("json", d.json);
+                        msg.put("rms", d.rms);
+                        enviar(msg.toString());
+                    } catch (Exception ignored) {}
                 }
                 long ahora = SystemClock.elapsedRealtime();
-                // Un solo reloj de sesión: al despertar del teléfono también se cumple el plazo
-                // de ocultar por elapsedRealtime, sin sumar los segundos de suspensión al regreso.
-                if (ocultaHasta > 0 && ahora >= ocultaHasta) devolver.run();
-                if (!vigente()) return;
-                double objetivo = NivelDeVoz.objetivoNivel(rms, ultimoEvento < 0 ? null : ultimoEvento, ahora);
-                nivel = NivelDeVoz.suavizarNivel(nivel, objetivo, ahora - ultimoCuadro);
-                if (objetivo == 0 && nivel < 0.001) nivel = 0;
                 ultimoCuadro = ahora;
                 pintar(false);
-                if (vista != null && (huboNivel || nivel > 0 || vista.nivelMostrado != nivel)) vista.halo(nivel);
                 if (ahora >= proximoResumen) {
-                    anotar(numero, "resumen útilesNuevas=" + (utiles - resumenUtiles) + " útilesTotal=" + utiles
-                        + " ultimoCambioEpochMs=" + horaCambio + " estado=" + estado);
+                    anotar(numero, "resumen eventos=" + (eventos - resumenEventos)
+                        + " conTexto=" + (eventosConTexto - resumenConTexto)
+                        + " útilesNuevas=" + (utiles - resumenUtiles)
+                        + " últimoJson=" + ultimoJsonTexto
+                        + " token=" + ultimoToken
+                        + " estado=" + estado);
+                    resumenEventos = eventos;
+                    resumenConTexto = eventosConTexto;
                     resumenUtiles = utiles;
                     proximoResumen = ahora + 5000;
                 }
-                // Solo este temporizador drena Vosk y vigila el cierre real; no depende de JavaScript.
                 PRINCIPAL.postDelayed(this, 16);
             }
         };
+
         void pintar(boolean inmediato) {
             long ahora = SystemClock.elapsedRealtime();
             String nuevo = EstadoDelMicrofono.de(ahora, ultimoEvento, sesionAudio, grabaciones);
@@ -256,34 +517,17 @@ final class VentanaDePrueba {
             if (cambio) {
                 estado = nuevo;
                 anotar(numero, "estado=" + estado + " voskSesion=" + sesionAudio);
+                try {
+                    JSONObject msg = new JSONObject();
+                    msg.put("tipo", "micro");
+                    msg.put("sesion", numero);
+                    msg.put("silenciado", EstadoDelMicrofono.SILENCIADO.equals(estado));
+                    enviar(msg.toString());
+                } catch (Exception ignored) {}
             }
-            if (vista != null && (inmediato || cambio || ahora - ultimaPintura >= 200)) {
-                vista.pintar(ahora);
-                ultimaPintura = ahora;
-            }
+            if (inmediato || cambio) ultimaPintura = ahora;
         }
-        void accion(String tipo) {
-            if (!vigente()) { anotar(numero, "botón descartado: sesión vieja " + tipo); return; }
-            anotar(numero, "botón " + tipo);
-            if (tipo.equals("ocultar")) { ocultar(); return; }
-            if (tipo.equals("cerrar")) cerrar("botón Cerrar");
-            plugin.accion(numero, tipo);
-        }
-        final Runnable devolver = new Runnable() {
-            @Override public void run() {
-                if (!vigente()) { anotar(numero, "devolución descartada: sesión vieja"); return; }
-                long falta = ocultaHasta - SystemClock.elapsedRealtime();
-                if (falta > 0) return;
-                ocultaHasta = 0;
-                try { vista.mostrar("de vuelta"); pintar(true); }
-                catch (Exception e) { anotar(numero, "no se pudo devolver ventana: " + e); cerrar("falló devolución"); }
-            }
-        };
-        void ocultar() {
-            vista.quitar("oculta");
-            ocultaHasta = SystemClock.elapsedRealtime() + 20000;
-            // El cuadro único de la sesión vigila este plazo monotónico.
-        }
+
         void cerrar(String motivo) {
             if (!vigente()) return;
             anotar(numero, "cerrar motivo=" + motivo);
@@ -291,7 +535,17 @@ final class VentanaDePrueba {
             actual = null;
             PRINCIPAL.removeCallbacks(cuadro);
             synchronized (pendientes) { pendientes.clear(); }
-            if (vista != null) vista.quitar("quitada");
+            if (web != null && ventanas != null) {
+                try { if (web.isAttachedToWindow()) ventanas.removeView(web); }
+                catch (Exception e) { anotar(numero, "no se pudo quitar ventana: " + e); }
+                web.destroy();
+                web = null;
+            }
+            if (receptorPantalla != null) {
+                try { contexto.unregisterReceiver(receptorPantalla); }
+                catch (Exception e) { anotar(numero, "no se pudo soltar receptor de pantalla: " + e); }
+                receptorPantalla = null;
+            }
             if (servicioPedido) {
                 try { contexto.stopService(new Intent(contexto, MicrofonoDePrueba.class)); }
                 catch (Exception e) { anotar(numero, "no se pudo parar servicio: " + e); }
@@ -302,278 +556,5 @@ final class VentanaDePrueba {
                 callback = null;
             }
         }
-    }
-
-    private final Sesion s;
-    private final Context contexto;
-    private final Resources recursos;
-    private final WindowManager ventanas;
-    private final LinearLayout raiz;
-    private final LinearLayout acciones;
-    private final TextView estado, tiempo, palabras, detalle;
-    private final Button pausa, ocultar, cerrar;
-    private final FrameLayout disco;
-    private final View halo;
-    private final WindowManager.LayoutParams posicion;
-    private final Rect seguro = new Rect();
-    private boolean visible, ubicada, movida;
-    private int insetIzq, insetArriba, insetDer, insetAbajo;
-    private double nivelMostrado = -1;
-
-    private int medida(int id) { return recursos.getDimensionPixelSize(id); }
-    private int color(int id) { return contexto.getColor(id); }
-    private GradientDrawable fondo(int c, int radio, boolean canto) {
-        GradientDrawable d = new GradientDrawable();
-        d.setColor(color(c)); d.setCornerRadius(recursos.getDimension(radio));
-        if (canto) d.setStroke(medida(R.dimen.prueba_canto_grosor), color(R.color.prueba_canto));
-        return d;
-    }
-    private TextView texto(int letra, int tinta) {
-        TextView t = new TextView(contexto);
-        t.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
-        t.setTextSize(TypedValue.COMPLEX_UNIT_PX, recursos.getDimension(letra));
-        t.setTextColor(color(tinta));
-        return t;
-    }
-    private Button boton(String nombre, int icono) {
-        Button b = new Button(contexto);
-        b.setAllCaps(false);
-        b.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
-        b.setTextSize(TypedValue.COMPLEX_UNIT_PX, recursos.getDimension(R.dimen.prueba_cuerpo));
-        b.setTextColor(color(R.color.prueba_texto));
-        b.setMinHeight(medida(R.dimen.prueba_toque)); b.setMinimumHeight(medida(R.dimen.prueba_toque));
-        b.setMinWidth(0); b.setMinimumWidth(0);
-        b.setPadding(medida(R.dimen.prueba_aire), 0, medida(R.dimen.prueba_aire), 0);
-        b.setBackground(fondo(R.color.prueba_accion, R.dimen.prueba_pildora, false));
-        b.setText(nombre); b.setContentDescription(nombre);
-        icono(b, icono);
-        return b;
-    }
-    private void icono(Button b, int recurso) {
-        Drawable d = recurso == 0 ? null : contexto.getDrawable(recurso).mutate();
-        if (d != null) {
-            int tamano = medida(R.dimen.prueba_icono);
-            d.setBounds(0, 0, tamano, tamano); d.setTint(color(R.color.prueba_texto));
-        }
-        b.setCompoundDrawablePadding(medida(R.dimen.prueba_asa_alto));
-        b.setCompoundDrawables(d, null, null, null);
-    }
-    private VentanaDePrueba(Sesion sesion) {
-        s=sesion; contexto=s.accesibilidad; recursos=contexto.getResources(); ventanas=s.accesibilidad.ventanas();
-        if (ventanas == null) throw new IllegalStateException("Accesibilidad sin WindowManager");
-        raiz = new LinearLayout(contexto);
-        raiz.setOrientation(LinearLayout.VERTICAL);
-        raiz.setPadding(medida(R.dimen.prueba_relleno), medida(R.dimen.prueba_aire), medida(R.dimen.prueba_relleno), medida(R.dimen.prueba_relleno));
-        raiz.setBackground(fondo(R.color.prueba_suelo, R.dimen.prueba_radio, true));
-        raiz.setElevation(recursos.getDimension(R.dimen.prueba_elevacion));
-        LinearLayout cabeceraMovible = new LinearLayout(contexto);
-        cabeceraMovible.setOrientation(LinearLayout.VERTICAL);
-        cabeceraMovible.setContentDescription("Mover la ventana");
-        cabeceraMovible.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
-        View asa = new View(contexto);
-        asa.setBackground(fondo(R.color.prueba_asa, R.dimen.prueba_pildora, false));
-        LinearLayout.LayoutParams asaLugar = new LinearLayout.LayoutParams(medida(R.dimen.prueba_asa_ancho), medida(R.dimen.prueba_asa_alto));
-        asaLugar.gravity = Gravity.CENTER_HORIZONTAL;
-        cabeceraMovible.addView(asa, asaLugar);
-        LinearLayout cabecera = new LinearLayout(contexto);
-        cabecera.setGravity(Gravity.CENTER_VERTICAL);
-        cabeceraMovible.addView(cabecera, new LinearLayout.LayoutParams(-1, 0, 1));
-        raiz.addView(cabeceraMovible, new LinearLayout.LayoutParams(-1, medida(R.dimen.prueba_toque)));
-        disco = new FrameLayout(contexto);
-        disco.setClipChildren(false); disco.setClipToPadding(false);
-        int tamano = medida(R.dimen.prueba_disco_tamano), aireHalo = medida(R.dimen.prueba_halo_aire);
-        halo = new View(contexto);
-        halo.setBackground(fondo(R.color.prueba_halo, R.dimen.prueba_pildora, false));
-        FrameLayout.LayoutParams haloLugar = new FrameLayout.LayoutParams(tamano + 2 * aireHalo, tamano + 2 * aireHalo);
-        haloLugar.leftMargin=-aireHalo; haloLugar.topMargin=-aireHalo;
-        disco.addView(halo, haloLugar);
-        View base = new View(contexto);
-        base.setBackground(fondo(R.color.prueba_disco, R.dimen.prueba_pildora, true));
-        disco.addView(base, new FrameLayout.LayoutParams(-1, -1));
-        ImageView microfono = new ImageView(contexto);
-        microfono.setImageResource(R.drawable.prueba_microfono); microfono.setColorFilter(color(R.color.prueba_verde));
-        disco.addView(microfono, new FrameLayout.LayoutParams(medida(R.dimen.prueba_microfono_tamano), medida(R.dimen.prueba_microfono_tamano), Gravity.CENTER));
-        LinearLayout.LayoutParams discoLugar = new LinearLayout.LayoutParams(tamano, tamano);
-        discoLugar.rightMargin=medida(R.dimen.prueba_aire);
-        cabecera.addView(disco, discoLugar);
-        estado = texto(R.dimen.prueba_meta, R.color.prueba_texto);
-        cabecera.addView(estado, new LinearLayout.LayoutParams(0, -2, 1));
-        tiempo = texto(R.dimen.prueba_meta, R.color.prueba_apagado);
-        tiempo.setFontFeatureSettings("tnum");
-        cabecera.addView(tiempo);
-        // El centro puede desplazarse con letra grande; las acciones quedan fuera del ScrollView.
-        ScrollView centro = new ScrollView(contexto);
-        LinearLayout contenido = new LinearLayout(contexto); contenido.setOrientation(LinearLayout.VERTICAL);
-        palabras = texto(R.dimen.prueba_palabras, R.color.prueba_sugerencia);
-        palabras.setMinLines(2);
-        palabras.setLineSpacing(0, recursos.getInteger(R.integer.prueba_interlineado_decimas) / 10f);
-        contenido.addView(palabras, new LinearLayout.LayoutParams(-1, -2));
-        detalle = texto(R.dimen.prueba_meta, R.color.prueba_apagado);
-        detalle.setSingleLine(true);
-        android.widget.HorizontalScrollView linea = new android.widget.HorizontalScrollView(contexto);
-        linea.setHorizontalScrollBarEnabled(true); linea.addView(detalle);
-        contenido.addView(linea, new LinearLayout.LayoutParams(-1, -2));
-        centro.addView(contenido);
-        raiz.addView(centro, new LinearLayout.LayoutParams(-1, 0, 1));
-        acciones = new LinearLayout(contexto); acciones.setOrientation(LinearLayout.VERTICAL);
-        LinearLayout.LayoutParams accionesLugar = new LinearLayout.LayoutParams(-1, -2);
-        accionesLugar.topMargin=medida(R.dimen.prueba_aire);
-        raiz.addView(acciones, accionesLugar);
-        pausa=boton("Seguir", R.drawable.prueba_empezar);
-        ocultar=boton("Ocultar 20 s", 0); cerrar=boton("Cerrar", R.drawable.prueba_cerrar);
-        pausa.setOnClickListener(v -> s.accion("alternar"));
-        ocultar.setOnClickListener(v -> s.accion("ocultar"));
-        cerrar.setOnClickListener(v -> s.accion("cerrar"));
-        posicion = new WindowManager.LayoutParams(1, -2, WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-            | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN, PixelFormat.TRANSLUCENT);
-        posicion.gravity=Gravity.TOP | Gravity.LEFT;
-        // Las coordenadas ya descuentan barras y recorte; el sistema no debe sumarlos otra vez.
-        posicion.layoutInDisplayCutoutMode=WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
-        if (Build.VERSION.SDK_INT >= 30) posicion.setFitInsetsTypes(0);
-        cabeceraMovible.setOnTouchListener(new View.OnTouchListener() {
-            float x, y; int px, py;
-            @Override public boolean onTouch(View v, MotionEvent e) {
-                if (!s.vigente()) return false;
-                if (e.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                    x=e.getRawX(); y=e.getRawY(); px=posicion.x; py=posicion.y;
-                    anotar(s.numero, "asa: empezar arrastre"); return true;
-                }
-                if (e.getActionMasked() == MotionEvent.ACTION_MOVE) {
-                    movida=true;
-                    posicion.x=px + Math.round(e.getRawX()-x); posicion.y=py + Math.round(e.getRawY()-y);
-                    limitar(); actualizarLugar(); return true;
-                }
-                if (e.getActionMasked() == MotionEvent.ACTION_UP) { v.performClick(); return true; }
-                return e.getActionMasked() == MotionEvent.ACTION_CANCEL;
-            }
-        });
-        raiz.setOnApplyWindowInsetsListener((v, insets) -> {
-            insetIzq=insets.getSystemWindowInsetLeft(); insetArriba=insets.getSystemWindowInsetTop();
-            insetDer=insets.getSystemWindowInsetRight(); insetAbajo=insets.getSystemWindowInsetBottom();
-            if (insets.getDisplayCutout() != null) {
-                insetIzq=Math.max(insetIzq, insets.getDisplayCutout().getSafeInsetLeft());
-                insetArriba=Math.max(insetArriba, insets.getDisplayCutout().getSafeInsetTop());
-                insetDer=Math.max(insetDer, insets.getDisplayCutout().getSafeInsetRight());
-                insetAbajo=Math.max(insetAbajo, insets.getDisplayCutout().getSafeInsetBottom());
-            }
-            encuadrar(!movida); return insets;
-        });
-        raiz.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob) -> {
-            if (b-t != ob-ot || r-l != or-ol) { limitar(); actualizarLugar(); }
-        });
-    }
-    void mostrar(String motivo) {
-        if (!s.vigente() || visible) return;
-        encuadrar(!ubicada);
-        ventanas.addView(raiz, posicion); visible=true; ubicada=true;
-        raiz.requestApplyInsets();
-        halo(s.nivel);
-        anotar(s.numero, "ventana " + motivo);
-    }
-    void quitar(String motivo) {
-        halo.animate().cancel();
-        if (visible) {
-            try { ventanas.removeViewImmediate(raiz); }
-            catch (Exception e) { anotar(s.numero, "quitar ventana falló: " + e); }
-            visible=false;
-        }
-        anotar(s.numero, "ventana " + motivo);
-    }
-    void encuadrar(boolean inicial) {
-        Rect pantalla = new Rect();
-        if (Build.VERSION.SDK_INT >= 30) {
-            android.view.WindowMetrics metricas = ventanas.getMaximumWindowMetrics();
-            pantalla.set(metricas.getBounds());
-            Insets i = metricas.getWindowInsets().getInsetsIgnoringVisibility(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
-            seguro.set(pantalla.left+i.left, pantalla.top+i.top, pantalla.right-i.right, pantalla.bottom-i.bottom);
-        } else {
-            DisplayMetrics m = new DisplayMetrics(); ventanas.getDefaultDisplay().getRealMetrics(m);
-            pantalla.set(0, 0, m.widthPixels, m.heightPixels);
-            seguro.set(insetIzq, insetArriba, m.widthPixels-insetDer, m.heightPixels-insetAbajo);
-        }
-        int margen = medida(R.dimen.prueba_margen);
-        posicion.width = Math.max(1, Math.min(medida(R.dimen.prueba_ancho), seguro.width()-2*margen));
-        distribuirAcciones(posicion.width - 2*medida(R.dimen.prueba_relleno));
-        // WRAP_CONTENT hasta el alto útil; si crece la letra, solo el centro se desplaza.
-        raiz.measure(View.MeasureSpec.makeMeasureSpec(posicion.width, View.MeasureSpec.EXACTLY),
-            View.MeasureSpec.makeMeasureSpec(Math.max(1, seguro.height()-2*margen), View.MeasureSpec.AT_MOST));
-        posicion.height=Math.min(raiz.getMeasuredHeight(), Math.max(1, seguro.height()-2*margen));
-        if (inicial) { posicion.x=seguro.left+(seguro.width()-posicion.width)/2; posicion.y=seguro.top+margen; }
-        limitar(); actualizarLugar();
-    }
-    private void limitar() {
-        int margen=medida(R.dimen.prueba_margen);
-        posicion.x=Math.max(seguro.left, Math.min(posicion.x, seguro.right-posicion.width));
-        posicion.y=Math.max(seguro.top+margen, Math.min(posicion.y, seguro.bottom-Math.max(raiz.getHeight(), posicion.height)));
-    }
-    private void actualizarLugar() {
-        if (!visible || !s.vigente()) return;
-        try { ventanas.updateViewLayout(raiz, posicion); }
-        catch (Exception e) { anotar(s.numero, "mover ventana falló: " + e); s.cerrar("falló WindowManager"); }
-    }
-    private void distribuirAcciones(int ancho) {
-        int suma=0, aire=medida(R.dimen.prueba_aire);
-        Button[] botones={pausa, ocultar, cerrar};
-        int[] anchos=new int[3];
-        for (int i=0; i<botones.length; i++) {
-            Button b=botones[i];
-            b.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-            anchos[i]=b.getMeasuredWidth(); suma+=anchos[i];
-            if (b.getParent() != null) ((ViewGroup)b.getParent()).removeView(b);
-        }
-        acciones.removeAllViews();
-        if (suma+2*aire <= ancho) {
-            filaDeAcciones(botones, anchos, 0, 3, ancho, false);
-        } else {
-            // A lo sumo dos filas. Con letra enorme, la segunda reparte el ancho y el texto
-            // crece dentro del botón: Cerrar no queda en una tercera fila fuera del área útil.
-            int corte=anchos[0]+aire+anchos[1] <= ancho ? 2 : 1;
-            filaDeAcciones(botones, anchos, 0, corte, ancho, false);
-            filaDeAcciones(botones, anchos, corte, 3, ancho, true);
-        }
-    }
-    private void filaDeAcciones(Button[] botones, int[] anchos, int desde, int hasta, int ancho, boolean segunda) {
-        int aire=medida(R.dimen.prueba_aire), suma=aire*(hasta-desde-1);
-        for (int i=desde; i<hasta; i++) suma+=anchos[i];
-        LinearLayout fila=new LinearLayout(contexto);
-        LinearLayout.LayoutParams filaLugar=new LinearLayout.LayoutParams(-1,-2);
-        if (segunda) filaLugar.topMargin=aire;
-        acciones.addView(fila, filaLugar);
-        for (int i=desde; i<hasta; i++) {
-            LinearLayout.LayoutParams lugar=suma > ancho
-                ? new LinearLayout.LayoutParams(0,-2,1)
-                : new LinearLayout.LayoutParams(Math.min(ancho,anchos[i]),-2);
-            if (i>desde) lugar.leftMargin=aire;
-            fila.addView(botones[i],lugar);
-        }
-    }
-    void pintar(long ahora) {
-        boolean disponible=EstadoDelMicrofono.DISPONIBLE.equals(s.estado);
-        disco.setVisibility(disponible ? View.VISIBLE : View.GONE);
-        estado.setText(s.estado);
-        boolean silenciado=EstadoDelMicrofono.SILENCIADO.equals(s.estado);
-        estado.setBackground(silenciado ? fondo(R.color.prueba_aviso_fondo, R.dimen.prueba_pildora, false) : null);
-        int relleno=silenciado ? medida(R.dimen.prueba_asa_alto) : 0;
-        estado.setPadding(relleno,relleno,relleno,relleno);
-        estado.setTextColor(color(silenciado ? R.color.prueba_aviso_texto : R.color.prueba_texto));
-        long segundos=(ahora-s.inicio)/1000;
-        tiempo.setText(String.format(Locale.ROOT, "%02d:%02d", segundos/60, segundos%60));
-        palabras.setText(s.palabras.isEmpty() ? "Esperando voz…" : s.palabras);
-        palabras.setTextColor(color(s.palabras.isEmpty() ? R.color.prueba_sugerencia : R.color.prueba_texto));
-        String db=s.rms > 0 ? String.format(Locale.ROOT,"%.0f",20*Math.log10(s.rms)).replace('-', '−') : "−∞";
-        detalle.setText("voz " + db + " dB · relevos " + s.relevos + " · cambió hace "
-            + (s.ultimoCambio < 0 ? "—" : (ahora-s.ultimoCambio)/1000) + " s · " + s.estadoServicio);
-        String nombre=EstadoDelMicrofono.PAUSA.equals(s.estado) ? "Seguir" : "Pausa";
-        if (!nombre.contentEquals(pausa.getText())) {
-            pausa.setText(nombre); pausa.setContentDescription(nombre);
-            icono(pausa, nombre.equals("Seguir") ? R.drawable.prueba_empezar : R.drawable.prueba_pausa);
-            encuadrar(false);
-        }
-    }
-    void halo(double nivel) {
-        nivelMostrado=nivel;
-        float escala=ValueAnimator.areAnimatorsEnabled() ? 1+(float)nivel*0.35f : 1;
-        halo.setScaleX(escala); halo.setScaleY(escala); halo.setAlpha(0.35f+(float)nivel*0.65f);
     }
 }

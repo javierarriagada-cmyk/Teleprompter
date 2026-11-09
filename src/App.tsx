@@ -105,7 +105,7 @@ import { confirmadorNuevo, revisar as revisarGesto } from './lib/confirmadorGest
 import { vigiaNuevo, oirParcial, oirFinal, debePedir, alPedir, alResponder, Vigia } from './lib/vigiaGestos'
 // -tarea 88, segunda vuelta- El fin de la última palabra del FINAL, para el corte de la palma.
 import { tomarFinUltimaPalabraEpochMs } from './lib/diagnostico'
-import { IconoAtras, IconoPausa, IconoParar, IconoTacho, IconoEmpezar, IconoEmpezarAPausa } from './components/IconosApp'
+import { IconoAtras, IconoPausa, IconoParar, IconoTacho, IconoEmpezar, IconoEmpezarAPausa, IconoVentanaFlotante } from './components/IconosApp'
 import { t, useTextos, TITULO_SIN_NOMBRE, idiomaEnFrase } from './textos'
 import { idiomaApp, leerIdiomaDelTelefono } from './lib/idioma'
 import { PASOS_LETRA } from './components/estiloLectura'
@@ -129,7 +129,8 @@ import { PanelDiagnostico } from './components/PanelDiagnostico'
 // Las herramientas de prueba no viajan a Play -tarea 84, src/lib/herramientas.ts-.
 import { HERRAMIENTAS } from './lib/herramientas'
 // Prototipo del 08-11-2026: todos los usos se eliminan del paquete de Play.
-import { VentanaDePrueba, microfonoYaConcedidoParaPrueba, type OpcionesPruebaFlotante, type AccionPruebaFlotante } from './lib/ventanaDePrueba'
+import { VentanaDePrueba, type OpcionesPruebaFlotante, type AccionPruebaFlotante } from './lib/ventanaDePrueba'
+import { tokenAlVolver, limitarTransparencia, limitarTamanoLetra, colorConAlfa } from './lib/flotante'
 import { guionDeLaTarjeta, avisoAlArchivar } from './lib/portada'
 
 // Cuanto se quedan los controles a la vista despues de un toque, mientras se lee.
@@ -137,6 +138,7 @@ import { guionDeLaTarjeta, avisoAlArchivar } from './lib/portada'
 // useAparecer-. Javier: «en vez que desaparezca a los 4 segundos, comience a desaparecer a los 2,5».
 // Antes: const MS_CONTROLES_A_LA_VISTA = 4000
 const MS_CONTROLES_A_LA_VISTA = 2500
+
 
 interface AppProps {
   motor?: MotorDeVoz
@@ -386,6 +388,11 @@ export default function App({ motor, repoOverride }: AppProps) {
   const anteriorTomaFlotanteRef = useRef<EstadoToma>('listo')
   const accionesFlotanteRef = useRef<(accion: AccionPruebaFlotante) => void>(() => {})
   const [oyenteFlotanteListo, setOyenteFlotanteListo] = useState(false)
+  const [hojaFlotante, setHojaFlotante] = useState<null | 'preparacion' | 'accesibilidad'>(null)
+  const [transparenciaFlotante, setTransparenciaFlotante] = useState(0)
+  const [fontSizeFlotante, setFontSizeFlotante] = useState(24)
+  const [ventanaFlotanteAbierta, setVentanaFlotanteAbierta] = useState(false)
+  const cuentaFlotanteInicioRef = useRef<number | null>(null)
 
   useEffect(() => {
     if (!(HERRAMIENTAS && Capacitor.isNativePlatform())) return
@@ -409,10 +416,29 @@ export default function App({ motor, repoOverride }: AppProps) {
     anteriorTomaFlotanteRef.current = estadoToma
     if (anterior === 'leyendo' && estadoToma === 'listo' && sesionFlotanteRef.current !== null) {
       sesionFlotanteRef.current = null
+      setVentanaFlotanteAbierta(false)
       void VentanaDePrueba.cerrar()
         .catch(e => console.warn('SigoFlotante', 'cerrar falló', e))
     }
   }, [estadoToma])
+
+  useEffect(() => {
+    if (!(HERRAMIENTAS && Capacitor.isNativePlatform()) || hojaFlotante !== 'accesibilidad') return
+    const sub: any = CapacitorApp.addListener('appStateChange', ({ isActive }) => {
+      if (!isActive) return
+      void VentanaDePrueba.estado().then(e => {
+        if (!e.accesibilidad) return
+        console.info('SigoFlotante', `volvió a Sigo volvioSolo=${e.volvioSolo ?? false} página=${e.paginaAjustes || ''}`)
+        setHojaFlotante('preparacion')
+      }).catch(err => console.warn('SigoFlotante', 'no se pudo leer estado al volver', err))
+    })
+    return () => {
+      try {
+        if (sub && typeof sub.then === 'function') sub.then((h: any) => h?.remove?.()).catch(() => {})
+        else if (sub && typeof sub.remove === 'function') sub.remove()
+      } catch {}
+    }
+  }, [hojaFlotante])
 
   const [fondoToma, setFondoToma] = useState<FondoToma>(
     (ajustesPrevios.fondoToma === 'recuadro' || ajustesPrevios.fondoToma === 'oculta')
@@ -1416,6 +1442,18 @@ export default function App({ motor, repoOverride }: AppProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [motorListo, langMotor, vozBajadaN])
 
+  useEffect(() => {
+    if (!(HERRAMIENTAS && Capacitor.isNativePlatform())) return
+    if (sesionFlotanteRef.current == null) return
+    void VentanaDePrueba.enviar({
+      tipo: 'estado',
+      sesion: sesionFlotanteRef.current,
+      cuenta: cuentaRegresiva,
+      escuchando: isRecording,
+      enPausa
+    }).catch(e => console.warn('SigoFlotante', 'no se pudo enviar estado', e))
+  }, [cuentaRegresiva, isRecording, enPausa])
+
   // LA VOZ SE BAJA SOLA, EN SILENCIO -tarea 104, PASO 2, 06-10-2026-. Ver lib/vozAPedido.ts.
   //
   // ANTES -tarea 84, 29-09-2026-: el español venía con la instalación y la precarga al abrir NO pedía
@@ -1628,6 +1666,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     // Antes: start()
     if (!fija) start()
     setCuentaRegresiva(3)
+    if (sesionFlotanteRef.current !== null) cuentaFlotanteInicioRef.current = performance.now()
 
     let c = 3
     timerCuentaRef.current = setInterval(() => {
@@ -1638,6 +1677,12 @@ export default function App({ motor, repoOverride }: AppProps) {
         if (timerCuentaRef.current !== null) {
           clearInterval(timerCuentaRef.current)
           timerCuentaRef.current = null
+        }
+        if (cuentaFlotanteInicioRef.current != null) {
+          const dur = performance.now() - cuentaFlotanteInicioRef.current
+          console.info('SigoFlotante', `cuenta de 3 duró ${Math.round(dur)} ms`)
+          if (dur > 3500) console.info('SigoFlotante', `cuenta de 3 superó 3,5 s: ${Math.round(dur)} ms`)
+          cuentaFlotanteInicioRef.current = null
         }
         setCuentaRegresiva(null)
         setTInicioLecturaMs(performance.now())
@@ -1749,15 +1794,9 @@ export default function App({ motor, repoOverride }: AppProps) {
     // -tarea 106- Con Velocidad fija y sin cámara no se escucha nada: ni el permiso ni la voz. En
     // Grabar el micrófono sigue haciendo falta para el sonido del video.
     const sinOido = fija && !conCamara
-    // Antes: const concedido = await pedirMicrofono()
-    if (HERRAMIENTAS && Capacitor.isNativePlatform() && intencionFlotanteRef.current) {
-      try {
-        if (!await microfonoYaConcedidoParaPrueba()) intencionFlotanteRef.current = null
-      } catch (e) {
-        intencionFlotanteRef.current = null
-        console.info('SigoFlotante', 'intento descartado: no se pudo consultar el permiso', e)
-      }
-    }
+    // Antes: si la intención flotante existía y el permiso aún no estaba dado, se descartaba
+    // en silencio aquí (microfonoYaConcedidoParaPrueba) y Leer partía sin ventana.
+    // Ahora el intento sigue: pedirMicrofono muestra el diálogo de siempre y, si lo da, se abre la ventana.
     const concedido = sinOido ? true : await pedirMicrofono()
     if (!concedido) {
       setMostrarDialogoMicrofono(true)
@@ -1824,7 +1863,30 @@ export default function App({ motor, repoOverride }: AppProps) {
       try {
         const abierta = await VentanaDePrueba.abrir(opciones)
         sesionFlotanteRef.current = abierta.sesion
+        setVentanaFlotanteAbierta(true)
+        setHojaFlotante(null)
+        const tokenInicial = Math.floor(motorAvance?.leerEstado().posicion ?? 0)
+        await VentanaDePrueba.enviar({
+          tipo: 'contrato',
+          sesion: abierta.sesion,
+          guion: guionParaSeguidor,
+          idioma: langMotor,
+          fontSize: fontSizeFlotante,
+          tipoFuente,
+          colorFondo,
+          colorLetra,
+          marginPercent,
+          columnaAngosta,
+          lineasZona,
+          anclajeZona,
+          transparencia: transparenciaFlotante,
+          tokenInicial,
+          mostrarTiempo
+        })
+        console.info('SigoFlotante', `contrato enviado sesion=${abierta.sesion} tokenInicial=${tokenInicial}`)
       } catch (e) {
+        sesionFlotanteRef.current = null
+        setVentanaFlotanteAbierta(false)
         await avisarErrorFlotante(e)
         return
       }
@@ -1843,7 +1905,8 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
     } finally {
       if (HERRAMIENTAS && Capacitor.isNativePlatform()) {
-        intencionFlotanteRef.current = null
+        // Antes: también se limpiaba intencionFlotanteRef aquí, y el aviso de límite o el
+        // diálogo del micrófono dejaban el siguiente intento sin ventana.
         entrandoFlotanteRef.current = false
       }
     }
@@ -1853,37 +1916,81 @@ export default function App({ motor, repoOverride }: AppProps) {
     if (!(HERRAMIENTAS && Capacitor.isNativePlatform())) return
     const e = error as { code?: string; message?: string }
     if (e?.code === 'SIN_ACCESIBILIDAD') {
-      mostrarAviso('Activa “Sigo · prueba flotante” en Ajustes → Accesibilidad.')
-      try {
-        await VentanaDePrueba.abrirAjustesAccesibilidad()
-      } catch (ajustes) {
-        mostrarAviso(ajustes instanceof Error ? ajustes.message : String(ajustes))
-      }
-    } else if (e?.code === 'ACCESIBILIDAD_ACTIVA') {
-      mostrarAviso('Para el control C0, apaga “Sigo · prueba flotante” en Ajustes → Accesibilidad.')
+      console.info('SigoFlotante', 'hoja de accesibilidad mostrada')
+      setHojaFlotante('accesibilidad')
     } else mostrarAviso(e?.message || String(error))
   }
 
-  async function empezarFlotante(opciones: OpcionesPruebaFlotante) {
-    if (!(HERRAMIENTAS && Capacitor.isNativePlatform()) || !oyenteFlotanteListo
-      || preparandoFlotanteRef.current || estadoToma !== 'listo') return
-    preparandoFlotanteRef.current = true
+  function soltarIntencionFlotante() {
+    intencionFlotanteRef.current = null
+  }
+
+  async function abrirHojaFlotante() {
+    if (!(HERRAMIENTAS && Capacitor.isNativePlatform()) || !oyenteFlotanteListo || estadoToma !== 'listo') return
     try {
+      const prefs = await VentanaDePrueba.preferencias()
+      setTransparenciaFlotante(limitarTransparencia(prefs.transparencia ?? 0))
+      setFontSizeFlotante(limitarTamanoLetra(prefs.fontSize ?? fontSize, PASOS_LETRA))
       const estado = await VentanaDePrueba.estado()
-      if (opciones.ventana && !estado.accesibilidad) {
-        await avisarErrorFlotante({ code: 'SIN_ACCESIBILIDAD' }); return
+      if (estado.accesibilidad) setHojaFlotante('preparacion')
+      else {
+        console.info('SigoFlotante', 'hoja de accesibilidad mostrada')
+        setHojaFlotante('accesibilidad')
       }
-      if (!opciones.ventana && estado.accesibilidad) {
-        await avisarErrorFlotante({ code: 'ACCESIBILIDAD_ACTIVA' }); return
-      }
-      intencionFlotanteRef.current = opciones
-      await handleEmpezarDesdeListo()
     } catch (e) {
       await avisarErrorFlotante(e)
-    } finally {
-      intencionFlotanteRef.current = null
-      preparandoFlotanteRef.current = false
     }
+  }
+
+  async function irAActivarAccesibilidad() {
+    console.info('SigoFlotante', 'Ir a activarlo')
+    try {
+      const r = await VentanaDePrueba.abrirAjustesAccesibilidad()
+      console.info('SigoFlotante', `página abierta=${r.pagina}`)
+    } catch (e) {
+      await avisarErrorFlotante(e)
+    }
+  }
+
+  function ahoraNoAccesibilidad() {
+    console.info('SigoFlotante', 'Ahora no')
+    setHojaFlotante(null)
+  }
+
+  async function empezarDesdeHojaFlotante() {
+    intencionFlotanteRef.current = { servicio: true, ventana: true }
+    try {
+      await VentanaDePrueba.guardarPreferencias({
+        transparencia: transparenciaFlotante,
+        fontSize: fontSizeFlotante
+      })
+    } catch (e) {
+      console.warn('SigoFlotante', 'no se pudieron guardar preferencias', e)
+    }
+    await handleEmpezarDesdeListo()
+  }
+
+  async function volverDesdeFlotante(token: number | undefined) {
+    const destino = tokenAlVolver(token, totalTokens)
+    console.info('SigoFlotante', `volver token=${destino}`)
+    cancelarCuentaRegresiva()
+    setTInicioLecturaMs(null)
+    ponerEstadoPausa({ tipo: 'grabando' })
+    try { await stop() } catch (e) { console.warn('SigoFlotante', 'stop al volver', e) }
+    try { await detenerGrabacion() } catch {}
+    try { await soltarWakeLock() } catch {}
+    reiniciarEn(destino)
+    setEstadoToma('listo')
+    setControlesVisibles(false)
+    setFaseLimiteVoz(null)
+    setVentanaFlotanteAbierta(false)
+  }
+
+  async function cerrarVentanaDesdeSigo() {
+    const token = tokenAlVolver(motorAvance?.leerEstado().posicion ?? 0, totalTokens)
+    sesionFlotanteRef.current = null
+    try { await VentanaDePrueba.cerrar() } catch (e) { console.warn('SigoFlotante', 'cerrar desde Sigo', e) }
+    await volverDesdeFlotante(token)
   }
 
   function handleVolverDesdeListo() {
@@ -2868,6 +2975,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   function empezarCuentaDePausa() {
     if (timerCuentaRef.current !== null) clearInterval(timerCuentaRef.current)
     setCuentaRegresiva(3)
+    if (sesionFlotanteRef.current !== null) cuentaFlotanteInicioRef.current = performance.now()
     let c = 3
     timerCuentaRef.current = setInterval(() => {
       c -= 1
@@ -2878,6 +2986,12 @@ export default function App({ motor, repoOverride }: AppProps) {
       if (timerCuentaRef.current !== null) {
         clearInterval(timerCuentaRef.current)
         timerCuentaRef.current = null
+      }
+      if (cuentaFlotanteInicioRef.current != null) {
+        const dur = performance.now() - cuentaFlotanteInicioRef.current
+        console.info('SigoFlotante', `cuenta de 3 duró ${Math.round(dur)} ms`)
+        if (dur > 3500) console.info('SigoFlotante', `cuenta de 3 superó 3,5 s: ${Math.round(dur)} ms`)
+        cuentaFlotanteInicioRef.current = null
       }
       setCuentaRegresiva(null)
       void despacharRef.current({ tipo: 'finCuenta', tMs: Date.now() })
@@ -2896,15 +3010,23 @@ export default function App({ motor, repoOverride }: AppProps) {
   // Siempre apunta a los mismos caminos reales de Pausa y Parar, sin cierres obsoletos del montaje.
   accionesFlotanteRef.current = accion => {
     if (!(HERRAMIENTAS && Capacitor.isNativePlatform())) return
-    console.info('SigoFlotante', `web recibió accion=${accion.tipo}`)
+    console.info('SigoFlotante', `web recibió accion=${accion.tipo} token=${accion.token ?? ''}`)
     if (accion.sesion !== sesionFlotanteRef.current) {
       console.info('SigoFlotante', `accion descartada de sesión vieja=${accion.sesion}`)
       return
     }
-    if (accion.tipo === 'alternar') {
+    if (accion.tipo === 'pausa') {
+      if (!enPausa) void handleTogglePausa().catch(e => console.warn('SigoFlotante', 'pausa falló', e))
+    } else if (accion.tipo === 'seguir') {
+      if (enPausa) void handleTogglePausa().catch(e => console.warn('SigoFlotante', 'seguir falló', e))
+    } else if (accion.tipo === 'alternar') {
       void handleTogglePausa().catch(e => console.warn('SigoFlotante', 'alternar falló', e))
+    } else if (accion.tipo === 'volver') {
+      sesionFlotanteRef.current = null
+      void volverDesdeFlotante(accion.token).catch(e => console.warn('SigoFlotante', 'volver falló', e))
     } else {
       sesionFlotanteRef.current = null
+      setVentanaFlotanteAbierta(false)
       void pararComoElBoton().catch(e => console.warn('SigoFlotante', 'parar falló', e))
     }
   }
@@ -3674,10 +3796,19 @@ export default function App({ motor, repoOverride }: AppProps) {
           } as React.CSSProperties}
         >
           {HERRAMIENTAS && Capacitor.isNativePlatform() && estadoToma === 'listo' && !conCamara && !camaraActiva && !fija && (
-            <div className="prueba-flotante-casos" role="group" aria-label="Prueba flotante">
-              <button type="button" disabled={!oyenteFlotanteListo} onClick={() => void empezarFlotante({ servicio: true, ventana: true })}>Ventana (C1-C7)</button>
-              <button type="button" disabled={!oyenteFlotanteListo} onClick={() => void empezarFlotante({ servicio: false, ventana: true })}>Ventana sin servicio (C8)</button>
-              <button type="button" disabled={!oyenteFlotanteListo} onClick={() => void empezarFlotante({ servicio: true, ventana: false })}>Solo servicio (C0)</button>
+            <div className="prueba-flotante-casos" role="group" aria-label={t('ventanaFlotante')}>
+              <button type="button" disabled={!oyenteFlotanteListo} onClick={() => void abrirHojaFlotante()}>
+                <IconoVentanaFlotante />
+                {t('ventanaFlotante')}
+              </button>
+            </div>
+          )}
+          {HERRAMIENTAS && Capacitor.isNativePlatform() && ventanaFlotanteAbierta && (
+            <div className="flotante-panel-sigo" role="status">
+              <p>{t('lecturaEnVentanaFlotante')}</p>
+              <button type="button" className="boton-dialogo lleno" onClick={() => void cerrarVentanaDesdeSigo()}>
+                {t('cerrarLaVentana')}
+              </button>
             </div>
           )}
           {/* -controles-que-se-desvanecen- Montados mientras faseControles no es null: también mientras se
@@ -4164,6 +4295,80 @@ export default function App({ motor, repoOverride }: AppProps) {
       {/* -proxima-version, 2026-11-07- El aviso de límite gratis antes de empezar. «Grabar …» / «Leer …» cierra y
           empieza como siempre -el permiso, la cuenta, el aviso del último minuto y el corte siguen igual-. «Ver
           Sigo+» cierra y abre la oferta; al volver queda en LISTO y no empieza sola. Afuera o atrás: LISTO. */}
+      {HERRAMIENTAS && Capacitor.isNativePlatform() && hojaFlotante && (
+        <div className="capa-dialogo-microfono" onClick={() => { if (hojaFlotante === 'preparacion') setHojaFlotante(null) }}>
+          <div
+            className="dialogo-ajustes hoja-flotante"
+            role="dialog"
+            aria-modal="true"
+            aria-label={hojaFlotante === 'accesibilidad' ? t('accesibilidadFlotanteTitulo') : t('ventanaFlotante')}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {hojaFlotante === 'accesibilidad' ? (
+              <>
+                <h3 className="dialogo-ajustes-titulo">{t('accesibilidadFlotanteTitulo')}</h3>
+                <p className="texto-dialogo">{t('accesibilidadFlotanteTexto')}</p>
+                <div className="botones-dialogo">
+                  <button type="button" className="boton-dialogo" onClick={ahoraNoAccesibilidad}>{t('ahoraNo')}</button>
+                  <button type="button" className="boton-dialogo lleno" onClick={() => void irAActivarAccesibilidad()}>{t('irAActivarlo')}</button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flotante-previa">
+                  <div className="flotante-previa-mitades" aria-hidden="true" />
+                  <div
+                    className="flotante-previa-lectura lectura-sobre-imagen"
+                    style={{
+                      background: colorConAlfa(colorFondo, 1 - transparenciaFlotante / 100),
+                      color: colorLetra,
+                      fontSize: fontSizeFlotante,
+                      fontFamily: tipoFuente === 'serif' ? 'var(--fuente-serif, serif)' : 'var(--fuente-sans, sans-serif)'
+                    }}
+                  >
+                    {(guionActual?.bloques || []).map(b => b.texto || '').join(' ').trim() || '…'}
+                  </div>
+                </div>
+                <label>
+                  {t('transparenciaFondo')}
+                  <input
+                    type="range"
+                    min={0}
+                    max={100}
+                    value={transparenciaFlotante}
+                    onChange={(e) => {
+                      const v = limitarTransparencia(Number(e.target.value))
+                      setTransparenciaFlotante(v)
+                      void VentanaDePrueba.guardarPreferencias({ transparencia: v }).catch(() => {})
+                    }}
+                  />
+                </label>
+                <label>
+                  {t('tamanoLetra')}
+                  <input
+                    type="range"
+                    min={0}
+                    max={PASOS_LETRA.length - 1}
+                    step={1}
+                    value={Math.max(0, PASOS_LETRA.indexOf(fontSizeFlotante))}
+                    onChange={(e) => {
+                      const v = PASOS_LETRA[Number(e.target.value)] ?? fontSizeFlotante
+                      setFontSizeFlotante(v)
+                      void VentanaDePrueba.guardarPreferencias({ fontSize: v }).catch(() => {})
+                    }}
+                  />
+                </label>
+                <div className="botones-dialogo">
+                  <button type="button" className="boton-dialogo lleno" onClick={() => void empezarDesdeHojaFlotante()}>
+                    {t('empezar')}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {avisoLimiteGratis && (
         <DialogoLimiteGratis
           tipo={avisoLimiteGratis.tipo}
@@ -4176,15 +4381,16 @@ export default function App({ motor, repoOverride }: AppProps) {
           onVerSigoMas={() => {
             const lugar = avisoLimiteGratis.tipo === 'grabacion' ? 'antesDeGrabar' : 'antesDeLeer'
             setAvisoLimiteGratis(null)
+            soltarIntencionFlotante()
             void abrirOferta(lugar)
           }}
-          onCerrar={() => setAvisoLimiteGratis(null)}
+          onCerrar={() => { setAvisoLimiteGratis(null); soltarIntencionFlotante() }}
         />
       )}
 
       {mostrarDialogoMicrofono && (
         <DialogoMicrofono
-          onCerrar={() => setMostrarDialogoMicrofono(false)}
+          onCerrar={() => { setMostrarDialogoMicrofono(false); soltarIntencionFlotante() }}
           onAbrirAjustes={() => {
             abrirAjustesDeLaApp()
           }}

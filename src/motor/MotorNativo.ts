@@ -6,6 +6,7 @@ import { HERRAMIENTAS } from '../lib/herramientas'
 import { idiomaDeVoz, IdiomaVoz } from '../lib/vozAPedido'
 // -proxima-version, 2026-11-08- El rms de cada evento, al disco del micrófono de la pastilla.
 import { publicarNivelVoz } from '../lib/nivelVoz'
+import { textoDe } from './textoDeVosk'
 
 // EL AUDIO QUE ESCUCHO VOSK, GUARDADO -24-09-2026-. Es el instrumento del plan del
 // motor: con el se afina el reconocedor en el PC contra lecturas reales. Quedan los
@@ -82,19 +83,8 @@ interface VoskNativoPlugin {
 
 const Nativo = registerPlugin<VoskNativoPlugin>('VoskNativo')
 
-// Vosk contesta en JSON: {"partial": "..."} mientras hablas y {"text": "..."} al
-// cerrar una frase. Se parsea de este lado a proposito -el plugin pasa la cadena tal
-// cual-, para no tener el formato escrito en dos lenguajes y tener que recompilar el
-// APK cada vez que Vosk agregue un campo.
-function textoDe(json: string, campo: 'partial' | 'text'): string {
-  try {
-    const o = JSON.parse(json)
-    const t = o[campo]
-    return typeof t === 'string' ? t : ''
-  } catch {
-    return ''
-  }
-}
+// Antes: function textoDe(json, campo) vivía aquí. La ventana flotante la necesita
+// también, así que quedó en textoDeVosk.ts sin cambiar el parseo.
 
 export class MotorNativo implements MotorDeVoz {
   readonly id = 'nativo' as const

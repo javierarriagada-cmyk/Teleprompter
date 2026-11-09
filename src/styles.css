@@ -3241,3 +3241,51 @@ button.btn-deformable.miniatura-banda:not(:active) {
   left: calc(env(safe-area-inset-left, 0px) + 64px);
   right: calc(env(safe-area-inset-right, 0px) + 96px);
 }
+
+.prueba-flotante-casos button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.flotante-panel-sigo {
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  text-align: center;
+  background: var(--color-fondo, #111);
+  color: var(--color-texto, #fff);
+}
+.hoja-flotante label {
+  display: block;
+  margin: 12px 0;
+}
+.hoja-flotante input[type="range"] {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+}
+.flotante-previa {
+  position: relative;
+  height: 7.5em;
+  border-radius: var(--redondeo, 12px);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.flotante-previa-mitades {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #e8e8e8 50%, #1a1a1a 50%);
+}
+.flotante-previa-lectura {
+  position: relative;
+  height: 100%;
+  padding: 12px 16px;
+  overflow: hidden;
+  line-height: 1.3;
+}

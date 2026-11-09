@@ -1,0 +1,37 @@
+
+ RUN  v2.1.9 /workspace/prototipo-flotante
+
+ ✓ src/pruebas/flotante173.test.ts > MotorFlotante y el JSON de Vosk > parsea un parcial real {"partial" : "uno el perro"} con saltos y espacios
+ ✓ src/pruebas/flotante173.test.ts > MotorFlotante y el JSON de Vosk > un evento vacío no llega a onParcial ni a onFinal
+ ✓ src/pruebas/flotante173.test.ts > MotorFlotante y el JSON de Vosk > descarta un número de sesión viejo
+ × src/pruebas/flotante173.test.ts > el token que devuelve la ventana > deja Leer en esa palabra
+   → expected -3 to be +0 // Object.is equality
+ ✓ src/pruebas/flotante173.test.ts > límites de transparencia y letra > deja la transparencia entre 0 y 100
+ ✓ src/pruebas/flotante173.test.ts > límites de transparencia y letra > ajusta el tamaño de letra a un paso de Aa
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/pruebas/flotante173.test.ts > el token que devuelve la ventana > deja Leer en esa palabra
+AssertionError: expected -3 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ -3
+
+ ❯ src/pruebas/flotante173.test.ts:55:35
+     53|     expect(tokenAlVolver(0, 10)).toBe(0)
+     54|     expect(tokenAlVolver(9.8, 10)).toBe(9)
+     55|     expect(tokenAlVolver(-3, 10)).toBe(0)
+       |                                   ^
+     56|     expect(tokenAlVolver(99, 10)).toBe(9)
+     57|     expect(tokenAlVolver('4', 10)).toBe(0)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  22:57:35
+   Duration  519ms (transform 96ms, setup 34ms, collect 83ms, tests 9ms, environment 228ms, prepare 48ms)
+

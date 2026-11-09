@@ -1,20 +1,37 @@
-// PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026: mide si Sigo puede seguir la voz mientras otra app graba video con sonido. Esta rama no va a main ni a Play.
+// PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026: la lectura de Sigo sobre otra app, siguiendo la voz mientras esa app graba. Esta rama no va a main ni a Play.
 import { registerPlugin, type PluginListenerHandle } from '@capacitor/core'
 
 export interface OpcionesPruebaFlotante { servicio: boolean; ventana: boolean }
-export interface AccionPruebaFlotante { tipo: 'alternar' | 'cerrar'; sesion: number }
+// Antes: tipo: 'alternar' | 'cerrar'
+export interface AccionPruebaFlotante {
+  tipo: 'pausa' | 'seguir' | 'volver' | 'cerrar' | 'alternar'
+  sesion: number
+  token?: number
+}
+export interface PreferenciasFlotante {
+  transparencia?: number
+  fontSize?: number
+  x?: number
+  y?: number
+  w?: number
+  h?: number
+}
+export interface EstadoFlotante {
+  accesibilidad: boolean
+  volvioSolo?: boolean
+  paginaAjustes?: string
+}
 interface PluginVentanaDePrueba {
-  estado(): Promise<{ accesibilidad: boolean }>
-  abrirAjustesAccesibilidad(): Promise<void>
+  estado(): Promise<EstadoFlotante>
+  abrirAjustesAccesibilidad(): Promise<{ pagina: string }>
   abrir(opciones: OpcionesPruebaFlotante): Promise<{ sesion: number }>
   cerrar(): Promise<void>
+  preferencias(): Promise<PreferenciasFlotante>
+  guardarPreferencias(prefs: PreferenciasFlotante): Promise<void>
+  enviar(mensaje: Record<string, unknown>): Promise<void>
   addListener(evento: 'accion', oyente: (accion: AccionPruebaFlotante) => void): Promise<PluginListenerHandle>
 }
 export const VentanaDePrueba = /* @__PURE__ */ registerPlugin<PluginVentanaDePrueba>('VentanaDePrueba')
 
-// Solo consulta el permiso ya existente. No lo pide otra vez ni cambia MotorNativo:
-// si falta, se desarma la intención ANTES del diálogo que abre el camino normal de Empezar.
-const VoskParaPrueba = /* @__PURE__ */ registerPlugin<{ checkPermissions(): Promise<{ microfono: string }> }>('VoskNativo')
-export async function microfonoYaConcedidoParaPrueba(): Promise<boolean> {
-  return (await VoskParaPrueba.checkPermissions()).microfono === 'granted'
-}
+// Antes: se consultaba el permiso aquí para descartar la intención si faltaba, antes del diálogo.
+// Ese gancho se fue: Empezar pide el permiso por el camino de siempre y el intento sigue si lo da.

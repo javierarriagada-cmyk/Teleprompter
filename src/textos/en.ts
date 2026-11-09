@@ -382,5 +382,17 @@ export const en: Textos = {
   // Arreglos chicos de uso -estudio 1-.
   nadaCopiado: 'Nothing copied',
   abrirEnEditor: 'Open in editor',
+  // PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026.
+  ventanaFlotante: 'Floating window',
+  transparenciaFondo: 'Background transparency',
+  accesibilidadFlotanteTitulo: 'To follow your voice over other apps',
+  accesibilidadFlotanteTexto: 'Android only lets Sigo hear you while another app is recording if you turn on “Sigo · prueba flotante” in Accessibility. Sigo doesn\'t read your screen or what you type.',
+  irAActivarlo: 'Turn it on',
+  lecturaEnVentanaFlotante: 'Your reading is in the floating window',
+  cerrarLaVentana: 'Close the window',
+  volverASigo: 'Back to Sigo',
+  avisoMicrofonoQuitado: 'Android took the microphone from Sigo. The text is waiting here.',
+  moverVentana: 'Move the window',
+  cambiarTamano: 'Resize',
   cerrarSeleccion: 'Close selection'
 }

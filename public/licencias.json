@@ -1649,6 +1649,15 @@
       "texto": ""
     },
     {
+      "nombre": "androidx.webkit:webkit",
+      "version": "1.14.0",
+      "licencia": "Apache-2.0",
+      "origen": "android",
+      "fuente": "https://dl.google.com/dl/android/maven2/androidx/webkit/webkit/1.14.0/webkit-1.14.0.pom",
+      "nota": "",
+      "texto": ""
+    },
+    {
       "nombre": "androidx.camera:camera-view",
       "version": "1.6.2",
       "licencia": "Apache-2.0",

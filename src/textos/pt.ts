@@ -334,5 +334,17 @@ export const pt: Textos = {
   sinConexionVerificar: 'Conecte-se por um momento para verificar o Sigo+.',
   nadaCopiado: 'Nenhum texto copiado',
   abrirEnEditor: 'Abrir no editor',
+  // PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026.
+  ventanaFlotante: 'Janela flutuante',
+  transparenciaFondo: 'Transparência do fundo',
+  accesibilidadFlotanteTitulo: 'Para seguir sua voz sobre outros apps',
+  accesibilidadFlotanteTexto: 'O Android só deixa o Sigo ouvir você enquanto outro app grava se você ativar “Sigo · prueba flotante” em Acessibilidade. O Sigo não lê sua tela nem o que você digita.',
+  irAActivarlo: 'Ativar',
+  lecturaEnVentanaFlotante: 'A leitura está na janela flutuante',
+  cerrarLaVentana: 'Fechar a janela',
+  volverASigo: 'Voltar ao Sigo',
+  avisoMicrofonoQuitado: 'O Android tirou o microfone do Sigo. O texto está esperando aqui.',
+  moverVentana: 'Mover a janela',
+  cambiarTamano: 'Redimensionar',
   cerrarSeleccion: 'Fechar seleção'
 }

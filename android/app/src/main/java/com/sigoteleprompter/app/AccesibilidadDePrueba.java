@@ -17,6 +17,9 @@ public class AccesibilidadDePrueba extends AccessibilityService {
         ventanas = (WindowManager) getSystemService(WINDOW_SERVICE);
         vigente = this;
         VentanaDePrueba.anotar(VentanaDePrueba.numero(), "accesibilidad conectada instancia=" + System.identityHashCode(this));
+        boolean solo = VentanaDePrueba.intentarTraerSigo(this);
+        VentanaDePrueba.marcarVolvioSolo(solo);
+        VentanaDePrueba.anotar(VentanaDePrueba.numero(), "volver solo=" + solo);
     }
     @Override public void onAccessibilityEvent(AccessibilityEvent evento) {}
     @Override public void onInterrupt() {}
