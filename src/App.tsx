@@ -413,6 +413,9 @@ export default function App({ motor, repoOverride }: AppProps) {
   // atrás, deja de correr al minuto -ver el informe del PR-, y Pausa, Seguir y el límite dejaban de andar. Sigo solo
   // manda los estados de la cuenta de Empezar; después, Android -VentanaDePrueba, SesionVentana-.
   const estadoFlotanteRef = useRef({ vioCuenta: false, terminada: false })
+  // -9-nov-2026, orden t160u, punto 4- La cuenta de Empezar llegó a su fin por sí misma -no la cancelaron-. La pone el
+  // intervalo de handleStart al terminar; la baja cada cuenta nueva.
+  const cuentaFlotanteCompletaRef = useRef(false)
   // De qué LISTO se entró a la ventana: al volver, Sigo queda en ese -Leer o Grabar-.
   const origenFlotanteRef = useRef<'leer' | 'grabar' | null>(null)
   // Desde Grabar, Empezar espera a que la cámara se apague -setConCamara(false)- y entonces abre la ventana.
@@ -1501,22 +1504,50 @@ export default function App({ motor, repoOverride }: AppProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [motorListo, langMotor, vozBajadaN])
 
+  // Antes -9-nov-2026, orden t160u, punto 4-:
+  // useEffect(() => {
+  //   if (!(HERRAMIENTAS && Capacitor.isNativePlatform())) return
+  //   if (sesionFlotanteRef.current == null) return
+  //   // -09-11-2026- Después de la cuenta de Empezar el estado de la ventana es de Android: Sigo ya no lo manda.
+  //   const ef = estadoFlotanteRef.current
+  //   if (ef.terminada) return
+  //   if (cuentaRegresiva !== null) ef.vioCuenta = true
+  //   else if ((ef.vioCuenta || isRecording) && !enPausa) ef.terminada = true
+  //   void VentanaDePrueba.enviar({
+  //     tipo: 'estado',
+  //     sesion: sesionFlotanteRef.current,
+  //     cuenta: cuentaRegresiva,
+  //     escuchando: isRecording,
+  //     enPausa
+  //   }).catch(e => console.warn('SigoFlotante', 'no se pudo enviar estado', e))
+  // }, [cuentaRegresiva, isRecording, enPausa])
+  // Razón: que la cuenta desapareciera contaba como cuenta terminada -también si se canceló, con isRecording en false-,
+  // y Sigo mandaba su isRecording como «escuchando». Ahora Sigo dice solo lo que sabe: los números, que la cuenta
+  // TERMINÓ -cuentaFlotanteCompletaRef, la pone el fin natural de la cuenta- o que se CANCELÓ. «escuchando» lo decide
+  // Android con las dos confirmaciones -SesionVentana.estadoDeSigo-, que además cierra la cuenta con su propio reloj
+  // aunque la página de Sigo se duerma.
   useEffect(() => {
     if (!(HERRAMIENTAS && Capacitor.isNativePlatform())) return
     if (sesionFlotanteRef.current == null) return
     // -09-11-2026- Después de la cuenta de Empezar el estado de la ventana es de Android: Sigo ya no lo manda.
     const ef = estadoFlotanteRef.current
     if (ef.terminada) return
+    let fin: { cuentaTerminada?: true; cuentaCancelada?: true } = {}
     if (cuentaRegresiva !== null) ef.vioCuenta = true
-    else if ((ef.vioCuenta || isRecording) && !enPausa) ef.terminada = true
+    else if (ef.vioCuenta) {
+      ef.terminada = true
+      fin = cuentaFlotanteCompletaRef.current ? { cuentaTerminada: true } : { cuentaCancelada: true }
+      console.info('SigoFlotante', `cuenta de Empezar ${fin.cuentaTerminada ? 'terminada' : 'cancelada'} en Sigo`)
+    }
     void VentanaDePrueba.enviar({
       tipo: 'estado',
       sesion: sesionFlotanteRef.current,
       cuenta: cuentaRegresiva,
-      escuchando: isRecording,
-      enPausa
+      escuchando: false,
+      enPausa,
+      ...fin
     }).catch(e => console.warn('SigoFlotante', 'no se pudo enviar estado', e))
-  }, [cuentaRegresiva, isRecording, enPausa])
+  }, [cuentaRegresiva, enPausa])
 
   // LA VOZ SE BAJA SOLA, EN SILENCIO -tarea 104, PASO 2, 06-10-2026-. Ver lib/vozAPedido.ts.
   //
@@ -1729,6 +1760,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     // -tarea 106- Con Velocidad fija no se escucha: el reconocedor no arranca.
     // Antes: start()
     if (!fija) start()
+    cuentaFlotanteCompletaRef.current = false
     setCuentaRegresiva(3)
     if (sesionFlotanteRef.current !== null) cuentaFlotanteInicioRef.current = performance.now()
 
@@ -1748,6 +1780,7 @@ export default function App({ motor, repoOverride }: AppProps) {
           if (dur > 3500) console.info('SigoFlotante', `cuenta de 3 superó 3,5 s: ${Math.round(dur)} ms`)
           cuentaFlotanteInicioRef.current = null
         }
+        cuentaFlotanteCompletaRef.current = true
         setCuentaRegresiva(null)
         setTInicioLecturaMs(performance.now())
         // -orden 2- Cada toma empieza de cero: límites y forzados se reinician.

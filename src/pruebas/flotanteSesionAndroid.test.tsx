@@ -510,6 +510,75 @@ describe('6. cancelar la preparación durante el guardado de preferencias', () =
   }
 })
 
+// -9-nov-2026, orden t160u, punto 4, lado de App- La página de Sigo solo dice lo que sabe: los números de la cuenta, que
+// la cuenta TERMINÓ -cuentaTerminada- o que se CANCELÓ -cuentaCancelada-. Nunca «escuchando»: eso lo decide Android con la
+// captura confirmada por Vosk. Que la cuenta desaparezca no es que terminó.
+describe('7. la cuenta de Empezar que manda Sigo a la ventana', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    h.oyente = null
+    h.encendida = false
+    h.camaraAlAbrir = null
+    h.orden = []
+    h.estadoSesion = { hay: false }
+    vi.mocked(VentanaDePrueba.enviar).mockClear()
+    vi.mocked(VentanaDePrueba.abrir).mockClear()
+    vi.spyOn(console, 'info').mockImplementation(() => {})
+  })
+  afterEach(() => {
+    cleanup()
+    vi.restoreAllMocks()
+  })
+
+  // Un motor cuyo micrófono no abre nunca: isRecording queda en false.
+  class MotorSinMicrofono extends MotorEspia {
+    async iniciar(_o: { lang: string }) { this.iniciados++; await new Promise(() => {}) }
+  }
+
+  async function empezarLaVentana(motor: MotorEspia) {
+    await abrirListo('btn-leer-tarjeta', motor)
+    fireEvent.click(await screen.findByTestId('selector-flotante'))
+    await esperar(30)
+    fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+    await esperar(80)
+    fireEvent.click(within(document.querySelector('.hoja-flotante-preparacion') as HTMLElement).getByRole('button', { name: es.empezar }))
+    await esperar(400)
+    expect(VentanaDePrueba.abrir).toHaveBeenCalledTimes(1)
+    expect(enviados('estado').some((m) => m.cuenta === 3)).toBe(true)
+  }
+
+  test('7a. la cuenta cancelada en Sigo, con el micrófono sin abrir, se manda como cancelada y no como terminada', async () => {
+    await empezarLaVentana(new MotorSinMicrofono())
+    // Parar en plena cuenta: la cuenta desaparece sin terminar.
+    fireEvent.click(screen.getByTestId('teleprompter-view-container'))
+    await act(async () => { fireEvent.click(await screen.findByTestId('btn-parar-lectura')) })
+    for (let i = 0; i < 6; i++) await esperar(450)
+    const sinCuenta = enviados('estado').filter((m) => m.cuenta === null)
+    expect(sinCuenta.length).toBeGreaterThan(0)
+    // Ninguno dice que terminó, y el que lo dice es la cancelación.
+    expect(sinCuenta.some((m) => m.cuentaTerminada === true)).toBe(false)
+    expect(sinCuenta.at(-1)?.cuentaCancelada).toBe(true)
+    expect(enviados('estado').some((m) => m.escuchando === true)).toBe(false)
+  }, 30000)
+
+  test('7b. la cuenta terminada con el micrófono sin abrir: dice que terminó, sin «escuchando»', async () => {
+    await empezarLaVentana(new MotorSinMicrofono())
+    for (let i = 0; i < 8; i++) await esperar(450)
+    const ultimo = enviados('estado').at(-1)!
+    expect(ultimo.cuenta).toBeNull()
+    expect(ultimo.cuentaTerminada).toBe(true)
+    expect(ultimo.escuchando).toBe(false)
+    expect(enviados('estado').some((m) => m.escuchando === true)).toBe(false)
+  }, 30000)
+
+  test('7c. con el micrófono de Sigo abierto en plena cuenta, Sigo tampoco publica «escuchando»: lo decide Android', async () => {
+    await empezarLaVentana(new MotorEspia())
+    for (let i = 0; i < 8; i++) await esperar(450)
+    expect(enviados('estado').some((m) => m.escuchando === true)).toBe(false)
+    expect(enviados('estado').filter((m) => m.cuentaTerminada === true)).toHaveLength(1)
+  }, 30000)
+})
+
 describe('4. la ventana muestra el aviso y el límite con sus claves', () => {
   const salientes: Record<string, unknown>[] = []
   function aLaPagina(m: Record<string, unknown>) {

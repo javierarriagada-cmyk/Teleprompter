@@ -31,7 +31,9 @@ final class SesionVentana {
     // -9-nov-2026, orden t160u, punto 4- Qué hacer con un estado de Sigo durante la cuenta de Empezar: pasarlo a la
     // ventana, descartarlo -la sesión ya es de Android-, o, al terminar la cuenta, mandar el de Android: escuchando si
     // el micrófono ya se confirmó, esperando su confirmación, o en Pausa si su apertura falló.
-    enum Inicial { REENVIAR, DESCARTAR, ESCUCHANDO, ESPERANDO_MICRO, PAUSA }
+    // Antes -9-nov-2026, segunda vuelta-: enum Inicial { REENVIAR, DESCARTAR, ESCUCHANDO, ESPERANDO_MICRO, PAUSA }
+    // Razón: Sigo ahora también dice que canceló su cuenta: la sesión pasa a Pausa e invalida la apertura pendiente.
+    enum Inicial { REENVIAR, DESCARTAR, ESCUCHANDO, ESPERANDO_MICRO, PAUSA, CANCELADA }
     // El intento de la apertura del primer Empezar: la pide la página de Sigo -escuchar-, no una cuenta de Android.
     // Los de Seguir son 1, 2, …: una respuesta de la página que llega después de un Seguir no se confunde con ellos.
     static final long INTENTO_INICIAL = 0;
@@ -51,6 +53,11 @@ final class SesionVentana {
     // -9-nov-2026, orden t160u, punto 4- La cuenta de Empezar: si ya se vio un número, y lo que respondió Vosk a la
     // apertura de la página mientras tanto. Antes cuentaInicialVista vivía en VentanaDePrueba.Sesion.
     private boolean cuentaInicialVista, microInicialAbierto, microInicialFallo;
+    // -9-nov-2026, segunda vuelta- Cuándo termina la cuenta de Empezar según el reloj de Android: el primer número que
+    // manda Sigo, más esos segundos. -1 mientras no se vio ninguno. Así la cuenta termina aunque la página de Sigo se
+    // duerma y no mande su fin.
+    private long finCuentaInicialMs = -1;
+    long finCuentaInicialMs() { return finCuentaInicialMs; }
 
     // leidosSeg: lo ya leído sin pausas al abrir -0 en una toma nueva-.
     SesionVentana(boolean conLimite, int lecturaSeg, int avisoAntesSeg, double leidosSeg) {
@@ -94,14 +101,43 @@ final class SesionVentana {
     //         anotar(numero, "lectura empezada: cuenta Android");
     //     }
     //     return true;
-    Inicial estadoDeSigo(boolean conCuenta, boolean escuchando, boolean enPausa, long ahoraMs) {
+    // Antes -9-nov-2026, segunda vuelta-:
+    // Inicial estadoDeSigo(boolean conCuenta, boolean escuchando, boolean enPausa, long ahoraMs) {
+    //     if (cerrada || fase != Fase.CUENTA_INICIAL) return Inicial.DESCARTAR;
+    //     if (conCuenta) {
+    //         cuentaInicialVista = true;
+    //         return Inicial.REENVIAR;
+    //     }
+    //     // Sin haber visto la cuenta -dos estados juntos-, basta con que Sigo ya escuche.
+    //     if (!(cuentaInicialVista || escuchando) || enPausa) return Inicial.REENVIAR;
+    // Razón: el fin de la cuenta se deducía de que la cuenta desaparecía -también al cancelarla- o del «escuchando» de
+    // Sigo. Ahora Sigo lo dice -terminada o cancelada- y Android lo sabe además por su reloj -terminarCuentaInicial-.
+    // La forma corta, con un número cualquiera de la cuenta: la de las pruebas.
+    Inicial estadoDeSigo(boolean conCuenta, boolean terminada, boolean cancelada, long ahoraMs) {
+        return estadoDeSigo(conCuenta ? SEGUNDOS_CUENTA : 0, terminada, cancelada, ahoraMs);
+    }
+
+    // cuenta: el número que manda Sigo -0 sin número-; terminada: Sigo dice que su cuenta llegó al fin; cancelada: que
+    // la cortó. La cancelación pasa a Pausa: la apertura del micrófono que llegue después se descarta.
+    Inicial estadoDeSigo(int cuenta, boolean terminada, boolean cancelada, long ahoraMs) {
         if (cerrada || fase != Fase.CUENTA_INICIAL) return Inicial.DESCARTAR;
-        if (conCuenta) {
+        if (cancelada) {
+            pausar(ahoraMs);
+            return Inicial.CANCELADA;
+        }
+        if (cuenta > 0) {
+            if (!cuentaInicialVista) finCuentaInicialMs = ahoraMs + cuenta * 1000L;
             cuentaInicialVista = true;
             return Inicial.REENVIAR;
         }
-        // Sin haber visto la cuenta -dos estados juntos-, basta con que Sigo ya escuche.
-        if (!(cuentaInicialVista || escuchando) || enPausa) return Inicial.REENVIAR;
+        if (!terminada) return Inicial.REENVIAR;
+        return terminarCuentaInicial(ahoraMs);
+    }
+
+    // El fin de la cuenta de Empezar: lo dice Sigo o lo marca el reloj de Android -finCuentaInicialMs-, lo que llegue
+    // primero; el segundo ya no encuentra la cuenta y se descarta.
+    Inicial terminarCuentaInicial(long ahoraMs) {
+        if (cerrada || fase != Fase.CUENTA_INICIAL) return Inicial.DESCARTAR;
         if (microInicialAbierto) {
             empezarLectura(ahoraMs);
             return Inicial.ESCUCHANDO;

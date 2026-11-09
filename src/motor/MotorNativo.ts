@@ -403,11 +403,17 @@ export class MotorNativo implements MotorDeVoz {
     this.ceroAudioPerf = null
     // -proxima-version, 2026-11-08- Al cerrar el micrófono el nivel vuelve a 0.
     publicarNivelVoz(0)
-    // Sin turno -nunca empezó, o ya se detuvo- se manda el detener de siempre, sin captura, como antes.
-    if (suyos.length === 0) {
-      await Nativo.detener()
-      return
-    }
+    // Antes -9-nov-2026, segunda vuelta-:
+    // // Sin turno -nunca empezó, o ya se detuvo- se manda el detener de siempre, sin captura, como antes.
+    // if (suyos.length === 0) {
+    //   await Nativo.detener()
+    //   return
+    // }
+    // Razón: un detener sin captura cierra en Android lo que esté abierto, sea de quien sea. Repetir un cierre -stop()
+    // dos veces, o la limpieza de useASR sobre un motor que ya se detuvo y que fue reemplazado- cortaba la lectura del
+    // motor nuevo. Sin turno no hay nada de este motor abierto: no se manda nada. El APK viejo sin captura sigue
+    // cerrando con su detener de siempre desde cerrarCaptura -captura null-.
+    if (suyos.length === 0) return
     for (const turno of suyos) await this.cerrarCaptura(turno)
   }
 

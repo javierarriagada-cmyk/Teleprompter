@@ -303,14 +303,62 @@ public class SesionVentanaTest {
         assertTrue(s.escuchando());
     }
 
-    @Test public void dosEstadosJuntosEsperanElMicrofonoYSinCuentaNiEscucharSoloPasan() {
+    // Antes -9-nov-2026, segunda vuelta-:
+    // @Test public void dosEstadosJuntosEsperanElMicrofonoYSinCuentaNiEscucharSoloPasan() {
+    //     SesionVentana s = conLimite();
+    //     // Sin ver la cuenta y sin escuchar: un estado previo, pasa.
+    //     assertEquals(REENVIAR, s.estadoDeSigo(false, false, false, 0));
+    //     // En pausa tampoco termina la cuenta.
+    //     assertEquals(REENVIAR, s.estadoDeSigo(false, true, true, 100));
+    //     // La cuenta y su fin juntos: Sigo ya escucha.
+    //     assertEquals(SesionVentana.Inicial.ESPERANDO_MICRO, s.estadoDeSigo(false, true, false, 3000));
+    //     assertFalse(s.escuchando());
+    // }
+    // Razón: los dos últimos parámetros ya no son el «escuchando» y la pausa de Sigo sino su fin y su cancelación.
+    @Test public void sinNumeroNiFinSoloPasaYElFinSinNumeroEsperaElMicrofono() {
         SesionVentana s = conLimite();
-        // Sin ver la cuenta y sin escuchar: un estado previo, pasa.
+        // Sin número y sin fin: un estado previo, pasa. Que la cuenta no esté no es que terminó.
         assertEquals(REENVIAR, s.estadoDeSigo(false, false, false, 0));
-        // En pausa tampoco termina la cuenta.
-        assertEquals(REENVIAR, s.estadoDeSigo(false, true, true, 100));
-        // La cuenta y su fin juntos: Sigo ya escucha.
+        assertEquals(REENVIAR, s.estadoDeSigo(false, false, false, 100));
+        assertTrue(s.fase() == SesionVentana.Fase.CUENTA_INICIAL);
+        // El fin dicho por Sigo, aunque no se haya visto ningún número -dos estados juntos-.
         assertEquals(SesionVentana.Inicial.ESPERANDO_MICRO, s.estadoDeSigo(false, true, false, 3000));
         assertFalse(s.escuchando());
+    }
+
+    // -9-nov-2026, segunda vuelta- La cuenta cancelada en Sigo: Pausa, cero segundos, y la apertura tardía se descarta.
+    @Test public void laCuentaCanceladaEnSigoPasaAPausaYDescartaLaAperturaTardia() {
+        SesionVentana s = conLimite();
+        s.estadoDeSigo(3, false, false, 0);
+        assertEquals(SesionVentana.Inicial.CANCELADA, s.estadoDeSigo(0, false, true, 1500));
+        assertTrue(s.enPausa());
+        assertEquals(SesionVentana.Apertura.DESCARTADA, s.alAbrirMicrofono(INICIAL, true, 2000));
+        // Ni el reloj de Android ni un fin atrasado de Sigo la reviven.
+        assertEquals(SesionVentana.Inicial.DESCARTAR, s.terminarCuentaInicial(3000));
+        assertEquals(SesionVentana.Inicial.DESCARTAR, s.estadoDeSigo(0, true, false, 3000));
+        assertEquals(0, s.leidosMs(60_000));
+        // Seguir lo reintenta.
+        assertEquals(3, s.seguir());
+    }
+
+    // -9-nov-2026, segunda vuelta- El reloj de Android: el fin de la cuenta sale del primer número, sin la página de Sigo.
+    @Test public void elRelojDeAndroidTerminaLaCuentaAunqueSigoNoMandeSuFin() {
+        SesionVentana s = conLimite();
+        assertEquals(-1, s.finCuentaInicialMs());
+        s.estadoDeSigo(3, false, false, 1000);
+        assertEquals(4000, s.finCuentaInicialMs());
+        // Los números siguientes no lo corren.
+        s.estadoDeSigo(2, false, false, 2500);
+        assertEquals(4000, s.finCuentaInicialMs());
+        assertEquals(SesionVentana.Apertura.ANOTADA, s.alAbrirMicrofono(INICIAL, true, 2600));
+        // Sigo se durmió: el reloj termina la cuenta, y con el micrófono ya confirmado, escucha desde ahí.
+        assertEquals(SesionVentana.Inicial.ESCUCHANDO, s.terminarCuentaInicial(4000));
+        assertEquals(1000, s.leidosMs(5000));
+        // El fin de Sigo que llega tarde no cambia nada.
+        assertEquals(SesionVentana.Inicial.DESCARTAR, s.estadoDeSigo(0, true, false, 9000));
+        // Si el primer número que llega es el 2, el fin es dos segundos después.
+        SesionVentana t = conLimite();
+        t.estadoDeSigo(2, false, false, 500);
+        assertEquals(2500, t.finCuentaInicialMs());
     }
 }

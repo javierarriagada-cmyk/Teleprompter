@@ -975,6 +975,8 @@ final class VentanaDePrueba {
                         lim == null ? 0 : (int) Math.round(lim.optDouble("avisoAntesSeg", 0)),
                         o.optDouble("leidosSeg", 0));
                     // Antes -9-nov-2026-: cuentaInicialVista = false; -la sesión nueva empieza sin ella-.
+                    // -9-nov-2026, segunda vuelta- Un reloj de la cuenta de una sesión anterior no corre sobre esta.
+                    PRINCIPAL.removeCallbacks(finCuentaInicial);
                     anotar(numero, "contrato: límite=" + (lim == null ? "sin límite" : lim.optDouble("lecturaSeg", 0)
                         + "s aviso " + lim.optDouble("avisoAntesSeg", 0) + "s") + " leídos=" + o.optDouble("leidosSeg", 0));
                     return true;
@@ -996,29 +998,73 @@ final class VentanaDePrueba {
                 // Razón: el fin de la cuenta ponía «escuchando» y el reloj sin saber si el micrófono abrió, y el estado de
                 // Sigo -que dice escuchando- pasaba a la ventana. Ahora el fin de la cuenta lo decide estadoDeSigo con la
                 // apertura del micrófono, y lo que ve la ventana es el estado de Android.
-                boolean conCuenta = o.has("cuenta") && !o.isNull("cuenta");
-                SesionVentana.Inicial r = reglas.estadoDeSigo(conCuenta, o.optBoolean("escuchando", false),
-                    o.optBoolean("enPausa", false), SystemClock.elapsedRealtime());
+                // Antes -9-nov-2026, segunda vuelta-:
+                // boolean conCuenta = o.has("cuenta") && !o.isNull("cuenta");
+                // SesionVentana.Inicial r = reglas.estadoDeSigo(conCuenta, o.optBoolean("escuchando", false),
+                //     o.optBoolean("enPausa", false), SystemClock.elapsedRealtime());
+                // Razón: el «escuchando» de Sigo ya no cuenta, y la cuenta sin número no es el fin: Sigo lo dice
+                // -cuentaTerminada o cuentaCancelada-. Con el primer número, Android pone su propio reloj del fin.
+                int cuenta = o.has("cuenta") && !o.isNull("cuenta") ? Math.max(0, o.optInt("cuenta", 0)) : 0;
+                boolean primerNumero = cuenta > 0 && reglas.finCuentaInicialMs() < 0;
+                SesionVentana.Inicial r = reglas.estadoDeSigo(cuenta, o.optBoolean("cuentaTerminada", false),
+                    o.optBoolean("cuentaCancelada", false), SystemClock.elapsedRealtime());
+                if (primerNumero && reglas.finCuentaInicialMs() >= 0) {
+                    PRINCIPAL.removeCallbacks(finCuentaInicial);
+                    PRINCIPAL.postDelayed(finCuentaInicial, Math.max(0, reglas.finCuentaInicialMs() - SystemClock.elapsedRealtime()));
+                }
+                return alFinDeLaCuentaInicial(r, "Sigo");
+            } catch (Exception e) {
+                return true;
+            }
+        }
+
+        // -9-nov-2026, segunda vuelta- El reloj de Android para el fin de la cuenta de Empezar: si la página de Sigo se
+        // durmió y no mandó su fin, la cuenta termina igual -y si ya terminó, esto se descarta-.
+        final Runnable finCuentaInicial = new Runnable() {
+            @Override public void run() {
+                if (!vigente()) return;
+                alFinDeLaCuentaInicial(reglas.terminarCuentaInicial(SystemClock.elapsedRealtime()), "reloj de Android");
+            }
+        };
+
+        // Lo que se hace con cada respuesta de estadoDeSigo o del reloj. true: el estado de Sigo pasa a la ventana.
+        boolean alFinDeLaCuentaInicial(SesionVentana.Inicial r, String quien) {
+            {
                 switch (r) {
                     case DESCARTAR:
-                        anotar(numero, "estado de Sigo descartado: la sesión la manda Android");
+                        // Antes -9-nov-2026, segunda vuelta-: anotar(numero, "estado de Sigo descartado: la sesión la manda Android");
+                        // Razón: ahora también lo dice el reloj de Android: el registro nombra quién terminó la cuenta.
+                        anotar(numero, "estado de Sigo descartado: la sesión la manda Android -" + quien + "-");
                         return false;
                     case ESCUCHANDO:
-                        anotar(numero, "lectura empezada: cuenta de Sigo terminada y micrófono confirmado");
+                        PRINCIPAL.removeCallbacks(finCuentaInicial);
+                        // Antes -9-nov-2026, segunda vuelta-: anotar(numero, "lectura empezada: cuenta de Sigo terminada y micrófono confirmado");
+                        // Razón: ahora también lo dice el reloj de Android: el registro nombra quién terminó la cuenta.
+                        anotar(numero, "lectura empezada: cuenta de Sigo terminada y micrófono confirmado -" + quien + "-");
                         enviarEstado();
                         return false;
                     case ESPERANDO_MICRO:
-                        anotar(numero, "cuenta de Sigo terminada: se espera la confirmación del micrófono");
+                        PRINCIPAL.removeCallbacks(finCuentaInicial);
+                        // Antes -9-nov-2026, segunda vuelta-: anotar(numero, "cuenta de Sigo terminada: se espera la confirmación del micrófono");
+                        // Razón: ahora también lo dice el reloj de Android: el registro nombra quién terminó la cuenta.
+                        anotar(numero, "cuenta de Sigo terminada: se espera la confirmación del micrófono -" + quien + "-");
                         enviarEstado();
                         return false;
                     case PAUSA:
+                        PRINCIPAL.removeCallbacks(finCuentaInicial);
                         microNoAbrio("la apertura del primer Empezar había fallado");
+                        return false;
+                    case CANCELADA:
+                        // -9-nov-2026, segunda vuelta- Sigo canceló su cuenta: Pausa, y si la página alcanzó a abrir algo de
+                        // esta sesión se cierra -la marca de pausa también impide que lo abra después-.
+                        PRINCIPAL.removeCallbacks(finCuentaInicial);
+                        VoskNativoPlugin.pausarParaVentana(numero, "cuenta de Empezar cancelada en Sigo");
+                        enviarEstado();
+                        anotar(numero, "cuenta de Empezar cancelada en Sigo: Pausa");
                         return false;
                     default:
                         return true;
                 }
-            } catch (Exception e) {
-                return true;
             }
         }
 
@@ -1050,6 +1096,8 @@ final class VentanaDePrueba {
         void pausarEnAndroid(String motivo) {
             if (!vigente()) return;
             PRINCIPAL.removeCallbacks(pasoCuenta);
+            // -9-nov-2026, segunda vuelta- También el reloj del fin de la cuenta de Empezar.
+            PRINCIPAL.removeCallbacks(finCuentaInicial);
             boolean cambio = reglas.pausar(SystemClock.elapsedRealtime());
             VoskNativoPlugin.pausarParaVentana(numero, motivo);
             if (cambio) enviarEstado();
@@ -1221,7 +1269,9 @@ final class VentanaDePrueba {
             // -09-11-2026- Lo que queda para la vuelta a Sigo, y la cuenta de Seguir no sigue después de cerrar.
             ultimoEstadoSesion = estadoDeLaSesion(false);
             cierre.cerrar(numero, motivo, reglas, SystemClock.elapsedRealtime(), new CierreDeSesion.Acciones() {
-                @Override public void cancelarCuenta() { PRINCIPAL.removeCallbacks(pasoCuenta); }
+                // Antes -9-nov-2026, segunda vuelta-: @Override public void cancelarCuenta() { PRINCIPAL.removeCallbacks(pasoCuenta); }
+                // Razón: también el reloj del fin de la cuenta de Empezar.
+                @Override public void cancelarCuenta() { PRINCIPAL.removeCallbacks(pasoCuenta); PRINCIPAL.removeCallbacks(finCuentaInicial); }
                 @Override public void liberarMicrofono(long sesion, String m) { VoskNativoPlugin.liberarDeVentana(sesion, m); }
                 @Override public void quitarVentanas(String m) { Sesion.this.quitarVentanas(m); }
             });

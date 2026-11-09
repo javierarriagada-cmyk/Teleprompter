@@ -148,4 +148,38 @@ describe('MotorNativo.detener solo detiene lo suyo', () => {
     expect(n.estado.detenidos).toEqual([])
     expect(n.estado.oyentes.size).toBe(0)
   })
+
+  // -9-nov-2026, segunda vuelta- El recorrido normal de Leer y Grabar, y un cierre repetido.
+  test('Leer o Grabar normal: el detener cierra su captura y suelta sus oyentes; repetido, no manda nada', async () => {
+    const motor = new MotorNativo()
+    await motor.iniciar({ lang: 'es-ES' })
+    expect(n.estado.oyentes.size).toBe(4)
+    await motor.detener()
+    expect(n.estado.detenidos).toEqual([{ captura: 1 }])
+    expect(n.estado.oyentes.size).toBe(0)
+    // Pausa y Seguir: una lectura nueva del mismo motor, su propia captura.
+    await motor.iniciar({ lang: 'es-ES' })
+    await motor.detener()
+    expect(n.estado.detenidos).toEqual([{ captura: 1 }, { captura: 2 }])
+    // El cierre repetido -stop() dos veces, o la limpieza del hook después de stop()- no manda un detener a ciegas.
+    await motor.detener()
+    await motor.detener()
+    expect(n.estado.detenidos).toEqual([{ captura: 1 }, { captura: 2 }])
+  })
+
+  test('el cierre repetido de un motor viejo no corta la lectura del motor nuevo', async () => {
+    // useASR crea un motor nuevo al cambiar de motor y, al desmontarse, detiene el viejo otra vez.
+    const viejo = new MotorNativo()
+    await viejo.iniciar({ lang: 'es-ES' })
+    await viejo.detener()
+    const nuevo = new MotorNativo()
+    const oidos: string[] = []
+    nuevo.onParcial((e) => oidos.push(e.texto))
+    await nuevo.iniciar({ lang: 'es-ES' })
+    await viejo.detener()
+    // Sin un detener sin captura -que en Android cierra lo que haya abierto-.
+    expect(n.estado.detenidos).toEqual([{ captura: 1 }])
+    parciales('sigue')
+    expect(oidos).toEqual(['sigue'])
+  })
 })
