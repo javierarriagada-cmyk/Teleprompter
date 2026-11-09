@@ -1321,7 +1321,11 @@ export default function TeleprompterView({
     )
   }
 
-  const textoSobreImagen = camaraEncendida && fondoToma === 'detras'
+  // PROTOTIPO DE LA VENTANA FLOTANTE -revisión del 957fc97, 08-11-2026-. Sobre la imagen de otra app la lectura
+  // va igual que con la cámara de Sigo detrás: sin el velo ni la banda de Leer, con el panel donde se lee y el
+  // halo E -B16, tarea 82-. Con solo la clase del halo, el velo de Leer tapaba la cámara arriba y abajo.
+  // Antes: const textoSobreImagen = camaraEncendida && fondoToma === 'detras'
+  const textoSobreImagen = (camaraEncendida && fondoToma === 'detras') || sobreImagenAjena
 
   // LA COLUMNA ENTRE LOS RIELES -tarea 82, A3 y A5, 29-09-2026-. En el teléfono de lado el relleno
   // lateral no es marginPercent: es el ancho del riel más 28 de aire -20 con el recuadro-, y del

@@ -17,9 +17,15 @@ public class AccesibilidadDePrueba extends AccessibilityService {
         ventanas = (WindowManager) getSystemService(WINDOW_SERVICE);
         vigente = this;
         VentanaDePrueba.anotar(VentanaDePrueba.numero(), "accesibilidad conectada instancia=" + System.identityHashCode(this));
-        boolean solo = VentanaDePrueba.intentarTraerSigo(this);
-        VentanaDePrueba.marcarVolvioSolo(solo);
-        VentanaDePrueba.anotar(VentanaDePrueba.numero(), "volver solo=" + solo);
+        // Antes -957fc97-: se traía Sigo siempre, también al encender el teléfono. Ahora solo si la persona
+        // viene de «Ir a activarlo» -VentanaDePrueba.tomarEsperandoActivacion-.
+        if (VentanaDePrueba.tomarEsperandoActivacion()) {
+            boolean solo = VentanaDePrueba.intentarTraerSigo(this);
+            VentanaDePrueba.marcarVolvioSolo(solo);
+            VentanaDePrueba.anotar(VentanaDePrueba.numero(), "volver solo=" + solo);
+        } else {
+            VentanaDePrueba.anotar(VentanaDePrueba.numero(), "conectada sin venir de la hoja: Sigo no se trae");
+        }
     }
     @Override public void onAccessibilityEvent(AccessibilityEvent evento) {}
     @Override public void onInterrupt() {}

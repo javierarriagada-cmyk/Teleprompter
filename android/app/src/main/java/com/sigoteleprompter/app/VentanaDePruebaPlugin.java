@@ -46,6 +46,7 @@ public class VentanaDePruebaPlugin extends Plugin {
                 }
                 VentanaDePrueba.marcarPaginaAjustes(pagina);
                 VentanaDePrueba.marcarVolvioSolo(false);
+                VentanaDePrueba.marcarEsperandoActivacion(true);
                 VentanaDePrueba.anotar(VentanaDePrueba.numero(), "ajustes de accesibilidad página=" + pagina);
                 JSObject r = new JSObject();
                 r.put("pagina", pagina);

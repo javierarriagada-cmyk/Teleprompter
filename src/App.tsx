@@ -4317,16 +4317,33 @@ export default function App({ motor, repoOverride }: AppProps) {
               <>
                 <div className="flotante-previa">
                   <div className="flotante-previa-mitades" aria-hidden="true" />
+                  {/* La muestra es la lectura de la ventana -la orden: no un dibujo aparte-. Antes -957fc97-: un div con
+                      el texto de los bloques unido, sin formato, y la letra en var(--fuente-serif) y var(--fuente-sans),
+                      que no existen: salía con la letra del sistema. */}
                   <div
-                    className="flotante-previa-lectura lectura-sobre-imagen"
-                    style={{
-                      background: colorConAlfa(colorFondo, 1 - transparenciaFlotante / 100),
-                      color: colorLetra,
-                      fontSize: fontSizeFlotante,
-                      fontFamily: tipoFuente === 'serif' ? 'var(--fuente-serif, serif)' : 'var(--fuente-sans, sans-serif)'
-                    }}
+                    className="flotante-previa-lectura"
+                    style={{ background: colorConAlfa(colorFondo, 1 - transparenciaFlotante / 100) }}
                   >
-                    {(guionActual?.bloques || []).map(b => b.texto || '').join(' ').trim() || '…'}
+                    {guionActual && (
+                      <TeleprompterView
+                        script={guionActual}
+                        currentBlockIndex={0}
+                        currentLineIndex={0}
+                        currentWordIndex={0}
+                        fontSize={fontSizeFlotante}
+                        marginPercent={marginPercent}
+                        lineasZona={lineasZona}
+                        anclajeZona={anclajeZona}
+                        columnaAngosta={columnaAngosta}
+                        colorFondo={colorFondo}
+                        colorLetra={colorLetra}
+                        tipoFuente={tipoFuente}
+                        estadoToma="leyendo"
+                        controlesVisibles={false}
+                        ocultarCromoDeLeer
+                        sobreImagenAjena
+                      />
+                    )}
                   </div>
                 </div>
                 <label>

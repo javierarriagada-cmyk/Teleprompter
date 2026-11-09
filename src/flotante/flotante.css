@@ -44,7 +44,16 @@ html, body, #root {
   background: color-mix(in srgb, var(--color-texto, #fff) 40%, transparent);
 }
 
+/* El asa y la esquina son <button>: sin esto el WebView les pone su caja gris y su borde. */
+.flotante-asa-hit,
+.flotante-esquina {
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+
 .flotante-asa-hit {
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;

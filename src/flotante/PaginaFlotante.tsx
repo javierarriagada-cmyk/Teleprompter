@@ -65,6 +65,10 @@ export function PaginaFlotante() {
   const [transparencia, setTransparencia] = useState(0)
   const [fontSize, setFontSize] = useState(24)
   const [aaAbierto, setAaAbierto] = useState(false)
+  // El silencio de Android llega de lo nativo como {tipo:'micro'}, no en el estado de App: va aparte para que
+  // cada estado de App no lo borre. Antes -957fc97-: se leía estado.silenciado, que App nunca manda, y el
+  // mensaje 'micro' se ignoraba: el aviso no salía nunca.
+  const [silenciado, setSilenciado] = useState(false)
   const [controlesVisibles, setControlesVisibles] = useState(true)
   const [tInicio, setTInicio] = useState<number | null>(null)
   const tokenInicialHecho = useRef(false)
@@ -111,6 +115,10 @@ export function PaginaFlotante() {
         if (e.cuenta === null && e.escuchando && !e.enPausa) {
           setTInicio((prev) => prev ?? performance.now())
         }
+        return
+      }
+      if (datos.tipo === 'micro') {
+        setSilenciado(datos.silenciado === true)
         return
       }
       if (datos.tipo === 'voz') {
@@ -291,7 +299,8 @@ export function PaginaFlotante() {
         </div>
       )}
 
-      {estado.silenciado && (
+      {/* Antes -957fc97-: {estado.silenciado && ( */}
+      {silenciado && (
         <div className="flotante-aviso-micro">{t('avisoMicrofonoQuitado')}</div>
       )}
 

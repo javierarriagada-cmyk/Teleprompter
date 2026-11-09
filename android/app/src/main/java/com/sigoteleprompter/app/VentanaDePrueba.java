@@ -71,6 +71,12 @@ final class VentanaDePrueba {
     static String paginaAjustes() { return paginaAjustes; }
     static void marcarPaginaAjustes(String p) { paginaAjustes = p == null ? "" : p; }
     static void marcarVolvioSolo(boolean v) { volvioSolo = v; }
+    // Sigo se trae al frente SOLO si la persona acaba de ir a activar el servicio desde la hoja. Sin esta
+    // marca, onServiceConnected traía Sigo cada vez que Android conectaba la accesibilidad: también al
+    // encender el teléfono o al revivir el proceso -revisión del 957fc97, 08-11-2026-.
+    private static volatile boolean esperandoActivacion;
+    static void marcarEsperandoActivacion(boolean v) { esperandoActivacion = v; }
+    static boolean tomarEsperandoActivacion() { boolean v = esperandoActivacion; esperandoActivacion = false; return v; }
 
     static boolean intentarTraerSigo(Context ctx) {
         try {
@@ -299,7 +305,10 @@ final class VentanaDePrueba {
             posicion = new WindowManager.LayoutParams(
                 dp(240), dp(180),
                 WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                // Sin foco: la ventana recibe sus toques, pero el Atrás y el teclado siguen siendo de la app que
+                // graba. 6ec9ddb la tenía; 957fc97 la sacó. Antes -957fc97-: FLAG_NOT_TOUCH_MODAL | FLAG_LAYOUT_IN_SCREEN.
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                    | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                     | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                 PixelFormat.TRANSLUCENT);
             posicion.gravity = Gravity.TOP | Gravity.START;
