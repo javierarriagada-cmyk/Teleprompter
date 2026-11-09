@@ -380,6 +380,136 @@ describe('5. desde Grabar, la ventana espera el cierre nativo de la cámara', ()
   }, 30000)
 })
 
+// -9-nov-2026, orden t160u, punto 1- Cancelar durante el guardado de preferencias: la primera espera de Empezar, antes
+// del apagado de la cámara -Grabar- o de la voz y la apertura -Leer-. Cancelada, cero llamadas a abrir; sin cancelar, una.
+describe('6. cancelar la preparación durante el guardado de preferencias', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    h.oyente = null
+    h.encendida = false
+    h.camaraAlAbrir = null
+    h.orden = []
+    h.estadoSesion = { hay: false }
+    h.errorApagado = null
+    vi.mocked(VentanaDePrueba.enviar).mockClear()
+    vi.mocked(VentanaDePrueba.abrir).mockClear()
+    vi.mocked(VentanaDePrueba.guardarPreferencias).mockClear()
+    vi.mocked(empezarGrabacionVideo).mockClear()
+    vi.mocked(apagarCamara).mockClear()
+    vi.spyOn(console, 'info').mockImplementation(() => {})
+  })
+  afterEach(() => {
+    cleanup()
+    vi.restoreAllMocks()
+  })
+
+  // «Ventana flotante», Empezar y el Empezar de la preparación, con guardarPreferencias pendiente.
+  async function empezarConGuardadoPendiente(tarjeta: 'btn-leer-tarjeta' | 'btn-grabar-tarjeta') {
+    await abrirListo(tarjeta)
+    const guardado = diferido<void>()
+    vi.mocked(VentanaDePrueba.guardarPreferencias).mockImplementationOnce(() => guardado.promesa)
+    fireEvent.click(await screen.findByTestId('selector-flotante'))
+    await esperar(30)
+    fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+    await esperar(80)
+    const hoja = document.querySelector('.hoja-flotante-preparacion') as HTMLElement
+    expect(hoja).not.toBeNull()
+    fireEvent.click(within(hoja).getByRole('button', { name: es.empezar }))
+    await esperar(30)
+    expect(VentanaDePrueba.guardarPreferencias).toHaveBeenCalledTimes(1)
+    return guardado
+  }
+  const cancelar = async () => {
+    fireEvent.click(document.querySelector('.capa-hoja-flotante')!)
+    await esperar(50)
+    expect(document.querySelector('.hoja-flotante-preparacion')).toBeNull()
+  }
+  const terminarGuardadoYEsperar = async (g: ReturnType<typeof diferido<void>>) => {
+    await act(async () => { g.resolver() })
+    // Más que la cuenta de Empezar entera.
+    for (let i = 0; i < 8; i++) await esperar(450)
+  }
+
+  test('6a. desde Leer, cancelada durante el guardado: cero aperturas y Sigo queda en LISTO', async () => {
+    const guardado = await empezarConGuardadoPendiente('btn-leer-tarjeta')
+    await cancelar()
+    await terminarGuardadoYEsperar(guardado)
+    expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
+    expect(screen.getByTestId('btn-empezar-toma')).toBeTruthy()
+    expect(document.querySelector('.hoja-flotante-preparacion')).toBeNull()
+  }, 30000)
+
+  test('6b. desde Leer, sin cancelar: una apertura', async () => {
+    const guardado = await empezarConGuardadoPendiente('btn-leer-tarjeta')
+    await terminarGuardadoYEsperar(guardado)
+    expect(VentanaDePrueba.abrir).toHaveBeenCalledTimes(1)
+  }, 30000)
+
+  test('6c. desde Grabar, cancelada durante el guardado: cero aperturas, sin apagar la cámara', async () => {
+    const guardado = await empezarConGuardadoPendiente('btn-grabar-tarjeta')
+    await cancelar()
+    await terminarGuardadoYEsperar(guardado)
+    expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
+    expect(apagarCamara).not.toHaveBeenCalled()
+    expect(h.encendida).toBe(true)
+    expect(document.querySelector('.punto-grabar')).not.toBeNull()
+    expect(empezarGrabacionVideo).not.toHaveBeenCalled()
+  }, 30000)
+
+  test('6d. desde Grabar, sin cancelar: una apertura, con la cámara ya apagada', async () => {
+    const guardado = await empezarConGuardadoPendiente('btn-grabar-tarjeta')
+    await terminarGuardadoYEsperar(guardado)
+    expect(VentanaDePrueba.abrir).toHaveBeenCalledTimes(1)
+    expect(h.camaraAlAbrir).toBe(false)
+    expect(apagarCamara).toHaveBeenCalledTimes(1)
+  }, 30000)
+
+  test('6e. desde Leer, el guardado viejo de un intento cancelado no interfiere con el siguiente: una apertura', async () => {
+    const viejo = await empezarConGuardadoPendiente('btn-leer-tarjeta')
+    await cancelar()
+    fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+    await esperar(80)
+    const hoja = document.querySelector('.hoja-flotante-preparacion') as HTMLElement
+    expect(hoja).not.toBeNull()
+    fireEvent.click(within(hoja).getByRole('button', { name: es.empezar }))
+    await terminarGuardadoYEsperar(viejo)
+    expect(VentanaDePrueba.abrir).toHaveBeenCalledTimes(1)
+  }, 30000)
+
+  // Después del guardado, la otra espera antes de abrir: el permiso del micrófono -pedirMicrofono- pendiente.
+  class MotorConPermisoPendiente extends MotorEspia {
+    permiso = diferido<boolean>()
+    pedidos = 0
+    pedirMicrofono() { this.pedidos++; return this.permiso.promesa }
+  }
+
+  for (const tarjeta of ['btn-leer-tarjeta', 'btn-grabar-tarjeta'] as const) {
+    test(`6f. ${tarjeta === 'btn-leer-tarjeta' ? 'desde Leer' : 'desde Grabar, con la cámara ya cerrada'}, cancelada con el permiso del micrófono pendiente: cero aperturas y ninguna lectura`, async () => {
+      const motor = new MotorConPermisoPendiente()
+      await abrirListo(tarjeta, motor)
+      fireEvent.click(await screen.findByTestId('selector-flotante'))
+      await esperar(30)
+      fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+      await esperar(80)
+      fireEvent.click(within(document.querySelector('.hoja-flotante-preparacion') as HTMLElement).getByRole('button', { name: es.empezar }))
+      await esperar(300)
+      expect(motor.pedidos).toBe(1)
+      await cancelar()
+      await act(async () => { motor.permiso.resolver(true) })
+      for (let i = 0; i < 8; i++) await esperar(450)
+      expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
+      expect(motor.iniciados).toBe(0)
+      expect(screen.getByTestId('btn-empezar-toma')).toBeTruthy()
+      if (tarjeta === 'btn-grabar-tarjeta') {
+        // Vuelve el LISTO de Grabar, con su cámara.
+        expect(document.querySelector('.punto-grabar')).not.toBeNull()
+        expect(h.encendida).toBe(true)
+        expect(empezarGrabacionVideo).not.toHaveBeenCalled()
+      }
+    }, 30000)
+  }
+})
+
 describe('4. la ventana muestra el aviso y el límite con sus claves', () => {
   const salientes: Record<string, unknown>[] = []
   function aLaPagina(m: Record<string, unknown>) {

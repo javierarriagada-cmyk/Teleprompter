@@ -1837,6 +1837,9 @@ export default function App({ motor, repoOverride }: AppProps) {
       if (entrandoFlotanteRef.current || (preparandoFlotanteRef.current && !intencionFlotanteRef.current)) return
       entrandoFlotanteRef.current = intencionFlotanteRef.current !== null
     }
+    // -9-nov-2026, orden t160u, punto 1, segunda vuelta- El intento de la ventana con que se llega, si se llega con la
+    // intención: antes de abrir se comprueba que siga vigente -la hoja pudo cerrarse durante el micrófono o la voz-.
+    const intentoFlotante = HERRAMIENTAS && intencionFlotanteRef.current ? intentoEnEsperaFlotanteRef.current : null
     try {
     if (estadoToma === 'leyendo') return
     hapticaToqueMedio()
@@ -1932,9 +1935,17 @@ export default function App({ motor, repoOverride }: AppProps) {
     // -tarea 104- La voz ya está: si la de silencio había quedado sin conexión, que se entere -así el
     // aviso de abajo no vuelve al volver a LISTO-.
     vozEnSilencioRef.current?.reintentar(idiomaDeVoz(langMotor))
+    // -9-nov-2026, orden t160u, punto 1, segunda vuelta- Cancelada mientras tanto: ni ventana ni lectura aquí. Sin esto,
+    // con la intención ya soltada, seguía de largo y empezaba la lectura dentro de Sigo.
+    if (intentoFlotante !== null && intentoFlotante !== intentoApagadoFlotanteRef.current) {
+      console.info('SigoFlotante', `apertura cancelada antes de abrir la ventana intento=${intentoFlotante}`)
+      return
+    }
     if (HERRAMIENTAS && Capacitor.isNativePlatform() && intencionFlotanteRef.current) {
       const opciones = intencionFlotanteRef.current
       intencionFlotanteRef.current = null
+      // -9-nov-2026, segunda vuelta- Desde aquí ya no se cancela: se abre -o falla- y la hoja se cierra sola.
+      intentoEnEsperaFlotanteRef.current = null
       try {
         const abierta = await VentanaDePrueba.abrir(opciones)
         estadoFlotanteRef.current = { vioCuenta: false, terminada: false }
@@ -2061,6 +2072,9 @@ export default function App({ motor, repoOverride }: AppProps) {
       intentoEnEsperaFlotanteRef.current = null
       intentoApagadoFlotanteRef.current++
       soltarIntencionFlotante()
+      // -9-nov-2026, segunda vuelta- Desde Grabar con la cámara ya cerrada -se salió de Grabar para abrir la ventana y
+      // se esperaba la voz o el micrófono-: se vuelve al LISTO de Grabar, y el efecto de la cámara la enciende.
+      if (origenFlotanteRef.current === 'grabar' && !conCamara) setConCamara(true)
       origenFlotanteRef.current = null
     }
     setHojaFlotante(h => siguienteHojaFlotante(h, { tipo: 'desistir' }))
@@ -2096,6 +2110,13 @@ export default function App({ motor, repoOverride }: AppProps) {
   }
 
   async function empezarDesdeHojaFlotante() {
+    // EL INTENTO NACE CON EL TOQUE -9-nov-2026, orden t160u, punto 1-. Antes el número se asignaba recién al apagar la
+    // cámara, después de guardarPreferencias, y desde Leer no había número: cerrar la hoja durante el guardado -o
+    // durante la voz- dejaba la intención vigente y la ventana se abría igual. Ahora el intento se anota aquí, antes de
+    // la primera espera; desistirDeHojaFlotante lo invalida, y se comprueba antes de apagar la cámara -aquí- y antes
+    // de abrir la ventana -handleEmpezarDesdeListo-.
+    const intento = ++intentoApagadoFlotanteRef.current
+    intentoEnEsperaFlotanteRef.current = intento
     intencionFlotanteRef.current = { servicio: true, ventana: true }
     try {
       await VentanaDePrueba.guardarPreferencias({
@@ -2104,6 +2125,10 @@ export default function App({ motor, repoOverride }: AppProps) {
       })
     } catch (e) {
       console.warn('SigoFlotante', 'no se pudieron guardar preferencias', e)
+    }
+    if (intento !== intentoApagadoFlotanteRef.current) {
+      console.info('SigoFlotante', `preferencias guardadas para el intento ${intento}, ya cancelado: no se sigue`)
+      return
     }
     // -09-11-2026- Desde Grabar: primero la cámara y su vista previa se apagan por el camino de salir de Grabar
     // -conCamara en false, el efecto de la cámara-, y con eso Empezar sigue como en Leer -ver el efecto de abajo-.
@@ -2142,18 +2167,24 @@ export default function App({ motor, repoOverride }: AppProps) {
       //   apagandoParaFlotanteRef.current = false
       // }
       // Razón: ver cierreCamaraFlotanteRef y desistirDeHojaFlotante.
-      const intento = ++intentoApagadoFlotanteRef.current
-      intentoEnEsperaFlotanteRef.current = intento
+      // Antes -9-nov-2026, orden t160u, punto 1, segunda vuelta-:
+      // const intento = ++intentoApagadoFlotanteRef.current
+      // intentoEnEsperaFlotanteRef.current = intento
+      // Razón: el intento ya nace con el toque, arriba, antes de guardarPreferencias.
       origenFlotanteRef.current = 'grabar'
       console.info('SigoFlotante', `desde Grabar: se apaga la cámara y se espera su cierre antes de abrir la ventana intento=${intento}`)
       const { cerrada, fallo } = await esperarCierreParaFlotante()
-      if (intentoEnEsperaFlotanteRef.current === intento) intentoEnEsperaFlotanteRef.current = null
+      // Antes -9-nov-2026, orden t160u, punto 1, segunda vuelta-:
+      // if (intentoEnEsperaFlotanteRef.current === intento) intentoEnEsperaFlotanteRef.current = null
+      // Razón: el intento sigue esperando hasta abrir la ventana -la voz, el micrófono-: se suelta al abrir, o aquí
+      // abajo si la cámara no se cerró.
       if (intento !== intentoApagadoFlotanteRef.current) {
         console.info('SigoFlotante', `desde Grabar: cierre de la cámara ${cerrada ? 'hecho' : 'fallido'} después de salir; no se abre`)
         return
       }
       if (!cerrada) {
         console.warn('SigoFlotante', 'desde Grabar: la cámara no se cerró; la ventana no se abre', fallo)
+        intentoEnEsperaFlotanteRef.current = null
         soltarIntencionFlotante()
         origenFlotanteRef.current = null
         setCamaraActiva(camaraEncendida())
