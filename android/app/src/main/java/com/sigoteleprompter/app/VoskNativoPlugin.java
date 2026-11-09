@@ -176,6 +176,27 @@ public class VoskNativoPlugin extends Plugin {
     private Oido oido = null;
     private PluginCall llamadaIniciar = null;
 
+    // PROTOTIPO DE LA VENTANA FLOTANTE -09-11-2026-. Mientras la ventana está abierta, la sesión la manda Android
+    // -VentanaDePrueba, SesionVentana-: Pausa cierra el micrófono aquí y Seguir lo vuelve a abrir con los MISMOS
+    // parámetros del último escuchar de la página. La página de Sigo queda atrás y deja de correr; por eso
+    // VentanaDePrueba llama directo a pausarParaVentana y reanudarParaVentana, en el hilo de los plugins
+    // -bridge.execute-, en fila con escuchar y detener. Fuera de la ventana nada de esto se usa.
+    static volatile VoskNativoPlugin instancia;
+    private String ultimaFuente = "VOICE_RECOGNITION";
+    private int ultimaFrecuenciaMic = (int) FRECUENCIA;
+    private boolean ultimoGuardarAudio = false;
+    // La sesión de la ventana con que se abrió este oído -0 si se abrió sin ventana-. pausarParaVentana solo cierra
+    // el oído de su sesión: nunca una lectura de Leer que no sea la flotante.
+    private long sesionVentanaDelOido = 0;
+    // La sesión de la ventana que dejó el micrófono en pausa: mientras siga abierta, un escuchar de la página -que
+    // despierta tarde- no lo vuelve a abrir por su cuenta.
+    private long pausaDeVentana = 0;
+
+    @Override
+    public void load() {
+        instancia = this;
+    }
+
     @PluginMethod
     public void disponible(PluginCall call) {
         JSObject r = new JSObject();
@@ -426,7 +447,30 @@ public class VoskNativoPlugin extends Plugin {
             call.resolve();
             return;
         }
+        // -prototipo flotante, 09-11-2026- Los parámetros de este escuchar, para que Seguir en la ventana abra igual.
+        String fuentePedida = call.getString("fuente", "VOICE_RECOGNITION");
+        int frecuenciaPedida = call.getInt("frecuenciaMic", (int) FRECUENCIA);
+        boolean guardarPedido = Boolean.TRUE.equals(call.getBoolean("guardarAudio", false));
+        ultimaFuente = fuentePedida;
+        ultimaFrecuenciaMic = frecuenciaPedida;
+        ultimoGuardarAudio = guardarPedido;
+        if (pausaDeVentana != 0 && VentanaDePrueba.esActual(pausaDeVentana)) {
+            VentanaDePrueba.anotar(pausaDeVentana, "escuchar de la página ignorado: la ventana está en pausa");
+            call.resolve();
+            return;
+        }
         try {
+            call.resolve(abrirOido(fuentePedida, frecuenciaPedida, guardarPedido));
+        } catch (Exception e) {
+            call.reject("No se pudo abrir el microfono".equals(e.getMessage()) ? e.getMessage() : "No se pudo abrir el microfono: " + e.getMessage());
+        }
+    }
+
+    // Antes -2026-11-09-: todo esto vivía dentro de arrancarServicio(PluginCall call), con try/catch y call.reject /
+    // call.resolve. Motivo: reanudarParaVentana abre el oído sin una llamada de la página. Las líneas que cambiaron
+    // van comentadas donde estaban.
+    private JSObject abrirOido(String fuente, int frecuenciaMic, boolean guardarAudio) throws Exception {
+        {
             Recognizer reconocedor = new Recognizer(modelo, FRECUENCIA);
             // EL TIEMPO DE CADA PALABRA -24-09-2026-. Vosk sabe en que segundo del
             // audio empieza y termina cada palabra que reconoce, pero solo lo dice si
@@ -450,8 +494,9 @@ public class VoskNativoPlugin extends Plugin {
             // graba con su propia fuente y a 44,1 o 48 kHz, y Android le cuelga este
             // pedido a ese flujo. Para probar cual combinacion evita esa espera se
             // puede pedir otra fuente y leer a 48 kHz: se baja a 16 kHz aca.
-            String fuente = call.getString("fuente", "VOICE_RECOGNITION");
-            int frecuenciaMic = call.getInt("frecuenciaMic", (int) FRECUENCIA);
+            // Antes -2026-11-09-: String fuente = call.getString("fuente", "VOICE_RECOGNITION");
+            // Antes -2026-11-09-: int frecuenciaMic = call.getInt("frecuenciaMic", (int) FRECUENCIA);
+            // Motivo: llegan como parámetros -de la página o de los guardados para la ventana-.
             int factor = Math.max(1, Math.round(frecuenciaMic / FRECUENCIA));
             int minimo = AudioRecord.getMinBufferSize(
                 frecuenciaMic, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
@@ -466,8 +511,8 @@ public class VoskNativoPlugin extends Plugin {
             if (grabadora.getState() != AudioRecord.STATE_INITIALIZED) {
                 grabadora.release();
                 reconocedor.close();
-                call.reject("No se pudo abrir el microfono");
-                return;
+                // Antes -2026-11-09-: call.reject("No se pudo abrir el microfono"); return;
+                throw new IllegalStateException("No se pudo abrir el microfono");
             }
             grabadora.startRecording();
             // El cero de esos tiempos es el arranque del audio: se anota el reloj
@@ -475,7 +520,8 @@ public class VoskNativoPlugin extends Plugin {
             long inicioEpochMs = System.currentTimeMillis();
             String rutaAudio = null;
             OutputStream salida = null;
-            if (Boolean.TRUE.equals(call.getBoolean("guardarAudio", false))) {
+            // Antes -2026-11-09-: if (Boolean.TRUE.equals(call.getBoolean("guardarAudio", false))) {
+            if (guardarAudio) {
                 File archivo = archivoDeAudio(inicioEpochMs);
                 if (archivo != null) {
                     salida = new BufferedOutputStream(new FileOutputStream(archivo), 64 * 1024);
@@ -484,6 +530,7 @@ public class VoskNativoPlugin extends Plugin {
             }
             oido = new Oido(grabadora, reconocedor, salida, muestrasPorTrozo, factor,
                 inicioEpochMs, fuenteDeAudio(fuente), frecuenciaMic);
+            sesionVentanaDelOido = VentanaDePrueba.numero();
             Thread hilo = new Thread(oido, "sigo-oido");
             oido.hilo = hilo;
             hilo.start();
@@ -493,10 +540,55 @@ public class VoskNativoPlugin extends Plugin {
             r.put("fuente", fuente);
             r.put("frecuenciaMic", frecuenciaMic);
             if (rutaAudio != null) r.put("rutaAudio", rutaAudio);
-            call.resolve(r);
-        } catch (Exception e) {
-            call.reject("No se pudo abrir el microfono: " + e.getMessage());
+            // Antes -2026-11-09-: call.resolve(r);
+            //     } catch (Exception e) {
+            //         call.reject("No se pudo abrir el microfono: " + e.getMessage());
+            //     }
+            // Motivo: el rechazo lo hace arrancarServicio, con los mismos textos.
+            return r;
         }
+    }
+
+    // LA PAUSA DE LA VENTANA FLOTANTE -09-11-2026-. Cierra el oído como detener -pararOido- si es el de esa sesión.
+    // También la X: el micrófono se apaga al tiro, sin esperar a que despierte la página de Sigo.
+    static void pausarParaVentana(long sesion, String motivo) {
+        VoskNativoPlugin p = instancia;
+        if (p == null || p.getBridge() == null) return;
+        p.getBridge().execute(() -> {
+            if (p.oido != null && p.sesionVentanaDelOido != sesion) {
+                VentanaDePrueba.anotar(sesion, "pausa de la ventana ignorada: el oído es de la sesión " + p.sesionVentanaDelOido);
+                return;
+            }
+            // Con la ventana abierta, la pausa también vale para un escuchar que llegue después -la página de Sigo
+            // terminando su cuenta de Empezar-. Con la X ya cerró: no queda nada que guardar.
+            if (VentanaDePrueba.esActual(sesion)) p.pausaDeVentana = sesion;
+            boolean habia = p.oido != null;
+            p.pararOido();
+            VentanaDePrueba.anotar(sesion, "micrófono cerrado: " + motivo + (habia ? "" : " -ya estaba cerrado-"));
+        });
+    }
+
+    // Seguir en la ventana, al terminar la cuenta 3-2-1: el oído con los parámetros del último escuchar. Si la ventana
+    // ya se cerró -la X en plena cuenta, volver- o no estaba en pausa, no se abre nada.
+    static void reanudarParaVentana(long sesion) {
+        VoskNativoPlugin p = instancia;
+        if (p == null || p.getBridge() == null) return;
+        p.getBridge().execute(() -> {
+            if (!VentanaDePrueba.esActual(sesion) || p.pausaDeVentana != sesion) {
+                VentanaDePrueba.anotar(sesion, "reanudar ignorado: la ventana ya no está o no estaba en pausa");
+                return;
+            }
+            p.pausaDeVentana = 0;
+            if (p.oido != null) return;
+            if (p.modelo == null) { VentanaDePrueba.anotar(sesion, "reanudar sin modelo cargado"); return; }
+            try {
+                p.abrirOido(p.ultimaFuente, p.ultimaFrecuenciaMic, p.ultimoGuardarAudio);
+                p.sesionVentanaDelOido = sesion;
+                VentanaDePrueba.anotar(sesion, "micrófono abierto de nuevo fuente=" + p.ultimaFuente + " frecuenciaMic=" + p.ultimaFrecuenciaMic);
+            } catch (Exception e) {
+                VentanaDePrueba.anotar(sesion, "no se pudo reabrir el micrófono: " + e.getMessage());
+            }
+        });
     }
 
     @PluginMethod
@@ -786,6 +878,7 @@ public class VoskNativoPlugin extends Plugin {
 
     @Override
     protected void handleOnDestroy() {
+        if (instancia == this) instancia = null;
         pararOido();
         if (modelo != null) {
             modelo.close();

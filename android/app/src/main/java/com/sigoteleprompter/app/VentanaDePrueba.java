@@ -162,10 +162,26 @@ final class VentanaDePrueba {
     // «A WebView method was called on thread 'CapacitorPlugins'» y la ventana nunca lo recibía. El contrato pasaba
     // de casualidad, porque llegaba antes de que cargara la página y se mandaba desde onPageFinished.
     // Antes: Sesion s = actual; if (s != null) s.enviar(json);
+    // Antes -2026-11-09-: if (s != null) s.enviar(json);
+    // Motivo: mientras la ventana está abierta la sesión la manda Android. Del contrato se toma el límite y, después de
+    // la cuenta de Empezar, los estados de Sigo ya no pasan -ver Sesion.deSigo-.
     static void enviarAPagina(String json) {
         PRINCIPAL.post(() -> {
             Sesion s = actual;
-            if (s != null) s.enviar(json);
+            if (s != null && s.deSigo(json)) s.enviar(json);
+        });
+    }
+
+    // EL ESTADO DE LA SESIÓN, PARA LA VUELTA A SIGO -09-11-2026-. La página de Sigo lo pide al volver: la pausa, los
+    // segundos leídos sin pausas, si llegó al límite y el marcador. Si la ventana sigue abierta se mide ahora; si ya se
+    // cerró, es lo que quedó al cerrar.
+    private static volatile JSObject ultimoEstadoSesion;
+    static void estadoSesion(java.util.function.Consumer<JSObject> responder) {
+        PRINCIPAL.post(() -> {
+            Sesion s = actual;
+            JSObject o = s != null ? s.estadoDeLaSesion(true) : ultimoEstadoSesion;
+            if (o == null) { o = new JSObject(); o.put("hay", false); }
+            responder.accept(o);
         });
     }
 
@@ -262,6 +278,14 @@ final class VentanaDePrueba {
         final ArrastreVentana arrastre = new ArrastreVentana();
         // Dónde estaba el menú de Aa respecto de la ventana al empezar: se mueve con ella, en el mismo paso.
         int menuDx, menuDy;
+        // LA SESIÓN LA MANDA ANDROID -09-11-2026-. Ver SesionVentana: la pausa, la cuenta 3-2-1 de Seguir y el límite
+        // gratis. La página de Sigo queda atrás y deja de correr al minuto: no puede ni pausar ni contar.
+        SesionVentana reglas = new SesionVentana(false, 0, 0, 0);
+        boolean cuentaInicialVista;
+        String limiteVisible = "ninguno";
+        final Runnable pasoCuenta = new Runnable() {
+            @Override public void run() { darPasoDeCuenta(); }
+        };
 
         Sesion(long n, VentanaDePruebaPlugin p, boolean servicio, AccesibilidadDePrueba a) {
             numero=n; plugin=p; contexto=p.getContext().getApplicationContext();
@@ -298,8 +322,11 @@ final class VentanaDePrueba {
             receptorPantalla = new BroadcastReceiver() {
                 @Override public void onReceive(Context c, Intent i) {
                     if (Intent.ACTION_SCREEN_OFF.equals(i.getAction()) && vigente()) {
-                        anotar(numero, "pantalla apagada: se pide pausa y se guarda el marcador token=" + ultimoToken);
-                        plugin.accion(numero, "pausa", ultimoToken);
+                        // Antes -2026-11-09-: anotar(numero, "pantalla apagada: se pide pausa y se guarda el marcador token=" + ultimoToken);
+                        // Antes -2026-11-09-: plugin.accion(numero, "pausa", ultimoToken);
+                        // Motivo: la pausa la hace Android -la página de Sigo puede estar dormida-. Al encender, no sigue sola.
+                        anotar(numero, "pantalla apagada: pausa en Android token=" + ultimoToken);
+                        pausarEnAndroid("pantalla apagada");
                     }
                 }
             };
@@ -364,7 +391,10 @@ final class VentanaDePrueba {
                 // graba. 6ec9ddb la tenía; 957fc97 la sacó. Antes -957fc97-: FLAG_NOT_TOUCH_MODAL | FLAG_LAYOUT_IN_SCREEN.
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                     | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                    | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+                    // Antes -2026-11-09-: | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+                    // Motivo: con la ventana abierta la pantalla no se apaga sola -FLAG_KEEP_SCREEN_ON-.
+                    | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                    | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
                 PixelFormat.TRANSLUCENT);
             posicion.gravity = Gravity.TOP | Gravity.START;
             aplicarTamanoInicial();
@@ -475,6 +505,8 @@ final class VentanaDePrueba {
                 // -09-11-2026- Si gira con el dedo arrastrando, el arrastre termina: se guarda donde quedó, en la
                 // orientación de antes, y la ventana toma la banda de la nueva.
                 terminarArrastre("giro", false);
+                // -09-11-2026- Si gira en plena cuenta de Seguir, la cuenta se cancela y queda en pausa.
+                if (reglas.fase() == SesionVentana.Fase.CUENTA) pausarEnAndroid("giro en la cuenta");
                 cerrarMenuAa("giro", true);
                 aplicarTamanoInicial();
                 anotar(numero, "giro: " + (ahora ? "de lado" : "de pie"));
@@ -793,15 +825,35 @@ final class VentanaDePrueba {
                     if (o.has("fontSize")) pref.put("fontSize", o.optInt("fontSize"));
                     guardarPreferencias(contexto, pref);
                     anotar(numero, "ajuste transparencia=" + o.optInt("transparencia", -1) + " fontSize=" + o.optInt("fontSize", -1));
-                } else if ("seguir".equals(tipo) || "pausa".equals(tipo) || "volver".equals(tipo) || "cerrar".equals(tipo)) {
+                // Antes -2026-11-09-:
+                // } else if ("seguir".equals(tipo) || "pausa".equals(tipo) || "volver".equals(tipo) || "cerrar".equals(tipo)) {
+                //     anotar(numero, "acción " + tipo + " token=" + ultimoToken);
+                //     plugin.accion(numero, tipo, ultimoToken);
+                //     if ("volver".equals(tipo)) {
+                //         intentarTraerSigo(contexto);
+                //         cerrar("volver");
+                //     } else if ("cerrar".equals(tipo)) {
+                //         cerrar("cerrar");
+                //     }
+                // }
+                // Motivo: Pausa y Seguir los hace Android -la página de Sigo dormía al minuto y no los recibía-; la X
+                // además apaga el micrófono al tiro; «Ver Sigo+» del límite vuelve como «Volver a Sigo».
+                } else if ("pausa".equals(tipo)) {
+                    anotar(numero, "acción pausa token=" + ultimoToken);
+                    pausarEnAndroid("botón Pausa");
+                } else if ("seguir".equals(tipo)) {
+                    anotar(numero, "acción seguir token=" + ultimoToken);
+                    seguirEnAndroid();
+                } else if ("volver".equals(tipo) || "verSigoMas".equals(tipo)) {
                     anotar(numero, "acción " + tipo + " token=" + ultimoToken);
-                    plugin.accion(numero, tipo, ultimoToken);
-                    if ("volver".equals(tipo)) {
-                        intentarTraerSigo(contexto);
-                        cerrar("volver");
-                    } else if ("cerrar".equals(tipo)) {
-                        cerrar("cerrar");
-                    }
+                    plugin.accion(numero, "volver", ultimoToken);
+                    intentarTraerSigo(contexto);
+                    cerrar(tipo);
+                } else if ("cerrar".equals(tipo)) {
+                    anotar(numero, "acción cerrar token=" + ultimoToken);
+                    VoskNativoPlugin.pausarParaVentana(numero, "X");
+                    plugin.accion(numero, "cerrar", ultimoToken);
+                    cerrar("cerrar");
                 }
             } catch (Exception e) {
                 anotar(numero, "mensaje de la página ilegible: " + e);
@@ -869,6 +921,7 @@ final class VentanaDePrueba {
                 }
                 long ahora = SystemClock.elapsedRealtime();
                 ultimoCuadro = ahora;
+                revisarLimite(ahora);
                 pintar(false);
                 if (ahora >= proximoResumen) {
                     anotar(numero, "resumen eventos=" + (eventos - resumenEventos)
@@ -885,6 +938,126 @@ final class VentanaDePrueba {
                 PRINCIPAL.postDelayed(this, 16);
             }
         };
+
+        // LO QUE MANDA SIGO A LA VENTANA, MIENTRAS ESTÁ ABIERTA -09-11-2026-. El contrato trae el límite gratis -o null
+        // con Sigo+ o velocidad fija- y los segundos ya leídos. Los estados de Sigo pasan solo en la cuenta de Empezar;
+        // el primero sin cuenta después de ella empieza la lectura que cuenta Android. Desde ahí, el estado es de Android.
+        boolean deSigo(String json) {
+            try {
+                JSONObject o = new JSONObject(json);
+                String tipo = o.optString("tipo", "");
+                if ("contrato".equals(tipo)) {
+                    JSONObject lim = o.optJSONObject("limite");
+                    reglas = new SesionVentana(lim != null,
+                        lim == null ? 0 : (int) Math.round(lim.optDouble("lecturaSeg", 0)),
+                        lim == null ? 0 : (int) Math.round(lim.optDouble("avisoAntesSeg", 0)),
+                        o.optDouble("leidosSeg", 0));
+                    cuentaInicialVista = false;
+                    anotar(numero, "contrato: límite=" + (lim == null ? "sin límite" : lim.optDouble("lecturaSeg", 0)
+                        + "s aviso " + lim.optDouble("avisoAntesSeg", 0) + "s") + " leídos=" + o.optDouble("leidosSeg", 0));
+                    return true;
+                }
+                if (!"estado".equals(tipo)) return true;
+                if (reglas.fase() != SesionVentana.Fase.CUENTA_INICIAL) {
+                    anotar(numero, "estado de Sigo descartado: la sesión la manda Android");
+                    return false;
+                }
+                boolean conCuenta = o.has("cuenta") && !o.isNull("cuenta");
+                if (conCuenta) cuentaInicialVista = true;
+                else if (cuentaInicialVista && !o.optBoolean("enPausa", false)) {
+                    reglas.empezarLectura(SystemClock.elapsedRealtime());
+                    anotar(numero, "lectura empezada: cuenta Android");
+                }
+                return true;
+            } catch (Exception e) {
+                return true;
+            }
+        }
+
+        void enviarEstado() {
+            try {
+                JSONObject msg = new JSONObject();
+                msg.put("tipo", "estado");
+                msg.put("sesion", numero);
+                int c = reglas.cuenta();
+                msg.put("cuenta", c > 0 ? (Object) c : JSONObject.NULL);
+                msg.put("enPausa", reglas.enPausa());
+                msg.put("escuchando", reglas.escuchando());
+                enviar(msg.toString());
+            } catch (Exception e) { anotar(numero, "no se pudo mandar el estado: " + e); }
+        }
+
+        void enviarLimite(String fase) {
+            limiteVisible = fase;
+            try {
+                JSONObject msg = new JSONObject();
+                msg.put("tipo", "limite");
+                msg.put("sesion", numero);
+                msg.put("fase", fase);
+                enviar(msg.toString());
+            } catch (Exception e) { anotar(numero, "no se pudo mandar el límite: " + e); }
+        }
+
+        // Pausa: también la pantalla apagada, el límite y el giro en plena cuenta. Cancela la cuenta pendiente.
+        void pausarEnAndroid(String motivo) {
+            if (!vigente()) return;
+            PRINCIPAL.removeCallbacks(pasoCuenta);
+            boolean cambio = reglas.pausar(SystemClock.elapsedRealtime());
+            VoskNativoPlugin.pausarParaVentana(numero, motivo);
+            if (cambio) enviarEstado();
+            anotar(numero, "pausa en Android: " + motivo + " leídos=" + reglas.leidosMs(SystemClock.elapsedRealtime()) + "ms");
+        }
+
+        void seguirEnAndroid() {
+            if (!vigente()) return;
+            int n = reglas.seguir();
+            if (n == 0) { anotar(numero, "seguir ignorado: fase=" + reglas.fase()); return; }
+            if (!"ninguno".equals(limiteVisible)) enviarLimite("ninguno");
+            PRINCIPAL.removeCallbacks(pasoCuenta);
+            enviarEstado();
+            PRINCIPAL.postDelayed(pasoCuenta, 1000);
+            anotar(numero, "seguir: cuenta " + n);
+        }
+
+        void darPasoDeCuenta() {
+            if (!vigente()) return;
+            int r = reglas.pasoDeCuenta(SystemClock.elapsedRealtime());
+            if (r < 0) return;
+            if (r > 0) {
+                enviarEstado();
+                PRINCIPAL.postDelayed(pasoCuenta, 1000);
+                return;
+            }
+            VoskNativoPlugin.reanudarParaVentana(numero);
+            enviarEstado();
+            anotar(numero, "cuenta terminada: escuchando");
+        }
+
+        void revisarLimite(long ahora) {
+            SesionVentana.Evento ev = reglas.revisar(ahora);
+            if (ev == SesionVentana.Evento.AVISO) {
+                anotar(numero, "aviso del límite: queda " + reglas.leidosMs(ahora) + "ms leídos");
+                enviarLimite("aviso");
+            } else if (ev == SesionVentana.Evento.LIMITE) {
+                PRINCIPAL.removeCallbacks(pasoCuenta);
+                VoskNativoPlugin.pausarParaVentana(numero, "límite");
+                enviarEstado();
+                enviarLimite("limite");
+                anotar(numero, "límite de lectura: pausa en Android");
+            }
+        }
+
+        JSObject estadoDeLaSesion(boolean abierta) {
+            JSObject o = new JSObject();
+            o.put("hay", true);
+            o.put("sesion", numero);
+            o.put("abierta", abierta);
+            o.put("enPausa", reglas.enPausa());
+            o.put("leidosSeg", reglas.leidosMs(SystemClock.elapsedRealtime()) / 1000.0);
+            o.put("llegoAlLimite", reglas.llegoAlLimite());
+            o.put("token", ultimoToken);
+            return o;
+        }
 
         void pintar(boolean inmediato) {
             long ahora = SystemClock.elapsedRealtime();
@@ -907,6 +1080,9 @@ final class VentanaDePrueba {
         void cerrar(String motivo) {
             if (!vigente()) return;
             anotar(numero, "cerrar motivo=" + motivo);
+            // -09-11-2026- Lo que queda para la vuelta a Sigo, y la cuenta de Seguir no sigue después de cerrar.
+            PRINCIPAL.removeCallbacks(pasoCuenta);
+            ultimoEstadoSesion = estadoDeLaSesion(false);
             cerrada = true;
             actual = null;
             PRINCIPAL.removeCallbacks(cuadro);

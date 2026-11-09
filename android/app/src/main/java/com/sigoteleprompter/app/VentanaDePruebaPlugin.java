@@ -103,6 +103,11 @@ public class VentanaDePruebaPlugin extends Plugin {
     @PluginMethod public void cerrar(PluginCall call) {
         principal.post(() -> { VentanaDePrueba.cerrarDelPlugin(this, "cerrar desde la web"); call.resolve(); });
     }
+    // -09-11-2026- Para la vuelta a Sigo: la pausa, los segundos leídos, si llegó al límite y el marcador de la sesión
+    // que mandó Android -ver VentanaDePrueba.estadoSesion-.
+    @PluginMethod public void estadoSesion(PluginCall call) {
+        VentanaDePrueba.estadoSesion(call::resolve);
+    }
     void accion(long numero, String tipo) { accion(numero, tipo, -1); }
     void accion(long numero, String tipo, long token) {
         // Cerrar ya soltó la sesión: la generación evita enviar una acción vieja a una nueva.
