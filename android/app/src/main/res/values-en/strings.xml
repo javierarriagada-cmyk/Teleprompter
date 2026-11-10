@@ -2,4 +2,8 @@
 <resources>
     <string name="acceso_nuevo_guion">New script with copied text</string>
     <string name="acceso_nuevo_guion_corta">New script</string>
+    <string name="flotante_servicio_nombre">Sigo · floating window</string>
+    <string name="flotante_servicio_descripcion">Shows your script over other apps and follows your voice while you record with them. It doesn’t read your screen or what you type.</string>
+    <string name="flotante_canal">Floating window</string>
+    <string name="flotante_aviso">Your reading is in the floating window</string>
 </resources>

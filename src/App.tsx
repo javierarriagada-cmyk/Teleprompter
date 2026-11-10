@@ -131,6 +131,11 @@ import { AvisoBreve } from './components/AvisoBreve'
 import { IndicadorPrecarga } from './components/IndicadorPrecarga'
 import { PanelDiagnostico } from './components/PanelDiagnostico'
 // Las herramientas de prueba no viajan a Play -tarea 84, src/lib/herramientas.ts-.
+// LA VENTANA FLOTANTE YA NO DEPENDE DE HERRAMIENTAS -10-11-2026-. Nacio como prototipo y todas sus entradas llevaban
+// delante «HERRAMIENTAS && Capacitor.isNativePlatform()»: en Play -VITE_HERRAMIENTAS=0- la rama entera desaparecia y
+// el AAB salia sin ventana aunque el codigo estuviera en main. Javier la aprobo en el g86 con la APK 820 y pasa a
+// producto: ahora la condicion es solo Capacitor.isNativePlatform(). HERRAMIENTAS queda para lo que si es de prueba:
+// diagnostico, corpus y mediciones.
 import { HERRAMIENTAS } from './lib/herramientas'
 // Prototipo del 08-11-2026: todos los usos se eliminan del paquete de Play.
 // Antes -2026-11-09-: import { VentanaDePrueba, type OpcionesPruebaFlotante, type AccionPruebaFlotante } from './lib/ventanaDePrueba'
@@ -443,7 +448,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   const grabarAlVolverAlFrenteRef = useRef(false)
 
   useEffect(() => {
-    if (!(HERRAMIENTAS && Capacitor.isNativePlatform())) return
+    if (!(Capacitor.isNativePlatform())) return
     let desmontado = false
     let quitar: (() => Promise<void>) | undefined
     void (async () => {
@@ -459,7 +464,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   }, [])
 
   useEffect(() => {
-    if (!(HERRAMIENTAS && Capacitor.isNativePlatform())) return
+    if (!(Capacitor.isNativePlatform())) return
     const anterior = anteriorTomaFlotanteRef.current
     anteriorTomaFlotanteRef.current = estadoToma
     if (anterior === 'leyendo' && estadoToma === 'listo' && sesionFlotanteRef.current !== null) {
@@ -482,7 +487,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   //   })
   const esperandoAccesibilidad = hojaFlotante?.tipo === 'autorizacion' && hojaFlotante.esperando
   useEffect(() => {
-    if (!(HERRAMIENTAS && Capacitor.isNativePlatform()) || !esperandoAccesibilidad) return
+    if (!(Capacitor.isNativePlatform()) || !esperandoAccesibilidad) return
     const sub: any = CapacitorApp.addListener('appStateChange', ({ isActive }) => {
       if (!isActive) return
       void VentanaDePrueba.estado().then(e => {
@@ -1531,7 +1536,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   // Android con las dos confirmaciones -SesionVentana.estadoDeSigo-, que además cierra la cuenta con su propio reloj
   // aunque la página de Sigo se duerma.
   useEffect(() => {
-    if (!(HERRAMIENTAS && Capacitor.isNativePlatform())) return
+    if (!(Capacitor.isNativePlatform())) return
     if (sesionFlotanteRef.current == null) return
     // -09-11-2026- Después de la cuenta de Empezar el estado de la ventana es de Android: Sigo ya no lo manda.
     const ef = estadoFlotanteRef.current
@@ -1864,13 +1869,13 @@ export default function App({ motor, repoOverride }: AppProps) {
     // abría desde el botón suelto de arriba.
     // Antes -2026-11-09-: && estadoToma === 'listo' && !conCamara && !fija) {
     // Motivo: la ventana también se abre desde el LISTO de Grabar; Sigo apaga su cámara antes de abrirla.
-    if (HERRAMIENTAS && Capacitor.isNativePlatform() && flotanteElegido && !intencionFlotanteRef.current
+    if (Capacitor.isNativePlatform() && flotanteElegido && !intencionFlotanteRef.current
       && estadoToma === 'listo' && !fija) {
       hapticaToqueMedio()
       await abrirHojaFlotante()
       return
     }
-    if (HERRAMIENTAS && Capacitor.isNativePlatform()) {
+    if (Capacitor.isNativePlatform()) {
       // -9-nov-2026, orden t162u, punto 2- Un intento nuevo con la apertura de uno cancelado todavía pendiente: espera a
       // que esa sesión se retire. Antes el toque se perdía en la línea de abajo, sin decir nada.
       const enCurso = aperturaFlotanteEnCursoRef.current
@@ -1889,7 +1894,7 @@ export default function App({ motor, repoOverride }: AppProps) {
     }
     // -9-nov-2026, orden t160u, punto 1, segunda vuelta- El intento de la ventana con que se llega, si se llega con la
     // intención: antes de abrir se comprueba que siga vigente -la hoja pudo cerrarse durante el micrófono o la voz-.
-    const intentoFlotante = HERRAMIENTAS && intencionFlotanteRef.current ? intentoEnEsperaFlotanteRef.current : null
+    const intentoFlotante = intencionFlotanteRef.current ? intentoEnEsperaFlotanteRef.current : null
     try {
     if (estadoToma === 'leyendo') return
     hapticaToqueMedio()
@@ -1991,7 +1996,7 @@ export default function App({ motor, repoOverride }: AppProps) {
       console.info('SigoFlotante', `apertura cancelada antes de abrir la ventana intento=${intentoFlotante}`)
       return
     }
-    if (HERRAMIENTAS && Capacitor.isNativePlatform() && intencionFlotanteRef.current) {
+    if (Capacitor.isNativePlatform() && intencionFlotanteRef.current) {
       const opciones = intencionFlotanteRef.current
       intencionFlotanteRef.current = null
       // Antes -9-nov-2026, orden t162u, punto 2-:
@@ -2084,7 +2089,7 @@ export default function App({ motor, repoOverride }: AppProps) {
       setEstadoToma('listo')
     }
     } finally {
-      if (HERRAMIENTAS && Capacitor.isNativePlatform()) {
+      if (Capacitor.isNativePlatform()) {
         // Antes: también se limpiaba intencionFlotanteRef aquí, y el aviso de límite o el
         // diálogo del micrófono dejaban el siguiente intento sin ventana.
         entrandoFlotanteRef.current = false
@@ -2093,7 +2098,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   }
 
   async function avisarErrorFlotante(error: unknown) {
-    if (!(HERRAMIENTAS && Capacitor.isNativePlatform())) return
+    if (!(Capacitor.isNativePlatform())) return
     const e = error as { code?: string; message?: string }
     if (e?.code === 'SIN_ACCESIBILIDAD') {
       console.info('SigoFlotante', 'hoja de accesibilidad mostrada')
@@ -2107,7 +2112,7 @@ export default function App({ motor, repoOverride }: AppProps) {
   }
 
   async function abrirHojaFlotante() {
-    if (!(HERRAMIENTAS && Capacitor.isNativePlatform()) || !oyenteFlotanteListo || estadoToma !== 'listo') return
+    if (!(Capacitor.isNativePlatform()) || !oyenteFlotanteListo || estadoToma !== 'listo') return
     try {
       const prefs = await VentanaDePrueba.preferencias()
       setTransparenciaFlotante(limitarTransparencia(prefs.transparencia ?? 0))
@@ -2293,7 +2298,7 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   // Con la X desde Grabar, la cámara vuelve al volver Sigo al frente.
   useEffect(() => {
-    if (!(HERRAMIENTAS && Capacitor.isNativePlatform())) return
+    if (!(Capacitor.isNativePlatform())) return
     const sub: any = CapacitorApp.addListener('appStateChange', ({ isActive }) => {
       if (!isActive || !grabarAlVolverAlFrenteRef.current) return
       grabarAlVolverAlFrenteRef.current = false
@@ -3368,7 +3373,7 @@ export default function App({ motor, repoOverride }: AppProps) {
 
   // Siempre apunta a los mismos caminos reales de Pausa y Parar, sin cierres obsoletos del montaje.
   accionesFlotanteRef.current = accion => {
-    if (!(HERRAMIENTAS && Capacitor.isNativePlatform())) return
+    if (!(Capacitor.isNativePlatform())) return
     console.info('SigoFlotante', `web recibió accion=${accion.tipo} token=${accion.token ?? ''}`)
     if (accion.sesion !== sesionFlotanteRef.current) {
       console.info('SigoFlotante', `accion descartada de sesión vieja=${accion.sesion}`)
@@ -4174,7 +4179,7 @@ export default function App({ motor, repoOverride }: AppProps) {
               </button>
             </div>
           )} */}
-          {HERRAMIENTAS && Capacitor.isNativePlatform() && ventanaFlotanteAbierta && (
+          {Capacitor.isNativePlatform() && ventanaFlotanteAbierta && (
             <div className="flotante-panel-sigo" role="status">
               {/* -banda A, 09-11-2026- El ícono y el aviso abajo, donde la banda -arriba- no los tapa. Antes: sin ícono. */}
               <IconoVentanaFlotante tamano={36} />
@@ -4363,14 +4368,14 @@ export default function App({ motor, repoOverride }: AppProps) {
               }}
               onEmpezar={handleEmpezarDesdeListo}
               onVolverListo={handleVolverDesdeListo}
-              // -banda A, 09-11-2026- El selector de la ventana flotante, en el dock o en el riel. Solo en la APK de
+              // -banda A, 09-11-2026- El selector de la ventana flotante, en el dock o en el riel. Hasta el 10-11 solo en la APK de
               // prueba y en las mismas condiciones del botón de antes.
               // Antes -2026-11-09-: estadoToma === 'listo' && !conCamara && !camaraActiva && !fija, y flotanteElegido con
               // && !conCamara && !fija. Motivo: el mismo selector va también en el LISTO de Grabar.
-              selectorFlotante={HERRAMIENTAS && Capacitor.isNativePlatform() && estadoToma === 'listo' && !fija
+              selectorFlotante={Capacitor.isNativePlatform() && estadoToma === 'listo' && !fija
                 ? <SelectorFlotante elegido={flotanteElegido} disponible={oyenteFlotanteListo} onCambiar={(v) => { hapticaSeleccion(); setFlotanteElegido(v) }} />
                 : undefined}
-              flotanteElegido={HERRAMIENTAS && Capacitor.isNativePlatform() && flotanteElegido && !fija}
+              flotanteElegido={Capacitor.isNativePlatform() && flotanteElegido && !fija}
               onToggleControles={() => {
                 if (estadoToma !== 'leyendo') return
                 // -tarea 106- Con Velocidad fija tocar el texto pausa y sigue -con los controles a la
@@ -4760,7 +4765,7 @@ export default function App({ motor, repoOverride }: AppProps) {
                   </div>
                 )}
       */}
-      {HERRAMIENTAS && Capacitor.isNativePlatform() && hojaFlotante && (
+      {Capacitor.isNativePlatform() && hojaFlotante && (
         // -banda A, 09-11-2026- capa-hoja-flotante: la hoja va abajo, como en el boceto. Antes: className="capa-dialogo-microfono".
         // -9-nov-2026, orden t160u, punto 1- Antes:
         // <div className="capa-dialogo-microfono capa-hoja-flotante" onClick={() => setHojaFlotante(h => siguienteHojaFlotante(h, { tipo: 'desistir' }))}>

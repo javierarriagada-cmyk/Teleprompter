@@ -88,6 +88,22 @@
                 android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
                 tools:node="remove" />
         </service>
+        <!-- VENTANA FLOTANTE -10-11-2026-. Nacio el 08-11 como prototipo y por eso estos dos servicios vivian
+             SOLO en el manifiesto de depuracion: el AAB de Play salia sin la ventana aunque el codigo estuviera
+             en main. Javier la aprobo en el g86 con la APK 820 y aqui pasa a producto. Los nombres de clase
+             conservan "DePrueba" a proposito: renombrarlos toca todo lo probado y el usuario no los ve.
+             El servicio de accesibilidad solo sostiene la ventana sobre otras apps
+             -TYPE_ACCESSIBILITY_OVERLAY-; no lee la pantalla: canRetrieveWindowContent es false. Play exige
+             declararlo en la consola antes de subir -ayuda answer/10964491-. -->
+        <service android:name=".MicrofonoDePrueba" android:exported="false" android:foregroundServiceType="microphone" />
+        <service android:name=".AccesibilidadDePrueba" android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:label="@string/flotante_servicio_nombre">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data android:name="android.accessibilityservice" android:resource="@xml/accesibilidad_de_prueba" />
+        </service>
     </application>
 
     <!-- Permissions -->
@@ -96,6 +112,9 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <!-- Ventana flotante -10-11-2026-: el microfono sigue abierto con Sigo en segundo plano. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
     <!-- WRITE_EXTERNAL_STORAGE solo hace falta hasta Android 9 (API 28). Desde Android 10 (API 29) Sigo guarda en la galeria por MediaStore sin necesitar este permiso -28-09-2026-. -->
     <!-- 29-09-2026: el permiso se fue. Con Android 10 como mínimo -variables.gradle- ningún
          teléfono que pueda instalar Sigo lo usaba: quedaba escrito sin efecto. -->

@@ -6,7 +6,10 @@
     <string name="custom_url_scheme">com.sigoteleprompter.app</string>
     <string name="acceso_nuevo_guion">Nuevo guion con lo copiado</string>
     <string name="acceso_nuevo_guion_corta">Nuevo guion</string>
-    <!-- Prototipo del 08-11-2026: instrumento local, nunca se publica. -->
-    <string name="prueba_accesibilidad_nombre" translatable="false">Sigo · prueba flotante</string>
-    <string name="prueba_accesibilidad_descripcion" translatable="false">Permite probar si Sigo puede seguir tu voz mientras otra app graba. No lee la pantalla ni lo que escribes.</string>
+    <!-- Ventana flotante -10-11-2026-: el nombre con que Android lista el servicio en Accesibilidad. Es el mismo
+         que citan los textos de la app -accesibilidadFlotanteTexto-: si cambia aqui, cambia alla. -->
+    <string name="flotante_servicio_nombre">Sigo · ventana flotante</string>
+    <string name="flotante_servicio_descripcion">Muestra tu texto sobre otras apps y sigue tu voz mientras grabas con ellas. No lee la pantalla ni lo que escribes.</string>
+    <string name="flotante_canal">Ventana flotante</string>
+    <string name="flotante_aviso">La lectura está en la ventana flotante</string>
 </resources>

@@ -29,15 +29,15 @@ public class MicrofonoDePrueba extends Service {
         sesion = pedido;
         try {
             NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            NotificationChannel canal = new NotificationChannel(CANAL, "Prueba flotante", NotificationManager.IMPORTANCE_LOW);
+            NotificationChannel canal = new NotificationChannel(CANAL, getString(R.string.flotante_canal), NotificationManager.IMPORTANCE_LOW);
             canal.setSound(null, null);
             canal.enableVibration(false);
             nm.createNotificationChannel(canal);
             ServiceCompat.startForeground(this, 8108,
                 new NotificationCompat.Builder(this, CANAL)
                     .setSmallIcon(R.drawable.prueba_microfono)
-                    .setContentTitle("Sigo · prueba flotante")
-                    .setContentText("Sigo · prueba flotante")
+                    .setContentTitle(getString(R.string.flotante_servicio_nombre))
+                    .setContentText(getString(R.string.flotante_aviso))
                     .setSilent(true).setOngoing(true).build(),
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.R ? ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE : 0);
             VentanaDePrueba.servicioConfirmado(sesion, true, null);

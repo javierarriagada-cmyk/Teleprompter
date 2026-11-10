@@ -4,4 +4,8 @@
 <resources>
     <string name="acceso_nuevo_guion">Novo roteiro com o texto copiado</string>
     <string name="acceso_nuevo_guion_corta">Novo roteiro</string>
+    <string name="flotante_servicio_nombre">Sigo · janela flutuante</string>
+    <string name="flotante_servicio_descripcion">Mostra seu texto sobre outros apps e acompanha sua voz enquanto você grava com eles. Não lê a tela nem o que você digita.</string>
+    <string name="flotante_canal">Janela flutuante</string>
+    <string name="flotante_aviso">A leitura está na janela flutuante</string>
 </resources>
