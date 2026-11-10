@@ -176,6 +176,32 @@ public class VoskNativoPlugin extends Plugin {
     private Oido oido = null;
     private PluginCall llamadaIniciar = null;
 
+    // PROTOTIPO DE LA VENTANA FLOTANTE -09-11-2026-. Mientras la ventana está abierta, la sesión la manda Android
+    // -VentanaDePrueba, SesionVentana-: Pausa cierra el micrófono aquí y Seguir lo vuelve a abrir con los MISMOS
+    // parámetros del último escuchar de la página. La página de Sigo queda atrás y deja de correr; por eso
+    // VentanaDePrueba llama directo a pausarParaVentana y reanudarParaVentana, en el hilo de los plugins
+    // -bridge.execute-, en fila con escuchar y detener. Fuera de la ventana nada de esto se usa.
+    static volatile VoskNativoPlugin instancia;
+    private String ultimaFuente = "VOICE_RECOGNITION";
+    private int ultimaFrecuenciaMic = (int) FRECUENCIA;
+    private boolean ultimoGuardarAudio = false;
+    // La sesión de la ventana con que se abrió este oído -0 si se abrió sin ventana-. pausarParaVentana solo cierra
+    // el oído de su sesión: nunca una lectura de Leer que no sea la flotante.
+    // La sesión de la ventana que dejó el micrófono en pausa: mientras siga abierta, un escuchar de la página -que
+    // despierta tarde- no lo vuelve a abrir por su cuenta.
+    // Antes -hasta el 9-nov-2026-:
+    //     private long sesionVentanaDelOido = 0;
+    //     private long pausaDeVentana = 0;
+    // Motivo -orden «Tres correcciones», fallos 2 y 3-: cada apertura del oído es una captura con su número y su
+    // sesión dueña -MicrofonoDeVentana-, para que una orden atrasada solo cierre lo que es suyo. Solo se toca en el
+    // hilo de los plugins.
+    private final MicrofonoDeVentana mic = new MicrofonoDeVentana();
+
+    @Override
+    public void load() {
+        instancia = this;
+    }
+
     @PluginMethod
     public void disponible(PluginCall call) {
         JSObject r = new JSObject();
@@ -422,11 +448,88 @@ public class VoskNativoPlugin extends Plugin {
             call.reject("El modelo no esta cargado: llamar a iniciar() primero");
             return;
         }
+        // Antes -9-nov-2026, orden t160u, punto 3-:
+        // if (oido != null) {
+        //     call.resolve();
+        //     return;
+        // }
+        // Razón: la lectura nueva se quedaba con el oído de la anterior sin número propio, y el detener atrasado de la
+        // anterior se lo cortaba. Ahora la captura se renueva -MicrofonoDeVentana.renovar- y se devuelve: su detener
+        // la nombra. 0 si el oído abierto es de otro dueño: esa lectura no tiene nada que cerrar.
         if (oido != null) {
-            call.resolve();
+            long renovada = mic.renovar(VentanaDePrueba.numero());
+            if (renovada != 0) oido.captura = renovada;
+            android.util.Log.i("VoskNativo", "escuchar con el oído ya abierto: captura " + (renovada != 0 ? renovada + " -renovada-" : "0 -es de la sesión " + mic.sesion() + "-"));
+            // -9-nov-2026, orden t160u, punto 4- Con la ventana abierta, también es la confirmación del primer Empezar.
+            if (renovada != 0 && mic.sesion() != 0) avisarAperturaDeLaPagina(mic.sesion(), renovada, null);
+            JSObject r = new JSObject();
+            r.put("captura", renovada);
+            call.resolve(r);
             return;
         }
+        // -prototipo flotante, 09-11-2026- Los parámetros de este escuchar, para que Seguir en la ventana abra igual.
+        String fuentePedida = call.getString("fuente", "VOICE_RECOGNITION");
+        int frecuenciaPedida = call.getInt("frecuenciaMic", (int) FRECUENCIA);
+        boolean guardarPedido = Boolean.TRUE.equals(call.getBoolean("guardarAudio", false));
+        ultimaFuente = fuentePedida;
+        ultimaFrecuenciaMic = frecuenciaPedida;
+        ultimoGuardarAudio = guardarPedido;
+        // Antes -9-nov-2026-: if (pausaDeVentana != 0 && VentanaDePrueba.esActual(pausaDeVentana)) {
+        //     VentanaDePrueba.anotar(pausaDeVentana, "escuchar de la página ignorado: la ventana está en pausa");
+        if (mic.pausa() != 0 && VentanaDePrueba.esActual(mic.pausa())) {
+            VentanaDePrueba.anotar(mic.pausa(), "escuchar de la página ignorado: la ventana está en pausa");
+            // Antes -9-nov-2026, orden t160u, punto 3-: call.resolve();
+            // Razón: sin oído abierto no hay captura que detener: 0, y su detener no cierra nada.
+            JSObject r = new JSObject();
+            r.put("captura", 0);
+            call.resolve(r);
+            return;
+        }
+        // Antes -9-nov-2026, orden t160u, punto 4-:
+        // try {
+        //     call.resolve(abrirOido(fuentePedida, frecuenciaPedida, guardarPedido));
+        // } catch (Exception e) {
+        //     call.reject("No se pudo abrir el microfono".equals(e.getMessage()) ? e.getMessage() : "No se pudo abrir el microfono: " + e.getMessage());
+        // }
+        // Razón: con la ventana abierta, este escuchar es la apertura del primer Empezar, y la ventana recién escucha y
+        // cuenta con su confirmación -SesionVentana.estadoDeSigo-. Se le avisa como a Seguir: la captura, o 0 y el
+        // motivo. La página recibe lo mismo que antes.
+        long sesionDeLaVentana = VentanaDePrueba.numero();
         try {
+            JSObject r = abrirOido(fuentePedida, frecuenciaPedida, guardarPedido);
+            // La dueña es la que anotó abrirOido -la ventana abierta en ese momento-.
+            long duena = mic.sesion();
+            if (duena != 0) {
+                boolean graba = oido != null && oido.grabadora.getRecordingState() == AudioRecord.RECORDSTATE_RECORDING;
+                avisarAperturaDeLaPagina(duena, graba ? mic.captura() : 0, graba ? null : "AudioRecord no quedó grabando");
+            }
+            call.resolve(r);
+        } catch (Exception e) {
+            if (sesionDeLaVentana != 0) avisarAperturaDeLaPagina(sesionDeLaVentana, 0, String.valueOf(e.getMessage()));
+            call.reject("No se pudo abrir el microfono".equals(e.getMessage()) ? e.getMessage() : "No se pudo abrir el microfono: " + e.getMessage());
+        }
+    }
+
+    // LA APERTURA DEL PRIMER EMPEZAR, A LA VENTANA -9-nov-2026, orden t160u, punto 4-. Con el intento inicial: la ventana
+    // la anota si la cuenta de Sigo no terminó, o la decide si ya terminó; si llega tarde -Pausa, la X- la descarta y
+    // suelta la captura -VentanaDePrueba.aperturaDelMicrofono-.
+    private static void avisarAperturaDeLaPagina(long sesion, long captura, String error) {
+        VentanaDePrueba.anotar(sesion, "apertura de la página: captura=" + captura + (error != null ? " error=" + error : ""));
+        VentanaDePrueba.aperturaDelMicrofono(sesion, SesionVentana.INTENTO_INICIAL, captura, error);
+    }
+
+    // Antes -2026-11-09-: todo esto vivía dentro de arrancarServicio(PluginCall call), con try/catch y call.reject /
+    // call.resolve. Motivo: reanudarParaVentana abre el oído sin una llamada de la página. Las líneas que cambiaron
+    // van comentadas donde estaban.
+    // -9-nov-2026- La página abre el oído para la sesión de la ventana que esté abierta en ese momento -0 sin ventana-.
+    private JSObject abrirOido(String fuente, int frecuenciaMic, boolean guardarAudio) throws Exception {
+        return abrirOido(fuente, frecuenciaMic, guardarAudio, VentanaDePrueba.numero());
+    }
+
+    // Antes -9-nov-2026-: private JSObject abrirOido(String fuente, int frecuenciaMic, boolean guardarAudio) throws Exception {
+    // Motivo: la sesión dueña llega de afuera: Seguir en la ventana abre para SU sesión, no para la que esté al abrir.
+    private JSObject abrirOido(String fuente, int frecuenciaMic, boolean guardarAudio, long sesionDuena) throws Exception {
+        {
             Recognizer reconocedor = new Recognizer(modelo, FRECUENCIA);
             // EL TIEMPO DE CADA PALABRA -24-09-2026-. Vosk sabe en que segundo del
             // audio empieza y termina cada palabra que reconoce, pero solo lo dice si
@@ -450,8 +553,9 @@ public class VoskNativoPlugin extends Plugin {
             // graba con su propia fuente y a 44,1 o 48 kHz, y Android le cuelga este
             // pedido a ese flujo. Para probar cual combinacion evita esa espera se
             // puede pedir otra fuente y leer a 48 kHz: se baja a 16 kHz aca.
-            String fuente = call.getString("fuente", "VOICE_RECOGNITION");
-            int frecuenciaMic = call.getInt("frecuenciaMic", (int) FRECUENCIA);
+            // Antes -2026-11-09-: String fuente = call.getString("fuente", "VOICE_RECOGNITION");
+            // Antes -2026-11-09-: int frecuenciaMic = call.getInt("frecuenciaMic", (int) FRECUENCIA);
+            // Motivo: llegan como parámetros -de la página o de los guardados para la ventana-.
             int factor = Math.max(1, Math.round(frecuenciaMic / FRECUENCIA));
             int minimo = AudioRecord.getMinBufferSize(
                 frecuenciaMic, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
@@ -466,8 +570,8 @@ public class VoskNativoPlugin extends Plugin {
             if (grabadora.getState() != AudioRecord.STATE_INITIALIZED) {
                 grabadora.release();
                 reconocedor.close();
-                call.reject("No se pudo abrir el microfono");
-                return;
+                // Antes -2026-11-09-: call.reject("No se pudo abrir el microfono"); return;
+                throw new IllegalStateException("No se pudo abrir el microfono");
             }
             grabadora.startRecording();
             // El cero de esos tiempos es el arranque del audio: se anota el reloj
@@ -475,7 +579,8 @@ public class VoskNativoPlugin extends Plugin {
             long inicioEpochMs = System.currentTimeMillis();
             String rutaAudio = null;
             OutputStream salida = null;
-            if (Boolean.TRUE.equals(call.getBoolean("guardarAudio", false))) {
+            // Antes -2026-11-09-: if (Boolean.TRUE.equals(call.getBoolean("guardarAudio", false))) {
+            if (guardarAudio) {
                 File archivo = archivoDeAudio(inicioEpochMs);
                 if (archivo != null) {
                     salida = new BufferedOutputStream(new FileOutputStream(archivo), 64 * 1024);
@@ -484,6 +589,8 @@ public class VoskNativoPlugin extends Plugin {
             }
             oido = new Oido(grabadora, reconocedor, salida, muestrasPorTrozo, factor,
                 inicioEpochMs, fuenteDeAudio(fuente), frecuenciaMic);
+            // Antes -9-nov-2026-: sesionVentanaDelOido = VentanaDePrueba.numero();
+            oido.captura = mic.abrio(sesionDuena);
             Thread hilo = new Thread(oido, "sigo-oido");
             oido.hilo = hilo;
             hilo.start();
@@ -493,16 +600,176 @@ public class VoskNativoPlugin extends Plugin {
             r.put("fuente", fuente);
             r.put("frecuenciaMic", frecuenciaMic);
             if (rutaAudio != null) r.put("rutaAudio", rutaAudio);
-            call.resolve(r);
-        } catch (Exception e) {
-            call.reject("No se pudo abrir el microfono: " + e.getMessage());
+            // -9-nov-2026, orden t160u, punto 3- La captura abierta: el detener de esta lectura la nombra.
+            r.put("captura", oido.captura);
+            // Antes -2026-11-09-: call.resolve(r);
+            //     } catch (Exception e) {
+            //         call.reject("No se pudo abrir el microfono: " + e.getMessage());
+            //     }
+            // Motivo: el rechazo lo hace arrancarServicio, con los mismos textos.
+            return r;
         }
     }
 
+    // Antes -hasta el 9-nov-2026-, la pausa y la reanudación de la ventana:
+    // // LA PAUSA DE LA VENTANA FLOTANTE -09-11-2026-. Cierra el oído como detener -pararOido- si es el de esa sesión.
+    // // También la X: el micrófono se apaga al tiro, sin esperar a que despierte la página de Sigo.
+    // static void pausarParaVentana(long sesion, String motivo) {
+    //     VoskNativoPlugin p = instancia;
+    //     if (p == null || p.getBridge() == null) return;
+    //     p.getBridge().execute(() -> {
+    //         if (p.oido != null && p.sesionVentanaDelOido != sesion) {
+    //             VentanaDePrueba.anotar(sesion, "pausa de la ventana ignorada: el oído es de la sesión " + p.sesionVentanaDelOido);
+    //             return;
+    //         }
+    //         // Con la ventana abierta, la pausa también vale para un escuchar que llegue después -la página de Sigo
+    //         // terminando su cuenta de Empezar-. Con la X ya cerró: no queda nada que guardar.
+    //         if (VentanaDePrueba.esActual(sesion)) p.pausaDeVentana = sesion;
+    //         boolean habia = p.oido != null;
+    //         p.pararOido();
+    //         VentanaDePrueba.anotar(sesion, "micrófono cerrado: " + motivo + (habia ? "" : " -ya estaba cerrado-"));
+    //     });
+    // }
+    //
+    // // Seguir en la ventana, al terminar la cuenta 3-2-1: el oído con los parámetros del último escuchar. Si la ventana
+    // // ya se cerró -la X en plena cuenta, volver- o no estaba en pausa, no se abre nada.
+    // static void reanudarParaVentana(long sesion) {
+    //     VoskNativoPlugin p = instancia;
+    //     if (p == null || p.getBridge() == null) return;
+    //     p.getBridge().execute(() -> {
+    //         if (!VentanaDePrueba.esActual(sesion) || p.pausaDeVentana != sesion) {
+    //             VentanaDePrueba.anotar(sesion, "reanudar ignorado: la ventana ya no está o no estaba en pausa");
+    //             return;
+    //         }
+    //         p.pausaDeVentana = 0;
+    //         if (p.oido != null) return;
+    //         if (p.modelo == null) { VentanaDePrueba.anotar(sesion, "reanudar sin modelo cargado"); return; }
+    //         try {
+    //             p.abrirOido(p.ultimaFuente, p.ultimaFrecuenciaMic, p.ultimoGuardarAudio);
+    //             p.sesionVentanaDelOido = sesion;
+    //             VentanaDePrueba.anotar(sesion, "micrófono abierto de nuevo fuente=" + p.ultimaFuente + " frecuenciaMic=" + p.ultimaFrecuenciaMic);
+    //         } catch (Exception e) {
+    //             VentanaDePrueba.anotar(sesion, "no se pudo reabrir el micrófono: " + e.getMessage());
+    //         }
+    //     });
+    // }
+    // Motivo -orden «Tres correcciones»-: (2) Seguir no avisaba si el micrófono abrió, y la ventana se ponía a escuchar
+    // y a contar igual; ahora reanudarParaVentana responde siempre a la ventana con el intento y la captura
+    // -VentanaDePrueba.aperturaDelMicrofono-. (3) La liberación de la sesión va en el cierre común
+    // -liberarDeVentana-; liberarCaptura suelta la captura de una confirmación que llegó tarde.
+
+    // LA PAUSA DE LA VENTANA FLOTANTE -09-11-2026-. Cierra el oído como detener -pararOido- si es el de esa sesión.
+    static void pausarParaVentana(long sesion, String motivo) {
+        VoskNativoPlugin p = instancia;
+        if (p == null || p.getBridge() == null) return;
+        p.getBridge().execute(() -> {
+            if (p.oido != null && p.mic.sesion() != sesion) {
+                VentanaDePrueba.anotar(sesion, "pausa de la ventana ignorada: el oído es de la sesión " + p.mic.sesion());
+                return;
+            }
+            // Con la ventana abierta, la pausa también vale para un escuchar que llegue después -la página de Sigo
+            // terminando su cuenta de Empezar-.
+            boolean habia = p.mic.pausar(sesion, VentanaDePrueba.esActual(sesion)) != 0;
+            p.pararOido();
+            VentanaDePrueba.anotar(sesion, "micrófono cerrado: " + motivo + (habia ? "" : " -ya estaba cerrado-"));
+        });
+    }
+
+    // SEGUIR EN LA VENTANA, AL TERMINAR LA CUENTA 3-2-1: el oído con los parámetros del último escuchar, para ESA
+    // sesión. Responde siempre -VentanaDePrueba.aperturaDelMicrofono- con el intento y la captura abierta, o 0 y el
+    // motivo: la ventana se pone a escuchar solo con la confirmación, y si la descarta suelta esa captura.
+    static void reanudarParaVentana(long sesion, long intento) {
+        VoskNativoPlugin p = instancia;
+        if (p == null || p.getBridge() == null) {
+            VentanaDePrueba.aperturaDelMicrofono(sesion, intento, 0, "Vosk no está cargado");
+            return;
+        }
+        p.getBridge().execute(() -> {
+            long captura = 0;
+            String error = null;
+            if (!VentanaDePrueba.esActual(sesion)) error = "la ventana ya no está";
+            else if (!p.mic.reanudar(sesion)) error = "la ventana no había dejado el micrófono en pausa";
+            else if (p.oido != null) {
+                if (p.mic.sesion() == sesion) captura = p.mic.captura();
+                else error = "el micrófono está abierto para la sesión " + p.mic.sesion();
+            } else if (p.modelo == null) error = "sin modelo cargado";
+            else {
+                try {
+                    p.abrirOido(p.ultimaFuente, p.ultimaFrecuenciaMic, p.ultimoGuardarAudio, sesion);
+                    // Abierto quiere decir grabando: si Android no lo dejó grabar, no hay apertura.
+                    if (p.oido.grabadora.getRecordingState() != AudioRecord.RECORDSTATE_RECORDING) {
+                        p.pararOido();
+                        error = "el micrófono no quedó grabando";
+                    } else {
+                        captura = p.mic.captura();
+                    }
+                } catch (Exception e) {
+                    error = e.getMessage();
+                }
+            }
+            if (captura != 0) VentanaDePrueba.anotar(sesion, "micrófono abierto de nuevo intento=" + intento + " captura=" + captura
+                + " fuente=" + p.ultimaFuente + " frecuenciaMic=" + p.ultimaFrecuenciaMic);
+            else VentanaDePrueba.anotar(sesion, "no se pudo reabrir el micrófono intento=" + intento + ": " + error);
+            VentanaDePrueba.aperturaDelMicrofono(sesion, intento, captura, error);
+        });
+    }
+
+    // EL CIERRE COMÚN DE LA SESIÓN -fallo 3, ver CierreDeSesion-. Libera el oído si es de esa sesión, en el hilo de
+    // los plugins y sin la página de Sigo. Un cierre atrasado de una sesión vieja no toca el de una nueva.
+    static void liberarDeVentana(long sesion, String motivo) {
+        VoskNativoPlugin p = instancia;
+        if (p == null || p.getBridge() == null) {
+            VentanaDePrueba.anotar(sesion, "cierre sin Vosk cargado: no hay micrófono que liberar -" + motivo + "-");
+            return;
+        }
+        p.getBridge().execute(() -> {
+            long c = p.mic.liberarSesion(sesion);
+            if (c != 0) {
+                p.pararOido();
+                VentanaDePrueba.anotar(sesion, "micrófono liberado al cerrar: " + motivo + " captura=" + c);
+            } else {
+                VentanaDePrueba.anotar(sesion, "cierre sin micrófono de esta sesión -" + motivo + "-: abierto="
+                    + p.mic.captura() + " de la sesión " + p.mic.sesion());
+            }
+        });
+    }
+
+    // Una confirmación que la ventana descartó -Pausa, la X, la pantalla apagada, la sesión cerrada-: si esa captura
+    // sigue abierta, se suelta; si ya se cerró o hay otra, no se toca nada.
+    static void liberarCaptura(long sesion, long captura, String motivo) {
+        VoskNativoPlugin p = instancia;
+        if (p == null || p.getBridge() == null) return;
+        p.getBridge().execute(() -> {
+            long c = p.mic.liberarCaptura(captura);
+            if (c != 0) {
+                p.pararOido();
+                VentanaDePrueba.anotar(sesion, "captura " + c + " liberada: " + motivo);
+            } else {
+                VentanaDePrueba.anotar(sesion, "captura " + captura + " ya no estaba abierta: " + motivo);
+            }
+        });
+    }
+
+    // Antes -9-nov-2026, orden t160u, punto 3-:
+    // @PluginMethod
+    // public void detener(PluginCall call) {
+    //     pararOido();
+    //     call.resolve();
+    // }
+    // Razón: cerraba lo que estuviera abierto. Un detener atrasado de una lectura vieja cortaba la voz de la lectura
+    // nueva. Ahora el detener nombra su captura -la que devolvió escuchar- y solo cierra si lo abierto es esa. Sin
+    // captura -una página vieja- cierra lo que haya, como antes. Responde si cerró.
     @PluginMethod
     public void detener(PluginCall call) {
-        pararOido();
-        call.resolve();
+        long pedida = MicrofonoDeVentana.capturaPedida(call.getData().opt("captura"));
+        boolean cierra = mic.cierraElDetener(pedida);
+        if (pedida >= 0) {
+            android.util.Log.i("VoskNativo", "detener captura=" + pedida + (cierra ? ": cerrada" : ": ignorado, lo abierto es la captura " + mic.captura()));
+        }
+        if (cierra) pararOido();
+        JSObject r = new JSObject();
+        r.put("detenido", cierra);
+        call.resolve(r);
     }
 
     /**
@@ -532,6 +799,8 @@ public class VoskNativoPlugin extends Plugin {
     private void pararOido() {
         Oido o = oido;
         oido = null;
+        // -9-nov-2026- La captura se da por cerrada aquí, por cualquier camino: MicrofonoDeVentana.
+        mic.cerro();
         if (o == null) return;
         o.escuchando = false;
         if (o.hilo != null) {
@@ -591,6 +860,8 @@ public class VoskNativoPlugin extends Plugin {
         AudioRecord relevo = null;
         long relevoInicioEpochMs = 0;
         int relevos = 0;
+        // -9-nov-2026- El número de esta captura -MicrofonoDeVentana.abrio-.
+        long captura = 0;
 
         Oido(AudioRecord grabadora, Recognizer reconocedor, OutputStream salida, int muestrasPorTrozo, int factor,
              long inicioEpochMs, int fuente, int frecuenciaMic) {
@@ -763,6 +1034,7 @@ public class VoskNativoPlugin extends Plugin {
         Oido o = oido;
         if (o != null) d.put("relevos", o.relevos);
         notifyListeners(evento, d);
+        VentanaDePrueba.alOir(evento, hipotesis, rms, o != null ? o.relevos : 0, o != null ? o.grabadora.getAudioSessionId() : -1);
     }
 
     /**
@@ -785,6 +1057,7 @@ public class VoskNativoPlugin extends Plugin {
 
     @Override
     protected void handleOnDestroy() {
+        if (instancia == this) instancia = null;
         pararOido();
         if (modelo != null) {
             modelo.close();

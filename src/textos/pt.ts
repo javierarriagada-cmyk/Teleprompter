@@ -334,5 +334,25 @@ export const pt: Textos = {
   sinConexionVerificar: 'Conecte-se por um momento para verificar o Sigo+.',
   nadaCopiado: 'Nenhum texto copiado',
   abrirEnEditor: 'Abrir no editor',
+  // PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026.
+  ventanaFlotante: 'Janela flutuante',
+  transparenciaFondo: 'Transparência do fundo',
+  // Banda A, 09-11-2026: el aviso aprobado en los bocetos. Antes: accesibilidadFlotanteTitulo: 'Para seguir sua voz sobre outros apps'
+  accesibilidadFlotanteTitulo: 'Leia sobre outros apps',
+  // Antes: accesibilidadFlotanteTexto: 'O Android só deixa o Sigo ouvir você enquanto outro app grava se você ativar “Sigo · prueba flotante” em Acessibilidade. O Sigo não lê sua tela nem o que você digita.'
+  accesibilidadFlotanteTexto: 'O Sigo usa o microfone para acompanhar sua voz enquanto você grava em outro app. Em Acessibilidade, ative “Sigo · prueba flotante” e volte ao Sigo. Esse serviço não lê a tela nem o que você digita.',
+  // Antes: irAActivarlo: 'Ativar' -la clave cambió de nombre con el texto-.
+  abrirAccesibilidad: 'Abrir Acessibilidade',
+  consecuenciaFlotante: 'Leia por cima da câmera ou de outro app',
+  accesibilidadFlotanteInactivo: '“Sigo · prueba flotante” ainda está desativado.',
+  lecturaEnVentanaFlotante: 'A leitura está na janela flutuante',
+  cerrarLaVentana: 'Fechar a janela',
+  volverASigo: 'Voltar ao Sigo',
+  avisoMicrofonoQuitado: 'O Android tirou o microfone do Sigo. O texto está esperando aqui.',
+  // -9-nov-2026, orden t160u, punto 5-
+  avisoCamaraNoSeApago: 'Não foi possível desligar a câmera, então a janela flutuante não abriu. Toque em Começar para tentar de novo.',
+  avisoMicrofonoNoAbrio: 'Não foi possível abrir o microfone. Toque em Continuar para tentar de novo.',
+  moverVentana: 'Mover a janela',
+  cambiarTamano: 'Redimensionar',
   cerrarSeleccion: 'Fechar seleção'
 }

@@ -398,6 +398,16 @@ export function IconoRepetir(props: PropsIcono) {
   )
 }
 
+/** Una ventana delante de otra: la lectura flotante sobre otra app. */
+export function IconoVentanaFlotante(props: PropsIcono) {
+  return (
+    <Trazo {...props}>
+      <rect x="3" y="6" width="13" height="14" rx="2" />
+      <rect x="8" y="3" width="13" height="14" rx="2" />
+    </Trazo>
+  )
+}
+
 /** Una X: cerrar. */
 export function IconoCerrar(props: PropsIcono) {
   return (

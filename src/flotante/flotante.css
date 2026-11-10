@@ -1,0 +1,361 @@
+/* PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026: la lectura de Sigo sobre otra app, siguiendo la voz mientras esa app graba. Esta rama no va a main ni a Play. */
+
+html, body, #root {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+}
+
+.flotante-raiz {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.flotante-lectura {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+.flotante-barra,
+.flotante-pie {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  min-height: 48px;
+  flex-shrink: 0;
+  pointer-events: auto;
+}
+
+.flotante-barra { justify-content: space-between; }
+.flotante-pie { justify-content: space-between; }
+
+.flotante-asa {
+  width: 32px;
+  height: 4px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--color-texto, #fff) 40%, transparent);
+}
+
+/* El asa y la esquina son <button>: sin esto el WebView les pone su caja gris y su borde. */
+.flotante-asa-hit,
+.flotante-esquina {
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+
+.flotante-asa-hit {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+  flex: 1;
+  cursor: grab;
+  touch-action: none;
+}
+
+.flotante-icono {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.flotante-pildora {
+  border: 0;
+  border-radius: var(--redondeo-pildora, 999px);
+  min-height: 48px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: color-mix(in srgb, var(--color-texto, #fff) 12%, transparent);
+  color: inherit;
+  font: inherit;
+}
+
+.flotante-texto {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  min-height: 48px;
+  padding: 0 12px;
+}
+
+.flotante-esquina {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 10px;
+  touch-action: none;
+  cursor: nwse-resize;
+}
+
+.flotante-esquina::after {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  opacity: 0.5;
+}
+
+.flotante-aa {
+  padding: 8px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.flotante-aa label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.flotante-aviso-micro {
+  margin: 8px 16px;
+  padding: 10px 14px;
+  border-radius: var(--redondeo-grande, 16px);
+  background: var(--aviso-fondo);
+  color: var(--aviso-texto, inherit);
+  font-size: 14px;
+}
+
+.flotante-oculto {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.flotante-cuenta {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.flotante-barra > * { position: static !important; }
+
+/* LA VENTANA A, BANDA ANCHA CERCA DEL LENTE -09-11-2026-. Antes -08-11-2026-: .flotante-raiz era una columna
+   -cabecera, lectura, pie- con el fondo pintado en la raíz; la lectura cambiaba de alto al ocultar los controles y
+   la transparencia aclaraba también los controles. Ahora: una capa de fondo con su alfa, la lectura a ventana
+   entera con el renglón vivo fijo -ANCLA_RENGLON_VENTANA- y los controles encima, con el halo E. */
+.flotante-raiz {
+  --pastilla-fondo-flotante: rgba(0, 0, 0, 0.6);
+  --pastilla-borde-flotante: rgba(255, 255, 255, 0.35);
+  --ventana-borde-flotante: rgba(255, 255, 255, 0.35);
+  --forma-ventana-flotante: 16px;
+  display: block;
+  border-radius: var(--forma-ventana-flotante);
+  /* -2026-11-09, corrección de la banda A- Antes heredaba overflow: hidden de la primera .flotante-raiz. Motivo: con el
+     radio de 16, el recorte también recortaba el toque: Pausa y la esquina de tamaño perdían su rincón. El redondeo
+     visible lo siguen poniendo .flotante-fondo y .flotante-lectura, que recortan por su cuenta. */
+  overflow: visible;
+}
+.flotante-fondo {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--fondo-ventana);
+  pointer-events: none;
+}
+.flotante-raiz.con-controles .flotante-fondo {
+  box-shadow: inset 0 0 0 1px var(--ventana-borde-flotante);
+}
+.flotante-raiz .flotante-lectura {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+}
+.flotante-raiz.con-controles .flotante-lectura {
+  clip-path: inset(var(--alto-cabecera-ventana) 0 var(--alto-pie-ventana) 0);
+}
+.flotante-raiz .flotante-barra,
+.flotante-raiz .flotante-pie {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  gap: 0;
+  padding: 0 0 0 4px;
+  box-sizing: border-box;
+}
+.flotante-raiz .flotante-barra { top: 0; height: var(--alto-cabecera-ventana); }
+.flotante-raiz .flotante-pie { bottom: 0; height: var(--alto-pie-ventana); padding: 0 0 0 4px; }
+/* El halo E: los controles se leen sobre cualquier imagen sin oscurecer la banda. */
+.flotante-raiz .flotante-icono,
+.flotante-raiz .flotante-texto,
+.flotante-raiz .flotante-esquina,
+.flotante-raiz .flotante-asa {
+  filter: drop-shadow(0 0 1px var(--fondo-lectura-ventana)) drop-shadow(0 0 2px var(--fondo-lectura-ventana)) drop-shadow(0 0 3px var(--fondo-lectura-ventana));
+}
+/* Antes -hasta 2026-11-09-: .flotante-raiz .flotante-asa-hit { flex: 1 1 auto; min-width: 24px; }. Motivo: en la ventana
+   mínima con el tiempo visible el asa quedaba en 28,5 de ancho. Sigue ocupando lo que sobra entre la pastilla y Aa
+   -la raya no se mueve-, y su ::before alarga la zona de toque hacia la izquierda hasta 48, por encima del final de la
+   pastilla, que no recibe toques -pointer-events: none, BarraDeTiempo-. Hacia la derecha no crece: Aa y × no se tocan. */
+.flotante-raiz .flotante-asa-hit { flex: 1 1 auto; min-width: 24px; }
+.flotante-raiz .flotante-barra > .flotante-asa-hit { position: relative !important; }
+.flotante-raiz .flotante-asa-hit::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: max(100%, 48px);
+}
+.flotante-raiz .flotante-asa {
+  background: color-mix(in srgb, var(--color-texto) 60%, transparent);
+}
+.flotante-raiz .flotante-texto { font-size: 15px; font-weight: 600; white-space: nowrap; padding: 0 8px; }
+/* Antes -hasta 2026-11-09, corrección de la banda A-: .flotante-raiz .flotante-pildora { min-height: 40px; ... } con el
+   fondo de color-mix en el mismo botón -.flotante-pildora-. Motivo: el botón medía 40 de alto y, con el radio de
+   píldora, el toque en sus esquinas no llegaba. Ahora el botón tiene los 48 del pie y es un rectángulo; la píldora
+   visible de 40 es su ::before, 4 arriba y 4 abajo. */
+.flotante-raiz .flotante-pildora {
+  position: relative;
+  isolation: isolate;
+  align-self: stretch;
+  min-height: 48px;
+  border-radius: 0;
+  background: transparent;
+  padding: 0 14px 0 10px;
+  font-size: 15px;
+  font-weight: 600;
+  gap: 6px;
+  margin-right: 4px;
+}
+.flotante-raiz .flotante-pildora::before {
+  content: "";
+  position: absolute;
+  inset: 4px 0;
+  z-index: -1;
+  border-radius: var(--redondeo-pildora, 999px);
+  background: color-mix(in srgb, var(--color-texto, #fff) 12%, transparent);
+  pointer-events: none;
+}
+.flotante-raiz .flotante-esquina { margin-left: auto; }
+.flotante-raiz .flotante-esquina::after {
+  width: 14px;
+  height: 14px;
+  border-right-width: 3px;
+  border-bottom-width: 3px;
+  border-bottom-right-radius: 4px;
+  opacity: 1;
+}
+/* Aa abierto: el botón queda marcado, como una ficha elegida. */
+.flotante-raiz .flotante-aa-boton.abierto {
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-texto) 16%, transparent);
+}
+
+/* La pastilla del tiempo: 13 dp en la ventana amplia y un fondo que da 4,5 a 1 aunque detrás haya blanco y la
+   banda esté transparente del todo -contrastePastilla, lib/flotante.ts; la prueba lee este valor-. Pisa el
+   @media (max-width: 380px) de styles.css, pensado para la pantalla entera de un teléfono angosto: la ventana
+   mide 358 y allí la pastilla bajaba a 11. */
+.flotante-raiz .pastilla-tiempo-lugar { gap: 6px; padding: 0 4px; }
+.flotante-raiz .pastilla-tiempo {
+  background-color: var(--pastilla-fondo-flotante);
+  border-color: var(--pastilla-borde-flotante);
+}
+.flotante-raiz.flotante-amplia .pastilla-tiempo:not(.pastilla-microfono-sola) {
+  min-width: 150px;
+  padding: 6px 14px 8px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+.flotante-raiz.flotante-media .pastilla-tiempo:not(.pastilla-microfono-sola) {
+  min-width: 0;
+  padding: 5px 8px 7px;
+  font-size: 11px;
+  letter-spacing: 0;
+}
+
+/* La cuenta regresiva a la medida de la ventana: 120 no cabe en 180 de alto. */
+.flotante-raiz .flotante-cuenta [data-testid="cuenta-regresiva"] span {
+  font-size: var(--alto-cuenta-ventana) !important;
+}
+.flotante-raiz .flotante-aviso-micro {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  margin: 0;
+  z-index: 4;
+  font-size: 13px;
+  padding: 8px 12px;
+}
+.flotante-raiz.con-controles .flotante-aviso-micro { bottom: calc(var(--alto-pie-ventana) + 4px); }
+
+/* EL MENÚ DE Aa -flotante.html?panel=aa-, en su ventana del tamaño justo. */
+html.flotante-documento-menu,
+html.flotante-documento-menu body,
+html.flotante-documento-menu #root { background: transparent; }
+.flotante-menu-aa {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  padding: 12px;
+  border-radius: var(--forma-grande);
+  border: 1px solid var(--borde-tarjeta);
+  background: color-mix(in srgb, var(--bg-panel) 94%, transparent);
+  color: var(--color-texto);
+  font-family: "Source Sans 3", sans-serif;
+}
+.flotante-menu-aa .ajustes-flotante { gap: 4px; }
+.flotante-menu-aa .ajustes-flotante .fila-deslizador-letra,
+.flotante-menu-aa .ajustes-flotante .barra-brillo { margin-bottom: 0; }
+.ajustes-flotante-mitad { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.ajustes-flotante.en-fila { flex-direction: row; gap: 16px; }
+.ajustes-flotante.en-fila .ajustes-flotante-mitad { flex: 1; }
+/* La lectura de Sigo pinta su fondo opaco -TeleprompterView, background: colorFondo-: la transparencia de la
+   ventana no se veía nunca, ni antes de esta vuelta. Aquí el fondo lo pone solo .flotante-fondo. */
+.flotante-raiz .flotante-lectura > div { background: transparent !important; }
+/* En la ventana mínima el asa tiene menos de 48: la raya no se monta sobre Aa. */
+.flotante-raiz .flotante-asa { width: min(32px, calc(100% - 8px)); }
+
+/* -09-11-2026- EL AVISO Y EL LÍMITE DE LECTURA EN LA VENTANA: los mismos textos de Leer, que manda Android. */
+.flotante-raiz .flotante-aviso-limite {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: calc(var(--alto-cabecera-ventana) + 4px);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 8px 12px;
+  border-radius: var(--redondeo-grande, 16px);
+  background: var(--aviso-fondo);
+  color: var(--aviso-texto, inherit);
+  font-size: 14px;
+}
+.flotante-aviso-limite-titulo { font-weight: 600; }
+.flotante-aviso-limite-nota { font-weight: 400; font-size: 13px; }
+.flotante-aviso-limite-boton { min-height: 48px; padding: 0 8px; margin-left: -8px; }

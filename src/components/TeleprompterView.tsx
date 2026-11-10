@@ -86,8 +86,9 @@ import { AnclajeZona, calcularBanda, calcularBgVelo, calcularTramosVelo } from '
 // -recuadro-arrastre- Antes: import { RecuadroCamara, EsquinaRecuadroH } from './RecuadroCamara'
 import { RecuadroCamara, EsquinaRecuadroH, aceptarPosicionRecuadro } from './RecuadroCamara'
 import type { FondoToma } from '../lib/fondoToma'
+// Antes -hasta el 09-11-2026-: sin IconoVentanaFlotante.
 import {
-  IconoAtras, IconoEmpezar, IconoEmpezarAPausa
+  IconoAtras, IconoEmpezar, IconoEmpezarAPausa, IconoVentanaFlotante
 } from './IconosApp'
 import { movimientoApagado } from './movimiento'
 // Antes: import { familiaLectura, colorLetraEfectiva, columnaLectura, INTERLINEADO_LECTURA, MARGEN_RENGLON_LECTURA_PX } from './estiloLectura'
@@ -327,6 +328,19 @@ interface TeleprompterViewProps {
   // -ajustes de pantallas, segunda vuelta, 10-10-2026- La voz bajándose en LISTO -fracción 0..1, o null-,
   // la misma que recibe la pastilla de BarraDeTiempo. Con el dock va adentro, en el lugar de la duración.
   preparandoVoz?: number | null
+  // PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026. Antes: estas props no existían; Empezar, el dock,
+  // la flecha de volver y los paneles de la toma se dibujaban siempre que LISTO lo pidiera.
+  ocultarCromoDeLeer?: boolean
+  // Antes: .lectura-sobre-imagen solo iba con la cámara de Sigo o el recuadro de lado.
+  sobreImagenAjena?: boolean
+  // PROTOTIPO DE LA VENTANA FLOTANTE, banda A, 09-11-2026. Con «Arriba», a cuántos px del borde queda el renglón
+  // que se lee: en la ventana, 52 -bajo la cabecera de 48-, con o sin controles. Antes: siempre 0 -calcularBanda
+  // con paddingSuperior 0-.
+  margenBandaArribaPx?: number
+  // PROTOTIPO, 09-11-2026. El selector «Ventana flotante» del dock -App lo arma- y la marca chica en Empezar cuando
+  // está elegido. Antes: no existían; la ficha iba suelta arriba, en App.
+  selectorFlotante?: React.ReactNode
+  flotanteElegido?: boolean
 }
 
 // LA SANGRÍA DE LA PRIMERA LÍNEA -ajustes de pantallas, 10-10-2026, boceto 2-. Con el teléfono de pie,
@@ -441,7 +455,12 @@ export default function TeleprompterView({
   ajustesLectura,
   preparandoVoz = null,
   hayDialogoPermiso = false,
-  hayAvisoDescargaVoz = false
+  hayAvisoDescargaVoz = false,
+  ocultarCromoDeLeer = false,
+  sobreImagenAjena = false,
+  margenBandaArribaPx = 0,
+  selectorFlotante,
+  flotanteElegido = false
 }: TeleprompterViewProps) {
   useTextos()
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -651,7 +670,8 @@ export default function TeleprompterView({
   const { topBanda, altoBanda } = altoContenedor > 0
     // ARRIBA, SIN HOLGURA -24-09-2026-. Eran 20 px entre el borde de arriba del texto y
     // la ventana. Ver REFERENCIA DEL RENGLON VIVO, en el lazo.
-    ? calcularBanda(altoContenedor, filaPx, lineasZona, anclajeZona, 0, 20, altoLineaViva)
+    // Antes -hasta el 09-11-2026-: calcularBanda(altoContenedor, filaPx, lineasZona, anclajeZona, 0, 20, altoLineaViva)
+    ? calcularBanda(altoContenedor, filaPx, lineasZona, anclajeZona, margenBandaArribaPx, 20, altoLineaViva)
     : { topBanda: 0, altoBanda: 0 }
 
   const isWhiteBg = colorFondo.toUpperCase() === '#FFFFFF'
@@ -1314,7 +1334,11 @@ export default function TeleprompterView({
     )
   }
 
-  const textoSobreImagen = camaraEncendida && fondoToma === 'detras'
+  // PROTOTIPO DE LA VENTANA FLOTANTE -revisión del 957fc97, 08-11-2026-. Sobre la imagen de otra app la lectura
+  // va igual que con la cámara de Sigo detrás: sin el velo ni la banda de Leer, con el panel donde se lee y el
+  // halo E -B16, tarea 82-. Con solo la clase del halo, el velo de Leer tapaba la cámara arriba y abajo.
+  // Antes: const textoSobreImagen = camaraEncendida && fondoToma === 'detras'
+  const textoSobreImagen = (camaraEncendida && fondoToma === 'detras') || sobreImagenAjena
 
   // LA COLUMNA ENTRE LOS RIELES -tarea 82, A3 y A5, 29-09-2026-. En el teléfono de lado el relleno
   // lateral no es marginPercent: es el ancho del riel más 28 de aire -20 con el recuadro-, y del
@@ -1343,7 +1367,8 @@ export default function TeleprompterView({
   // horizontal y en tableta, por ahora, solo cambia el orden de las fichas -FichasListo-.
   // -cuarta vuelta, 10-10-2026- Leer también: el mismo dock, con TEXTO, PANTALLA y el engranaje arriba y el
   // play de hoy abajo al centro. Antes: const conDock = conCamara && !horizontal && !tableta
-  const conDock = !horizontal && !tableta
+  // Antes: const conDock = !horizontal && !tableta
+  const conDock = !ocultarCromoDeLeer && !horizontal && !tableta
   // Sin ajustesLectura -las pruebas que montan TeleprompterView sola- el panel muestra los valores que
   // llegan; lo que no tiene manejador acá no cambia y lo dice en la consola. App siempre los pasa.
   const sinManejador = (que: string) => () => {
@@ -1356,7 +1381,7 @@ export default function TeleprompterView({
     mirror, setMirror: (v) => setMirror?.(v), mostrarTiempo, setMostrarTiempo: (v) => setMostrarTiempo?.(v)
   }
 
-  const botonVolverListo = (
+  const botonVolverListo = ocultarCromoDeLeer ? null : (
     <>
       {/* La flecha usa el tratamiento comun de 32 -btn-flotante-32, styles.css-,
           igual que la flecha del estado leyendo en App.tsx. Hasta la revision
@@ -1397,7 +1422,7 @@ export default function TeleprompterView({
   // Ajustes de pantallas: con abrirAjustesToma son las fichas del dock -enDock- y el engranaje abre el
   // panel de Ajustes de la toma en vez de la pantalla de Ajustes.
   const fichasListo = (enRiel: boolean, abrirAjustesToma?: () => void) => (
-      <FichasListo
+      ocultarCromoDeLeer ? null : <FichasListo
         fontSize={fontSize}
         onLetraMenos={onLetraMenos}
         onLetraMas={onLetraMas}
@@ -1434,7 +1459,7 @@ export default function TeleprompterView({
       />
   )
 
-  const botonEmpezar = (
+  const botonEmpezar = ocultarCromoDeLeer ? null : (
     <button
       data-testid="btn-empezar-toma"
       type="button"
@@ -1453,7 +1478,9 @@ export default function TeleprompterView({
       aria-label={t('empezar')}
       onClick={(e) => {
         e.stopPropagation()
-        setBotonTransformado(true)
+        // PROTOTIPO, 09-11-2026: con «Ventana flotante» elegida Empezar abre la hoja de la ventana y no empieza aquí;
+        // el play no se vuelve pausa. Antes: setBotonTransformado(true) siempre.
+        if (!flotanteElegido) setBotonTransformado(true)
         onEmpezar?.()
       }}
       style={{
@@ -1473,6 +1500,10 @@ export default function TeleprompterView({
         <span className={`punto-grabar${botonTransformado ? ' cuadrado' : ''}`} aria-hidden="true" />
       ) : (
         <IconoEmpezarAPausa esPlay={!botonTransformado} tamano={30} />
+      )}
+      {/* PROTOTIPO, 09-11-2026: la marca de que esta lectura va a la ventana flotante -boceto A-. */}
+      {flotanteElegido && (
+        <span className="marca-empezar-flotante" aria-hidden="true"><IconoVentanaFlotante tamano={14} /></span>
       )}
     </button>
   )
@@ -1796,7 +1827,8 @@ export default function TeleprompterView({
            el texto pasa sobre la imagen del recuadro —mismo halo que «detrás»— sin
            tocar textoSobreImagen (velo, banda y panel siguen igual). Antes: la clase
            solo iba con textoSobreImagen (= cámara detrás). */
-        className={(textoSobreImagen || sinCarrilRecuadroTelH(diseno, recuadroEnPantalla, esquinaRecuadroH))
+        // Antes: className={(textoSobreImagen || sinCarrilRecuadroTelH(...)) ? `lectura-sobre-imagen...`}
+        className={(textoSobreImagen || sobreImagenAjena || sinCarrilRecuadroTelH(diseno, recuadroEnPantalla, esquinaRecuadroH))
           ? `lectura-sobre-imagen${isWhiteBg ? ' letra-oscura' : ''}`
           : undefined}
         style={{
@@ -1995,6 +2027,8 @@ export default function TeleprompterView({
               <div className="riel-fondo" aria-hidden="true" />
               {botonVolverListo}
               {!arrastrandoRecuadro && fichasListo(true)}
+              {/* PROTOTIPO, 09-11-2026: de lado, el selector de la ventana flotante va al pie del riel izquierdo. */}
+              {!arrastrandoRecuadro && selectorFlotante && <div className="riel-lugar-selector-flotante">{selectorFlotante}</div>}
             </div>
           ) : tabletaVertical ? (
             // LA BARRA DE ARRIBA DE LA TABLETA VERTICAL -tarea 83, 30-09-2026-. 72 de alto más el
@@ -2076,6 +2110,10 @@ export default function TeleprompterView({
             >
               {!arrastrandoRecuadro && fichasListo(false)}
               {!arrastrandoRecuadro && <div className="tab-lugar-empezar">{botonEmpezar}</div>}
+              {/* PROTOTIPO, 09-11-2026, corrección de la banda A: en la tableta vertical el selector de la ventana
+                  flotante faltaba. Va en su propio lugar, a la izquierda de Empezar y en su misma fila -la pastilla
+                  está a la derecha-, sin tapar las fichas ni Empezar. Las condiciones son las de App, que lo entrega. */}
+              {!arrastrandoRecuadro && selectorFlotante && <div className="tab-lugar-selector-flotante">{selectorFlotante}</div>}
             </div>
           ) : conDock ? (
             // GRABAR EN LISTO, DE PIE EN EL TELÉFONO: UN SOLO DOCK DE VIDRIO -ajustes de pantallas,
@@ -2084,6 +2122,7 @@ export default function TeleprompterView({
             // va y vuelve el contador de hoy -la pastilla de BarraDeTiempo, la monta App-.
             <DockListo
               fichas={(abrirAjustes) => fichasListo(false, abrirAjustes)}
+              encabezado={selectorFlotante}
               botonGrabar={botonEmpezar}
               onVoltear={onVoltear}
               // La misma condición del Voltear del panel de la cámara: la ficha Cámara está con la cámara.

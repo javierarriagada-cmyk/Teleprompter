@@ -146,7 +146,51 @@ export function streamActual(): MediaStream | null {
   return null
 }
 
-export async function apagarCamara(): Promise<void> {
+// EL CIERRE CONFIRMADO, PARA LA VENTANA FLOTANTE -9-nov-2026, orden «Tres correcciones», fallo 1-. Desde Grabar,
+// la ventana se abría con CameraPreview.stop() todavía pendiente -App.tsx no esperaba esta promesa- y, si stop()
+// fallaba, el error se anotaba y la cámara quedaba marcada como apagada igual: nadie podía distinguir un cierre
+// hecho de uno fallido. Ahora devuelve true si la cámara quedó cerrada -o no había nada que cerrar- y false si
+// stop() falló, con el motivo en errorDelUltimoApagado(). Con conservarSiFalla -lo usa la ventana- un cierre fallido
+// deja la cámara marcada como encendida: no se sabe si se apagó, y así Grabar la sigue tratando como suya y al salir
+// de Grabar se vuelve a pedir el cierre. Sin la opción todo sigue como antes: marcada como apagada pase lo que pase.
+// Antes -hasta el 9-nov-2026-:
+// export async function apagarCamara(): Promise<void> {
+//   if (grabandoVideoNativo) {
+//     try {
+//       await cortarGrabacionVideo()
+//     } catch (e) {
+//       console.warn('[Camara] Error al cortar grabacion antes de apagar:', e)
+//     }
+//   }
+//   if (estaEncendida) {
+//     try {
+//       await CameraPreview.stop()
+//     } catch (e) {
+//       console.warn('[Camara] Error al apagar CameraPreview:', e)
+//     }
+//   }
+//   estaEncendida = false
+// }
+let ultimoErrorApagado: string | null = null
+export function errorDelUltimoApagado(): string | null {
+  return ultimoErrorApagado
+}
+
+// Antes -9-nov-2026, orden t162u, punto 3-:
+// export async function apagarCamara(opciones?: { conservarSiFalla?: boolean }): Promise<boolean> {
+//   // -9-nov-2026, orden t160u, punto 2- Primero el arranque pendiente, si lo hay: ver encenderCamara.
+//   await esperarArranques()
+//   return apagarSinEsperarArranque(opciones)
+// }
+// Razón: ver colaCamara. El cierre entra en la cola detrás de todos los arranques pedidos antes: cuando confirma,
+// ninguno de ellos puede volver a encender la cámara.
+export function apagarCamara(opciones?: { conservarSiFalla?: boolean }): Promise<boolean> {
+  return enColaCamara(() => apagarSinEsperarArranque(opciones))
+}
+
+// El cierre de siempre. Lo usa también encenderCamaraSinAnotar al cambiar de cámara: ese arranque ya está anotado,
+// y si esperara a los arranques se esperaría a sí mismo.
+async function apagarSinEsperarArranque(opciones?: { conservarSiFalla?: boolean }): Promise<boolean> {
   if (grabandoVideoNativo) {
     try {
       await cortarGrabacionVideo()
@@ -154,14 +198,19 @@ export async function apagarCamara(): Promise<void> {
       console.warn('[Camara] Error al cortar grabacion antes de apagar:', e)
     }
   }
+  let cerrada = true
+  ultimoErrorApagado = null
   if (estaEncendida) {
     try {
       await CameraPreview.stop()
     } catch (e) {
       console.warn('[Camara] Error al apagar CameraPreview:', e)
+      cerrada = false
+      ultimoErrorApagado = e instanceof Error ? e.message : String(e)
     }
   }
-  estaEncendida = false
+  if (cerrada || !opciones?.conservarSiFalla) estaEncendida = false
+  return cerrada
 }
 
 /**
@@ -236,12 +285,86 @@ export function esPermisoDeCamaraNegado(err: unknown): boolean {
   return typeof e.message === 'string' && /camera permission denied/i.test(e.message)
 }
 
-export async function encenderCamara(
+// EL CIERRE ESPERA AL ARRANQUE -9-nov-2026, orden t160u, punto 2-. apagarCamara() miraba estaEncendida, y esa marca
+// recién se pone cuando CameraPreview.start() termina. Con start() todavía pendiente, el cierre veía la cámara como
+// apagada, no llamaba a stop() y devolvía true; después start() terminaba y la cámara quedaba encendida detrás de la
+// ventana flotante. Ahora cada arranque queda anotado en arranqueEnCurso hasta que termina -bien o mal-, y
+// apagarCamara() lo espera antes de decidir si hay algo que cerrar. No es una espera fija: es la promesa del propio
+// arranque. El cuerpo de siempre pasó, sin cambios, a encenderCamaraSinAnotar.
+// Antes -hasta el 9-nov-2026-:
+// export async function encenderCamara(
+//   lado: LadoCamara,
+//   config?: OpcionesConfigCamara
+// ): Promise<MediaStream | null> {
+// Antes -9-nov-2026, orden t162u, punto 3-:
+// let arranqueEnCurso: Promise<unknown> | null = null
+//
+// export function encenderCamara(lado: LadoCamara, config?: OpcionesConfigCamara): Promise<MediaStream | null> {
+//   const arranque = encenderCamaraSinAnotar(lado, config)
+//   arranqueEnCurso = arranque
+//   const soltar = () => {
+//     if (arranqueEnCurso === arranque) arranqueEnCurso = null
+//   }
+//   arranque.then(soltar, soltar)
+//   return arranque
+// }
+//
+// // Espera a que termine el arranque anotado, y a los que se anoten mientras tanto. encenderCamaraSinAnotar nunca
+// // rechaza -los errores devuelven null-, pero por las dudas un rechazo cuenta como terminado.
+// async function esperarArranques(): Promise<void> {
+//   let visto: Promise<unknown> | null = null
+//   while (arranqueEnCurso && arranqueEnCurso !== visto) {
+//     visto = arranqueEnCurso
+//     try {
+//       await visto
+//     } catch {
+//       // terminó: con eso alcanza
+//     }
+//   }
+// }
+// Razón: arranqueEnCurso guardaba una sola promesa. Un segundo encenderCamara la reemplazaba: el cierre esperaba ese
+// y no el primero, que al terminar después dejaba la cámara encendida con el cierre ya confirmado -medido en
+// camaraCierreConfirmado: true y la cámara encendida-. Ahora arranques y cierres van en una sola fila, en el orden en
+// que se pidieron: cada uno empieza cuando terminó el anterior, bien o mal.
+
+// LA FILA DE LA CÁMARA -9-nov-2026, orden t162u, punto 3-. Un arranque que llega con otro en curso espera; el cierre
+// espera a todos los que se pidieron antes, y lo que se pida después del cierre corre después de él. Así, cuando
+// apagarCamara() confirma, ninguna apertura anterior puede volver a encenderla, y una petición deliberada posterior
+// sí enciende. Lo de adentro -el reintento sin estabilización, el fallo de stop() con conservarSiFalla- no cambia.
+// Con la fila vacía la operación empieza en el acto, como antes: CameraPreview.start() se pide en el mismo tick.
+let colaCamara: Promise<unknown> = Promise.resolve()
+let operacionesCamara = 0
+
+function correrOperacion<T>(operacion: () => Promise<T>): Promise<T> {
+  try {
+    return Promise.resolve(operacion())
+  } catch (e) {
+    return Promise.reject(e)
+  }
+}
+
+function enColaCamara<T>(operacion: () => Promise<T>): Promise<T> {
+  const turno = operacionesCamara === 0
+    ? correrOperacion(operacion)
+    : colaCamara.then(() => correrOperacion(operacion))
+  operacionesCamara++
+  // Un fallo no traba la fila: el siguiente corre igual.
+  colaCamara = turno.then(() => { operacionesCamara-- }, () => { operacionesCamara-- })
+  return turno
+}
+
+export function encenderCamara(lado: LadoCamara, config?: OpcionesConfigCamara): Promise<MediaStream | null> {
+  return enColaCamara(() => encenderCamaraSinAnotar(lado, config))
+}
+
+async function encenderCamaraSinAnotar(
   lado: LadoCamara,
   config?: OpcionesConfigCamara
 ): Promise<MediaStream | null> {
   if (estaEncendida) {
-    await apagarCamara()
+    // Antes -hasta el 9-nov-2026-: await apagarCamara()
+    // Razón: apagarCamara ahora espera los arranques anotados, y este es uno; ver apagarSinEsperarArranque.
+    await apagarSinEsperarArranque()
   }
 
   ladoEstado = lado

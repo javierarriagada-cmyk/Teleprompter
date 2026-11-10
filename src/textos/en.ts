@@ -382,5 +382,25 @@ export const en: Textos = {
   // Arreglos chicos de uso -estudio 1-.
   nadaCopiado: 'Nothing copied',
   abrirEnEditor: 'Open in editor',
+  // PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026.
+  ventanaFlotante: 'Floating window',
+  transparenciaFondo: 'Background transparency',
+  // Banda A, 09-11-2026: el aviso aprobado en los bocetos. Antes: accesibilidadFlotanteTitulo: 'To follow your voice over other apps'
+  accesibilidadFlotanteTitulo: 'Read over other apps',
+  // Antes: accesibilidadFlotanteTexto: 'Android only lets Sigo hear you while another app is recording if you turn on “Sigo · prueba flotante” in Accessibility. Sigo doesn\'t read your screen or what you type.'
+  accesibilidadFlotanteTexto: 'Sigo uses the microphone to follow your voice while you record in another app. In Accessibility, turn on “Sigo · prueba flotante”, then return to Sigo. This service doesn’t read your screen or what you type.',
+  // Antes: irAActivarlo: 'Turn it on' -la clave cambió de nombre con el texto-.
+  abrirAccesibilidad: 'Open Accessibility settings',
+  consecuenciaFlotante: 'Read on top of the camera or another app',
+  accesibilidadFlotanteInactivo: '“Sigo · prueba flotante” is still off.',
+  lecturaEnVentanaFlotante: 'Your reading is in the floating window',
+  cerrarLaVentana: 'Close the window',
+  volverASigo: 'Back to Sigo',
+  avisoMicrofonoQuitado: 'Android took the microphone from Sigo. The text is waiting here.',
+  // -9-nov-2026, orden t160u, punto 5-
+  avisoCamaraNoSeApago: "The camera couldn't be turned off, so the floating window didn't open. Tap Start to try again.",
+  avisoMicrofonoNoAbrio: "The microphone couldn't be opened. Tap Resume to try again.",
+  moverVentana: 'Move the window',
+  cambiarTamano: 'Resize',
   cerrarSeleccion: 'Close selection'
 }

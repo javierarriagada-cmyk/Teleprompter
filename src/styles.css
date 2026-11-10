@@ -3208,3 +3208,309 @@ button.btn-deformable.miniatura-banda:not(:active) {
   padding: 6px;
   border-radius: 50%;
 }
+
+/* PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026. Instrumentos solo en LISTO de Leer.
+   .pastilla-tiempo: legibles sobre ambas lecturas. La flecha conserva su franja libre. */
+.prueba-flotante-casos {
+  position: absolute;
+  z-index: 180;
+  top: calc(env(safe-area-inset-top, 0px) + 64px);
+  left: calc(env(safe-area-inset-left, 0px) + 16px);
+  right: calc(env(safe-area-inset-right, 0px) + 16px);
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 8px;
+  pointer-events: none;
+}
+.prueba-flotante-casos button {
+  pointer-events: auto;
+  flex: 0 1 auto;
+  min-width: 0;
+  min-height: 48px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--redondeo-pildora);
+  color: #fff;
+  font-size: var(--texto-meta);
+  font-family: inherit;
+}
+/* De lado, Empezar vive a la derecha: la prueba se queda entre los rieles. */
+.layout-tel-h .prueba-flotante-casos, .layout-tab-h .prueba-flotante-casos {
+  left: calc(env(safe-area-inset-left, 0px) + 64px);
+  right: calc(env(safe-area-inset-right, 0px) + 96px);
+}
+
+.prueba-flotante-casos button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.flotante-panel-sigo {
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  text-align: center;
+  background: var(--color-fondo, #111);
+  color: var(--color-texto, #fff);
+}
+/* Antes -957fc97-: .hoja-flotante label { display: block; margin: 12px 0; } y
+   .hoja-flotante input[type="range"] { display: block; width: 100%; min-height: 48px; }, para los dos
+   deslizadores sin clase. Ahora van los controles de Aa de Sigo -AjustesFlotante, .barra-pasos y
+   .barra-brillo de styles-ajustes.css-, con el aire del panel de la ficha entre uno y otro. */
+.ajustes-flotante {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ajustes-flotante .fila-deslizador-letra,
+.ajustes-flotante .barra-brillo {
+  margin-bottom: 12px;
+}
+.ajustes-flotante .barra-brillo {
+  flex: none;
+  width: 100%;
+}
+/* La muestra: tres renglones enteros a la letra elegida. Antes -957fc97-: height: 7.5em, que cortaba el
+   tercero por la mitad en el g86. */
+.flotante-previa {
+  position: relative;
+  height: 10em;
+  border-radius: var(--redondeo, 12px);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.flotante-previa-mitades {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #e8e8e8 50%, #1a1a1a 50%);
+}
+/* Antes -957fc97-: padding: 12px 16px y line-height: 1.3 sobre un div de texto. Ahora adentro va la lectura de
+   Sigo, que trae su propio margen y su interlineado. */
+.flotante-previa-lectura {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* LA ENTRADA DE LA BANDA A -prototipo, 09-11-2026-. El selector «Ventana flotante» vive en el dock de LISTO, arriba
+   de las fichas -de lado, al pie del riel izquierdo-: nombre, consecuencia y marca, 56 de alto y se toca entero.
+   Es una superficie secundaria: Empezar sigue siendo el único botón lleno. */
+.selector-flotante {
+  display: grid;
+  grid-template-columns: 40px 1fr 32px;
+  align-items: center;
+  gap: 8px;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 56px;
+  margin: 0 0 8px;
+  padding: 6px 10px 6px 8px;
+  border-radius: var(--forma-grande);
+  background: color-mix(in srgb, var(--bg-panel) 82%, transparent);
+  border: 1px solid var(--borde-tarjeta);
+  color: var(--color-texto);
+  text-align: left;
+  font-family: inherit;
+  pointer-events: auto;
+}
+.selector-flotante:disabled { opacity: 0.38; }
+.selector-flotante.elegido {
+  background: var(--menu-elegida-fondo);
+  border-color: var(--color-borde);
+}
+.selector-flotante-icono {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--forma-media);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-menu);
+}
+.selector-flotante-textos { min-width: 0; }
+.selector-flotante-textos b { display: block; font-size: 15px; font-weight: 600; line-height: 1.25; }
+.selector-flotante-textos small { display: block; font-size: 13px; color: var(--color-apagado); line-height: 1.3; }
+.selector-flotante-marca {
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--color-borde);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: end;
+  color: var(--empezar-icono);
+}
+.selector-flotante.elegido .selector-flotante-marca {
+  background: var(--empezar-fondo);
+  border-color: var(--empezar-fondo);
+}
+/* De lado, en el riel: sin el ícono, que no cabe. */
+.riel-lugar-selector-flotante { margin-top: auto; width: 100%; }
+.riel-lugar-selector-flotante .selector-flotante {
+  grid-template-columns: 1fr 24px;
+  padding: 10px 10px 10px 12px;
+  margin: 0;
+}
+.riel-lugar-selector-flotante .selector-flotante-icono { display: none; }
+.riel-lugar-selector-flotante .selector-flotante-textos small { font-size: 12px; }
+
+/* La marca en Empezar: esta lectura va a la ventana. */
+.marca-empezar-flotante {
+  position: absolute;
+  right: -4px;
+  top: -4px;
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--bg-panel);
+  color: var(--color-texto);
+  border: 1px solid var(--color-borde);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* LAS HOJAS DE LA BANDA A: autorización y preparación. */
+.hoja-flotante-icono {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--forma-media);
+  background: var(--bg-menu);
+  color: var(--color-texto);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.hoja-flotante-nota {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 14px;
+  padding: 10px 12px;
+  border-radius: var(--forma-media);
+  background: var(--menu-elegida-fondo);
+  border: 1px solid var(--color-borde);
+  margin-bottom: 12px;
+}
+.hoja-flotante-nota svg { flex-shrink: 0; margin-top: 1px; }
+.hoja-flotante-cuerpo { display: flex; flex-direction: column; gap: 12px; }
+.hoja-flotante-cuerpo > * { min-width: 0; }
+.hoja-flotante .botones-dialogo { flex-wrap: wrap; }
+.boton-con-icono { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+/* Antes -08-11-2026-: .flotante-previa { height: 10em; margin-bottom: 16px; } y la muestra del ancho del
+   diálogo. Ahora alto de tres renglones a la letra elegida -App.tsx lo pone en --alto-previa- y la lectura con
+   el ancho de la banda, centrada sobre las dos mitades. */
+.hoja-flotante .flotante-previa {
+  height: var(--alto-previa, 10em);
+  margin-bottom: 0;
+  border-radius: var(--forma-media);
+}
+.hoja-flotante .flotante-previa-mitades {
+  background: linear-gradient(90deg, var(--previa-clara) 50%, var(--previa-oscura) 50%);
+}
+:root {
+  --previa-clara: #E8E8E8;
+  --previa-oscura: #1A1A1A;
+}
+.hoja-flotante .flotante-previa-lectura {
+  width: min(100%, var(--ancho-previa, 100%));
+  margin: 0 auto;
+}
+/* De lado, la muestra y los controles van uno al lado del otro. */
+@media (orientation: landscape) and (max-height: 520px) {
+  .hoja-flotante.hoja-flotante-preparacion { max-width: 760px; width: calc(100% - 24px); }
+  .hoja-flotante-cuerpo { flex-direction: row; gap: 20px; align-items: flex-start; }
+  .hoja-flotante-cuerpo > * { flex: 1; }
+}
+/* En el tema claro las barras toman el oscuro de Empezar: la crema daba 1,15 a 1 sobre el blanco. */
+[data-tema="claro"] .hoja-flotante .ajustes-flotante {
+  --color-acento: var(--empezar-fondo);
+  --bg-menu: var(--color-separador);
+}
+/* Antes -957fc97-: .flotante-panel-sigo con justify-content: center. Ahora el aviso va abajo, donde la banda
+   -arriba- no lo tapa. */
+.flotante-panel-sigo {
+  justify-content: flex-end;
+  padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+}
+/* La muestra de la preparación: el fondo con su transparencia lo pone .flotante-previa-lectura -App.tsx-; la
+   lectura de Sigo pinta el suyo opaco y lo tapaba. */
+.hoja-flotante .flotante-previa-lectura > div { background: transparent !important; }
+/* La hoja de la ventana va abajo, a la mano -boceto A, 807-02-; de lado, centrada. La muestra es la lectura:
+   alineada a la izquierda aunque el diálogo centre sus textos. */
+/* Con las dos clases: styles-ajustes.css se carga después y su .capa-dialogo-microfono centraba la hoja.
+   Antes: .capa-hoja-flotante { align-items: flex-end; } -y center de lado-, que perdía. */
+.capa-dialogo-microfono.capa-hoja-flotante { align-items: flex-end; }
+@media (orientation: landscape) and (max-height: 520px) {
+  .capa-dialogo-microfono.capa-hoja-flotante { align-items: center; }
+}
+.hoja-flotante .flotante-previa-lectura { text-align: left; }
+.hoja-flotante .ajustes-flotante { gap: 4px; }
+.hoja-flotante .ajustes-flotante .fila-deslizador-letra,
+.hoja-flotante .ajustes-flotante .barra-brillo { margin-bottom: 4px; }
+/* De lado el riel izquierdo real mide 112 -tarea 82-, no los 200 del boceto: el selector va al pie del riel, con el
+   nombre en dos renglones y la marca. La consecuencia se sigue leyendo con el lector de pantalla. Antes -arriba en
+   este archivo-: .riel-lugar-selector-flotante { margin-top: auto; width: 100%; }, que dejaba el selector arriba
+   a la izquierda, debajo del ‹. */
+.layout-tel-h .riel-lugar-selector-flotante,
+.riel-izquierdo > .riel-lugar-selector-flotante {
+  position: absolute;
+  left: calc(8px + env(safe-area-inset-left, 0px));
+  right: 8px;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  width: auto;
+  margin: 0;
+  /* Sobre .fila-fichas-listo -z-index 12-, que de lado cubre el riel entero y recibe los toques. */
+  z-index: 13;
+}
+.riel-lugar-selector-flotante .selector-flotante {
+  grid-template-columns: 1fr 22px;
+  gap: 4px;
+  min-height: 56px;
+  padding: 8px 6px 8px 10px;
+}
+.riel-lugar-selector-flotante .selector-flotante-textos b { font-size: 12px; line-height: 1.2; }
+.riel-lugar-selector-flotante .selector-flotante-textos small {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.riel-lugar-selector-flotante .selector-flotante-marca { width: 22px; height: 22px; }
+/* LA MUESTRA MIDE LO QUE LA BANDA. De pie la hoja deja 310 adentro y la banda mide 358: la muestra toma también el
+   relleno del diálogo -24 por lado-, centrada, para que el texto corte donde cortará en la ventana. De lado va a su
+   ancho al lado de los controles. */
+.hoja-flotante .flotante-previa {
+  width: min(var(--ancho-previa, 100%), calc(100% + 48px));
+  margin-inline: calc((100% - min(var(--ancho-previa, 100%), calc(100% + 48px))) / 2);
+}
+.hoja-flotante .flotante-previa .flotante-previa-lectura { width: 100%; }
+@media (orientation: landscape) and (max-height: 520px) {
+  .hoja-flotante.hoja-flotante-preparacion { max-width: none; width: auto; }
+  .hoja-flotante-cuerpo > .flotante-previa {
+    flex: 0 0 min(var(--ancho-previa, 60%), 60%);
+    width: auto;
+    margin-inline: 0;
+  }
+  .hoja-flotante-cuerpo > .hoja-flotante-controles { flex: 1 1 260px; }
+}
+/* De pie la muestra va de borde a borde de la hoja -358, lo que mide la banda-: sin esquinas redondas, que
+   quedaban pegadas al borde del diálogo. De lado vuelve al redondeo, porque va adentro. */
+@media not ((orientation: landscape) and (max-height: 520px)) {
+  .hoja-flotante .flotante-previa { border-radius: 0; }
+}

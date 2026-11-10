@@ -6,6 +6,7 @@ import { HERRAMIENTAS } from '../lib/herramientas'
 import { idiomaDeVoz, IdiomaVoz } from '../lib/vozAPedido'
 // -proxima-version, 2026-11-08- El rms de cada evento, al disco del micrófono de la pastilla.
 import { publicarNivelVoz } from '../lib/nivelVoz'
+import { textoDe } from './textoDeVosk'
 
 // EL AUDIO QUE ESCUCHO VOSK, GUARDADO -24-09-2026-. Es el instrumento del plan del
 // motor: con el se afina el reconocedor en el PC contra lecturas reales. Quedan los
@@ -53,8 +54,13 @@ interface VoskNativoPlugin {
   // 'es' o 'en': el plugin carga assets/model-es o assets/model-en -docs/ingles.txt D3-.
   // -portugues-voz, 2026-10-22- IdiomaVoz suma 'pt'. Antes: iniciar(opciones?: { idioma?: 'es' | 'en' }): Promise<void>
   iniciar(opciones?: { idioma?: IdiomaVoz }): Promise<void>
-  escuchar(opciones?: { guardarAudio?: boolean; fuente?: string; frecuenciaMic?: number }): Promise<{ inicioEpochMs?: number; rutaAudio?: string; muestrasPorTrozo?: number } | void>
-  detener(): Promise<void>
+  // Antes -9-nov-2026, orden t160u, punto 3-:
+  // escuchar(opciones?: { guardarAudio?: boolean; fuente?: string; frecuenciaMic?: number }): Promise<{ inicioEpochMs?: number; rutaAudio?: string; muestrasPorTrozo?: number } | void>
+  // detener(): Promise<void>
+  // Razón: escuchar devuelve la captura que abrió -0 si no abrió nada suyo- y detener la nombra: solo cierra esa. Un
+  // APK viejo no manda captura: entonces detener va sin ella y cierra lo que haya, como antes.
+  escuchar(opciones?: { guardarAudio?: boolean; fuente?: string; frecuenciaMic?: number }): Promise<{ inicioEpochMs?: number; rutaAudio?: string; muestrasPorTrozo?: number; captura?: number } | void>
+  detener(opciones?: { captura?: number }): Promise<{ detenido?: boolean } | void>
   abrirAjustesDeLaApp(): Promise<void>
   // Los pone Capacitor solo, por el @Permission del plugin -alias 'microfono'-.
   checkPermissions(): Promise<{ microfono: string }>
@@ -82,18 +88,16 @@ interface VoskNativoPlugin {
 
 const Nativo = registerPlugin<VoskNativoPlugin>('VoskNativo')
 
-// Vosk contesta en JSON: {"partial": "..."} mientras hablas y {"text": "..."} al
-// cerrar una frase. Se parsea de este lado a proposito -el plugin pasa la cadena tal
-// cual-, para no tener el formato escrito en dos lenguajes y tener que recompilar el
-// APK cada vez que Vosk agregue un campo.
-function textoDe(json: string, campo: 'partial' | 'text'): string {
-  try {
-    const o = JSON.parse(json)
-    const t = o[campo]
-    return typeof t === 'string' ? t : ''
-  } catch {
-    return ''
-  }
+// Antes: function textoDe(json, campo) vivía aquí. La ventana flotante la necesita
+// también, así que quedó en textoDeVosk.ts sin cambiar el parseo.
+
+// -9-nov-2026, orden t160u, punto 3- Una lectura del motor: de iniciar() a su detener(). captura: undefined mientras
+// escuchar no respondió; null si respondió sin captura -APK viejo-; 0 si no abrió nada suyo.
+interface TurnoDeEscucha {
+  suscripciones: PluginListenerHandle[]
+  captura: number | null | undefined
+  cancelado: boolean
+  cerrada?: boolean
 }
 
 export class MotorNativo implements MotorDeVoz {
@@ -103,7 +107,12 @@ export class MotorNativo implements MotorDeVoz {
   private listenersParcial: ((e: EventoParcial) => void)[] = []
   private listenersFinal: ((e: EventoFinal) => void)[] = []
   private listenersError: ((e: Error) => void)[] = []
-  private suscripciones: PluginListenerHandle[] = []
+  // Antes -9-nov-2026, orden t160u, punto 3-: private suscripciones: PluginListenerHandle[] = []
+  // Razón: un solo arreglo para todas las lecturas. detener() recorría el arreglo esperando cada remove() y al final lo
+  // vaciaba: si en ese rato empezaba otra lectura, sus oyentes entraban al mismo arreglo y se borraban o se perdían.
+  // Ahora cada iniciar es un turno con sus oyentes y su captura, y detener() solo toca los turnos que ya existían
+  // cuando se llamó.
+  private turnos = new Set<TurnoDeEscucha>()
   private modeloCargado = false
   // El cero de los tiempos de Vosk -el arranque del audio-, en el reloj de
   // performance.now(), que es el de la aplicacion y el del registro.
@@ -242,7 +251,41 @@ export class MotorNativo implements MotorDeVoz {
     }
   }
 
+  // -9-nov-2026, orden t160u, punto 3- Antes: async iniciar(opciones: { lang: string }): Promise<void> {, con
+  // this.suscripciones.push(await Nativo.addListener(...)) para cada oyente -el último:
+  //   this.suscripciones.push(await Nativo.addListener('silencio', () => {}))
+  // - y, al final,
+  //   const r = await Nativo.escuchar({ guardarAudio: GUARDAR_AUDIO_DEL_OIDO })
+  //   this.oidoInfo = ...; this.oidoAnotadoEn = -1; ...; this.ceroAudioPerf = ...
+  // Ahora los oyentes van al turno de este iniciar. Si detener() llega antes de que escuchar responda, el turno queda
+  // cancelado: no se abre el micrófono, o, si ya se pidió, la respuesta tardía es de ese turno cancelado y su captura
+  // se cierra con su propio detener -nombrándola- sin tocar la lectura que haya empezado después.
+  // Antes -9-nov-2026, orden t163u, caso 2-:
+  // async iniciar(opciones: { lang: string }): Promise<void> {
+  //   const turno: TurnoDeEscucha = { suscripciones: [], captura: undefined, cancelado: false }
+  //   this.turnos.add(turno)
+  // Razón: los oyentes se ponían antes de esperar Nativo.escuchar(); si esa apertura -o un addListener a medio camino-
+  // fallaba, el turno y sus oyentes quedaban puestos, y al reintentar con el mismo motor cada palabra llegaba dos veces
+  // -medido: ['hola', 'hola']-. Ahora iniciar() envuelve la preparación: si falla, el turno se quita y se sueltan los
+  // oyentes que alcanzó a poner -y la captura, si alcanzó a abrirse-, sin tocar los de otro turno; el error sigue.
   async iniciar(opciones: { lang: string }): Promise<void> {
+    const turno: TurnoDeEscucha = { suscripciones: [], captura: undefined, cancelado: false }
+    this.turnos.add(turno)
+    try {
+      await this.prepararTurno(turno, opciones)
+    } catch (e) {
+      this.turnos.delete(turno)
+      turno.cancelado = true
+      try {
+        await this.cerrarCaptura(turno)
+      } catch (limpieza) {
+        console.warn('[MotorNativo] no se pudo soltar el intento fallido:', limpieza)
+      }
+      throw e
+    }
+  }
+
+  private async prepararTurno(turno: TurnoDeEscucha, opciones: { lang: string }): Promise<void> {
     // EL IDIOMA DEL GUION ELIGE EL MODELO -27-09-2026, docs/ingles.txt-. Hasta ese dia
     // el APK traia solo el espanol y este parametro se ignoraba a proposito: "inventar
     // que se puede cambiar seria mentir". Ahora viajan los dos, y lang llega de App.tsx
@@ -253,7 +296,7 @@ export class MotorNativo implements MotorDeVoz {
 
     await this.precargarModelo(idioma)
 
-    this.suscripciones.push(
+    turno.suscripciones.push(
       await Nativo.addListener('parcial', (d) => {
         const texto = textoDe(d.json, 'partial')
         this.anotarLlegada(d, false)
@@ -266,7 +309,7 @@ export class MotorNativo implements MotorDeVoz {
       })
     )
 
-    this.suscripciones.push(
+    turno.suscripciones.push(
       await Nativo.addListener('final', (d) => {
         const texto = textoDe(d.json, 'text')
         this.anotarLlegada(d, true)
@@ -282,7 +325,7 @@ export class MotorNativo implements MotorDeVoz {
       })
     )
 
-    this.suscripciones.push(
+    turno.suscripciones.push(
       await Nativo.addListener('error', (d) => {
         const err = new Error(d.mensaje || 'Error del reconocedor nativo')
         this.listenersError.forEach((cb) => cb(err))
@@ -292,9 +335,20 @@ export class MotorNativo implements MotorDeVoz {
     // SpeechService corta solo tras un rato sin voz. En una lectura a camara hay
     // pausas largas, asi que NO se trata como error ni se detiene nada: se ignora.
     // Si esto resulta ser un problema en una lectura larga, se vera midiendo.
-    this.suscripciones.push(await Nativo.addListener('silencio', () => {}))
+    turno.suscripciones.push(await Nativo.addListener('silencio', () => {}))
 
+    // Detenido mientras se preparaba: no se abre el micrófono -detener() ya soltó lo que había y suelta lo que falte-.
+    if (turno.cancelado) {
+      await this.soltarOyentes(turno)
+      return
+    }
     const r = await Nativo.escuchar({ guardarAudio: GUARDAR_AUDIO_DEL_OIDO })
+    turno.captura = r && typeof r.captura === 'number' ? r.captura : null
+    if (turno.cancelado) {
+      // La respuesta tardía es del turno cancelado: su captura se cierra nombrándola, y nada más.
+      await this.cerrarCaptura(turno)
+      return
+    }
     this.oidoInfo = r && r.rutaAudio ? { ruta: r.rutaAudio, muestrasPorTrozo: r.muestrasPorTrozo ?? 0 } : null
     this.oidoAnotadoEn = -1
     // Date.now() y performance.now() avanzan juntos: la diferencia entre los dos
@@ -352,15 +406,57 @@ export class MotorNativo implements MotorDeVoz {
     }
   }
 
+  // Antes -9-nov-2026, orden t160u, punto 3-:
+  // async detener(): Promise<void> {
+  //   this.ceroAudioPerf = null
+  //   // -proxima-version, 2026-11-08- Al cerrar el micrófono el nivel vuelve a 0.
+  //   publicarNivelVoz(0)
+  //   await Nativo.detener()
+  //   for (const s of this.suscripciones) {
+  //     await s.remove()
+  //   }
+  //   this.suscripciones = []
+  // }
+  // Razón: ver turnos. Detiene los turnos que había al llamarlo: sus capturas y sus oyentes, no los de una lectura que
+  // empiece mientras.
   async detener(): Promise<void> {
+    const suyos = [...this.turnos]
+    this.turnos.clear()
+    for (const turno of suyos) turno.cancelado = true
     this.ceroAudioPerf = null
     // -proxima-version, 2026-11-08- Al cerrar el micrófono el nivel vuelve a 0.
     publicarNivelVoz(0)
-    await Nativo.detener()
-    for (const s of this.suscripciones) {
+    // Antes -9-nov-2026, segunda vuelta-:
+    // // Sin turno -nunca empezó, o ya se detuvo- se manda el detener de siempre, sin captura, como antes.
+    // if (suyos.length === 0) {
+    //   await Nativo.detener()
+    //   return
+    // }
+    // Razón: un detener sin captura cierra en Android lo que esté abierto, sea de quien sea. Repetir un cierre -stop()
+    // dos veces, o la limpieza de useASR sobre un motor que ya se detuvo y que fue reemplazado- cortaba la lectura del
+    // motor nuevo. Sin turno no hay nada de este motor abierto: no se manda nada. El APK viejo sin captura sigue
+    // cerrando con su detener de siempre desde cerrarCaptura -captura null-.
+    if (suyos.length === 0) return
+    for (const turno of suyos) await this.cerrarCaptura(turno)
+  }
+
+  // Cierra la captura del turno y suelta sus oyentes. Si escuchar todavía no respondió -captura undefined- no se manda
+  // nada: lo hace iniciar al llegar la respuesta. null: un APK viejo sin captura, el detener de siempre. 0: no abrió
+  // nada suyo.
+  private async cerrarCaptura(turno: TurnoDeEscucha): Promise<void> {
+    if (turno.captura !== undefined && !turno.cerrada) {
+      turno.cerrada = true
+      if (turno.captura === null) await Nativo.detener()
+      else if (turno.captura > 0) await Nativo.detener({ captura: turno.captura })
+    }
+    await this.soltarOyentes(turno)
+  }
+
+  private async soltarOyentes(turno: TurnoDeEscucha): Promise<void> {
+    const suyas = turno.suscripciones.splice(0)
+    for (const s of suyas) {
       await s.remove()
     }
-    this.suscripciones = []
   }
 
   onParcial(cb: (e: EventoParcial) => void): () => void {

@@ -1,4 +1,5 @@
 /// <reference types="vitest" />
+import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
@@ -17,6 +18,14 @@ import { VitePWA } from 'vite-plugin-pwa'
 // que la APK de prueba siga andando igual. Queda para cuando Claude lo pruebe en el teléfono.
 export default defineConfig(({ mode }) => ({
   base: '/',
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        flotante: resolve(__dirname, 'flotante.html')
+      }
+    }
+  },
   worker: {
     format: 'es'
   },

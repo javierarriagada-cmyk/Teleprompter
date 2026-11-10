@@ -413,6 +413,27 @@ export const es = {
   // Arreglos chicos de uso -estudio 1-.
   nadaCopiado: 'No hay texto copiado',
   abrirEnEditor: 'Abrir en el editor',
+  // PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026.
+  ventanaFlotante: 'Ventana flotante',
+  transparenciaFondo: 'Transparencia del fondo',
+  // Banda A, 09-11-2026: el aviso aprobado en los bocetos. Antes: accesibilidadFlotanteTitulo: 'Para seguir tu voz sobre otras apps'
+  accesibilidadFlotanteTitulo: 'Lee sobre otras apps',
+  // Antes: accesibilidadFlotanteTexto: 'Android solo deja que Sigo te escuche mientras otra app graba si activas “Sigo · prueba flotante” en Accesibilidad. Sigo no lee tu pantalla ni lo que escribes.'
+  accesibilidadFlotanteTexto: 'Sigo usa el micrófono para seguir tu voz mientras grabas con otra app. En Accesibilidad, activa «Sigo · prueba flotante» y vuelve a Sigo. Este servicio no lee tu pantalla ni lo que escribes.',
+  // Antes: irAActivarlo: 'Ir a activarlo' -la clave cambió de nombre con el texto-.
+  abrirAccesibilidad: 'Abrir Accesibilidad',
+  consecuenciaFlotante: 'Lees encima de la cámara u otra app',
+  accesibilidadFlotanteInactivo: '«Sigo · prueba flotante» sigue desactivado.',
+  lecturaEnVentanaFlotante: 'La lectura está en la ventana flotante',
+  cerrarLaVentana: 'Cerrar la ventana',
+  volverASigo: 'Volver a Sigo',
+  avisoMicrofonoQuitado: 'Android le quitó el micrófono a Sigo. El texto espera aquí.',
+  // -9-nov-2026, orden t160u, punto 5- Los dos fallos que se pueden reintentar, aparte del micrófono quitado:
+  // la cámara que no se apagó al abrir la ventana desde Grabar, y el micrófono que no abrió en la ventana.
+  avisoCamaraNoSeApago: 'No se pudo apagar la cámara, así que la ventana flotante no se abrió. Toca Empezar para intentarlo de nuevo.',
+  avisoMicrofonoNoAbrio: 'No se pudo abrir el micrófono. Toca Seguir para intentarlo de nuevo.',
+  moverVentana: 'Mover la ventana',
+  cambiarTamano: 'Cambiar el tamaño',
   cerrarSeleccion: 'Cerrar selección'
 }
 

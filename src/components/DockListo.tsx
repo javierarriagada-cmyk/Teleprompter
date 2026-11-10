@@ -126,7 +126,8 @@ export function DockListo({
   estabilizar,
   setEstabilizar,
   soportaEstabilizacion,
-  oculto = false
+  oculto = false,
+  encabezado
 }: {
   // Las fichas de la fila de arriba: FichasListo con enDock, que llama a abrirAjustes con el engranaje.
   fichas: (abrirAjustes: () => void) => React.ReactNode
@@ -153,6 +154,9 @@ export function DockListo({
   soportaEstabilizacion?: boolean
   // Mientras se arrastra el recuadro el dock no se ve, como hoy las fichas y el círculo.
   oculto?: boolean
+  // PROTOTIPO DE LA VENTANA FLOTANTE, 09-11-2026: el selector «Ventana flotante», arriba de las fichas -boceto A-.
+  // Antes: no existía.
+  encabezado?: React.ReactNode
 }) {
   useTextos()
   const [abierto, setAbierto] = useState(false)
@@ -215,6 +219,7 @@ export function DockListo({
           // junto a Voltear no cabe.
           // Antes: fichas(() => setAbierto(true))
           <>
+            {encabezado}
             {conVoltear && <div className="linea-modo-lectura"><FichaModoLectura variante="enLinea" /></div>}
             {fichas(() => setAbierto(true))}
           </>

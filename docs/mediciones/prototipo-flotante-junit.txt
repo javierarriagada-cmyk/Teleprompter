@@ -1,0 +1,43 @@
+PROTOTIPO DE LA VENTANA FLOTANTE, 08-11-2026: mide si Sigo puede seguir la voz mientras otra app graba video con sonido. Esta rama no va a main ni a Play.
+
+JUnit 4.13.2, Java 21, JVM sin Android. No es :app:testDebugUnitTest.
+
+ANTES, REGLAS CORRECTAS:
+JUnit version 4.13.2
+....................
+Time: 0.01
+
+OK (20 tests)
+
+
+ROTURA: se quitó solo el filtro g.sesion == sesionVosk. El MIC del corpus votó por error.
+JUnit version 4.13.2
+.........E.E.E.........
+Time: 0.009
+There were 3 failures:
+1) consultaFallidaOGrabacionAusente(com.sigoteleprompter.app.EstadoDelMicrofonoTest)
+org.junit.ComparisonFailure: expected:<Si[n datos]> but was:<Si[lenciado por Android]>
+	at org.junit.Assert.assertEquals(Assert.java:117)
+	at org.junit.Assert.assertEquals(Assert.java:146)
+	at com.sigoteleprompter.app.EstadoDelMicrofonoTest.consultaFallidaOGrabacionAusente(EstadoDelMicrofonoTest.java:25)
+2) trasRelevoSeUsaLaNuevaSesionDeVosk(com.sigoteleprompter.app.EstadoDelMicrofonoTest)
+org.junit.ComparisonFailure: expected:<[Disponible]> but was:<[Silenciado por Android]>
+	at org.junit.Assert.assertEquals(Assert.java:117)
+	at org.junit.Assert.assertEquals(Assert.java:146)
+	at com.sigoteleprompter.app.EstadoDelMicrofonoTest.trasRelevoSeUsaLaNuevaSesionDeVosk(EstadoDelMicrofonoTest.java:35)
+3) micDelCorpusSilenciadoNoSilenciaVosk(com.sigoteleprompter.app.EstadoDelMicrofonoTest)
+org.junit.ComparisonFailure: expected:<[Disponible]> but was:<[Silenciado por Android]>
+	at org.junit.Assert.assertEquals(Assert.java:117)
+	at org.junit.Assert.assertEquals(Assert.java:146)
+	at com.sigoteleprompter.app.EstadoDelMicrofonoTest.micDelCorpusSilenciadoNoSilenciaVosk(EstadoDelMicrofonoTest.java:29)
+
+FAILURES!!!
+Tests run: 20,  Failures: 3
+
+
+RESTAURADO, SIN CAMBIOS A LA REGLA ORIGINAL:
+JUnit version 4.13.2
+....................
+Time: 0.009
+
+OK (20 tests)

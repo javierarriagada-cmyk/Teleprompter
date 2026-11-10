@@ -1,0 +1,875 @@
+// PROTOTIPO DE LA VENTANA FLOTANTE, 09-11-2026: la sesión la manda Android. Esta rama no va a main ni a Play.
+
+// LA VENTANA COMPLETA, SIN DEPENDER DE QUE SIGO ESTÉ DESPIERTO. Lo de Android -la pausa, la cuenta 3-2-1, el límite- se
+// prueba en SesionVentanaTest -JUnit-. Aquí lo de la web, cada mecanismo comprobado rompiéndolo a propósito -la
+// evidencia va en el informe de la vuelta-:
+// 1. con la ventana abierta, la página de Sigo no hace caso a 'pausa' ni 'seguir' de la ventana;
+// 2. al volver toma el estado de Android -la palabra y el límite, que abre la oferta-;
+// 3. el selector está en el LISTO de Leer y en el de Grabar, y desde Grabar abre la ventana con la cámara de Sigo
+//    apagada y sin toma;
+// 4. la ventana muestra el aviso y el límite con sus claves, en es, en y pt.
+// 5. -9-nov-2026, orden «Tres correcciones»- desde Grabar, la ventana espera a que la cámara de Sigo confirme su
+//    cierre: mientras CameraPreview.stop() no termina no se abre; al terminar se abre una vez; si falla, no se abre,
+//    Sigo queda en el LISTO de Grabar y el fallo se dice con el aviso de siempre.
+import React from 'react'
+import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest'
+import { render, screen, fireEvent, act, within, cleanup } from '@testing-library/react'
+import 'fake-indexeddb/auto'
+
+const h = vi.hoisted(() => ({
+  oyente: null as null | ((a: { tipo: string; sesion: number; token?: number }) => void),
+  encendida: false,
+  camaraAlAbrir: null as null | boolean,
+  orden: [] as string[],
+  estadoSesion: { hay: false } as Record<string, unknown>,
+  errorApagado: null as null | string
+}))
+
+vi.mock('@capgo/camera-preview', () => ({
+  CameraPreview: {
+    start: vi.fn().mockResolvedValue({ width: 360, height: 640, x: 0, y: 0 }),
+    stop: vi.fn().mockResolvedValue(undefined),
+    setOpacity: vi.fn().mockResolvedValue(undefined),
+    setPreviewSize: vi.fn().mockResolvedValue({ width: 360, height: 640, x: 0, y: 0 })
+  }
+}))
+vi.mock('@capacitor/core', async () => {
+  const actual = await vi.importActual<typeof import('@capacitor/core')>('@capacitor/core')
+  return { ...actual, Capacitor: { ...actual.Capacitor, isNativePlatform: () => true } }
+})
+vi.mock('../lib/camara', async (importOriginal) => {
+  const actual: any = await importOriginal()
+  return {
+    ...actual,
+    camaraEncendida: () => h.encendida,
+    ladoActual: () => 'frontal',
+    encenderCamara: vi.fn(async () => { h.encendida = true; h.orden.push('encender') }),
+    // Antes -9-nov-2026-: apagarCamara: vi.fn(async () => { h.encendida = false; h.orden.push('apagar') }),
+    // Motivo: apagarCamara dice ahora si la cámara se cerró -true- o si CameraPreview.stop() falló -false-.
+    apagarCamara: vi.fn(async () => { h.encendida = false; h.orden.push('apagar'); return true }),
+    empezarGrabacionVideo: vi.fn(async () => { h.orden.push('grabar') }),
+    grabacionNativaEnCurso: () => false,
+    cortarGrabacionVideo: async () => null,
+    errorDelUltimoCorte: () => null,
+    errorDelUltimoApagado: () => h.errorApagado
+  }
+})
+vi.mock('../lib/oferta', async (importOriginal) => {
+  const actual: any = await importOriginal()
+  return { ...actual, abrirOferta: vi.fn(async () => {}) }
+})
+vi.mock('../lib/flotante', async (importOriginal) => {
+  const actual: any = await importOriginal()
+  return { ...actual, tokenAlVolver: vi.fn(actual.tokenAlVolver) }
+})
+vi.mock('../lib/ventanaDePrueba', () => ({
+  VentanaDePrueba: {
+    addListener: vi.fn(async (_e: string, f: any) => { h.oyente = f; return { remove: async () => {} } }),
+    estado: vi.fn(async () => ({ accesibilidad: true })),
+    preferencias: vi.fn(async () => ({ transparencia: 16, fontSize: 24, anchoVentana: 358 })),
+    guardarPreferencias: vi.fn(async () => {}),
+    abrirAjustesAccesibilidad: vi.fn(async () => ({ pagina: 'accesibilidad' })),
+    abrir: vi.fn(async () => { h.camaraAlAbrir = h.encendida; h.orden.push('abrir'); return { sesion: 1 } }),
+    enviar: vi.fn(async () => {}),
+    cerrar: vi.fn(async () => {}),
+    estadoSesion: vi.fn(async () => h.estadoSesion)
+  }
+}))
+
+import App from '../App'
+import { PaginaFlotante } from '../flotante/PaginaFlotante'
+import { RepositorioMemoria } from '../datos/RepositorioMemoria'
+import { MotorFake } from '../motor/MotorFake'
+import { Guion } from '../datos/modelo'
+import { VentanaDePrueba } from '../lib/ventanaDePrueba'
+import { abrirOferta } from '../lib/oferta'
+import { tokenAlVolver } from '../lib/flotante'
+import { empezarGrabacionVideo, apagarCamara } from '../lib/camara'
+import { es } from '../textos/es'
+import { en } from '../textos/en'
+import { pt } from '../textos/pt'
+
+const esperar = (ms = 50) => act(async () => { await new Promise((r) => setTimeout(r, ms)) })
+
+const guion: Guion = {
+  id: 'g-v', titulo: 'Ventana', idioma: 'es', creado: 0, modificado: 0, archivado: false,
+  bloques: [{ id: 'b1', nombre: '', texto: 'hola lee esto en voz alta con calma como si se lo contaras a alguien que te escucha' }]
+}
+
+class MotorEspia extends MotorFake {
+  iniciados = 0
+  detenidos = 0
+  async iniciar(o: { lang: string }) { this.iniciados++; return super.iniciar(o) }
+  async detener() { this.detenidos++ }
+}
+
+async function abrirListo(tarjeta: 'btn-leer-tarjeta' | 'btn-grabar-tarjeta', motor = new MotorEspia()) {
+  const repo = new RepositorioMemoria()
+  await repo.guardar(guion)
+  render(<App repoOverride={repo} motor={motor} />)
+  fireEvent.click(await screen.findByTestId(tarjeta))
+  await screen.findByTestId('btn-empezar-toma')
+  await esperar(80)
+  return motor
+}
+
+// Elegir la ventana, Empezar -abre la preparación- y el Empezar de la preparación; después la cuenta de Sigo.
+async function abrirLaVentana() {
+  fireEvent.click(await screen.findByTestId('selector-flotante'))
+  await esperar(30)
+  fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+  await esperar(80)
+  const hoja = document.querySelector('.hoja-flotante-preparacion') as HTMLElement
+  expect(hoja).not.toBeNull()
+  fireEvent.click(within(hoja).getByRole('button', { name: es.empezar }))
+  // La cuenta de Empezar, de a pasos: un solo act largo juntaría el 3, 2, 1 en un solo dibujo.
+  for (let i = 0; i < 8; i++) await esperar(450)
+}
+
+function enviados(tipo: string) {
+  return vi.mocked(VentanaDePrueba.enviar).mock.calls.map((c) => c[0] as Record<string, unknown>).filter((m) => m.tipo === tipo)
+}
+
+describe('la página de Sigo con la ventana abierta', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    h.oyente = null
+    h.encendida = false
+    h.camaraAlAbrir = null
+    h.orden = []
+    h.estadoSesion = { hay: false }
+    vi.mocked(VentanaDePrueba.enviar).mockClear()
+    vi.mocked(VentanaDePrueba.abrir).mockClear()
+    vi.mocked(VentanaDePrueba.estadoSesion).mockClear()
+    vi.mocked(abrirOferta).mockClear()
+    vi.mocked(tokenAlVolver).mockClear()
+    vi.mocked(empezarGrabacionVideo).mockClear()
+    vi.mocked(apagarCamara).mockClear()
+    vi.spyOn(console, 'info').mockImplementation(() => {})
+  })
+  afterEach(() => {
+    cleanup()
+    vi.restoreAllMocks()
+  })
+
+  test('1. no hace caso a pausa ni seguir de la ventana; el contrato lleva el límite de lectura', async () => {
+    const motor = await abrirListo('btn-leer-tarjeta')
+    await abrirLaVentana()
+    expect(VentanaDePrueba.abrir).toHaveBeenCalledTimes(1)
+    const [contrato] = enviados('contrato')
+    expect(contrato.limite).toEqual({ lecturaSeg: 240, avisoAntesSeg: 60 })
+    expect(contrato.leidosSeg).toBe(0)
+    const iniciados = motor.iniciados
+    const detenidos = motor.detenidos
+    const estados = enviados('estado').length
+    act(() => { h.oyente!({ tipo: 'pausa', sesion: 1, token: 2 }) })
+    await esperar(200)
+    act(() => { h.oyente!({ tipo: 'seguir', sesion: 1, token: 2 }) })
+    await esperar(3600)
+    act(() => { h.oyente!({ tipo: 'alternar', sesion: 1, token: 2 }) })
+    await esperar(200)
+    expect(motor.detenidos).toBe(detenidos)
+    expect(motor.iniciados).toBe(iniciados)
+    // Y después de la cuenta de Empezar, Sigo no le manda estados a la ventana.
+    expect(enviados('estado').length).toBe(estados)
+  }, 30000)
+
+  test('1b. después de la cuenta de Empezar, Sigo no le manda estados a la ventana aunque cambie el suyo', async () => {
+    await abrirListo('btn-leer-tarjeta')
+    await abrirLaVentana()
+    const estados = enviados('estado')
+    // Los de la cuenta de Empezar sí pasaron, y el último es el fin de la cuenta.
+    expect(estados.some((m) => m.cuenta === 3)).toBe(true)
+    expect(estados.at(-1)?.cuenta).toBeNull()
+    // La pausa propia de Sigo -su botón, detrás de la ventana- cambia su estado: a la ventana no le llega.
+    fireEvent.click(screen.getByTestId('teleprompter-view-container'))
+    await act(async () => { fireEvent.click(await screen.findByTestId('btn-pausa-lectura')) })
+    await esperar(200)
+    expect(enviados('estado').length).toBe(estados.length)
+  }, 30000)
+
+  test('2. al volver toma el estado de Android: la palabra y, con el límite, la oferta', async () => {
+    await abrirListo('btn-leer-tarjeta')
+    await abrirLaVentana()
+    h.estadoSesion = { hay: true, sesion: 1, abierta: false, enPausa: true, leidosSeg: 240, llegoAlLimite: true, token: 7 }
+    act(() => { h.oyente!({ tipo: 'volver', sesion: 1, token: 2 }) })
+    await esperar(300)
+    expect(VentanaDePrueba.estadoSesion).toHaveBeenCalledTimes(1)
+    expect(vi.mocked(tokenAlVolver).mock.calls.at(-1)?.[0]).toBe(7)
+    expect(abrirOferta).toHaveBeenCalledWith('limiteLectura')
+    // En LISTO de Leer.
+    expect(screen.getByTestId('btn-empezar-toma')).toBeTruthy()
+    expect(document.querySelector('.punto-grabar')).toBeNull()
+  }, 30000)
+
+  test('2b. sin límite, la vuelta no abre la oferta', async () => {
+    await abrirListo('btn-leer-tarjeta')
+    await abrirLaVentana()
+    h.estadoSesion = { hay: true, sesion: 1, abierta: false, enPausa: false, leidosSeg: 30, llegoAlLimite: false, token: 4 }
+    act(() => { h.oyente!({ tipo: 'volver', sesion: 1, token: 2 }) })
+    await esperar(300)
+    expect(vi.mocked(tokenAlVolver).mock.calls.at(-1)?.[0]).toBe(4)
+    expect(abrirOferta).not.toHaveBeenCalled()
+  }, 30000)
+
+  test('3. el selector está en Leer y en Grabar; desde Grabar abre la ventana sin la cámara de Sigo ni toma', async () => {
+    await abrirListo('btn-leer-tarjeta')
+    expect(screen.getAllByTestId('selector-flotante')).toHaveLength(1)
+    cleanup()
+    await abrirListo('btn-grabar-tarjeta')
+    expect(h.encendida).toBe(true)
+    expect(document.querySelector('.punto-grabar')).not.toBeNull()
+    expect(screen.getAllByTestId('selector-flotante')).toHaveLength(1)
+    await abrirLaVentana()
+    expect(VentanaDePrueba.abrir).toHaveBeenCalledTimes(1)
+    // La cámara se apagó antes de abrir la ventana, y no hubo toma.
+    expect(h.camaraAlAbrir).toBe(false)
+    expect(h.orden.indexOf('apagar')).toBeLessThan(h.orden.indexOf('abrir'))
+    expect(empezarGrabacionVideo).not.toHaveBeenCalled()
+    // Lleva el límite de lectura, no el de grabación.
+    expect(enviados('contrato')[0].limite).toEqual({ lecturaSeg: 240, avisoAntesSeg: 60 })
+    // Al volver, el LISTO de Grabar con su cámara.
+    h.estadoSesion = { hay: true, sesion: 1, abierta: false, enPausa: false, leidosSeg: 5, llegoAlLimite: false, token: 1 }
+    act(() => { h.oyente!({ tipo: 'volver', sesion: 1, token: 1 }) })
+    await esperar(300)
+    expect(screen.getByTestId('btn-empezar-toma')).toBeTruthy()
+    expect(document.querySelector('.punto-grabar')).not.toBeNull()
+    expect(h.encendida).toBe(true)
+    expect(empezarGrabacionVideo).not.toHaveBeenCalled()
+  }, 30000)
+})
+
+// Una promesa que la prueba resuelve o rechaza cuando quiere: el cierre nativo de la cámara, pendiente.
+function diferido<T>() {
+  let resolver!: (v: T) => void
+  let rechazar!: (e: unknown) => void
+  const promesa = new Promise<T>((res, rej) => { resolver = res; rechazar = rej })
+  return { promesa, resolver, rechazar }
+}
+
+describe('5. desde Grabar, la ventana espera el cierre nativo de la cámara', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    h.oyente = null
+    h.encendida = false
+    h.camaraAlAbrir = null
+    h.orden = []
+    h.estadoSesion = { hay: false }
+    h.errorApagado = null
+    vi.mocked(VentanaDePrueba.enviar).mockClear()
+    vi.mocked(VentanaDePrueba.abrir).mockClear()
+    vi.mocked(empezarGrabacionVideo).mockClear()
+    vi.mocked(apagarCamara).mockClear()
+    vi.spyOn(console, 'info').mockImplementation(() => {})
+  })
+  afterEach(() => {
+    cleanup()
+    vi.restoreAllMocks()
+  })
+
+  // Grabar con su cámara, «Ventana flotante», Empezar y el Empezar de la preparación, con el cierre de la cámara en
+  // las manos de la prueba: lo que hace CameraPreview.stop() lo decide `cierre`.
+  async function pedirLaVentanaDesdeGrabar() {
+    await abrirListo('btn-grabar-tarjeta')
+    expect(h.encendida).toBe(true)
+    const cierre = diferido<boolean>()
+    vi.mocked(apagarCamara).mockImplementationOnce(async () => {
+      h.orden.push('apagar')
+      const ok = await cierre.promesa
+      if (ok) h.encendida = false
+      return ok
+    })
+    fireEvent.click(await screen.findByTestId('selector-flotante'))
+    await esperar(30)
+    fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+    await esperar(80)
+    const hoja = document.querySelector('.hoja-flotante-preparacion') as HTMLElement
+    expect(hoja).not.toBeNull()
+    fireEvent.click(within(hoja).getByRole('button', { name: es.empezar }))
+    return cierre
+  }
+
+  test('revisión: cerrar la preparación cancela la apertura pendiente', async () => {
+    const cierre = await pedirLaVentanaDesdeGrabar()
+    const capa = document.querySelector('.capa-hoja-flotante')!
+    fireEvent.click(capa)
+    await esperar(50)
+    expect(document.querySelector('.hoja-flotante-preparacion')).toBeNull()
+    await act(async () => { cierre.resolver(true) })
+    await esperar(300)
+    expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
+  })
+
+  test('5a. con el cierre pendiente no se abre; al confirmarse se abre una sola vez, con la cámara ya apagada', async () => {
+    const cierre = await pedirLaVentanaDesdeGrabar()
+    // Más que la cuenta de Empezar entera: con el cierre pendiente, nada abre la ventana.
+    for (let i = 0; i < 5; i++) await esperar(400)
+    expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
+    expect(apagarCamara).toHaveBeenCalledTimes(1)
+    await act(async () => { cierre.resolver(true) })
+    for (let i = 0; i < 8; i++) await esperar(450)
+    expect(VentanaDePrueba.abrir).toHaveBeenCalledTimes(1)
+    expect(h.camaraAlAbrir).toBe(false)
+    // Una sola orden de apagado, y ninguna toma.
+    expect(apagarCamara).toHaveBeenCalledTimes(1)
+    expect(empezarGrabacionVideo).not.toHaveBeenCalled()
+  }, 30000)
+
+  for (const [caso, fallar] of [
+    ['rechazada', (c: ReturnType<typeof diferido<boolean>>) => c.rechazar(new Error('CameraPreview.stop falló'))],
+    ['con stop() fallido -apagarCamara da false-', (c: ReturnType<typeof diferido<boolean>>) => {
+      h.errorApagado = 'CameraPreview.stop falló'
+      c.resolver(false)
+    }]
+  ] as const) {
+    test(`5b. con el cierre ${caso}, la ventana sigue cerrada y Sigo queda en el LISTO de Grabar`, async () => {
+      const cierre = await pedirLaVentanaDesdeGrabar()
+      await esperar(300)
+      expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
+      await act(async () => { fallar(cierre) })
+      await esperar(100)
+      // Antes -9-nov-2026, orden t160u, punto 5-:
+      // // Se dice con el aviso de siempre de la ventana -avisarErrorFlotante, mostrarAviso-, antes de que se vaya solo.
+      // expect(within(screen.getByTestId('region-aviso')).getByText(/CameraPreview\.stop falló/)).toBeTruthy()
+      // Razón: el motivo técnico va al registro; a la persona, el texto de la cámara que no se apagó, con Empezar.
+      expect(within(screen.getByTestId('region-aviso')).getByText(es.avisoCamaraNoSeApago)).toBeTruthy()
+      expect(screen.queryByText(/CameraPreview\.stop falló/)).toBeNull()
+      for (let i = 0; i < 6; i++) await esperar(450)
+      expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
+      // La salida de Grabar sigue: su LISTO con la cámara, sin toma y con una sola orden de apagado.
+      expect(screen.getByTestId('btn-empezar-toma')).toBeTruthy()
+      expect(document.querySelector('.punto-grabar')).not.toBeNull()
+      expect(h.encendida).toBe(true)
+      expect(empezarGrabacionVideo).not.toHaveBeenCalled()
+      expect(apagarCamara).toHaveBeenCalledTimes(1)
+    }, 30000)
+  }
+
+  // -9-nov-2026, orden t160u, punto 1- Lo que la prueba «revisión:» no mira: después de cancelar, la vista previa de
+  // Grabar vuelve si el cierre se confirma, y un Empezar nuevo con el mismo cierre pendiente sí abre, una vez.
+  test('5c. cancelada la preparación con el cierre pendiente, al confirmarse vuelve la vista previa de Grabar', async () => {
+    const cierre = await pedirLaVentanaDesdeGrabar()
+    fireEvent.click(document.querySelector('.capa-hoja-flotante')!)
+    await esperar(50)
+    await act(async () => { cierre.resolver(true) })
+    await esperar(300)
+    expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
+    expect(h.orden.slice(h.orden.lastIndexOf('apagar'))).toEqual(['apagar', 'encender'])
+    expect(h.encendida).toBe(true)
+    expect(screen.getByTestId('btn-empezar-toma')).toBeTruthy()
+    expect(document.querySelector('.punto-grabar')).not.toBeNull()
+  }, 30000)
+
+  test('5d. cancelar y volver a Empezar con el mismo cierre pendiente: abre una vez y la cámara no vuelve', async () => {
+    const cierre = await pedirLaVentanaDesdeGrabar()
+    fireEvent.click(document.querySelector('.capa-hoja-flotante')!)
+    await esperar(50)
+    fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+    await esperar(80)
+    const hoja = document.querySelector('.hoja-flotante-preparacion') as HTMLElement
+    expect(hoja).not.toBeNull()
+    fireEvent.click(within(hoja).getByRole('button', { name: es.empezar }))
+    await esperar(100)
+    expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
+    await act(async () => { cierre.resolver(true) })
+    for (let i = 0; i < 8; i++) await esperar(450)
+    expect(VentanaDePrueba.abrir).toHaveBeenCalledTimes(1)
+    expect(h.camaraAlAbrir).toBe(false)
+    expect(apagarCamara).toHaveBeenCalledTimes(1)
+    expect(h.orden.slice(h.orden.lastIndexOf('apagar'))).toEqual(['apagar', 'abrir'])
+  }, 30000)
+})
+
+// -9-nov-2026, orden t160u, punto 1- Cancelar durante el guardado de preferencias: la primera espera de Empezar, antes
+// del apagado de la cámara -Grabar- o de la voz y la apertura -Leer-. Cancelada, cero llamadas a abrir; sin cancelar, una.
+describe('6. cancelar la preparación durante el guardado de preferencias', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    h.oyente = null
+    h.encendida = false
+    h.camaraAlAbrir = null
+    h.orden = []
+    h.estadoSesion = { hay: false }
+    h.errorApagado = null
+    vi.mocked(VentanaDePrueba.enviar).mockClear()
+    vi.mocked(VentanaDePrueba.abrir).mockClear()
+    vi.mocked(VentanaDePrueba.guardarPreferencias).mockClear()
+    vi.mocked(empezarGrabacionVideo).mockClear()
+    vi.mocked(apagarCamara).mockClear()
+    vi.spyOn(console, 'info').mockImplementation(() => {})
+  })
+  afterEach(() => {
+    cleanup()
+    vi.restoreAllMocks()
+  })
+
+  // «Ventana flotante», Empezar y el Empezar de la preparación, con guardarPreferencias pendiente.
+  async function empezarConGuardadoPendiente(tarjeta: 'btn-leer-tarjeta' | 'btn-grabar-tarjeta') {
+    await abrirListo(tarjeta)
+    const guardado = diferido<void>()
+    vi.mocked(VentanaDePrueba.guardarPreferencias).mockImplementationOnce(() => guardado.promesa)
+    fireEvent.click(await screen.findByTestId('selector-flotante'))
+    await esperar(30)
+    fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+    await esperar(80)
+    const hoja = document.querySelector('.hoja-flotante-preparacion') as HTMLElement
+    expect(hoja).not.toBeNull()
+    fireEvent.click(within(hoja).getByRole('button', { name: es.empezar }))
+    await esperar(30)
+    expect(VentanaDePrueba.guardarPreferencias).toHaveBeenCalledTimes(1)
+    return guardado
+  }
+  const cancelar = async () => {
+    fireEvent.click(document.querySelector('.capa-hoja-flotante')!)
+    await esperar(50)
+    expect(document.querySelector('.hoja-flotante-preparacion')).toBeNull()
+  }
+  const terminarGuardadoYEsperar = async (g: ReturnType<typeof diferido<void>>) => {
+    await act(async () => { g.resolver() })
+    // Más que la cuenta de Empezar entera.
+    for (let i = 0; i < 8; i++) await esperar(450)
+  }
+
+  test('6a. desde Leer, cancelada durante el guardado: cero aperturas y Sigo queda en LISTO', async () => {
+    const guardado = await empezarConGuardadoPendiente('btn-leer-tarjeta')
+    await cancelar()
+    await terminarGuardadoYEsperar(guardado)
+    expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
+    expect(screen.getByTestId('btn-empezar-toma')).toBeTruthy()
+    expect(document.querySelector('.hoja-flotante-preparacion')).toBeNull()
+  }, 30000)
+
+  test('6b. desde Leer, sin cancelar: una apertura', async () => {
+    const guardado = await empezarConGuardadoPendiente('btn-leer-tarjeta')
+    await terminarGuardadoYEsperar(guardado)
+    expect(VentanaDePrueba.abrir).toHaveBeenCalledTimes(1)
+  }, 30000)
+
+  test('6c. desde Grabar, cancelada durante el guardado: cero aperturas, sin apagar la cámara', async () => {
+    const guardado = await empezarConGuardadoPendiente('btn-grabar-tarjeta')
+    await cancelar()
+    await terminarGuardadoYEsperar(guardado)
+    expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
+    expect(apagarCamara).not.toHaveBeenCalled()
+    expect(h.encendida).toBe(true)
+    expect(document.querySelector('.punto-grabar')).not.toBeNull()
+    expect(empezarGrabacionVideo).not.toHaveBeenCalled()
+  }, 30000)
+
+  test('6d. desde Grabar, sin cancelar: una apertura, con la cámara ya apagada', async () => {
+    const guardado = await empezarConGuardadoPendiente('btn-grabar-tarjeta')
+    await terminarGuardadoYEsperar(guardado)
+    expect(VentanaDePrueba.abrir).toHaveBeenCalledTimes(1)
+    expect(h.camaraAlAbrir).toBe(false)
+    expect(apagarCamara).toHaveBeenCalledTimes(1)
+  }, 30000)
+
+  test('6e. desde Leer, el guardado viejo de un intento cancelado no interfiere con el siguiente: una apertura', async () => {
+    const viejo = await empezarConGuardadoPendiente('btn-leer-tarjeta')
+    await cancelar()
+    fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+    await esperar(80)
+    const hoja = document.querySelector('.hoja-flotante-preparacion') as HTMLElement
+    expect(hoja).not.toBeNull()
+    fireEvent.click(within(hoja).getByRole('button', { name: es.empezar }))
+    await terminarGuardadoYEsperar(viejo)
+    expect(VentanaDePrueba.abrir).toHaveBeenCalledTimes(1)
+  }, 30000)
+
+  // Después del guardado, la otra espera antes de abrir: el permiso del micrófono -pedirMicrofono- pendiente.
+  class MotorConPermisoPendiente extends MotorEspia {
+    permiso = diferido<boolean>()
+    pedidos = 0
+    pedirMicrofono() { this.pedidos++; return this.permiso.promesa }
+  }
+
+  for (const tarjeta of ['btn-leer-tarjeta', 'btn-grabar-tarjeta'] as const) {
+    test(`6f. ${tarjeta === 'btn-leer-tarjeta' ? 'desde Leer' : 'desde Grabar, con la cámara ya cerrada'}, cancelada con el permiso del micrófono pendiente: cero aperturas y ninguna lectura`, async () => {
+      const motor = new MotorConPermisoPendiente()
+      await abrirListo(tarjeta, motor)
+      fireEvent.click(await screen.findByTestId('selector-flotante'))
+      await esperar(30)
+      fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+      await esperar(80)
+      fireEvent.click(within(document.querySelector('.hoja-flotante-preparacion') as HTMLElement).getByRole('button', { name: es.empezar }))
+      await esperar(300)
+      expect(motor.pedidos).toBe(1)
+      await cancelar()
+      await act(async () => { motor.permiso.resolver(true) })
+      for (let i = 0; i < 8; i++) await esperar(450)
+      expect(VentanaDePrueba.abrir).not.toHaveBeenCalled()
+      expect(motor.iniciados).toBe(0)
+      expect(screen.getByTestId('btn-empezar-toma')).toBeTruthy()
+      if (tarjeta === 'btn-grabar-tarjeta') {
+        // Vuelve el LISTO de Grabar, con su cámara.
+        expect(document.querySelector('.punto-grabar')).not.toBeNull()
+        expect(h.encendida).toBe(true)
+        expect(empezarGrabacionVideo).not.toHaveBeenCalled()
+      }
+    }, 30000)
+  }
+})
+
+// -9-nov-2026, orden t160u, punto 4, lado de App- La página de Sigo solo dice lo que sabe: los números de la cuenta, que
+// la cuenta TERMINÓ -cuentaTerminada- o que se CANCELÓ -cuentaCancelada-. Nunca «escuchando»: eso lo decide Android con la
+// captura confirmada por Vosk. Que la cuenta desaparezca no es que terminó.
+describe('7. la cuenta de Empezar que manda Sigo a la ventana', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    h.oyente = null
+    h.encendida = false
+    h.camaraAlAbrir = null
+    h.orden = []
+    h.estadoSesion = { hay: false }
+    vi.mocked(VentanaDePrueba.enviar).mockClear()
+    vi.mocked(VentanaDePrueba.abrir).mockClear()
+    vi.spyOn(console, 'info').mockImplementation(() => {})
+  })
+  afterEach(() => {
+    cleanup()
+    vi.restoreAllMocks()
+  })
+
+  // Un motor cuyo micrófono no abre nunca: isRecording queda en false.
+  class MotorSinMicrofono extends MotorEspia {
+    async iniciar(_o: { lang: string }) { this.iniciados++; await new Promise(() => {}) }
+  }
+
+  async function empezarLaVentana(motor: MotorEspia) {
+    await abrirListo('btn-leer-tarjeta', motor)
+    fireEvent.click(await screen.findByTestId('selector-flotante'))
+    await esperar(30)
+    fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+    await esperar(80)
+    fireEvent.click(within(document.querySelector('.hoja-flotante-preparacion') as HTMLElement).getByRole('button', { name: es.empezar }))
+    await esperar(400)
+    expect(VentanaDePrueba.abrir).toHaveBeenCalledTimes(1)
+    expect(enviados('estado').some((m) => m.cuenta === 3)).toBe(true)
+  }
+
+  test('7a. la cuenta cancelada en Sigo, con el micrófono sin abrir, se manda como cancelada y no como terminada', async () => {
+    await empezarLaVentana(new MotorSinMicrofono())
+    // Parar en plena cuenta: la cuenta desaparece sin terminar.
+    fireEvent.click(screen.getByTestId('teleprompter-view-container'))
+    await act(async () => { fireEvent.click(await screen.findByTestId('btn-parar-lectura')) })
+    for (let i = 0; i < 6; i++) await esperar(450)
+    const sinCuenta = enviados('estado').filter((m) => m.cuenta === null)
+    expect(sinCuenta.length).toBeGreaterThan(0)
+    // Ninguno dice que terminó, y el que lo dice es la cancelación.
+    expect(sinCuenta.some((m) => m.cuentaTerminada === true)).toBe(false)
+    expect(sinCuenta.at(-1)?.cuentaCancelada).toBe(true)
+    expect(enviados('estado').some((m) => m.escuchando === true)).toBe(false)
+  }, 30000)
+
+  test('7b. la cuenta terminada con el micrófono sin abrir: dice que terminó, sin «escuchando»', async () => {
+    await empezarLaVentana(new MotorSinMicrofono())
+    for (let i = 0; i < 8; i++) await esperar(450)
+    const ultimo = enviados('estado').at(-1)!
+    expect(ultimo.cuenta).toBeNull()
+    expect(ultimo.cuentaTerminada).toBe(true)
+    expect(ultimo.escuchando).toBe(false)
+    expect(enviados('estado').some((m) => m.escuchando === true)).toBe(false)
+  }, 30000)
+
+  test('7c. con el micrófono de Sigo abierto en plena cuenta, Sigo tampoco publica «escuchando»: lo decide Android', async () => {
+    await empezarLaVentana(new MotorEspia())
+    for (let i = 0; i < 8; i++) await esperar(450)
+    expect(enviados('estado').some((m) => m.escuchando === true)).toBe(false)
+    expect(enviados('estado').filter((m) => m.cuentaTerminada === true)).toHaveLength(1)
+  }, 30000)
+})
+
+// -9-nov-2026, orden t162u, punto 2- MIENTRAS LA HOJA DE PREPARACIÓN SIGA VISIBLE, CERRARLA CANCELA EL INTENTO, también
+// con VentanaDePrueba.abrir() pendiente: la respuesta que llega después se retira -el cierre nativo nombra su sesión-,
+// sin contrato, sin cuenta y sin micrófono, y sin tocar un intento posterior.
+describe('8. cancelar la preparación con la apertura de la ventana pendiente', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    h.oyente = null
+    h.encendida = false
+    h.camaraAlAbrir = null
+    h.orden = []
+    h.estadoSesion = { hay: false }
+    h.errorApagado = null
+    vi.mocked(VentanaDePrueba.enviar).mockClear()
+    vi.mocked(VentanaDePrueba.abrir).mockClear()
+    vi.mocked(VentanaDePrueba.cerrar).mockClear()
+    vi.mocked(VentanaDePrueba.guardarPreferencias).mockClear()
+    vi.mocked(empezarGrabacionVideo).mockClear()
+    vi.mocked(apagarCamara).mockClear()
+    vi.spyOn(console, 'info').mockImplementation(() => {})
+  })
+  afterEach(() => {
+    cleanup()
+    vi.restoreAllMocks()
+  })
+
+  // La respuesta de abrir() la decide la prueba; la cámara al pedirla queda anotada como en el resto.
+  function abrirPendiente() {
+    const respuesta = diferido<{ sesion: number }>()
+    vi.mocked(VentanaDePrueba.abrir).mockImplementationOnce(() => {
+      h.camaraAlAbrir = h.encendida
+      h.orden.push('abrir')
+      return respuesta.promesa
+    })
+    return respuesta
+  }
+  async function tocarEmpezarEnLaHoja() {
+    fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+    await esperar(80)
+    const hoja = document.querySelector('.hoja-flotante-preparacion') as HTMLElement
+    expect(hoja).not.toBeNull()
+    fireEvent.click(within(hoja).getByRole('button', { name: es.empezar }))
+  }
+  // «Ventana flotante», Empezar y el Empezar de la preparación, hasta que Android recibe la petición de apertura.
+  async function pedirLaVentana(tarjeta: 'btn-leer-tarjeta' | 'btn-grabar-tarjeta', motor = new MotorEspia()) {
+    await abrirListo(tarjeta, motor)
+    const respuesta = abrirPendiente()
+    fireEvent.click(await screen.findByTestId('selector-flotante'))
+    await esperar(30)
+    await tocarEmpezarEnLaHoja()
+    for (let i = 0; i < 6 && vi.mocked(VentanaDePrueba.abrir).mock.calls.length === 0; i++) await esperar(100)
+    expect(VentanaDePrueba.abrir).toHaveBeenCalledTimes(1)
+    // La hoja sigue a la vista mientras Android no responde.
+    expect(document.querySelector('.hoja-flotante-preparacion')).not.toBeNull()
+    return { motor, respuesta }
+  }
+  const cancelar = async () => {
+    fireEvent.click(document.querySelector('.capa-hoja-flotante')!)
+    await esperar(50)
+    expect(document.querySelector('.hoja-flotante-preparacion')).toBeNull()
+  }
+  const responder = async (r: ReturnType<typeof diferido<{ sesion: number }>>, sesion: number) => {
+    await act(async () => { r.resolver({ sesion }) })
+    for (let i = 0; i < 8; i++) await esperar(450)
+  }
+  const contratosDe = (sesion: number) => enviados('contrato').filter((m) => m.sesion === sesion)
+  const cierres = () => vi.mocked(VentanaDePrueba.cerrar).mock.calls.map((c) => (c as unknown[])[0])
+
+  test('8a. desde Leer, cancelada con abrir() pendiente: la sesión 97 se cierra, sin contrato, sin cuenta ni micrófono', async () => {
+    const { motor, respuesta } = await pedirLaVentana('btn-leer-tarjeta')
+    await cancelar()
+    await responder(respuesta, 97)
+    expect(contratosDe(97)).toHaveLength(0)
+    expect(cierres()).toEqual([{ sesion: 97 }])
+    expect(enviados('estado')).toHaveLength(0)
+    expect(motor.iniciados).toBe(0)
+    expect(screen.getByTestId('btn-empezar-toma')).toBeTruthy()
+    expect(document.querySelector('.hoja-flotante-preparacion')).toBeNull()
+  }, 30000)
+
+  test('8b. caso normal: sin cancelar, la respuesta inicia una sola lectura y cerrar la hoja al entrar no la cancela', async () => {
+    const { motor, respuesta } = await pedirLaVentana('btn-leer-tarjeta')
+    await responder(respuesta, 97)
+    expect(cierres()).toEqual([])
+    expect(contratosDe(97)).toHaveLength(1)
+    expect(motor.iniciados).toBe(1)
+    expect(document.querySelector('.hoja-flotante-preparacion')).toBeNull()
+    expect(enviados('estado').some((m) => m.cuentaTerminada === true)).toBe(true)
+  }, 30000)
+
+  test('8c. con un intento B posterior, la respuesta de la 97 lo deja intacto: B abre la 98 con una sola lectura', async () => {
+    const { motor, respuesta } = await pedirLaVentana('btn-leer-tarjeta')
+    await cancelar()
+    // B: la persona vuelve a abrir la preparación y toca Empezar; Android le responde de inmediato.
+    vi.mocked(VentanaDePrueba.abrir).mockImplementationOnce(async () => {
+      h.camaraAlAbrir = h.encendida
+      h.orden.push('abrir')
+      return { sesion: 98 }
+    })
+    await tocarEmpezarEnLaHoja()
+    await esperar(300)
+    await responder(respuesta, 97)
+    expect(cierres()).toEqual([{ sesion: 97 }])
+    expect(VentanaDePrueba.abrir).toHaveBeenCalledTimes(2)
+    // B pidió su ventana recién con la 97 retirada: así Android no le devuelve la 97 como abrir duplicado.
+    expect(vi.mocked(VentanaDePrueba.cerrar).mock.invocationCallOrder[0])
+      .toBeLessThan(vi.mocked(VentanaDePrueba.abrir).mock.invocationCallOrder[1])
+    expect(contratosDe(97)).toHaveLength(0)
+    expect(contratosDe(98)).toHaveLength(1)
+    expect(motor.iniciados).toBe(1)
+  }, 30000)
+
+  test('8d. desde Grabar, cancelada con abrir() pendiente: la 97 se cierra, sin lectura, y vuelve la vista previa de Grabar', async () => {
+    const { motor, respuesta } = await pedirLaVentana('btn-grabar-tarjeta')
+    // Se salió de Grabar para abrir: la cámara se cerró antes de pedir la ventana.
+    expect(h.camaraAlAbrir).toBe(false)
+    await cancelar()
+    await responder(respuesta, 97)
+    expect(contratosDe(97)).toHaveLength(0)
+    expect(cierres()).toEqual([{ sesion: 97 }])
+    expect(motor.iniciados).toBe(0)
+    expect(document.querySelector('.punto-grabar')).not.toBeNull()
+    expect(h.encendida).toBe(true)
+    expect(empezarGrabacionVideo).not.toHaveBeenCalled()
+  }, 30000)
+
+  test('8e. desde Grabar, con un intento B que apagó la cámara otra vez: la respuesta de la 97 no la vuelve a encender', async () => {
+    const { motor, respuesta } = await pedirLaVentana('btn-grabar-tarjeta')
+    await cancelar()
+    await esperar(200)
+    // Vuelve el LISTO de Grabar con su cámara; B la apaga de nuevo para abrir la 98.
+    expect(h.encendida).toBe(true)
+    vi.mocked(VentanaDePrueba.abrir).mockImplementationOnce(async () => {
+      h.camaraAlAbrir = h.encendida
+      h.orden.push('abrir')
+      return { sesion: 98 }
+    })
+    await tocarEmpezarEnLaHoja()
+    await esperar(300)
+    expect(h.encendida).toBe(false)
+    await responder(respuesta, 97)
+    expect(contratosDe(97)).toHaveLength(0)
+    expect(cierres()).toEqual([{ sesion: 97 }])
+    expect(contratosDe(98)).toHaveLength(1)
+    expect(h.camaraAlAbrir).toBe(false)
+    expect(h.encendida).toBe(false)
+    expect(motor.iniciados).toBe(1)
+  }, 30000)
+})
+
+describe('4. la ventana muestra el aviso y el límite con sus claves', () => {
+  const salientes: Record<string, unknown>[] = []
+  function aLaPagina(m: Record<string, unknown>) {
+    act(() => { window.dispatchEvent(new MessageEvent('message', { data: JSON.stringify(m) })) })
+  }
+  beforeEach(() => {
+    salientes.length = 0
+    ;(window as any).sigo = { postMessage: (d: string) => salientes.push(JSON.parse(d)) }
+  })
+  afterEach(() => {
+    cleanup()
+    delete (window as any).sigo
+  })
+
+  for (const [idioma, textos] of [['es', es], ['en', en], ['pt', pt]] as const) {
+    test(`en ${idioma}`, async () => {
+      render(<PaginaFlotante />)
+      aLaPagina({
+        tipo: 'contrato', sesion: 1, guion, idioma: 'es-ES', fontSize: 24, tipoFuente: 'sans',
+        colorFondo: '#000000', colorLetra: '#FFFFFF', marginPercent: 5, columnaAngosta: false, lineasZona: 3,
+        anclajeZona: 'medio', transparencia: 16, tokenInicial: 0, mostrarTiempo: true, idiomaApp: idioma,
+        limite: { lecturaSeg: 240, avisoAntesSeg: 60 }, leidosSeg: 0
+      })
+      aLaPagina({ tipo: 'estado', sesion: 1, cuenta: null, enPausa: false, escuchando: true })
+      await esperar(30)
+      expect(screen.queryByTestId('flotante-aviso-limite')).toBeNull()
+      aLaPagina({ tipo: 'limite', sesion: 1, fase: 'aviso' })
+      await esperar(30)
+      const aviso = screen.getByTestId('flotante-aviso-limite')
+      expect(aviso.textContent).toContain(textos.avisoQuedaMinutoVoz)
+      expect(aviso.textContent).toContain(textos.avisoQuedaMinutoVozNota)
+
+      aLaPagina({ tipo: 'limite', sesion: 1, fase: 'limite' })
+      aLaPagina({ tipo: 'estado', sesion: 1, cuenta: null, enPausa: true, escuchando: false })
+      await esperar(30)
+      expect(screen.queryByTestId('flotante-aviso-limite')).toBeNull()
+      const limite = screen.getByTestId('flotante-limite')
+      expect(limite.textContent).toContain(textos.limiteLectura)
+      fireEvent.click(within(limite).getByRole('button', { name: textos.avisoLimiteVerSigoMas }))
+      expect(salientes.some((m) => m.tipo === 'verSigoMas' && m.sesion === 1)).toBe(true)
+
+      // Seguir: Android lo quita al empezar la cuenta.
+      aLaPagina({ tipo: 'limite', sesion: 1, fase: 'ninguno' })
+      await esperar(30)
+      expect(screen.queryByTestId('flotante-limite')).toBeNull()
+    })
+  }
+
+  // -9-nov-2026, orden t160u, punto 5- Los dos avisos del micrófono, cada uno con su texto: el que no abrió -Seguir
+  // lo reintenta- y el que Android quitó -el de siempre, también sin motivo, como manda un APK viejo-.
+  for (const [idioma, textos] of [['es', es], ['en', en], ['pt', pt]] as const) {
+    test(`el micrófono que no abrió y el que Android quitó, en ${idioma}`, async () => {
+      render(<PaginaFlotante />)
+      aLaPagina({
+        tipo: 'contrato', sesion: 1, guion, idioma: 'es-ES', fontSize: 24, tipoFuente: 'sans',
+        colorFondo: '#000000', colorLetra: '#FFFFFF', marginPercent: 5, columnaAngosta: false, lineasZona: 3,
+        anclajeZona: 'medio', transparencia: 16, tokenInicial: 0, mostrarTiempo: true, idiomaApp: idioma,
+        limite: null, leidosSeg: 0
+      })
+      aLaPagina({ tipo: 'micro', sesion: 1, silenciado: true, motivo: 'noAbrio' })
+      await esperar(30)
+      expect(screen.getByTestId('flotante-aviso-micro').textContent).toBe(textos.avisoMicrofonoNoAbrio)
+      aLaPagina({ tipo: 'micro', sesion: 1, silenciado: true, motivo: 'silenciado' })
+      await esperar(30)
+      expect(screen.getByTestId('flotante-aviso-micro').textContent).toBe(textos.avisoMicrofonoQuitado)
+      aLaPagina({ tipo: 'micro', sesion: 1, silenciado: true })
+      await esperar(30)
+      expect(screen.getByTestId('flotante-aviso-micro').textContent).toBe(textos.avisoMicrofonoQuitado)
+      aLaPagina({ tipo: 'micro', sesion: 1, silenciado: false, motivo: '' })
+      await esperar(30)
+      expect(screen.queryByTestId('flotante-aviso-micro')).toBeNull()
+      expect(textos.avisoMicrofonoNoAbrio).not.toBe(textos.avisoMicrofonoQuitado)
+      expect(textos.avisoCamaraNoSeApago).toContain(textos.empezar)
+      expect(textos.avisoMicrofonoNoAbrio).toContain(textos.seguir)
+    })
+  }
+
+  // -9-nov-2026, orden t163u, caso 3- EL TIEMPO VISIBLE ES EL DE LECTURA EFECTIVA. La pastilla de la ventana restaba
+  // cero: la pausa, la cuenta 3-2-1 y la espera del micrófono contaban como lectura aunque Android las descuente del
+  // límite. La hora de la página la pone la prueba -performance.now-; los estados son los que manda Android.
+  test('leer 10 s, pausar 20, la cuenta 3-2-1 y leer 5: la pastilla queda en 00:10 y termina en 00:15', async () => {
+    let reloj = 1000
+    const ahora = vi.spyOn(performance, 'now').mockImplementation(() => reloj)
+    try {
+      render(<PaginaFlotante />)
+      aLaPagina({
+        tipo: 'contrato', sesion: 1, guion, idioma: 'es-ES', fontSize: 24, tipoFuente: 'sans',
+        colorFondo: '#000000', colorLetra: '#FFFFFF', marginPercent: 5, columnaAngosta: false, lineasZona: 3,
+        anclajeZona: 'medio', transparencia: 16, tokenInicial: 0, mostrarTiempo: true, idiomaApp: 'es',
+        limite: { lecturaSeg: 240, avisoAntesSeg: 60 }, leidosSeg: 0
+      })
+      const estadoAndroid = (e: { cuenta: number | null; enPausa: boolean; escuchando: boolean }) =>
+        aLaPagina({ tipo: 'estado', sesion: 1, ...e })
+      const tiempo = async () => {
+        await esperar(300)
+        return (screen.getByLabelText(es.tiempoTranscurrido).textContent || '').slice(0, 5)
+      }
+      estadoAndroid({ cuenta: null, enPausa: false, escuchando: true })
+      reloj = 11000
+      expect(await tiempo()).toBe('00:10')
+      // Pausa de 20 s.
+      estadoAndroid({ cuenta: null, enPausa: true, escuchando: false })
+      reloj = 21000
+      expect(await tiempo()).toBe('00:10')
+      reloj = 31000
+      expect(await tiempo()).toBe('00:10')
+      // Seguir: la cuenta 3-2-1 de Android, y la espera de la confirmación del micrófono.
+      for (const [c, t] of [[3, 31000], [2, 32000], [1, 33000]] as const) {
+        reloj = t
+        estadoAndroid({ cuenta: c, enPausa: false, escuchando: false })
+        reloj = t + 900
+        expect(await tiempo()).toBe('00:10')
+      }
+      reloj = 34000
+      estadoAndroid({ cuenta: null, enPausa: false, escuchando: false })
+      reloj = 34500
+      expect(await tiempo()).toBe('00:10')
+      estadoAndroid({ cuenta: null, enPausa: false, escuchando: true })
+      // Otros 5 s de lectura.
+      reloj = 39500
+      expect(await tiempo()).toBe('00:15')
+    } finally {
+      ahora.mockRestore()
+    }
+  })
+
+  test('el aviso se va solo a los 8 s, como en Leer', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    try {
+      render(<PaginaFlotante />)
+      aLaPagina({
+        tipo: 'contrato', sesion: 1, guion, idioma: 'es-ES', fontSize: 24, tipoFuente: 'sans',
+        colorFondo: '#000000', colorLetra: '#FFFFFF', marginPercent: 5, columnaAngosta: false, lineasZona: 3,
+        anclajeZona: 'medio', transparencia: 16, tokenInicial: 0, mostrarTiempo: true, idiomaApp: 'es'
+      })
+      aLaPagina({ tipo: 'limite', sesion: 1, fase: 'aviso' })
+      await act(async () => { vi.advanceTimersByTime(7900) })
+      expect(screen.getByTestId('flotante-aviso-limite')).toBeTruthy()
+      await act(async () => { vi.advanceTimersByTime(200) })
+      expect(screen.queryByTestId('flotante-aviso-limite')).toBeNull()
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+})

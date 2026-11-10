@@ -355,6 +355,21 @@
 .tab-lugar-empezar {
   margin-top: 16px;
 }
+/* PROTOTIPO, 09-11-2026, corrección de la banda A: «Ventana flotante» en la tableta vertical. Su propio lugar a la
+   izquierda del dock, en la fila de Empezar -centrado en sus 72: 4 + 36 - 28 = 12 del borde de abajo-, espejo de la
+   pastilla, que va a la derecha. 24 de aire con la fila de fichas encima y 16 hasta Empezar: el ancho llega hasta 16
+   antes de la mitad menos los 36 de Empezar. En una tableta de 600 quedan 220, sin el ícono. */
+.layout-tab-v .tab-lugar-selector-flotante {
+  position: absolute;
+  left: calc(28px + env(safe-area-inset-left, 0px));
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  width: min(300px, calc(50% - 36px - 16px - 28px - env(safe-area-inset-left, 0px)));
+}
+.layout-tab-v .tab-lugar-selector-flotante .selector-flotante { margin: 0; }
+@media (max-width: 719.98px) {
+  .layout-tab-v .tab-lugar-selector-flotante .selector-flotante { grid-template-columns: 1fr 24px; }
+  .layout-tab-v .tab-lugar-selector-flotante .selector-flotante-icono { display: none; }
+}
 /* El panel de una ficha se abre encima del dock, centrado, con 8 de aire. */
 .layout-tab-v .tab-dock .panel-ficha {
   left: 0;
