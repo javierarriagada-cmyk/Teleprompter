@@ -95,7 +95,11 @@ function coordenadas() {
     const partes = m[1].split(':')
     if (partes.length < 3) return null
     let version = partes[2].replace('@aar', '')
-    if (version.startsWith('$')) version = vars[version.slice(1)] || version
+    // -10-11-2026- Con Gradle 9 -#174- las versiones pasaron de «$androidxWebkitVersion» a
+    // «${rootProject.ext.androidxWebkitVersion}», y esta línea solo entendía la primera forma: las cinco de
+    // variables.gradle salían «sin verificar», sin POM ni texto, y npm run play dio FALLA en licencias con la 1.1.
+    // Antes: if (version.startsWith('$')) version = vars[version.slice(1)] || version
+    if (version.startsWith('$')) version = vars[version.replace(/^\$\{?(?:rootProject\.ext\.)?/, '').replace(/\}$/, '')] || version
     return { grupo: partes[0], artefacto: partes[1], version }
   }).filter(Boolean)
 }
