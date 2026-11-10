@@ -100,8 +100,19 @@ public class VentanaDePruebaPlugin extends Plugin {
             }
         });
     }
+    // Antes -9-nov-2026, orden t162u, punto 2-:
+    // @PluginMethod public void cerrar(PluginCall call) {
+    //     principal.post(() -> { VentanaDePrueba.cerrarDelPlugin(this, "cerrar desde la web"); call.resolve(); });
+    // }
+    // Razón: el retiro de una apertura cancelada en la preparación nombra su sesión: si la abierta ya es otra -de un
+    // intento posterior-, no se toca. Sin sesión, como antes.
     @PluginMethod public void cerrar(PluginCall call) {
-        principal.post(() -> { VentanaDePrueba.cerrarDelPlugin(this, "cerrar desde la web"); call.resolve(); });
+        long sesion = MicrofonoDeVentana.capturaPedida(call.getData().opt("sesion"));
+        principal.post(() -> {
+            if (sesion > 0) VentanaDePrueba.cerrarSiEs(this, sesion, "apertura cancelada en la preparación");
+            else VentanaDePrueba.cerrarDelPlugin(this, "cerrar desde la web");
+            call.resolve();
+        });
     }
     // -09-11-2026- Para la vuelta a Sigo: la pausa, los segundos leídos, si llegó al límite y el marcador de la sesión
     // que mandó Android -ver VentanaDePrueba.estadoSesion-.

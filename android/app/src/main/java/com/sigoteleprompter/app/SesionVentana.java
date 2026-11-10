@@ -119,12 +119,23 @@ final class SesionVentana {
 
     // cuenta: el número que manda Sigo -0 sin número-; terminada: Sigo dice que su cuenta llegó al fin; cancelada: que
     // la cortó. La cancelación pasa a Pausa: la apertura del micrófono que llegue después se descarta.
+    // Antes -9-nov-2026, orden t162u, punto 1-:
+    // Inicial estadoDeSigo(int cuenta, boolean terminada, boolean cancelada, long ahoraMs) {
+    //     if (cerrada || fase != Fase.CUENTA_INICIAL) return Inicial.DESCARTAR;
+    //     if (cancelada) {
+    //         pausar(ahoraMs);
+    //         return Inicial.CANCELADA;
+    //     }
+    // Razón: el reloj de Android puede pasar la cuenta a ABRIENDO un instante antes de que llegue la cancelación de esa
+    // misma cuenta: se descartaba, y la confirmación tardía de Vosk empezaba una lectura que la persona había cortado.
+    // Ahora la cancelación vale mientras siga en pie lo del primer Empezar -la cuenta, la espera de su micrófono o su
+    // lectura-; desde una Pausa o un Seguir posterior -intento distinto del inicial- ya no es de ellos y se descarta.
     Inicial estadoDeSigo(int cuenta, boolean terminada, boolean cancelada, long ahoraMs) {
-        if (cerrada || fase != Fase.CUENTA_INICIAL) return Inicial.DESCARTAR;
-        if (cancelada) {
+        if (cancelada && esDelPrimerEmpezar()) {
             pausar(ahoraMs);
             return Inicial.CANCELADA;
         }
+        if (cerrada || fase != Fase.CUENTA_INICIAL) return Inicial.DESCARTAR;
         if (cuenta > 0) {
             if (!cuentaInicialVista) finCuentaInicialMs = ahoraMs + cuenta * 1000L;
             cuentaInicialVista = true;
@@ -132,6 +143,14 @@ final class SesionVentana {
         }
         if (!terminada) return Inicial.REENVIAR;
         return terminarCuentaInicial(ahoraMs);
+    }
+
+    // -9-nov-2026, orden t162u, punto 1- Lo que sigue siendo del primer Empezar: su cuenta, la espera de su micrófono
+    // -ABRIENDO del intento inicial- o la lectura que empezó con él. Un Seguir sube el intento y una Pausa cambia la fase.
+    private boolean esDelPrimerEmpezar() {
+        if (cerrada) return false;
+        if (fase == Fase.CUENTA_INICIAL) return true;
+        return intento == INTENTO_INICIAL && (fase == Fase.ABRIENDO || fase == Fase.ESCUCHANDO);
     }
 
     // El fin de la cuenta de Empezar: lo dice Sigo o lo marca el reloj de Android -finCuentaInicialMs-, lo que llegue
@@ -216,6 +235,29 @@ final class SesionVentana {
         fase = Fase.ESCUCHANDO;
         desdeMs = ahoraMs;
         return Apertura.ESCUCHANDO;
+    }
+
+    // -9-nov-2026, orden t162u, punto 1- Qué hace la ventana con cada respuesta de alAbrirMicrofono. Sin Android, para
+    // probar en la JVM que una respuesta descartada llega a liberar ESA captura -VoskNativoPlugin.liberarCaptura-.
+    interface AlAbrir {
+        void escuchando();
+        void noAbrio();
+        void anotada();
+        void ignorada();
+        void descartada();
+        void liberar(long captura);
+    }
+
+    static void responder(Apertura r, long captura, AlAbrir a) {
+        switch (r) {
+            case ESCUCHANDO: a.escuchando(); return;
+            case PAUSA: a.noAbrio(); return;
+            case ANOTADA: a.anotada(); return;
+            case IGNORADA: a.ignorada(); return;
+            default:
+                a.descartada();
+                if (captura != 0) a.liberar(captura);
+        }
     }
 
     // El cierre de la sesión: una vez. Desde ahí nada cambia y toda confirmación se descarta. Lo leído queda como

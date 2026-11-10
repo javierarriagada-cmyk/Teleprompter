@@ -579,6 +579,155 @@ describe('7. la cuenta de Empezar que manda Sigo a la ventana', () => {
   }, 30000)
 })
 
+// -9-nov-2026, orden t162u, punto 2- MIENTRAS LA HOJA DE PREPARACIÓN SIGA VISIBLE, CERRARLA CANCELA EL INTENTO, también
+// con VentanaDePrueba.abrir() pendiente: la respuesta que llega después se retira -el cierre nativo nombra su sesión-,
+// sin contrato, sin cuenta y sin micrófono, y sin tocar un intento posterior.
+describe('8. cancelar la preparación con la apertura de la ventana pendiente', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    h.oyente = null
+    h.encendida = false
+    h.camaraAlAbrir = null
+    h.orden = []
+    h.estadoSesion = { hay: false }
+    h.errorApagado = null
+    vi.mocked(VentanaDePrueba.enviar).mockClear()
+    vi.mocked(VentanaDePrueba.abrir).mockClear()
+    vi.mocked(VentanaDePrueba.cerrar).mockClear()
+    vi.mocked(VentanaDePrueba.guardarPreferencias).mockClear()
+    vi.mocked(empezarGrabacionVideo).mockClear()
+    vi.mocked(apagarCamara).mockClear()
+    vi.spyOn(console, 'info').mockImplementation(() => {})
+  })
+  afterEach(() => {
+    cleanup()
+    vi.restoreAllMocks()
+  })
+
+  // La respuesta de abrir() la decide la prueba; la cámara al pedirla queda anotada como en el resto.
+  function abrirPendiente() {
+    const respuesta = diferido<{ sesion: number }>()
+    vi.mocked(VentanaDePrueba.abrir).mockImplementationOnce(() => {
+      h.camaraAlAbrir = h.encendida
+      h.orden.push('abrir')
+      return respuesta.promesa
+    })
+    return respuesta
+  }
+  async function tocarEmpezarEnLaHoja() {
+    fireEvent.click(screen.getByTestId('btn-empezar-toma'))
+    await esperar(80)
+    const hoja = document.querySelector('.hoja-flotante-preparacion') as HTMLElement
+    expect(hoja).not.toBeNull()
+    fireEvent.click(within(hoja).getByRole('button', { name: es.empezar }))
+  }
+  // «Ventana flotante», Empezar y el Empezar de la preparación, hasta que Android recibe la petición de apertura.
+  async function pedirLaVentana(tarjeta: 'btn-leer-tarjeta' | 'btn-grabar-tarjeta', motor = new MotorEspia()) {
+    await abrirListo(tarjeta, motor)
+    const respuesta = abrirPendiente()
+    fireEvent.click(await screen.findByTestId('selector-flotante'))
+    await esperar(30)
+    await tocarEmpezarEnLaHoja()
+    for (let i = 0; i < 6 && vi.mocked(VentanaDePrueba.abrir).mock.calls.length === 0; i++) await esperar(100)
+    expect(VentanaDePrueba.abrir).toHaveBeenCalledTimes(1)
+    // La hoja sigue a la vista mientras Android no responde.
+    expect(document.querySelector('.hoja-flotante-preparacion')).not.toBeNull()
+    return { motor, respuesta }
+  }
+  const cancelar = async () => {
+    fireEvent.click(document.querySelector('.capa-hoja-flotante')!)
+    await esperar(50)
+    expect(document.querySelector('.hoja-flotante-preparacion')).toBeNull()
+  }
+  const responder = async (r: ReturnType<typeof diferido<{ sesion: number }>>, sesion: number) => {
+    await act(async () => { r.resolver({ sesion }) })
+    for (let i = 0; i < 8; i++) await esperar(450)
+  }
+  const contratosDe = (sesion: number) => enviados('contrato').filter((m) => m.sesion === sesion)
+  const cierres = () => vi.mocked(VentanaDePrueba.cerrar).mock.calls.map((c) => (c as unknown[])[0])
+
+  test('8a. desde Leer, cancelada con abrir() pendiente: la sesión 97 se cierra, sin contrato, sin cuenta ni micrófono', async () => {
+    const { motor, respuesta } = await pedirLaVentana('btn-leer-tarjeta')
+    await cancelar()
+    await responder(respuesta, 97)
+    expect(contratosDe(97)).toHaveLength(0)
+    expect(cierres()).toEqual([{ sesion: 97 }])
+    expect(enviados('estado')).toHaveLength(0)
+    expect(motor.iniciados).toBe(0)
+    expect(screen.getByTestId('btn-empezar-toma')).toBeTruthy()
+    expect(document.querySelector('.hoja-flotante-preparacion')).toBeNull()
+  }, 30000)
+
+  test('8b. caso normal: sin cancelar, la respuesta inicia una sola lectura y cerrar la hoja al entrar no la cancela', async () => {
+    const { motor, respuesta } = await pedirLaVentana('btn-leer-tarjeta')
+    await responder(respuesta, 97)
+    expect(cierres()).toEqual([])
+    expect(contratosDe(97)).toHaveLength(1)
+    expect(motor.iniciados).toBe(1)
+    expect(document.querySelector('.hoja-flotante-preparacion')).toBeNull()
+    expect(enviados('estado').some((m) => m.cuentaTerminada === true)).toBe(true)
+  }, 30000)
+
+  test('8c. con un intento B posterior, la respuesta de la 97 lo deja intacto: B abre la 98 con una sola lectura', async () => {
+    const { motor, respuesta } = await pedirLaVentana('btn-leer-tarjeta')
+    await cancelar()
+    // B: la persona vuelve a abrir la preparación y toca Empezar; Android le responde de inmediato.
+    vi.mocked(VentanaDePrueba.abrir).mockImplementationOnce(async () => {
+      h.camaraAlAbrir = h.encendida
+      h.orden.push('abrir')
+      return { sesion: 98 }
+    })
+    await tocarEmpezarEnLaHoja()
+    await esperar(300)
+    await responder(respuesta, 97)
+    expect(cierres()).toEqual([{ sesion: 97 }])
+    expect(VentanaDePrueba.abrir).toHaveBeenCalledTimes(2)
+    // B pidió su ventana recién con la 97 retirada: así Android no le devuelve la 97 como abrir duplicado.
+    expect(vi.mocked(VentanaDePrueba.cerrar).mock.invocationCallOrder[0])
+      .toBeLessThan(vi.mocked(VentanaDePrueba.abrir).mock.invocationCallOrder[1])
+    expect(contratosDe(97)).toHaveLength(0)
+    expect(contratosDe(98)).toHaveLength(1)
+    expect(motor.iniciados).toBe(1)
+  }, 30000)
+
+  test('8d. desde Grabar, cancelada con abrir() pendiente: la 97 se cierra, sin lectura, y vuelve la vista previa de Grabar', async () => {
+    const { motor, respuesta } = await pedirLaVentana('btn-grabar-tarjeta')
+    // Se salió de Grabar para abrir: la cámara se cerró antes de pedir la ventana.
+    expect(h.camaraAlAbrir).toBe(false)
+    await cancelar()
+    await responder(respuesta, 97)
+    expect(contratosDe(97)).toHaveLength(0)
+    expect(cierres()).toEqual([{ sesion: 97 }])
+    expect(motor.iniciados).toBe(0)
+    expect(document.querySelector('.punto-grabar')).not.toBeNull()
+    expect(h.encendida).toBe(true)
+    expect(empezarGrabacionVideo).not.toHaveBeenCalled()
+  }, 30000)
+
+  test('8e. desde Grabar, con un intento B que apagó la cámara otra vez: la respuesta de la 97 no la vuelve a encender', async () => {
+    const { motor, respuesta } = await pedirLaVentana('btn-grabar-tarjeta')
+    await cancelar()
+    await esperar(200)
+    // Vuelve el LISTO de Grabar con su cámara; B la apaga de nuevo para abrir la 98.
+    expect(h.encendida).toBe(true)
+    vi.mocked(VentanaDePrueba.abrir).mockImplementationOnce(async () => {
+      h.camaraAlAbrir = h.encendida
+      h.orden.push('abrir')
+      return { sesion: 98 }
+    })
+    await tocarEmpezarEnLaHoja()
+    await esperar(300)
+    expect(h.encendida).toBe(false)
+    await responder(respuesta, 97)
+    expect(contratosDe(97)).toHaveLength(0)
+    expect(cierres()).toEqual([{ sesion: 97 }])
+    expect(contratosDe(98)).toHaveLength(1)
+    expect(h.camaraAlAbrir).toBe(false)
+    expect(h.encendida).toBe(false)
+    expect(motor.iniciados).toBe(1)
+  }, 30000)
+})
+
 describe('4. la ventana muestra el aviso y el límite con sus claves', () => {
   const salientes: Record<string, unknown>[] = []
   function aLaPagina(m: Record<string, unknown>) {
@@ -655,6 +804,55 @@ describe('4. la ventana muestra el aviso y el límite con sus claves', () => {
       expect(textos.avisoMicrofonoNoAbrio).toContain(textos.seguir)
     })
   }
+
+  // -9-nov-2026, orden t163u, caso 3- EL TIEMPO VISIBLE ES EL DE LECTURA EFECTIVA. La pastilla de la ventana restaba
+  // cero: la pausa, la cuenta 3-2-1 y la espera del micrófono contaban como lectura aunque Android las descuente del
+  // límite. La hora de la página la pone la prueba -performance.now-; los estados son los que manda Android.
+  test('leer 10 s, pausar 20, la cuenta 3-2-1 y leer 5: la pastilla queda en 00:10 y termina en 00:15', async () => {
+    let reloj = 1000
+    const ahora = vi.spyOn(performance, 'now').mockImplementation(() => reloj)
+    try {
+      render(<PaginaFlotante />)
+      aLaPagina({
+        tipo: 'contrato', sesion: 1, guion, idioma: 'es-ES', fontSize: 24, tipoFuente: 'sans',
+        colorFondo: '#000000', colorLetra: '#FFFFFF', marginPercent: 5, columnaAngosta: false, lineasZona: 3,
+        anclajeZona: 'medio', transparencia: 16, tokenInicial: 0, mostrarTiempo: true, idiomaApp: 'es',
+        limite: { lecturaSeg: 240, avisoAntesSeg: 60 }, leidosSeg: 0
+      })
+      const estadoAndroid = (e: { cuenta: number | null; enPausa: boolean; escuchando: boolean }) =>
+        aLaPagina({ tipo: 'estado', sesion: 1, ...e })
+      const tiempo = async () => {
+        await esperar(300)
+        return (screen.getByLabelText(es.tiempoTranscurrido).textContent || '').slice(0, 5)
+      }
+      estadoAndroid({ cuenta: null, enPausa: false, escuchando: true })
+      reloj = 11000
+      expect(await tiempo()).toBe('00:10')
+      // Pausa de 20 s.
+      estadoAndroid({ cuenta: null, enPausa: true, escuchando: false })
+      reloj = 21000
+      expect(await tiempo()).toBe('00:10')
+      reloj = 31000
+      expect(await tiempo()).toBe('00:10')
+      // Seguir: la cuenta 3-2-1 de Android, y la espera de la confirmación del micrófono.
+      for (const [c, t] of [[3, 31000], [2, 32000], [1, 33000]] as const) {
+        reloj = t
+        estadoAndroid({ cuenta: c, enPausa: false, escuchando: false })
+        reloj = t + 900
+        expect(await tiempo()).toBe('00:10')
+      }
+      reloj = 34000
+      estadoAndroid({ cuenta: null, enPausa: false, escuchando: false })
+      reloj = 34500
+      expect(await tiempo()).toBe('00:10')
+      estadoAndroid({ cuenta: null, enPausa: false, escuchando: true })
+      // Otros 5 s de lectura.
+      reloj = 39500
+      expect(await tiempo()).toBe('00:15')
+    } finally {
+      ahora.mockRestore()
+    }
+  })
 
   test('el aviso se va solo a los 8 s, como en Leer', async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true })

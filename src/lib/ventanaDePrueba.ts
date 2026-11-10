@@ -37,7 +37,9 @@ interface PluginVentanaDePrueba {
   estado(): Promise<EstadoFlotante>
   abrirAjustesAccesibilidad(): Promise<{ pagina: string }>
   abrir(opciones: OpcionesPruebaFlotante): Promise<{ sesion: number }>
-  cerrar(): Promise<void>
+  // Antes -9-nov-2026, orden t162u, punto 2-: cerrar(): Promise<void>
+  // Razón: el retiro de una apertura cancelada nombra su sesión: Android solo cierra si la abierta es esa.
+  cerrar(opciones?: { sesion?: number }): Promise<void>
   preferencias(): Promise<PreferenciasFlotante>
   guardarPreferencias(prefs: PreferenciasFlotante): Promise<void>
   enviar(mensaje: Record<string, unknown>): Promise<void>

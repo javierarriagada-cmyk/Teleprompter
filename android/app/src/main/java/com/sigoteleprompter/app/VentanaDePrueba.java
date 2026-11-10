@@ -125,6 +125,12 @@ final class VentanaDePrueba {
         Sesion s = actual;
         if (s != null && s.plugin == plugin) s.cerrar(motivo);
     }
+    // -9-nov-2026, orden t162u, punto 2- Desde el hilo principal: cierra solo si la sesión abierta es la nombrada.
+    static void cerrarSiEs(VentanaDePruebaPlugin plugin, long numero, String motivo) {
+        Sesion s = actual;
+        if (s != null && s.plugin == plugin && s.numero == numero) s.cerrar(motivo);
+        else anotar(numero, "cierre descartado: la sesión abierta es " + (s == null ? "ninguna" : s.numero) + ", " + motivo);
+    }
     static void cerrarNumero(long numero, String motivo) {
         PRINCIPAL.post(() -> {
             Sesion s = actual;
@@ -964,55 +970,89 @@ final class VentanaDePrueba {
         // LO QUE MANDA SIGO A LA VENTANA, MIENTRAS ESTÁ ABIERTA -09-11-2026-. El contrato trae el límite gratis -o null
         // con Sigo+ o velocidad fija- y los segundos ya leídos. Los estados de Sigo pasan solo en la cuenta de Empezar;
         // el primero sin cuenta después de ella empieza la lectura que cuenta Android. Desde ahí, el estado es de Android.
+        // Antes -9-nov-2026, orden t163u, caso 1-:
+        // boolean deSigo(String json) {
+        //     try {
+        //         JSONObject o = new JSONObject(json);
+        //         String tipo = o.optString("tipo", "");
+        //         if ("contrato".equals(tipo)) {
+        //             JSONObject lim = o.optJSONObject("limite");
+        //             reglas = new SesionVentana(lim != null,
+        //                 lim == null ? 0 : (int) Math.round(lim.optDouble("lecturaSeg", 0)),
+        //                 lim == null ? 0 : (int) Math.round(lim.optDouble("avisoAntesSeg", 0)),
+        //                 o.optDouble("leidosSeg", 0));
+        //             // Antes -9-nov-2026-: cuentaInicialVista = false; -la sesión nueva empieza sin ella-.
+        //             // -9-nov-2026, segunda vuelta- Un reloj de la cuenta de una sesión anterior no corre sobre esta.
+        //             PRINCIPAL.removeCallbacks(finCuentaInicial);
+        //             anotar(numero, "contrato: límite=" + (lim == null ? "sin límite" : lim.optDouble("lecturaSeg", 0)
+        //                 + "s aviso " + lim.optDouble("avisoAntesSeg", 0) + "s") + " leídos=" + o.optDouble("leidosSeg", 0));
+        //             return true;
+        //         }
+        //         if (!"estado".equals(tipo)) return true;
+        //         // Antes -9-nov-2026, orden t160u, punto 4-:
+        //         // if (reglas.fase() != SesionVentana.Fase.CUENTA_INICIAL) {
+        //         //     anotar(numero, "estado de Sigo descartado: la sesión la manda Android");
+        //         //     return false;
+        //         // }
+        //         // boolean conCuenta = o.has("cuenta") && !o.isNull("cuenta");
+        //         // if (conCuenta) cuentaInicialVista = true;
+        //         // // Sin haber visto la cuenta -dos estados juntos-, basta con que Sigo ya escuche.
+        //         // else if ((cuentaInicialVista || o.optBoolean("escuchando", false)) && !o.optBoolean("enPausa", false)) {
+        //         //     reglas.empezarLectura(SystemClock.elapsedRealtime());
+        //         //     anotar(numero, "lectura empezada: cuenta Android");
+        //         // }
+        //         // return true;
+        //         // Razón: el fin de la cuenta ponía «escuchando» y el reloj sin saber si el micrófono abrió, y el estado de
+        //         // Sigo -que dice escuchando- pasaba a la ventana. Ahora el fin de la cuenta lo decide estadoDeSigo con la
+        //         // apertura del micrófono, y lo que ve la ventana es el estado de Android.
+        //         // Antes -9-nov-2026, segunda vuelta-:
+        //         // boolean conCuenta = o.has("cuenta") && !o.isNull("cuenta");
+        //         // SesionVentana.Inicial r = reglas.estadoDeSigo(conCuenta, o.optBoolean("escuchando", false),
+        //         //     o.optBoolean("enPausa", false), SystemClock.elapsedRealtime());
+        //         // Razón: el «escuchando» de Sigo ya no cuenta, y la cuenta sin número no es el fin: Sigo lo dice
+        //         // -cuentaTerminada o cuentaCancelada-. Con el primer número, Android pone su propio reloj del fin.
+        //         int cuenta = o.has("cuenta") && !o.isNull("cuenta") ? Math.max(0, o.optInt("cuenta", 0)) : 0;
+        //         boolean primerNumero = cuenta > 0 && reglas.finCuentaInicialMs() < 0;
+        //         SesionVentana.Inicial r = reglas.estadoDeSigo(cuenta, o.optBoolean("cuentaTerminada", false),
+        //             o.optBoolean("cuentaCancelada", false), SystemClock.elapsedRealtime());
+        //         if (primerNumero && reglas.finCuentaInicialMs() >= 0) {
+        //             PRINCIPAL.removeCallbacks(finCuentaInicial);
+        //             PRINCIPAL.postDelayed(finCuentaInicial, Math.max(0, reglas.finCuentaInicialMs() - SystemClock.elapsedRealtime()));
+        //         }
+        //         return alFinDeLaCuentaInicial(r, "Sigo");
+        //     } catch (Exception e) {
+        //         return true;
+        //     }
+        // }
+        // Razón: lo que se hace con el mensaje pasó a EntradaDeSigo.recibir, sin Android, para probarlo en la JVM. Aquí
+        // queda leer el JSON y lo que la sesión hace en Android.
         boolean deSigo(String json) {
             try {
                 JSONObject o = new JSONObject(json);
-                String tipo = o.optString("tipo", "");
-                if ("contrato".equals(tipo)) {
-                    JSONObject lim = o.optJSONObject("limite");
-                    reglas = new SesionVentana(lim != null,
-                        lim == null ? 0 : (int) Math.round(lim.optDouble("lecturaSeg", 0)),
-                        lim == null ? 0 : (int) Math.round(lim.optDouble("avisoAntesSeg", 0)),
-                        o.optDouble("leidosSeg", 0));
-                    // Antes -9-nov-2026-: cuentaInicialVista = false; -la sesión nueva empieza sin ella-.
-                    // -9-nov-2026, segunda vuelta- Un reloj de la cuenta de una sesión anterior no corre sobre esta.
-                    PRINCIPAL.removeCallbacks(finCuentaInicial);
-                    anotar(numero, "contrato: límite=" + (lim == null ? "sin límite" : lim.optDouble("lecturaSeg", 0)
-                        + "s aviso " + lim.optDouble("avisoAntesSeg", 0) + "s") + " leídos=" + o.optDouble("leidosSeg", 0));
-                    return true;
-                }
-                if (!"estado".equals(tipo)) return true;
-                // Antes -9-nov-2026, orden t160u, punto 4-:
-                // if (reglas.fase() != SesionVentana.Fase.CUENTA_INICIAL) {
-                //     anotar(numero, "estado de Sigo descartado: la sesión la manda Android");
-                //     return false;
-                // }
-                // boolean conCuenta = o.has("cuenta") && !o.isNull("cuenta");
-                // if (conCuenta) cuentaInicialVista = true;
-                // // Sin haber visto la cuenta -dos estados juntos-, basta con que Sigo ya escuche.
-                // else if ((cuentaInicialVista || o.optBoolean("escuchando", false)) && !o.optBoolean("enPausa", false)) {
-                //     reglas.empezarLectura(SystemClock.elapsedRealtime());
-                //     anotar(numero, "lectura empezada: cuenta Android");
-                // }
-                // return true;
-                // Razón: el fin de la cuenta ponía «escuchando» y el reloj sin saber si el micrófono abrió, y el estado de
-                // Sigo -que dice escuchando- pasaba a la ventana. Ahora el fin de la cuenta lo decide estadoDeSigo con la
-                // apertura del micrófono, y lo que ve la ventana es el estado de Android.
-                // Antes -9-nov-2026, segunda vuelta-:
-                // boolean conCuenta = o.has("cuenta") && !o.isNull("cuenta");
-                // SesionVentana.Inicial r = reglas.estadoDeSigo(conCuenta, o.optBoolean("escuchando", false),
-                //     o.optBoolean("enPausa", false), SystemClock.elapsedRealtime());
-                // Razón: el «escuchando» de Sigo ya no cuenta, y la cuenta sin número no es el fin: Sigo lo dice
-                // -cuentaTerminada o cuentaCancelada-. Con el primer número, Android pone su propio reloj del fin.
-                int cuenta = o.has("cuenta") && !o.isNull("cuenta") ? Math.max(0, o.optInt("cuenta", 0)) : 0;
-                boolean primerNumero = cuenta > 0 && reglas.finCuentaInicialMs() < 0;
-                SesionVentana.Inicial r = reglas.estadoDeSigo(cuenta, o.optBoolean("cuentaTerminada", false),
-                    o.optBoolean("cuentaCancelada", false), SystemClock.elapsedRealtime());
-                if (primerNumero && reglas.finCuentaInicialMs() >= 0) {
-                    PRINCIPAL.removeCallbacks(finCuentaInicial);
-                    PRINCIPAL.postDelayed(finCuentaInicial, Math.max(0, reglas.finCuentaInicialMs() - SystemClock.elapsedRealtime()));
-                }
-                return alFinDeLaCuentaInicial(r, "Sigo");
+                EntradaDeSigo.Mensaje m = new EntradaDeSigo.Mensaje();
+                m.tipo = o.optString("tipo", "");
+                m.sesion = o.has("sesion") && !o.isNull("sesion") ? o.optLong("sesion", -1) : -1;
+                JSONObject lim = o.optJSONObject("limite");
+                m.conLimite = lim != null;
+                m.lecturaSeg = lim == null ? 0 : (int) Math.round(lim.optDouble("lecturaSeg", 0));
+                m.avisoAntesSeg = lim == null ? 0 : (int) Math.round(lim.optDouble("avisoAntesSeg", 0));
+                m.leidosSeg = o.optDouble("leidosSeg", 0);
+                m.cuenta = o.has("cuenta") && !o.isNull("cuenta") ? Math.max(0, o.optInt("cuenta", 0)) : 0;
+                m.terminada = o.optBoolean("cuentaTerminada", false);
+                m.cancelada = o.optBoolean("cuentaCancelada", false);
+                return EntradaDeSigo.recibir(m, numero, SystemClock.elapsedRealtime(), new EntradaDeSigo.Receptor() {
+                    @Override public SesionVentana reglas() { return reglas; }
+                    @Override public void ponerReglas(SesionVentana nuevas) { reglas = nuevas; }
+                    @Override public void programarFinCuenta(long finMs) {
+                        PRINCIPAL.removeCallbacks(finCuentaInicial);
+                        PRINCIPAL.postDelayed(finCuentaInicial, Math.max(0, finMs - SystemClock.elapsedRealtime()));
+                    }
+                    @Override public void quitarFinCuenta() { PRINCIPAL.removeCallbacks(finCuentaInicial); }
+                    @Override public boolean alFinDeLaCuentaInicial(SesionVentana.Inicial r) {
+                        return Sesion.this.alFinDeLaCuentaInicial(r, "Sigo");
+                    }
+                    @Override public void anotar(String linea) { VentanaDePrueba.anotar(numero, linea); }
+                });
             } catch (Exception e) {
                 return true;
             }
@@ -1142,32 +1182,61 @@ final class VentanaDePrueba {
         // La respuesta de Vosk -aperturaDelMicrofono-. Solo la del intento que se espera vale: «escuchando» y el reloj
         // con la apertura hecha; Pausa y el aviso de micrófono si falló, y Seguir se puede tocar otra vez. Una respuesta
         // descartada -Pausa, pantalla apagada u otro Seguir entre medio- suelta su captura si alcanzó a abrirse.
+        // Antes -9-nov-2026, orden t162u, punto 1-:
+        // void alAbrirMicrofono(long intento, long captura, String error) {
+        //     SesionVentana.Apertura r = reglas.alAbrirMicrofono(intento, captura != 0, SystemClock.elapsedRealtime());
+        //     if (r == SesionVentana.Apertura.ESCUCHANDO) {
+        //         if (microFallo) { microFallo = false; enviarMicro(); }
+        //         enviarEstado();
+        //         anotar(numero, "micrófono confirmado: escuchando intento=" + intento + " captura=" + captura);
+        //     } else if (r == SesionVentana.Apertura.PAUSA) {
+        //         // Antes -9-nov-2026, orden t160u, punto 4-:
+        //         //     // La reanudación soltó la marca de pausa del micrófono: se vuelve a poner, así un escuchar tardío de la
+        //         //     // página de Sigo tampoco lo abre. No hay nada abierto que cerrar.
+        //         //     VoskNativoPlugin.pausarParaVentana(numero, "falló la apertura de Seguir");
+        //         //     microFallo = true;
+        //         //     enviarMicro();
+        //         //     enviarEstado();
+        //         //     anotar(numero, "el micrófono no abrió: vuelve a Pausa intento=" + intento + " error=" + error);
+        //         // Razón: ahora en microNoAbrio, que usa también el fin de la cuenta de Empezar con la apertura ya fallida.
+        //         microNoAbrio("intento=" + intento + " error=" + error);
+        //     } else if (r == SesionVentana.Apertura.ANOTADA) {
+        //         // -9-nov-2026, orden t160u, punto 4- La página abrió -o no- durante la cuenta de Empezar: decide su fin.
+        //         anotar(numero, "micrófono del primer Empezar " + (captura != 0 ? "abierto captura=" + captura : "falló error=" + error) + ": se espera el fin de la cuenta");
+        //     } else if (r == SesionVentana.Apertura.IGNORADA) {
+        //         anotar(numero, "apertura de la página ignorada: la ventana ya escucha, captura=" + captura + " fase=" + reglas.fase());
+        //     } else {
+        //         anotar(numero, "apertura descartada intento=" + intento + " captura=" + captura + " fase=" + reglas.fase());
+        //         if (captura != 0) VoskNativoPlugin.liberarCaptura(numero, captura, "apertura descartada");
+        //     }
+        // }
+        // Razón: la misma decisión pasa ahora por SesionVentana.responder, que se prueba en la JVM: una respuesta
+        // descartada -también la que llega después de la cancelación del primer Empezar- libera esa captura.
         void alAbrirMicrofono(long intento, long captura, String error) {
             SesionVentana.Apertura r = reglas.alAbrirMicrofono(intento, captura != 0, SystemClock.elapsedRealtime());
-            if (r == SesionVentana.Apertura.ESCUCHANDO) {
-                if (microFallo) { microFallo = false; enviarMicro(); }
-                enviarEstado();
-                anotar(numero, "micrófono confirmado: escuchando intento=" + intento + " captura=" + captura);
-            } else if (r == SesionVentana.Apertura.PAUSA) {
-                // Antes -9-nov-2026, orden t160u, punto 4-:
-                //     // La reanudación soltó la marca de pausa del micrófono: se vuelve a poner, así un escuchar tardío de la
-                //     // página de Sigo tampoco lo abre. No hay nada abierto que cerrar.
-                //     VoskNativoPlugin.pausarParaVentana(numero, "falló la apertura de Seguir");
-                //     microFallo = true;
-                //     enviarMicro();
-                //     enviarEstado();
-                //     anotar(numero, "el micrófono no abrió: vuelve a Pausa intento=" + intento + " error=" + error);
-                // Razón: ahora en microNoAbrio, que usa también el fin de la cuenta de Empezar con la apertura ya fallida.
-                microNoAbrio("intento=" + intento + " error=" + error);
-            } else if (r == SesionVentana.Apertura.ANOTADA) {
-                // -9-nov-2026, orden t160u, punto 4- La página abrió -o no- durante la cuenta de Empezar: decide su fin.
-                anotar(numero, "micrófono del primer Empezar " + (captura != 0 ? "abierto captura=" + captura : "falló error=" + error) + ": se espera el fin de la cuenta");
-            } else if (r == SesionVentana.Apertura.IGNORADA) {
-                anotar(numero, "apertura de la página ignorada: la ventana ya escucha, captura=" + captura + " fase=" + reglas.fase());
-            } else {
-                anotar(numero, "apertura descartada intento=" + intento + " captura=" + captura + " fase=" + reglas.fase());
-                if (captura != 0) VoskNativoPlugin.liberarCaptura(numero, captura, "apertura descartada");
-            }
+            SesionVentana.responder(r, captura, new SesionVentana.AlAbrir() {
+                @Override public void escuchando() {
+                    if (microFallo) { microFallo = false; enviarMicro(); }
+                    enviarEstado();
+                    anotar(numero, "micrófono confirmado: escuchando intento=" + intento + " captura=" + captura);
+                }
+                @Override public void noAbrio() {
+                    microNoAbrio("intento=" + intento + " error=" + error);
+                }
+                @Override public void anotada() {
+                    // -9-nov-2026, orden t160u, punto 4- La página abrió -o no- durante la cuenta de Empezar: decide su fin.
+                    anotar(numero, "micrófono del primer Empezar " + (captura != 0 ? "abierto captura=" + captura : "falló error=" + error) + ": se espera el fin de la cuenta");
+                }
+                @Override public void ignorada() {
+                    anotar(numero, "apertura de la página ignorada: la ventana ya escucha, captura=" + captura + " fase=" + reglas.fase());
+                }
+                @Override public void descartada() {
+                    anotar(numero, "apertura descartada intento=" + intento + " captura=" + captura + " fase=" + reglas.fase());
+                }
+                @Override public void liberar(long c) {
+                    VoskNativoPlugin.liberarCaptura(numero, c, "apertura descartada");
+                }
+            });
         }
 
         // El micrófono no abrió: Pausa, con el aviso de micrófono, y Seguir lo reintenta. La reanudación soltó la marca

@@ -92,6 +92,15 @@ export function PaginaFlotante() {
   const [motivoMicro, setMotivoMicro] = useState<string>('')
   const [controlesVisibles, setControlesVisibles] = useState(true)
   const [tInicio, setTInicio] = useState<number | null>(null)
+  // -9-nov-2026, orden t163u, caso 3- LO QUE NO ES LECTURA NO CUENTA EN LA PASTILLA. BarraDeTiempo resta lo pausado
+  // -msPausadoAhora- y la ventana no se lo pasaba: la pausa, la cuenta 3-2-1 y la espera del micrófono sumaban como
+  // lectura, aunque Android las descuente del límite -SesionVentana.leidosMs-. Ahora, desde el primer «escuchando»,
+  // cada tramo en que Android no dice escuchando -pausa, cuenta o espera- se acumula aquí, con la hora de la página.
+  const pausadoRef = useRef<{ inicio: number | null; acumuladoMs: number; desde: number | null }>({ inicio: null, acumuladoMs: 0, desde: null })
+  const msPausadoAhora = useCallback(() => {
+    const p = pausadoRef.current
+    return p.acumuladoMs + (p.desde !== null ? Math.max(0, performance.now() - p.desde) : 0)
+  }, [])
   const [faseLimite, setFaseLimite] = useState<FaseLimite>('ninguno')
   const tokenInicialHecho = useRef(false)
   // -banda A, 09-11-2026- La geometría la manda lo nativo; el ancho de la página es el de la ventana.
@@ -135,14 +144,32 @@ export function PaginaFlotante() {
         setTransparencia(limitarTransparencia(c.transparencia))
         setFontSize(limitarTamanoLetra(c.fontSize, PASOS_LETRA))
         tokenInicialHecho.current = false
+        // -9-nov-2026, orden t163u, caso 3- Una sesión nueva empieza sin tiempo pausado.
+        pausadoRef.current = { inicio: null, acumuladoMs: 0, desde: null }
         void asr.start()
         return
       }
       if (datos.tipo === 'estado') {
         const e = datos as unknown as EstadoApp
         setEstado(e)
-        if (e.cuenta === null && e.escuchando && !e.enPausa) {
-          setTInicio((prev) => prev ?? performance.now())
+        // Antes -9-nov-2026, orden t163u, caso 3-:
+        // if (e.cuenta === null && e.escuchando && !e.enPausa) {
+        //   setTInicio((prev) => prev ?? performance.now())
+        // }
+        // Razón: además del inicio, cada tramo sin lectura efectiva se anota para restarlo -msPausadoAhora-.
+        const leyendo = e.cuenta === null && e.escuchando && !e.enPausa
+        const p = pausadoRef.current
+        const ahora = performance.now()
+        if (p.inicio === null) {
+          if (leyendo) {
+            p.inicio = ahora
+            setTInicio((prev) => prev ?? ahora)
+          }
+        } else if (!leyendo && p.desde === null) {
+          p.desde = ahora
+        } else if (leyendo && p.desde !== null) {
+          p.acumuladoMs += Math.max(0, ahora - p.desde)
+          p.desde = null
         }
         return
       }
@@ -563,6 +590,8 @@ export function PaginaFlotante() {
               totalTokens={totalTokens}
               tInicioLecturaMs={tInicio}
               enPausa={estado.enPausa}
+              // -9-nov-2026, orden t163u, caso 3- Lo que no fue lectura efectiva: ver pausadoRef.
+              msPausadoAhora={msPausadoAhora}
               escuchando={estado.escuchando && !estado.enPausa}
               vistaPrevia={tInicio === null}
             />

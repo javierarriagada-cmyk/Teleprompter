@@ -260,9 +260,32 @@ export class MotorNativo implements MotorDeVoz {
   // Ahora los oyentes van al turno de este iniciar. Si detener() llega antes de que escuchar responda, el turno queda
   // cancelado: no se abre el micrófono, o, si ya se pidió, la respuesta tardía es de ese turno cancelado y su captura
   // se cierra con su propio detener -nombrándola- sin tocar la lectura que haya empezado después.
+  // Antes -9-nov-2026, orden t163u, caso 2-:
+  // async iniciar(opciones: { lang: string }): Promise<void> {
+  //   const turno: TurnoDeEscucha = { suscripciones: [], captura: undefined, cancelado: false }
+  //   this.turnos.add(turno)
+  // Razón: los oyentes se ponían antes de esperar Nativo.escuchar(); si esa apertura -o un addListener a medio camino-
+  // fallaba, el turno y sus oyentes quedaban puestos, y al reintentar con el mismo motor cada palabra llegaba dos veces
+  // -medido: ['hola', 'hola']-. Ahora iniciar() envuelve la preparación: si falla, el turno se quita y se sueltan los
+  // oyentes que alcanzó a poner -y la captura, si alcanzó a abrirse-, sin tocar los de otro turno; el error sigue.
   async iniciar(opciones: { lang: string }): Promise<void> {
     const turno: TurnoDeEscucha = { suscripciones: [], captura: undefined, cancelado: false }
     this.turnos.add(turno)
+    try {
+      await this.prepararTurno(turno, opciones)
+    } catch (e) {
+      this.turnos.delete(turno)
+      turno.cancelado = true
+      try {
+        await this.cerrarCaptura(turno)
+      } catch (limpieza) {
+        console.warn('[MotorNativo] no se pudo soltar el intento fallido:', limpieza)
+      }
+      throw e
+    }
+  }
+
+  private async prepararTurno(turno: TurnoDeEscucha, opciones: { lang: string }): Promise<void> {
     // EL IDIOMA DEL GUION ELIGE EL MODELO -27-09-2026, docs/ingles.txt-. Hasta ese dia
     // el APK traia solo el espanol y este parametro se ignoraba a proposito: "inventar
     // que se puede cambiar seria mentir". Ahora viajan los dos, y lang llega de App.tsx

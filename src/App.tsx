@@ -392,6 +392,10 @@ export default function App({ motor, repoOverride }: AppProps) {
   const intencionFlotanteRef = useRef<OpcionesPruebaFlotante | null>(null)
   const preparandoFlotanteRef = useRef(false)
   const entrandoFlotanteRef = useRef(false)
+  // -9-nov-2026, orden t162u, punto 2- La apertura de la ventana en curso -VentanaDePrueba.abrir() y, si se canceló
+  // mientras tanto, el retiro de su sesión-. Un Empezar posterior la espera antes de pedir la suya: Android devuelve la
+  // sesión que ya existe a un abrir duplicado, y el retiro de la cancelada se llevaría la del intento nuevo.
+  const aperturaFlotanteEnCursoRef = useRef<Promise<void> | null>(null)
   const sesionFlotanteRef = useRef<number | null>(null)
   const anteriorTomaFlotanteRef = useRef<EstadoToma>('listo')
   const accionesFlotanteRef = useRef<(accion: AccionPruebaFlotante) => void>(() => {})
@@ -1867,7 +1871,20 @@ export default function App({ motor, repoOverride }: AppProps) {
       return
     }
     if (HERRAMIENTAS && Capacitor.isNativePlatform()) {
-      if (entrandoFlotanteRef.current || (preparandoFlotanteRef.current && !intencionFlotanteRef.current)) return
+      // -9-nov-2026, orden t162u, punto 2- Un intento nuevo con la apertura de uno cancelado todavía pendiente: espera a
+      // que esa sesión se retire. Antes el toque se perdía en la línea de abajo, sin decir nada.
+      const enCurso = aperturaFlotanteEnCursoRef.current
+      if (entrandoFlotanteRef.current && intencionFlotanteRef.current && enCurso) {
+        console.info('SigoFlotante', 'Empezar con una apertura cancelada pendiente: se espera su retiro')
+        await enCurso
+      }
+      // Antes -9-nov-2026, orden t162u, punto 2-:
+      // if (entrandoFlotanteRef.current || (preparandoFlotanteRef.current && !intencionFlotanteRef.current)) return
+      // Razón: un return mudo; ahora queda en el registro.
+      if (entrandoFlotanteRef.current || (preparandoFlotanteRef.current && !intencionFlotanteRef.current)) {
+        console.info('SigoFlotante', 'Empezar ignorado: ya hay una entrada en curso')
+        return
+      }
       entrandoFlotanteRef.current = intencionFlotanteRef.current !== null
     }
     // -9-nov-2026, orden t160u, punto 1, segunda vuelta- El intento de la ventana con que se llega, si se llega con la
@@ -1977,10 +1994,29 @@ export default function App({ motor, repoOverride }: AppProps) {
     if (HERRAMIENTAS && Capacitor.isNativePlatform() && intencionFlotanteRef.current) {
       const opciones = intencionFlotanteRef.current
       intencionFlotanteRef.current = null
-      // -9-nov-2026, segunda vuelta- Desde aquí ya no se cancela: se abre -o falla- y la hoja se cierra sola.
-      intentoEnEsperaFlotanteRef.current = null
+      // Antes -9-nov-2026, orden t162u, punto 2-:
+      // // -9-nov-2026, segunda vuelta- Desde aquí ya no se cancela: se abre -o falla- y la hoja se cierra sola.
+      // intentoEnEsperaFlotanteRef.current = null
+      // Razón: la hoja sigue a la vista mientras Android responde a abrir(), y cerrarla ya no cancelaba nada: la
+      // respuesta tardía mandaba el contrato y empezaba la cuenta y el micrófono de una lectura que la persona había
+      // cortado. Ahora el intento sigue esperando hasta la respuesta; si se canceló mientras tanto, esa sesión se
+      // retira por su número y no se toca nada más -ni la hoja, ni la cámara, ni un intento posterior-.
+      let terminarApertura: () => void = () => {}
+      const apertura = new Promise<void>((r) => { terminarApertura = r })
+      aperturaFlotanteEnCursoRef.current = apertura
+      const cancelado = () => intentoFlotante !== null && intentoFlotante !== intentoApagadoFlotanteRef.current
       try {
         const abierta = await VentanaDePrueba.abrir(opciones)
+        if (cancelado()) {
+          console.info('SigoFlotante', `preparación cerrada con abrir pendiente: se retira la sesion=${abierta.sesion} intento=${intentoFlotante}, sin contrato`)
+          try {
+            await VentanaDePrueba.cerrar({ sesion: abierta.sesion })
+          } catch (e) {
+            console.warn('SigoFlotante', `no se pudo retirar la sesion=${abierta.sesion}`, e)
+          }
+          return
+        }
+        if (intentoEnEsperaFlotanteRef.current === intentoFlotante) intentoEnEsperaFlotanteRef.current = null
         estadoFlotanteRef.current = { vioCuenta: false, terminada: false }
         if (origenFlotanteRef.current === null) origenFlotanteRef.current = 'leer'
         sesionFlotanteRef.current = abierta.sesion
@@ -2016,6 +2052,13 @@ export default function App({ motor, repoOverride }: AppProps) {
         })
         console.info('SigoFlotante', `contrato enviado sesion=${abierta.sesion} tokenInicial=${tokenInicial}`)
       } catch (e) {
+        // -9-nov-2026, orden t162u, punto 2- Cancelada mientras Android respondía: no abrió nada que retirar, y la hoja
+        // -la de accesibilidad incluida- no vuelve a salir. Desistir ya devolvió Grabar si correspondía.
+        if (cancelado()) {
+          console.info('SigoFlotante', `apertura cancelada que además falló, intento=${intentoFlotante}: ${e instanceof Error ? e.message : String(e)}`)
+          return
+        }
+        if (intentoEnEsperaFlotanteRef.current === intentoFlotante) intentoEnEsperaFlotanteRef.current = null
         sesionFlotanteRef.current = null
         setVentanaFlotanteAbierta(false)
         // -09-11-2026- Si se entró desde Grabar y no abrió, vuelve la cámara.
@@ -2023,6 +2066,9 @@ export default function App({ motor, repoOverride }: AppProps) {
         origenFlotanteRef.current = null
         await avisarErrorFlotante(e)
         return
+      } finally {
+        if (aperturaFlotanteEnCursoRef.current === apertura) aperturaFlotanteEnCursoRef.current = null
+        terminarApertura()
       }
     }
     setEstadoToma('leyendo')

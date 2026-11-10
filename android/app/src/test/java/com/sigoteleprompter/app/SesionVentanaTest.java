@@ -361,4 +361,87 @@ public class SesionVentanaTest {
         t.estadoDeSigo(2, false, false, 500);
         assertEquals(2500, t.finCuentaInicialMs());
     }
+
+    // -9-nov-2026, orden t162u, punto 1- La cancelación del primer Empezar prevalece sobre la confirmación tardía de Vosk,
+    // aunque el reloj de Android ya haya pasado la cuenta a ABRIENDO un instante antes.
+    @Test public void laCancelacionQueLlegaDespuesDelRelojPrevaleceSobreLaConfirmacionTardia() {
+        SesionVentana s = conLimite();
+        assertEquals(REENVIAR, s.estadoDeSigo(3, false, false, 1000));
+        // Vence el reloj de Android; Vosk todavía no confirmó.
+        assertEquals(SesionVentana.Inicial.ESPERANDO_MICRO, s.terminarCuentaInicial(4000));
+        // Llega la cancelación de esa misma cuenta.
+        assertEquals(SesionVentana.Inicial.CANCELADA, s.estadoDeSigo(0, false, true, 4001));
+        assertTrue(s.enPausa());
+        // Vosk confirma la apertura del intento inicial: se descarta y su captura va a liberarse.
+        SesionVentana.Apertura r = s.alAbrirMicrofono(INICIAL, true, 4002);
+        assertEquals(SesionVentana.Apertura.DESCARTADA, r);
+        assertTrue(s.enPausa());
+        assertEquals(0, s.leidosMs(5002));
+        // El cableado de VentanaDePrueba.alAbrirMicrofono: la respuesta descartada llega a liberar esa captura, la 42.
+        Respuestas a = new Respuestas();
+        SesionVentana.responder(r, 42, a);
+        assertEquals("descartada liberar:42", a.hechas.toString().trim());
+    }
+
+    // Lo que hace la ventana con cada respuesta, anotado en orden.
+    static class Respuestas implements SesionVentana.AlAbrir {
+        final StringBuilder hechas = new StringBuilder();
+        @Override public void escuchando() { hechas.append("escuchando "); }
+        @Override public void noAbrio() { hechas.append("noAbrio "); }
+        @Override public void anotada() { hechas.append("anotada "); }
+        @Override public void ignorada() { hechas.append("ignorada "); }
+        @Override public void descartada() { hechas.append("descartada "); }
+        @Override public void liberar(long captura) { hechas.append("liberar:").append(captura).append(' '); }
+    }
+
+    @Test public void cadaRespuestaVaASuAccionYSoloLaDescartadaLiberaSuCaptura() {
+        for (SesionVentana.Apertura r : SesionVentana.Apertura.values()) {
+            Respuestas a = new Respuestas();
+            SesionVentana.responder(r, 7, a);
+            String esperado;
+            switch (r) {
+                case ESCUCHANDO: esperado = "escuchando"; break;
+                case PAUSA: esperado = "noAbrio"; break;
+                case ANOTADA: esperado = "anotada"; break;
+                case IGNORADA: esperado = "ignorada"; break;
+                default: esperado = "descartada liberar:7";
+            }
+            assertEquals(r.name(), esperado, a.hechas.toString().trim());
+        }
+        // Sin captura abierta no hay nada que liberar.
+        Respuestas a = new Respuestas();
+        SesionVentana.responder(SesionVentana.Apertura.DESCARTADA, 0, a);
+        assertEquals("descartada", a.hechas.toString().trim());
+    }
+
+    // El caso contrario: un Seguir posterior ya empezó. La cancelación vieja del primer Empezar no toca la cuenta nueva.
+    @Test public void unaCancelacionViejaDelPrimerEmpezarNoTocaLaCuentaDeUnSeguirPosterior() {
+        SesionVentana s = conLimite();
+        s.estadoDeSigo(3, false, false, 1000);
+        assertEquals(SesionVentana.Inicial.ESPERANDO_MICRO, s.terminarCuentaInicial(4000));
+        // Vosk no abrió: Pausa, y la persona toca Seguir.
+        assertEquals(SesionVentana.Apertura.PAUSA, s.alAbrirMicrofono(INICIAL, false, 4002));
+        assertEquals(3, s.seguir());
+        assertEquals(SesionVentana.Inicial.DESCARTAR, s.estadoDeSigo(0, false, true, 4500));
+        assertEquals(SesionVentana.Fase.CUENTA, s.fase());
+        assertEquals(3, s.cuenta());
+        assertEquals(2, s.pasoDeCuenta(5500));
+        assertEquals(1, s.pasoDeCuenta(6500));
+        assertEquals(0, s.pasoDeCuenta(7500));
+        // La confirmación de ese Seguir es la que vale.
+        assertEquals(SesionVentana.Apertura.ESCUCHANDO, s.alAbrirMicrofono(s.intentoPedido(), true, 7600));
+        assertEquals(1000, s.leidosMs(8600));
+    }
+
+    // El caso normal: sin cancelación, el reloj termina la cuenta y la confirmación de Vosk empieza la lectura.
+    @Test public void sinCancelacionElRelojYLaConfirmacionEmpiezanLaLectura() {
+        SesionVentana s = conLimite();
+        s.estadoDeSigo(3, false, false, 1000);
+        assertEquals(SesionVentana.Inicial.ESPERANDO_MICRO, s.terminarCuentaInicial(4000));
+        assertEquals(SesionVentana.Apertura.ESCUCHANDO, s.alAbrirMicrofono(INICIAL, true, 4002));
+        assertEquals(1000, s.leidosMs(5002));
+        // Una cancelación que llegara ya con la lectura del primer Empezar en curso la pausa: tampoco la deja seguir.
+        assertEquals(SesionVentana.Inicial.CANCELADA, s.estadoDeSigo(0, false, true, 5002));
+        assertTrue(s.enPausa());
+    }
 }

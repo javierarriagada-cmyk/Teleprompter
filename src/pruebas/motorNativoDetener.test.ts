@@ -14,7 +14,10 @@ const n = vi.hoisted(() => {
     // La respuesta de escuchar: la prueba la decide. Por defecto, inmediata con la captura que toque.
     escuchar: null as null | (() => Promise<any>),
     detener: null as null | (() => Promise<any>),
-    siguienteCaptura: 1
+    siguienteCaptura: 1,
+    // -9-nov-2026, orden t163u, caso 2- El addListener número n -desde 1- de la prueba falla, una vez.
+    fallarOyente: 0,
+    oyentesPedidos: 0
   }
   const plugin = {
     disponible: async () => ({ disponible: true }),
@@ -30,6 +33,11 @@ const n = vi.hoisted(() => {
       return { detenido: true }
     },
     addListener: async (evento: string, cb: (d: any) => void) => {
+      estado.oyentesPedidos++
+      if (estado.fallarOyente && estado.oyentesPedidos === estado.fallarOyente) {
+        estado.fallarOyente = 0
+        throw new Error('addListener falló')
+      }
       const o = { evento, cb }
       estado.oyentes.add(o)
       return { remove: async () => { estado.oyentes.delete(o) } }
@@ -61,6 +69,8 @@ describe('MotorNativo.detener solo detiene lo suyo', () => {
     n.estado.escuchar = null
     n.estado.detener = null
     n.estado.siguienteCaptura = 1
+    n.estado.fallarOyente = 0
+    n.estado.oyentesPedidos = 0
   })
 
   test('el detener de la lectura vieja nombra su captura y no se lleva los oyentes de la lectura nueva', async () => {
@@ -181,5 +191,38 @@ describe('MotorNativo.detener solo detiene lo suyo', () => {
     expect(n.estado.detenidos).toEqual([{ captura: 1 }])
     parciales('sigue')
     expect(oidos).toEqual(['sigue'])
+  })
+
+  // -9-nov-2026, orden t163u, caso 2- La apertura que falla no deja oyentes: el reintento entrega cada palabra una vez.
+  test('escuchar falla y el reintento abre: un solo parcial llega una sola vez, con los oyentes del reintento', async () => {
+    const motor = new MotorNativo()
+    const oidos: string[] = []
+    motor.onParcial((e) => oidos.push(e.texto))
+    n.estado.escuchar = async () => { throw new Error('el micrófono está tomado') }
+    await expect(motor.iniciar({ lang: 'es-ES' })).rejects.toThrow('el micrófono está tomado')
+    expect(n.estado.oyentes.size).toBe(0)
+    n.estado.escuchar = null
+    await motor.iniciar({ lang: 'es-ES' })
+    expect(n.estado.oyentes.size).toBe(4)
+    parciales('hola')
+    expect(oidos).toEqual(['hola'])
+    // El turno fallido tampoco quedó: el detener cierra solo la captura del reintento.
+    await motor.detener()
+    expect(n.estado.detenidos).toEqual([{ captura: 1 }])
+    expect(n.estado.oyentes.size).toBe(0)
+  })
+
+  test('falla el tercer addListener: se sueltan los dos ya puestos y el reintento queda con sus cuatro', async () => {
+    const motor = new MotorNativo()
+    const oidos: string[] = []
+    motor.onParcial((e) => oidos.push(e.texto))
+    n.estado.fallarOyente = 3
+    await expect(motor.iniciar({ lang: 'es-ES' })).rejects.toThrow('addListener falló')
+    expect(n.estado.oyentes.size).toBe(0)
+    expect(n.estado.escuchados).toBe(0)
+    await motor.iniciar({ lang: 'es-ES' })
+    expect(n.estado.oyentes.size).toBe(4)
+    parciales('hola')
+    expect(oidos).toEqual(['hola'])
   })
 })
