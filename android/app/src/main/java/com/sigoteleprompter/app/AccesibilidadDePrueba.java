@@ -33,6 +33,8 @@ public class AccesibilidadDePrueba extends AccessibilityService {
     private void desconectar(String motivo) {
         VentanaDePrueba.anotar(VentanaDePrueba.numeroDeAccesibilidad(this), "accesibilidad desconectada instancia=" + System.identityHashCode(this) + " " + motivo);
         if (vigente == this) vigente = null;
+        // -10-11-2026, orden t164u- El sensor del giro se suelta ya; el cierre de la ventana va por el hilo principal.
+        VentanaDePrueba.soltarGiroDeAccesibilidad(this, motivo);
         VentanaDePrueba.cerrarDeAccesibilidad(this, motivo);
     }
     @Override public boolean onUnbind(Intent intent) {
@@ -41,6 +43,7 @@ public class AccesibilidadDePrueba extends AccessibilityService {
     }
     @Override public void onTaskRemoved(Intent raiz) {
         VentanaDePrueba.anotar(VentanaDePrueba.numeroDeAccesibilidad(this), "onTaskRemoved accesibilidad");
+        VentanaDePrueba.soltarGiroDeAccesibilidad(this, "onTaskRemoved accesibilidad");
         VentanaDePrueba.cerrarDeAccesibilidad(this, "onTaskRemoved accesibilidad");
         super.onTaskRemoved(raiz);
     }
@@ -48,6 +51,10 @@ public class AccesibilidadDePrueba extends AccessibilityService {
         desconectar("onDestroy accesibilidad");
         super.onDestroy();
     }
+    // -10-11-2026, orden t164u- onInterrupt es el aviso de que se interrumpa la respuesta hablada o táctil, no una
+    // desconexión: la ventana sigue abierta y el sensor también. La desconexión es onUnbind u onDestroy -desconectar-.
+    // onConfigurationChanged llega con de pie ↔ de lado; de un lado al otro no llega -las medidas no cambian- y eso lo
+    // oye el DisplayListener de VentanaDePrueba.empezarGiro.
     @Override public void onConfigurationChanged(Configuration nueva) {
         super.onConfigurationChanged(nueva);
         VentanaDePrueba.reencuadrar(this);

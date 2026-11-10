@@ -8,9 +8,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.database.ContentObserver;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
+import android.hardware.SensorManager;
+import android.hardware.display.DisplayManager;
 import android.media.AudioManager;
 import android.media.AudioRecordingConfiguration;
 import android.net.Uri;
@@ -18,11 +21,15 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.OrientationEventListener;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.WindowMetrics;
@@ -31,6 +38,7 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import androidx.core.content.ContextCompat;
 import androidx.webkit.WebMessageCompat;
 import androidx.webkit.WebViewAssetLoader;
@@ -149,6 +157,12 @@ final class VentanaDePrueba {
     static void reencuadrar(AccesibilidadDePrueba servicio) {
         Sesion s = actual;
         if (s != null && s.accesibilidad == servicio) s.alCambiarPantalla();
+    }
+    // -10-11-2026, orden t164u- Al desconectarse el servicio, el sensor del giro se suelta en el acto, sin esperar al
+    // cierre que va por el hilo principal -cerrarDeAccesibilidad-.
+    static void soltarGiroDeAccesibilidad(AccesibilidadDePrueba servicio, String motivo) {
+        Sesion s = actual;
+        if (s != null && s.accesibilidad == servicio) s.soltarGiro(motivo);
     }
     static void servicioConfirmado(long numero, boolean activo, String error) {
         PRINCIPAL.post(() -> {
@@ -294,7 +308,52 @@ final class VentanaDePrueba {
         boolean menuPuesto, menuLista;
         final ArrayDeque<String> colaMenu = new ArrayDeque<>();
         // La orientación con que se puso la geometría: al girar, cada orientación tiene la suya.
-        boolean deLado;
+        // Antes -hasta el 10-11-2026-: boolean deLado;
+        // Razón -orden t164u-: la orientación, ahora con la compensación del giro, la lleva BandaGirada -banda.deLado(),
+        // banda.giro()-, con la banda en el marco de quien sostiene el teléfono.
+        // EL GIRO AUTOMÁTICO DE LA BANDA -10-11-2026, orden t164u-. Ver OrientacionDeVentana y BandaGirada. La WebView
+        // va dentro de un marco -la vista que se pone en WindowManager-: el marco mide lo que la banda ocupa en la
+        // pantalla y la WebView, con la medida de la persona, se gira dentro. Lo mismo el menú de Aa.
+        final BandaGirada banda = new BandaGirada();
+        FrameLayout marco, marcoMenu;
+        OrientacionDeVentana orientacion;
+        OrientationEventListener sensorGiro;
+        DisplayManager pantallas;
+        DisplayManager.DisplayListener oyentePantalla;
+        ContentObserver oyenteAuto;
+        String ultimoGiroAnotado = "";
+        final Runnable relojGiro = new Runnable() {
+            @Override public void run() {
+                if (!vigente() || orientacion == null) return;
+                boolean cambio = orientacion.alReloj(SystemClock.elapsedRealtime());
+                anotarGiro();
+                reprogramarRelojGiro();
+                if (cambio) alCambiarPantalla();
+            }
+        };
+        // Lo que BandaGirada hace en Android: lo de siempre del giro y poner la ventana y la vista.
+        final BandaGirada.Ventana lienzo = new BandaGirada.Ventana() {
+            @Override public void terminarArrastre(String motivo) { Sesion.this.terminarArrastre(motivo, false); }
+            @Override public boolean enCuentaDeSeguir() { return reglas.fase() == SesionVentana.Fase.CUENTA; }
+            @Override public void pausarPorGiro(String motivo) { pausarEnAndroid(motivo); }
+            @Override public void cerrarMenuAa(String motivo) { Sesion.this.cerrarMenuAa(motivo, true); }
+            @Override public int[] geometriaGuardada(String clave) {
+                SharedPreferences p = contexto.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+                if (!p.contains(clave + "x") || !p.contains(clave + "y")) return null;
+                return new int[] { p.getInt(clave + "x", 0), p.getInt(clave + "y", 0), p.getInt(clave + "w", 0), p.getInt(clave + "h", 0) };
+            }
+            @Override public void ponerVentana(int x, int y, int ancho, int alto) {
+                if (posicion == null) return;
+                posicion.x = x; posicion.y = y; posicion.width = ancho; posicion.height = alto;
+                if (marco == null || ventanas == null || !marco.isAttachedToWindow()) return;
+                try { ventanas.updateViewLayout(marco, posicion); }
+                catch (Exception e) { VentanaDePrueba.anotar(numero, "no se pudo reencuadrar: " + e); }
+            }
+            @Override public void ponerVista(int ancho, int alto, float grados, float dx, float dy) {
+                if (web != null) girarVista(web, ancho, alto, grados, dx, dy);
+            }
+            @Override public void anotar(String linea) { VentanaDePrueba.anotar(numero, linea); }
+        };
         // EL ARRASTRE POR EL ASA -09-11-2026-: lo mide lo nativo, en la pantalla. Ver ArrastreVentana y alTocarBanda.
         final ArrastreVentana arrastre = new ArrastreVentana();
         // Dónde estaba el menú de Aa respecto de la ventana al empezar: se mueve con ella, en el mismo paso.
@@ -424,11 +483,20 @@ final class VentanaDePrueba {
                     | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
                 PixelFormat.TRANSLUCENT);
             posicion.gravity = Gravity.TOP | Gravity.START;
-            aplicarTamanoInicial();
+            // Antes -hasta el 10-11-2026-:
+            //     aplicarTamanoInicial();
+            //     try {
+            //         ventanas.addView(web, posicion);
+            // Razón -orden t164u-: la WebView va dentro del marco, que es lo que se pone en la pantalla, y la geometría
+            // sale de BandaGirada con la compensación del giro -0 hasta que el sensor diga otra cosa-.
+            marco = new FrameLayout(accesibilidad);
+            marco.addView(web, new FrameLayout.LayoutParams(dp(240), dp(180)));
+            empezarGiro();
+            banda.abrir(medir(), orientacion.aplicada(), lienzo);
             try {
-                ventanas.addView(web, posicion);
+                ventanas.addView(marco, posicion);
                 anotar(numero, "ventana mostrada w=" + posicion.width + " h=" + posicion.height
-                    + " x=" + posicion.x + " y=" + posicion.y);
+                    + " x=" + posicion.x + " y=" + posicion.y + " compensación=" + banda.giro());
             } catch (Exception e) {
                 anotar(numero, "pantalla protegida u overlay bloqueado: " + e);
                 throw new IllegalStateException("No se pudo mostrar la ventana sobre otras apps.");
@@ -461,28 +529,31 @@ final class VentanaDePrueba {
         //     }
         //     acotar();
         // }
-        void aplicarTamanoInicial() {
-            Rect seguro = areaSegura();
-            deLado = seguro.width() > seguro.height();
-            String o = deLado ? "h." : "v.";
-            SharedPreferences p = contexto.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-            if (p.contains(o + "x") && p.contains(o + "y") && p.getInt(o + "w", 0) >= dp(GeometriaVentana.MIN_ANCHO)
-                && p.getInt(o + "h", 0) >= dp(GeometriaVentana.MIN_ALTO)) {
-                posicion.x = p.getInt(o + "x", seguro.left);
-                posicion.y = p.getInt(o + "y", seguro.top);
-                posicion.width = p.getInt(o + "w", 0);
-                posicion.height = p.getInt(o + "h", 0);
-                anotar(numero, "geometría guardada " + o + " x=" + posicion.x + " y=" + posicion.y);
-            } else {
-                float d = recursos.getDisplayMetrics().density;
-                int[] g = GeometriaVentana.inicial(Math.round(seguro.left / d), Math.round(seguro.top / d),
-                    Math.round(seguro.right / d), Math.round(seguro.bottom / d));
-                posicion.x = dp(g[0]); posicion.y = dp(g[1]);
-                posicion.width = dp(g[2]); posicion.height = dp(g[3]);
-                anotar(numero, "geometría inicial A " + o + " " + g[2] + "×" + g[3] + " dp en " + g[0] + "," + g[1]);
-            }
-            acotar();
-        }
+        // Antes -hasta el 10-11-2026, orden t164u-:
+        // void aplicarTamanoInicial() {
+        //     Rect seguro = areaSegura();
+        //     deLado = seguro.width() > seguro.height();
+        //     String o = deLado ? "h." : "v.";
+        //     SharedPreferences p = contexto.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        //     if (p.contains(o + "x") && p.contains(o + "y") && p.getInt(o + "w", 0) >= dp(GeometriaVentana.MIN_ANCHO)
+        //         && p.getInt(o + "h", 0) >= dp(GeometriaVentana.MIN_ALTO)) {
+        //         posicion.x = p.getInt(o + "x", seguro.left);
+        //         posicion.y = p.getInt(o + "y", seguro.top);
+        //         posicion.width = p.getInt(o + "w", 0);
+        //         posicion.height = p.getInt(o + "h", 0);
+        //         anotar(numero, "geometría guardada " + o + " x=" + posicion.x + " y=" + posicion.y);
+        //     } else {
+        //         float d = recursos.getDisplayMetrics().density;
+        //         int[] g = GeometriaVentana.inicial(Math.round(seguro.left / d), Math.round(seguro.top / d),
+        //             Math.round(seguro.right / d), Math.round(seguro.bottom / d));
+        //         posicion.x = dp(g[0]); posicion.y = dp(g[1]);
+        //         posicion.width = dp(g[2]); posicion.height = dp(g[3]);
+        //         anotar(numero, "geometría inicial A " + o + " " + g[2] + "×" + g[3] + " dp en " + g[0] + "," + g[1]);
+        //     }
+        //     acotar();
+        // }
+        // Razón: la misma regla -lo guardado de esa orientación o la inicial de A- vive en BandaGirada.abrir y
+        // tomarGeometria, en el marco de quien sostiene el teléfono y con una clave por compensación -«hc1.», «hc3.»-.
 
         Rect areaSegura() {
             if (Build.VERSION.SDK_INT >= 30 && ventanas != null) {
@@ -503,41 +574,196 @@ final class VentanaDePrueba {
         // El acotado vive en GeometriaVentana -el mismo, ahora probado en la JVM-; aquí va en píxeles.
         // Antes -hasta el 08-11-2026-: las cuatro líneas de Math.max/Math.min, copiadas en el comentario de
         // GeometriaVentana.acotar.
-        void acotar() {
-            if (posicion == null) return;
-            Rect seguro = areaSegura();
-            int[] g = GeometriaVentana.acotar(new int[] { posicion.x, posicion.y, posicion.width, posicion.height },
-                seguro.left, seguro.top, seguro.right, seguro.bottom, dp(GeometriaVentana.MIN_ANCHO), dp(GeometriaVentana.MIN_ALTO));
-            posicion.x = g[0]; posicion.y = g[1]; posicion.width = g[2]; posicion.height = g[3];
+        // Antes -hasta el 10-11-2026, orden t164u-:
+        // void acotar() {
+        //     if (posicion == null) return;
+        //     Rect seguro = areaSegura();
+        //     int[] g = GeometriaVentana.acotar(new int[] { posicion.x, posicion.y, posicion.width, posicion.height },
+        //         seguro.left, seguro.top, seguro.right, seguro.bottom, dp(GeometriaVentana.MIN_ANCHO), dp(GeometriaVentana.MIN_ALTO));
+        //     posicion.x = g[0]; posicion.y = g[1]; posicion.width = g[2]; posicion.height = g[3];
+        // }
+        // Razón: se acota la banda en el marco de la persona -BandaGirada.acotar- y la ventana sale de ahí.
+
+        // La pantalla entera, en píxeles: el marco de la persona se calcula sobre ella. Con la misma fuente que
+        // areaSegura, para que las dos medidas sean del mismo momento.
+        int[] tamanoPantalla() {
+            if (Build.VERSION.SDK_INT >= 30 && ventanas != null) {
+                Rect b = ventanas.getCurrentWindowMetrics().getBounds();
+                return new int[] { b.width(), b.height() };
+            }
+            DisplayMetrics m = recursos.getDisplayMetrics();
+            return new int[] { m.widthPixels, m.heightPixels };
+        }
+
+        BandaGirada.Medida medir() {
+            Rect s = areaSegura();
+            int[] t = tamanoPantalla();
+            return new BandaGirada.Medida(t[0], t[1], s.left, s.top, s.right, s.bottom, recursos.getDisplayMetrics().density);
+        }
+
+        // La WebView con la medida de la persona, girada dentro de su marco -GeometriaVentana.vista-.
+        void girarVista(View vista, int ancho, int alto, float grados, float dx, float dy) {
+            ViewGroup.LayoutParams lp = vista.getLayoutParams();
+            if (lp == null || lp.width != ancho || lp.height != alto) vista.setLayoutParams(new FrameLayout.LayoutParams(ancho, alto));
+            vista.setRotation(grados);
+            vista.setTranslationX(dx);
+            vista.setTranslationY(dy);
+        }
+
+        int rotacionPantalla() {
+            try {
+                Display d = pantallas == null ? null : pantallas.getDisplay(Display.DEFAULT_DISPLAY);
+                return d == null ? 0 : d.getRotation();
+            } catch (Exception e) {
+                anotar(numero, "giro: no se pudo leer la rotación de la pantalla: " + e);
+                return 0;
+            }
+        }
+
+        boolean rotacionAutomatica() {
+            try { return Settings.System.getInt(contexto.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0) == 1; }
+            catch (Exception e) {
+                anotar(numero, "giro: no se pudo leer «Rotación automática», se toma desactivada: " + e);
+                return false;
+            }
+        }
+
+        // EL SENSOR, MIENTRAS LA BANDA ESTÁ A LA VISTA -10-11-2026, orden t164u-. OrientationEventListener da los grados
+        // del teléfono; DisplayListener avisa cuando Android gira la pantalla, también de un lado al otro, que no trae
+        // onConfigurationChanged porque las medidas no cambian; el observador sigue «Rotación automática». Todo se
+        // suelta en soltarGiro: al cerrar -quitarVentanas- y al desconectarse el servicio.
+        void empezarGiro() {
+            pantallas = (DisplayManager) contexto.getSystemService(Context.DISPLAY_SERVICE);
+            orientacion = new OrientacionDeVentana(new OrientacionDeVentana.Sensor() {
+                @Override public boolean encender() {
+                    if (sensorGiro == null) {
+                        sensorGiro = new OrientationEventListener(contexto, SensorManager.SENSOR_DELAY_UI) {
+                            @Override public void onOrientationChanged(int grados) { alGradosDelSensor(grados); }
+                        };
+                    }
+                    if (!sensorGiro.canDetectOrientation()) return false;
+                    sensorGiro.enable();
+                    return true;
+                }
+                @Override public void apagar() { if (sensorGiro != null) sensorGiro.disable(); }
+            });
+            orientacion.empezar(rotacionPantalla(), rotacionAutomatica());
+            anotarGiro();
+            if (pantallas != null) {
+                oyentePantalla = new DisplayManager.DisplayListener() {
+                    @Override public void onDisplayAdded(int id) {}
+                    @Override public void onDisplayRemoved(int id) {}
+                    @Override public void onDisplayChanged(int id) {
+                        // Solo la rotación: el g86 cambia la frecuencia de la pantalla y eso también llega aquí.
+                        if (id != Display.DEFAULT_DISPLAY || !vigente() || orientacion == null) return;
+                        if (rotacionPantalla() != orientacion.pantalla()) alCambiarPantalla();
+                    }
+                };
+                try { pantallas.registerDisplayListener(oyentePantalla, PRINCIPAL); }
+                catch (Exception e) { anotar(numero, "giro: no se pudo oír la rotación de la pantalla: " + e); oyentePantalla = null; }
+            }
+            oyenteAuto = new ContentObserver(PRINCIPAL) {
+                @Override public void onChange(boolean propio) {
+                    if (!vigente() || orientacion == null) return;
+                    boolean cambio = orientacion.alAuto(rotacionAutomatica(), SystemClock.elapsedRealtime());
+                    anotarGiro();
+                    reprogramarRelojGiro();
+                    if (cambio) alCambiarPantalla();
+                }
+            };
+            try {
+                contexto.getContentResolver().registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.ACCELEROMETER_ROTATION), false, oyenteAuto);
+            } catch (Exception e) { anotar(numero, "giro: no se pudo seguir «Rotación automática»: " + e); oyenteAuto = null; }
+        }
+
+        void alGradosDelSensor(int grados) {
+            if (!vigente() || orientacion == null) return;
+            boolean cambio = orientacion.alSensor(grados, SystemClock.elapsedRealtime());
+            anotarGiro();
+            reprogramarRelojGiro();
+            if (cambio) alCambiarPantalla();
+        }
+
+        void reprogramarRelojGiro() {
+            PRINCIPAL.removeCallbacks(relojGiro);
+            if (orientacion == null) return;
+            long t = orientacion.proximoReloj();
+            if (t >= 0) PRINCIPAL.postDelayed(relojGiro, Math.max(0, t - SystemClock.elapsedRealtime()));
+        }
+
+        // Una línea por decisión, no por lectura: el sensor llega decenas de veces por segundo.
+        void anotarGiro() {
+            if (orientacion == null) return;
+            String d = orientacion.ultimaDecision();
+            if (d.equals(ultimoGiroAnotado)) return;
+            ultimoGiroAnotado = d;
+            anotar(numero, "giro: " + d + " pantalla=" + orientacion.pantalla() + " estable=" + orientacion.estable()
+                + " compensación=" + orientacion.aplicada());
+        }
+
+        void soltarGiro(String motivo) {
+            PRINCIPAL.removeCallbacks(relojGiro);
+            boolean habia = orientacion != null && !orientacion.suelto();
+            if (orientacion != null) orientacion.soltar();
+            if (oyentePantalla != null && pantallas != null) {
+                try { pantallas.unregisterDisplayListener(oyentePantalla); }
+                catch (Exception e) { anotar(numero, "giro: no se pudo soltar el oyente de la pantalla: " + e); }
+            }
+            oyentePantalla = null;
+            if (oyenteAuto != null) {
+                try { contexto.getContentResolver().unregisterContentObserver(oyenteAuto); }
+                catch (Exception e) { anotar(numero, "giro: no se pudo soltar el observador de «Rotación automática»: " + e); }
+            }
+            oyenteAuto = null;
+            if (habia) anotar(numero, "giro: sensor soltado, " + motivo);
         }
 
         // Antes -hasta el 08-11-2026- no avisaba a la página: ahora la página sabe dónde está, para poner el menú de
         // Aa afuera de la ventana y pegado a Aa.
+        // Antes -hasta el 10-11-2026, orden t164u-, en el cuerpo:
+        //     acotar();
+        //     try { ventanas.updateViewLayout(web, posicion); }
+        //     catch (Exception e) { anotar(numero, "no se pudo reencuadrar: " + e); }
+        // Razón: lo acota y lo pone BandaGirada -lienzo.ponerVentana pone el marco, con el mismo registro si falla-.
         void encuadrar() {
             if (web == null || posicion == null || ventanas == null || !web.isAttachedToWindow()) return;
-            acotar();
-            try { ventanas.updateViewLayout(web, posicion); }
-            catch (Exception e) { anotar(numero, "no se pudo reencuadrar: " + e); }
+            banda.encuadrar(medir(), lienzo);
             enviarGeometria();
         }
 
         // AL GIRAR -09-11-2026-. El menú de Aa se retira: lo puso la página para la orientación anterior y quedaría
         // fuera de lugar o sobre los controles de la otra app. La ventana toma la banda de la nueva orientación.
         // Antes: AccesibilidadDePrueba.onConfigurationChanged llegaba directo a encuadrar().
+        // Antes -hasta el 10-11-2026, orden t164u-:
+        // void alCambiarPantalla() {
+        //     if (web == null || posicion == null) return;
+        //     Rect seguro = areaSegura();
+        //     boolean ahora = seguro.width() > seguro.height();
+        //     if (ahora != deLado) {
+        //         // -09-11-2026- Si gira con el dedo arrastrando, el arrastre termina: se guarda donde quedó, en la
+        //         // orientación de antes, y la ventana toma la banda de la nueva.
+        //         terminarArrastre("giro", false);
+        //         // -09-11-2026- Si gira en plena cuenta de Seguir, la cuenta se cancela y queda en pausa.
+        //         if (reglas.fase() == SesionVentana.Fase.CUENTA) pausarEnAndroid("giro en la cuenta");
+        //         cerrarMenuAa("giro", true);
+        //         aplicarTamanoInicial();
+        //         anotar(numero, "giro: " + (ahora ? "de lado" : "de pie"));
+        //     }
+        //     encuadrar();
+        // }
+        // Razón: solo veía el área segura, y los dos lados del teléfono miden lo mismo. Ahora llega también del sensor
+        // y de la rotación de la pantalla: OrientacionDeVentana decide la compensación con la rotación de ahora y
+        // BandaGirada.alCambiarPantalla hace lo mismo de antes en el giro -terminar el arrastre, la pausa en la cuenta
+        // de Seguir, retirar Aa, tomar la banda de la orientación- cuando cambia de pie/de lado o la compensación.
         void alCambiarPantalla() {
             if (web == null || posicion == null) return;
-            Rect seguro = areaSegura();
-            boolean ahora = seguro.width() > seguro.height();
-            if (ahora != deLado) {
-                // -09-11-2026- Si gira con el dedo arrastrando, el arrastre termina: se guarda donde quedó, en la
-                // orientación de antes, y la ventana toma la banda de la nueva.
-                terminarArrastre("giro", false);
-                // -09-11-2026- Si gira en plena cuenta de Seguir, la cuenta se cancela y queda en pausa.
-                if (reglas.fase() == SesionVentana.Fase.CUENTA) pausarEnAndroid("giro en la cuenta");
-                cerrarMenuAa("giro", true);
-                aplicarTamanoInicial();
-                anotar(numero, "giro: " + (ahora ? "de lado" : "de pie"));
+            if (orientacion != null) {
+                orientacion.alPantalla(rotacionPantalla(), SystemClock.elapsedRealtime());
+                anotarGiro();
+                reprogramarRelojGiro();
             }
+            banda.alCambiarPantalla(medir(), orientacion == null ? 0 : orientacion.aplicada(), lienzo);
             encuadrar();
         }
 
@@ -552,7 +778,13 @@ final class VentanaDePrueba {
             int accion = ev.getActionMasked();
             if (accion == MotionEvent.ACTION_DOWN) {
                 if (arrastre.activo()) terminarArrastre("toque nuevo", true);
-                arrastre.alApoyar(ev.getPointerId(0), ev.getRawX(), ev.getRawY(), posicion.x, posicion.y);
+                // Antes -hasta el 10-11-2026, orden t164u-:
+                //     arrastre.alApoyar(ev.getPointerId(0), ev.getRawX(), ev.getRawY(), posicion.x, posicion.y);
+                // Razón: el arrastre se mide en el marco de quien sostiene el teléfono, el de la banda. Sin compensación
+                // es la pantalla misma y da lo mismo que antes.
+                int[] b = banda.banda();
+                float[] p = banda.aPersona(ev.getRawX(), ev.getRawY(), medir());
+                arrastre.alApoyar(ev.getPointerId(0), p[0], p[1], b[0], b[1]);
             } else if (accion == MotionEvent.ACTION_MOVE) {
                 if (!arrastre.activo()) return;
                 int i = ev.findPointerIndex(arrastre.dedo());
@@ -583,22 +815,37 @@ final class VentanaDePrueba {
             anotar(numero, "arrastre: desde x=" + arrastre.x0() + " y=" + arrastre.y0());
         }
 
+        // Antes -hasta el 10-11-2026, orden t164u-:
+        //     Rect seguro = areaSegura();
+        //     int[] p = arrastre.alMover(rawX, rawY, posicion.width, posicion.height, seguro.left, seguro.top,
+        //         seguro.right, seguro.bottom, dp(GeometriaVentana.MIN_ANCHO), dp(GeometriaVentana.MIN_ALTO));
+        //     if (p == null || (p[0] == posicion.x && p[1] == posicion.y)) return;
+        //     posicion.x = p[0];
+        //     posicion.y = p[1];
+        //     try { ventanas.updateViewLayout(web, posicion); }
+        //     catch (Exception e) { anotar(numero, "arrastre: no se pudo mover la ventana: " + e); }
+        // Razón: el dedo y la banda en el marco de la persona; BandaGirada.mover pone la ventana en la pantalla -con
+        // el registro si falla en lienzo.ponerVentana-. El menú de Aa sigue en la pantalla, con el mismo desplazamiento.
         void moverArrastre(float rawX, float rawY) {
             if (web == null || ventanas == null || !web.isAttachedToWindow()) return;
-            Rect seguro = areaSegura();
-            int[] p = arrastre.alMover(rawX, rawY, posicion.width, posicion.height, seguro.left, seguro.top,
-                seguro.right, seguro.bottom, dp(GeometriaVentana.MIN_ANCHO), dp(GeometriaVentana.MIN_ALTO));
-            if (p == null || (p[0] == posicion.x && p[1] == posicion.y)) return;
-            posicion.x = p[0];
-            posicion.y = p[1];
-            try { ventanas.updateViewLayout(web, posicion); }
-            catch (Exception e) { anotar(numero, "arrastre: no se pudo mover la ventana: " + e); }
+            BandaGirada.Medida m = medir();
+            int[] s = banda.seguro(m);
+            int[] b = banda.banda();
+            float[] q = banda.aPersona(rawX, rawY, m);
+            int[] p = arrastre.alMover(q[0], q[1], b[2], b[3], s[0], s[1], s[2], s[3],
+                dp(GeometriaVentana.MIN_ANCHO), dp(GeometriaVentana.MIN_ALTO));
+            if (p == null || (p[0] == b[0] && p[1] == b[1])) return;
+            banda.mover(p[0], p[1], m, lienzo);
             // El menú de Aa con el mismo desplazamiento, en el mismo paso y sin pasar por la página. Al soltar, la
             // página lo recoloca -colocarMenuAa- por si tiene que cambiarse de lado.
-            if (menuPuesto && menuPos != null && menuWeb != null) {
+            if (menuPuesto && menuPos != null && menuWeb != null && marcoMenu != null) {
                 menuPos.x = posicion.x + menuDx;
                 menuPos.y = posicion.y + menuDy;
-                try { ventanas.updateViewLayout(menuWeb, menuPos); }
+                // Antes -hasta el 10-11-2026, orden t164u-:
+                //     if (menuPuesto && menuPos != null && menuWeb != null) {
+                //     try { ventanas.updateViewLayout(menuWeb, menuPos); }
+                // Razón: lo que está en la pantalla es el marco del menú.
+                try { ventanas.updateViewLayout(marcoMenu, menuPos); }
                 catch (Exception e) { anotar(numero, "arrastre: no se pudo mover el menú de Aa: " + e); }
             }
         }
@@ -616,15 +863,24 @@ final class VentanaDePrueba {
             if (posicion == null) return;
             try {
                 float d = recursos.getDisplayMetrics().density;
-                Rect seguro = areaSegura();
+                // Antes -hasta el 10-11-2026, orden t164u-:
+                //     Rect seguro = areaSegura();
+                //     msg.put("x", posicion.x / d); msg.put("y", posicion.y / d);
+                //     msg.put("w", posicion.width / d); msg.put("h", posicion.height / d);
+                //     sg.put("l", seguro.left / d); sg.put("t", seguro.top / d);
+                //     sg.put("r", seguro.right / d); sg.put("b", seguro.bottom / d);
+                // Razón: la página vive en el marco de la persona -su WebView gira con la banda-: ahí calcula el menú de
+                // Aa -colocarMenuAa- y ahí elige la fila o la columna. Sin compensación son los mismos números.
+                int[] g = banda.banda();
+                int[] seguro = banda.seguro(medir());
                 JSONObject msg = new JSONObject();
                 msg.put("tipo", "geometria");
                 msg.put("sesion", numero);
-                msg.put("x", posicion.x / d); msg.put("y", posicion.y / d);
-                msg.put("w", posicion.width / d); msg.put("h", posicion.height / d);
+                msg.put("x", g[0] / d); msg.put("y", g[1] / d);
+                msg.put("w", g[2] / d); msg.put("h", g[3] / d);
                 JSONObject sg = new JSONObject();
-                sg.put("l", seguro.left / d); sg.put("t", seguro.top / d);
-                sg.put("r", seguro.right / d); sg.put("b", seguro.bottom / d);
+                sg.put("l", seguro[0] / d); sg.put("t", seguro[1] / d);
+                sg.put("r", seguro[2] / d); sg.put("b", seguro[3] / d);
                 msg.put("seguro", sg);
                 enviar(msg.toString());
             } catch (Exception e) { anotar(numero, "no se pudo mandar la geometría: " + e); }
@@ -633,12 +889,18 @@ final class VentanaDePrueba {
         // Antes -hasta el 08-11-2026-: una sola geometría para las dos orientaciones:
         //     e.putInt("x", posicion.x); e.putInt("y", posicion.y);
         //     e.putInt("w", posicion.width); e.putInt("h", posicion.height);
+        // Antes -hasta el 10-11-2026, orden t164u-:
+        //     String o = deLado ? "h." : "v.";
+        //     e.putInt(o + "x", posicion.x); e.putInt(o + "y", posicion.y);
+        //     e.putInt(o + "w", posicion.width); e.putInt(o + "h", posicion.height);
+        // Razón: se guarda la banda de la persona con la clave de su compensación -GeometriaVentana.clave-.
         void guardarGeometria() {
             if (posicion == null) return;
-            String o = deLado ? "h." : "v.";
+            String o = banda.clave();
+            int[] g = banda.banda();
             SharedPreferences.Editor e = contexto.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit();
-            e.putInt(o + "x", posicion.x); e.putInt(o + "y", posicion.y);
-            e.putInt(o + "w", posicion.width); e.putInt(o + "h", posicion.height);
+            e.putInt(o + "x", g[0]); e.putInt(o + "y", g[1]);
+            e.putInt(o + "w", g[2]); e.putInt(o + "h", g[3]);
             e.apply();
         }
 
@@ -684,7 +946,16 @@ final class VentanaDePrueba {
                         String data = message.getData();
                         PRINCIPAL.post(() -> recibirDelMenu(data));
                     });
-                menuWeb.setOnTouchListener((v, ev) -> {
+                // Antes -hasta el 10-11-2026, orden t164u-:
+                //     menuWeb.setOnTouchListener((v, ev) -> {
+                //         if (ev.getActionMasked() == MotionEvent.ACTION_OUTSIDE) alTocarFueraDelMenu(ev);
+                //         return false;
+                //     });
+                // Razón: la WebView del menú va dentro de su marco, que es la vista de la ventana; el toque de afuera
+                // le llega al marco, con las coordenadas de la ventana en la pantalla, como antes a la WebView.
+                marcoMenu = new FrameLayout(accesibilidad);
+                marcoMenu.addView(menuWeb, new FrameLayout.LayoutParams(dp(280), dp(172)));
+                marcoMenu.setOnTouchListener((v, ev) -> {
                     if (ev.getActionMasked() == MotionEvent.ACTION_OUTSIDE) alTocarFueraDelMenu(ev);
                     return false;
                 });
@@ -703,13 +974,32 @@ final class VentanaDePrueba {
                 menuPos.gravity = Gravity.TOP | Gravity.START;
             }
             float d = recursos.getDisplayMetrics().density;
-            menuPos.x = Math.round((float) o.optDouble("x", 0) * d);
-            menuPos.y = Math.round((float) o.optDouble("y", 0) * d);
-            menuPos.width = Math.max(dp(48), Math.round((float) o.optDouble("w", 280) * d));
-            menuPos.height = Math.max(dp(48), Math.round((float) o.optDouble("h", 172) * d));
+            // Antes -hasta el 10-11-2026, orden t164u-:
+            //     menuPos.x = Math.round((float) o.optDouble("x", 0) * d);
+            //     menuPos.y = Math.round((float) o.optDouble("y", 0) * d);
+            //     menuPos.width = Math.max(dp(48), Math.round((float) o.optDouble("w", 280) * d));
+            //     menuPos.height = Math.max(dp(48), Math.round((float) o.optDouble("h", 172) * d));
+            //     try {
+            //         if (menuPuesto) ventanas.updateViewLayout(menuWeb, menuPos);
+            //         else { ventanas.addView(menuWeb, menuPos); menuPuesto = true; }
+            // Razón: la página da el lugar del menú en el marco de la persona; se pasa a la pantalla con la misma
+            // compensación de la banda y la WebView del menú gira igual dentro de su marco: queda junto a Aa y derecho.
+            int[] caja = {
+                Math.round((float) o.optDouble("x", 0) * d),
+                Math.round((float) o.optDouble("y", 0) * d),
+                Math.max(dp(48), Math.round((float) o.optDouble("w", 280) * d)),
+                Math.max(dp(48), Math.round((float) o.optDouble("h", 172) * d))
+            };
+            int[] enPantalla = banda.aPantalla(caja, medir());
+            menuPos.x = enPantalla[0];
+            menuPos.y = enPantalla[1];
+            menuPos.width = enPantalla[2];
+            menuPos.height = enPantalla[3];
+            float[] giroMenu = banda.vista(caja[2], caja[3]);
+            girarVista(menuWeb, caja[2], caja[3], giroMenu[0], giroMenu[1], giroMenu[2]);
             try {
-                if (menuPuesto) ventanas.updateViewLayout(menuWeb, menuPos);
-                else { ventanas.addView(menuWeb, menuPos); menuPuesto = true; }
+                if (menuPuesto) ventanas.updateViewLayout(marcoMenu, menuPos);
+                else { ventanas.addView(marcoMenu, menuPos); menuPuesto = true; }
                 anotar(numero, "menú Aa " + o.optString("forma", "") + " w=" + menuPos.width + " h=" + menuPos.height
                     + " x=" + menuPos.x + " y=" + menuPos.y);
             } catch (Exception e) {
@@ -781,8 +1071,12 @@ final class VentanaDePrueba {
         }
 
         void cerrarMenuAa(String motivo, boolean avisarPagina) {
-            if (menuWeb != null && menuPuesto && ventanas != null) {
-                try { ventanas.removeView(menuWeb); }
+            // Antes -hasta el 10-11-2026, orden t164u-:
+            //     if (menuWeb != null && menuPuesto && ventanas != null) {
+            //         try { ventanas.removeView(menuWeb); }
+            // Razón: lo que está en la pantalla es el marco del menú.
+            if (menuWeb != null && marcoMenu != null && menuPuesto && ventanas != null) {
+                try { ventanas.removeView(marcoMenu); }
                 catch (Exception e) { anotar(numero, "no se pudo quitar el menú de Aa: " + e); }
                 anotar(numero, "menú Aa retirado: " + motivo);
             }
@@ -830,16 +1124,26 @@ final class VentanaDePrueba {
                     // -09-11-2026- La página ya no manda 'mover': el arrastre lo mide lo nativo -alTocarBanda-. El caso
                     // queda para una página vieja en caché, sin el registro por paso.
                     float d = recursos.getDisplayMetrics().density;
-                    posicion.x += Math.round((float) o.optDouble("dx", 0) * d);
-                    posicion.y += Math.round((float) o.optDouble("dy", 0) * d);
+                    // Antes -hasta el 10-11-2026, orden t164u-:
+                    //     posicion.x += Math.round((float) o.optDouble("dx", 0) * d);
+                    //     posicion.y += Math.round((float) o.optDouble("dy", 0) * d);
+                    //     encuadrar();
+                    // Razón: la página mide en el marco de la persona; BandaGirada lo suma ahí.
+                    banda.cambiar(Math.round((float) o.optDouble("dx", 0) * d),
+                        Math.round((float) o.optDouble("dy", 0) * d), 0, 0, medir(), lienzo);
                     encuadrar();
                     guardarGeometria();
                     // Antes -2026-11-09-: anotar(numero, "posición x=" + posicion.x + " y=" + posicion.y);
                     // Motivo: una línea por paso; ahora el arrastre anota una al empezar y otra al terminar.
                 } else if ("tamano".equals(tipo) && posicion != null) {
                     float d = recursos.getDisplayMetrics().density;
-                    posicion.width += Math.round((float) o.optDouble("dw", 0) * d);
-                    posicion.height += Math.round((float) o.optDouble("dh", 0) * d);
+                    // Antes -hasta el 10-11-2026, orden t164u-:
+                    //     posicion.width += Math.round((float) o.optDouble("dw", 0) * d);
+                    //     posicion.height += Math.round((float) o.optDouble("dh", 0) * d);
+                    // Razón: la esquina de la página mide en el marco de la persona -su WebView gira con la banda-: el
+                    // ancho de la persona es el alto de la ventana cuando la banda va girada.
+                    banda.cambiar(0, 0, Math.round((float) o.optDouble("dw", 0) * d),
+                        Math.round((float) o.optDouble("dh", 0) * d), medir(), lienzo);
                     encuadrar();
                     guardarGeometria();
                     anotar(numero, "tamaño w=" + posicion.width + " h=" + posicion.height);
@@ -1354,15 +1658,22 @@ final class VentanaDePrueba {
             // El menú de Aa se va con la sesión: sin esto quedaría una ventana suelta sobre la otra app.
             cerrarMenuAa("cerrar " + motivo, false);
             if (menuWeb != null) { menuWeb.destroy(); menuWeb = null; }
+            marcoMenu = null;
+            // -10-11-2026, orden t164u- El sensor del giro, el oyente de la pantalla y el de «Rotación automática».
+            soltarGiro("cerrar " + motivo);
             // -09-11-2026- El arrastre y su oyente se van con la sesión.
             arrastre.terminar();
             if (web != null) web.setOnTouchListener(null);
+            // Antes -hasta el 10-11-2026, orden t164u-:
+            //     try { if (web.isAttachedToWindow()) ventanas.removeView(web); }
+            // Razón: lo que está en la pantalla es el marco de la banda.
             if (web != null && ventanas != null) {
-                try { if (web.isAttachedToWindow()) ventanas.removeView(web); }
+                try { if (marco != null && marco.isAttachedToWindow()) ventanas.removeView(marco); }
                 catch (Exception e) { anotar(numero, "no se pudo quitar ventana: " + e); }
                 web.destroy();
                 web = null;
             }
+            marco = null;
             if (receptorPantalla != null) {
                 try { contexto.unregisterReceiver(receptorPantalla); }
                 catch (Exception e) { anotar(numero, "no se pudo soltar receptor de pantalla: " + e); }

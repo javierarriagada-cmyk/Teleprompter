@@ -69,4 +69,95 @@ final class GeometriaVentana {
         int y = Math.max(t, Math.min(g[1], b - alto));
         return new int[] { x, y, ancho, alto };
     }
+    // ---------------------------------------------------------------------------------------------------------------
+    // EL GIRO DE LA BANDA -10-11-2026, orden t164u-. Sobre Inicio o sobre una Cámara que conserva su interfaz de pie,
+    // Android no gira la pantalla aunque la persona ponga el teléfono de lado: la banda se dibuja girada para que quede
+    // derecha. Hay dos marcos:
+    //   - la PANTALLA: las coordenadas de Android, ya giradas por Display.getRotation -ancho × alto-;
+    //   - el de la PERSONA: la pantalla como la ve quien sostiene el teléfono. Con c cuartos de vuelta de compensación
+    //     -OrientacionDeVentana-, el contenido se gira c × 90° a la derecha sobre la pantalla.
+    // La banda vive en el marco de la persona -la geometría A, el acotado, lo guardado y lo que ve la página- y aquí se
+    // pasa a la pantalla. Un punto (u, v) de la persona cae en la pantalla en:
+    //   c = 0: (u, v)   c = 1: (ancho - v, u)   c = 2: (ancho - u, alto - v)   c = 3: (v, alto - u)
+    // Con c impar el marco de la persona mide alto × ancho.
+    // ---------------------------------------------------------------------------------------------------------------
+
+    static int cuartos(int c) { return ((c % 4) + 4) % 4; }
+
+    // {ancho, alto} del marco de la persona.
+    static int[] marcoDePersona(int c, int ancho, int alto) {
+        return cuartos(c) % 2 == 1 ? new int[] { alto, ancho } : new int[] { ancho, alto };
+    }
+
+    static float[] puntoAPantalla(float u, float v, int c, int ancho, int alto) {
+        switch (cuartos(c)) {
+            case 1: return new float[] { ancho - v, u };
+            case 2: return new float[] { ancho - u, alto - v };
+            case 3: return new float[] { v, alto - u };
+            default: return new float[] { u, v };
+        }
+    }
+
+    // El inverso: un toque en la pantalla -getRawX/getRawY- en el marco de la persona. Lo usa el arrastre.
+    static float[] puntoAPersona(float x, float y, int c, int ancho, int alto) {
+        switch (cuartos(c)) {
+            case 1: return new float[] { y, ancho - x };
+            case 2: return new float[] { ancho - x, alto - y };
+            case 3: return new float[] { alto - y, x };
+            default: return new float[] { x, y };
+        }
+    }
+
+    // {x, y, ancho, alto} de la persona a la pantalla: lo que se pone en WindowManager.LayoutParams.
+    static int[] aPantalla(int[] g, int c, int ancho, int alto) {
+        switch (cuartos(c)) {
+            case 1: return new int[] { ancho - (g[1] + g[3]), g[0], g[3], g[2] };
+            case 2: return new int[] { ancho - (g[0] + g[2]), alto - (g[1] + g[3]), g[2], g[3] };
+            case 3: return new int[] { g[1], alto - (g[0] + g[2]), g[3], g[2] };
+            default: return new int[] { g[0], g[1], g[2], g[3] };
+        }
+    }
+
+    // {l, t, r, b} de la pantalla al marco de la persona: el área segura que ve quien sostiene el teléfono.
+    static int[] seguroDePersona(int l, int t, int r, int b, int c, int ancho, int alto) {
+        float[] p = puntoAPersona(l, t, c, ancho, alto);
+        float[] q = puntoAPersona(r, b, c, ancho, alto);
+        return new int[] {
+            Math.round(Math.min(p[0], q[0])), Math.round(Math.min(p[1], q[1])),
+            Math.round(Math.max(p[0], q[0])), Math.round(Math.max(p[1], q[1]))
+        };
+    }
+
+    // CÓMO SE GIRA LA VISTA DENTRO DE SU VENTANA: {grados, dx, dy}. La WebView mide ancho × alto de la persona y queda
+    // arriba a la izquierda de su marco, que mide lo que la banda ocupa en la pantalla. View.setRotation gira en el
+    // sentido del reloj alrededor del centro de la vista; el desplazamiento lleva ese centro al centro del marco. Así
+    // lo girado llena el marco justo, y Android entrega cada toque a la WebView con la inversa de esta misma matriz:
+    // cada botón recibe el toque donde se dibuja.
+    static float[] vista(int c, int ancho, int alto) {
+        int q = cuartos(c);
+        int marcoAncho = q % 2 == 1 ? alto : ancho;
+        int marcoAlto = q % 2 == 1 ? ancho : alto;
+        return new float[] { q * 90f, (marcoAncho - ancho) / 2f, (marcoAlto - alto) / 2f };
+    }
+
+    // CADA COMPENSACIÓN GUARDA SU GEOMETRÍA. Sin compensación las claves son las de siempre, «v.» y «h.»: Chrome y la
+    // Cámara de lado siguen como estaban. Con compensación, la del lado girado aparte -«hc1.», «hc3.»-: el área segura
+    // de cada lado es otra y la otra app tiene sus controles en otro lugar.
+    static String clave(boolean deLado, int c) {
+        int q = cuartos(c);
+        return (deLado ? "h" : "v") + (q == 0 ? "" : "c" + q) + ".";
+    }
+
+    // LA BANDA A CON EL TELÉFONO GIRADO, en dp del marco de la persona. Es el diseño aprobado de cada orientación
+    // -inicial-, con un cambio: con c = 3 se refleja de izquierda a derecha. La otra app conserva su interfaz de pie y
+    // tiene sus controles abajo en la pantalla -en la Cámara del g86, el obturador y el zoom desde y 519 de 867-. Con
+    // c = 1 ese borde queda a la derecha de la persona y la banda A, corrida a la izquierda, no lo tapa; con c = 3
+    // queda a la izquierda, justo donde A pone la banda. Reflejada, la banda queda en los dos casos contra el borde de
+    // arriba de la pantalla. En el g86 -390 × 867 de pie, seguro (0, 32, 390, 825)-: c = 1 da 412 × 220 en (88, 8) y en
+    // la pantalla (162, 88, 220, 412); c = 3 da (367, 8) y en la pantalla (8, 88, 220, 412). El obturador queda afuera.
+    static int[] inicialGirada(int c, int l, int t, int r, int b) {
+        if (cuartos(c) != 3) return inicial(l, t, r, b);
+        int[] g = inicial(-r, t, -l, b);
+        return new int[] { -(g[0] + g[2]), g[1], g[2], g[3] };
+    }
 }
