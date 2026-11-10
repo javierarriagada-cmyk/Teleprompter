@@ -37,6 +37,17 @@ package com.sigoteleprompter.app;
 // reloj: una lectura de otro lado cambia o borra la candidata, plano la borra, desactivar la rotación automática y
 // soltar() la olvidan; un vencimiento que llegue tarde no encuentra candidata y no gira nada. Una lectura de otro
 // lado durante la gracia también la anula: el teléfono ya no está en el lado que se iba a aplicar.
+//
+// LA GRACIA ANULADA CONSERVA LO QUE SE VE -10-11-2026, orden t166u-. Javier reprodujo dos secuencias en los 700 ms
+// entre confirmar el lado y dibujarlo -de pie a t=0, 90° a t=1000, confirmado a t=1300, se dibujaría a t=2000-:
+//   - Plano a t=1400: la salida temprana de alSensor con SIN_DATO dejaba la gracia viva y la banda giraba a 3 estando
+//     plana.
+//   - 0° a t=1400 y 90° a t=1500: el 0° anulaba la gracia pero dejaba estable en 3 -confirmado y sin dibujar-; el 90°
+//     era «lado == estable» y salía sin hacer nada: compensación 0 y ningún reloj.
+// Ahora cualquier lectura que no sea el lado confirmado -otro lado, de vuelta, cabeza abajo o plano- anula la gracia
+// y devuelve estable al lado que SE VE -la compensación aplicada más la rotación de la pantalla-: lo dibujado manda.
+// Así una lectura posterior del lado confirmado vuelve a ser un lado nuevo, con su vencimiento de ESTABLE_MS y su
+// gracia, sin exigir otra muestra. Con la gracia viva, una lectura del mismo lado confirmado no cambia nada.
 final class OrientacionDeVentana {
     static final int SIN_DATO = -1;
     // Un lado nuevo vale a menos de 30° de su centro: 15° pasado el límite de 45°. Android gira sus pantallas con un
@@ -168,15 +179,31 @@ final class OrientacionDeVentana {
         cruda = lado;
         nucleo = nucleoDe(grados);
         horaCruda = ahora;
-        if (lado == SIN_DATO || lado == estable) { candidata = SIN_DATO; return false; }
+        // Antes -10-11-2026, orden t165u-: la salida temprana iba primero y la gracia solo se anulaba con otro lado.
+        // Plano dejaba la gracia viva -la banda giraba plana- y el lado confirmado sin dibujar quedaba en estable, así
+        // que volver a él no reprogramaba nada -orden t166u-.
+        // if (lado == SIN_DATO || lado == estable) { candidata = SIN_DATO; return false; }
+        // // Otro lado durante la gracia -10-11-2026, orden t165u-: el giro que se iba a aplicar ya no vale.
+        // String anulada = "";
+        // if (pendiente != SIN_DATO) {
+        //     pendiente = SIN_DATO;
+        //     aplicarEn = -1;
+        //     anulada = "lectura en " + lado + " durante la gracia: se anula el giro a " + estable + "; ";
+        //     ultimaDecision = anulada;
+        // }
         // Otro lado durante la gracia -10-11-2026, orden t165u-: el giro que se iba a aplicar ya no vale.
+        // Durante la gracia, lo que no sea el lado confirmado la anula y estable vuelve al lado que se ve -orden t166u-.
         String anulada = "";
-        if (pendiente != SIN_DATO) {
+        if (pendiente != SIN_DATO && lado != estable) {
+            int visible = GeometriaVentana.cuartos(aplicada + pantalla);
             pendiente = SIN_DATO;
             aplicarEn = -1;
-            anulada = "lectura en " + lado + " durante la gracia: se anula el giro a " + estable + "; ";
+            anulada = (lado == SIN_DATO ? "plano" : "lectura en " + lado) + " durante la gracia: se anula el giro a "
+                + estable + " y se conserva el lado visible " + visible + "; ";
+            estable = visible;
             ultimaDecision = anulada;
         }
+        if (lado == SIN_DATO || lado == estable) { candidata = SIN_DATO; return false; }
         if (lado == 2 && pantalla != 2) { candidata = SIN_DATO; return false; }
         // Antes -10-11-2026, orden t164u-: la candidata se confirmaba solo aquí, con otra lectura pasados los ESTABLE_MS.
         // if (lado != candidata) { candidata = lado; desdeCandidata = ahora; return false; }

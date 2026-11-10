@@ -67,6 +67,9 @@ public class RelojDelGiroTest {
             return this;
         }
 
+        // Hasta la hora absoluta fin, solo con el reloj.
+        Telefono hasta(long fin) { return avanzar(fin - t); }
+
         // Android gira la pantalla: llega el DisplayListener y la ventana encuadra.
         Telefono girarPantalla(int rotacion) { pantalla = rotacion; encuadrar(); return this; }
 
@@ -231,6 +234,111 @@ public class RelojDelGiroTest {
         assertEquals(List.of(), f.giros);
         assertEquals(0, f.o.estable());
         assertEquals(0, f.o.aplicada());
+    }
+
+    // LOS 700 MS ENTRE CONFIRMAR Y DIBUJAR -10-11-2026, orden t166u-. La base común de Javier, con la hora exacta:
+    // fondo de pie, t=0 0°, t=300 vence el reloj, t=1000 el lado, t=1300 vence y se confirma; se dibujaría a t=2000.
+    static Telefono baseConfirmadoSinDibujar(int grados, int esperado) {
+        Telefono f = new Telefono(0, true);
+        f.t = 0;
+        f.lectura(0);
+        f.hasta(300);
+        assertEquals(0, f.o.estable());
+        f.hasta(1000);
+        f.lectura(grados);
+        f.hasta(1300);
+        assertEquals(esperado, f.o.estable());
+        assertEquals(0, f.o.aplicada());
+        assertEquals(2000, f.o.proximoReloj());
+        assertEquals(2000, f.vence);
+        return f;
+    }
+
+    // A: plano a t=1400 y solo el reloj hasta t=4000. Se conserva lo visible -0-, sin giro ni reloj pendiente.
+    static Telefono planoDuranteLaGracia(int grados, int esperado) {
+        Telefono f = baseConfirmadoSinDibujar(grados, esperado);
+        f.hasta(1400);
+        f.lectura(-1);
+        assertEquals(-1, f.o.proximoReloj());
+        f.hasta(4000);
+        assertEquals("compensación al final, plano", 0, f.o.aplicada());
+        assertEquals(List.of(), f.giros);
+        assertEquals(-1, f.o.proximoReloj());
+        assertEquals(-1, f.vence);
+        return f;
+    }
+
+    @Test public void planoDuranteLaGraciaConservaLoVisibleHaciaLaIzquierda() { planoDuranteLaGracia(90, 3); }
+    @Test public void planoDuranteLaGraciaConservaLoVisibleHaciaLaDerecha() { planoDuranteLaGracia(270, 1); }
+
+    // Después de plano, UN aviso horizontal a t=4000 y el teléfono quieto: vuelve a girar solo con el reloj.
+    static void despuesDePlanoUnAvisoVuelveAGirar(int grados, int esperado) {
+        Telefono f = planoDuranteLaGracia(grados, esperado);
+        f.lectura(grados);
+        assertEquals(4000 + OrientacionDeVentana.ESTABLE_MS, f.vence);
+        f.hasta(7000);
+        assertEquals(esperado, f.o.aplicada());
+        assertEquals(List.of(esperado), f.giros);
+        assertEquals(-1, f.o.proximoReloj());
+    }
+
+    @Test public void despuesDePlanoUnAvisoVuelveAGirarHaciaLaIzquierda() { despuesDePlanoUnAvisoVuelveAGirar(90, 3); }
+    @Test public void despuesDePlanoUnAvisoVuelveAGirarHaciaLaDerecha() { despuesDePlanoUnAvisoVuelveAGirar(270, 1); }
+
+    // B: 0° a t=1400 y el lado otra vez a t=1500, y solo el reloj hasta t=4000. Termina girado, sin otra muestra.
+    static void vaivenYRegresoAlMismoLado(int grados, int esperado) {
+        Telefono f = baseConfirmadoSinDibujar(grados, esperado);
+        f.hasta(1400);
+        f.lectura(0);
+        // Se anula la gracia y se conserva lo visible: de pie.
+        assertEquals(0, f.o.estable());
+        assertEquals(0, f.o.aplicada());
+        f.hasta(1500);
+        f.lectura(grados);
+        // El lado confirmado sin dibujar vuelve a tener su reloj.
+        assertEquals(1500 + OrientacionDeVentana.ESTABLE_MS, f.o.proximoReloj());
+        assertEquals(1500 + OrientacionDeVentana.ESTABLE_MS, f.vence);
+        f.hasta(4000);
+        assertEquals("compensación al final del vaivén", esperado, f.o.aplicada());
+        assertEquals(List.of(esperado), f.giros);
+        assertEquals(-1, f.o.proximoReloj());
+    }
+
+    @Test public void vaivenYRegresoAlMismoLadoHaciaLaIzquierda() { vaivenYRegresoAlMismoLado(90, 3); }
+    @Test public void vaivenYRegresoAlMismoLadoHaciaLaDerecha() { vaivenYRegresoAlMismoLado(270, 1); }
+
+    // Con la gracia viva, otra lectura del mismo lado confirmado no la mueve: gira a t=2000 como estaba previsto.
+    @Test public void laMismaLecturaDuranteLaGraciaNoLaMueve() {
+        Telefono f = baseConfirmadoSinDibujar(90, 3);
+        f.hasta(1500);
+        f.lectura(90);
+        assertEquals(2000, f.o.proximoReloj());
+        f.hasta(1999);
+        assertEquals(0, f.o.aplicada());
+        f.hasta(2000);
+        assertEquals(3, f.o.aplicada());
+    }
+
+    // Lo visible cuenta con la rotación de la pantalla: una app que se fuerza de lado -pantalla en 1- con el teléfono
+    // en 270° se ve derecha con compensación 0, es decir el lado 1. De pie y plano durante la gracia, se conserva el
+    // lado 1; un aviso de pie después vuelve a girar la banda a 3.
+    @Test public void loVisibleCuentaConLaRotacionDeLaPantalla() {
+        Telefono f = new Telefono(1, true);
+        f.lectura(270);
+        f.avanzar(OrientacionDeVentana.ESTABLE_MS);
+        assertEquals(1, f.o.estable());
+        assertEquals(0, f.o.aplicada());
+        f.lectura(0);
+        f.avanzar(OrientacionDeVentana.ESTABLE_MS);
+        assertEquals(0, f.o.estable());
+        assertTrue(f.o.proximoReloj() >= 0);
+        f.lectura(-1);
+        assertEquals(1, f.o.estable());
+        f.avanzar(3000);
+        assertEquals(List.of(), f.giros);
+        f.lectura(0);
+        f.avanzar(3000);
+        assertEquals(List.of(3), f.giros);
     }
 
     // Al abrir la ventana, la primera orientación también vale con una sola lectura.
