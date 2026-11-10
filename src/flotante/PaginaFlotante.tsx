@@ -322,6 +322,7 @@ export function PaginaFlotante() {
   // como 'mover' se sumaba con su error. Ahora el asa avisa una sola vez, al apoyar el dedo, y VentanaDePrueba sigue
   // el dedo en la pantalla -getRawX/getRawY, ArrastreVentana-. La esquina sigue igual: 'tamano' en cada paso, porque
   // ahí la ventana no se corre y no tiembla.
+  // -10-11-2026, orden t167u- Con la banda girada sí se corre y sí temblaba: la esquina avisa una vez, ver abajo.
   // Antes -2026-11-09-:
   //   function iniciarGesto(e: React.PointerEvent, tipo: 'mover' | 'tamano') {
   //     e.currentTarget.setPointerCapture(e.pointerId)
@@ -329,19 +330,37 @@ export function PaginaFlotante() {
   //     ;(e.currentTarget as HTMLElement).dataset.gesto = tipo
   //   }
   //   y moverGesto mandaba también tipo 'mover' con dx y dy.
+  // LA ESQUINA TAMBIÉN LA MIDE LO NATIVO -10-11-2026, orden t167u-. Javier lo vio en el g86 con la APK 819: de lado,
+  // al cambiar el tamaño, la banda temblaba. Con la banda girada esta WebView gira dentro de su ventana, y la ventana
+  // se corre en la pantalla al cambiar de tamaño: clientX/clientY se leían con la vista nueva y la ventana todavía en
+  // su lugar anterior, y cada diferencia mandada como 'tamano' llevaba ese error. Ahora la esquina avisa una sola vez,
+  // 'tamanoInicio', al apoyar el dedo, y VentanaDePrueba calcula el tamaño desde el DOWN en la pantalla -TamanoVentana-.
+  // Antes -hasta el 10-11-2026, orden t167u-:
+  //   function iniciarGesto(e: React.PointerEvent, tipo: 'mover' | 'tamano') {
+  //     // Un segundo dedo en el asa no vuelve a avisar: solo cuenta el primero, como en lo nativo.
+  //     if (tipo === 'mover' && e.isPrimary === false) return
+  //     e.currentTarget.setPointerCapture(e.pointerId)
+  //     ultimoPuntero.current = { x: e.clientX, y: e.clientY }
+  //     ;(e.currentTarget as HTMLElement).dataset.gesto = tipo
+  //     if (tipo === 'mover') enviar({ tipo: 'moverInicio', sesion: contrato?.sesion ?? 0 })
+  //   }
   function iniciarGesto(e: React.PointerEvent, tipo: 'mover' | 'tamano') {
     // Un segundo dedo en el asa no vuelve a avisar: solo cuenta el primero, como en lo nativo.
-    if (tipo === 'mover' && e.isPrimary === false) return
+    // -10-11-2026, orden t167u- Tampoco en la esquina.
+    if (e.isPrimary === false) return
     e.currentTarget.setPointerCapture(e.pointerId)
     ultimoPuntero.current = { x: e.clientX, y: e.clientY }
     ;(e.currentTarget as HTMLElement).dataset.gesto = tipo
     if (tipo === 'mover') enviar({ tipo: 'moverInicio', sesion: contrato?.sesion ?? 0 })
+    else enviar({ tipo: 'tamanoInicio', sesion: contrato?.sesion ?? 0 })
   }
 
   function moverGesto(e: React.PointerEvent) {
     const tipo = (e.currentTarget as HTMLElement).dataset.gesto
     // El arrastre de la ventana ya no pasa por aquí -ver iniciarGesto-. Antes -2026-11-09-: if (!tipo) return
-    if (!tipo || tipo === 'mover') return
+    // Antes -hasta el 10-11-2026, orden t167u-: if (!tipo || tipo === 'mover') return
+    // Razón: la esquina tampoco manda pasos; el resto de la función queda para una vuelta atrás.
+    if (!tipo || tipo === 'mover' || tipo === 'tamano') return
     const dx = e.clientX - ultimoPuntero.current.x
     const dy = e.clientY - ultimoPuntero.current.y
     ultimoPuntero.current = { x: e.clientX, y: e.clientY }

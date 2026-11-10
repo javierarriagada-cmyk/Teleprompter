@@ -3,6 +3,8 @@
 // LO QUE LA PÁGINA MANDA AL ARRASTRAR. El asa avisa una sola vez -'moverInicio'- al apoyar el dedo y moverlo no manda
 // 'mover': la posición la sigue VentanaDePrueba con el dedo en la pantalla -ArrastreVentana, probada en la JVM-. La
 // esquina sigue mandando 'tamano' en cada paso. Solo mensajes: nada de posiciones dibujadas.
+// -10-11-2026, orden t167u- Ya no: la esquina también avisa una sola vez -'tamanoInicio'- y el tamaño lo calcula
+// VentanaDePrueba desde el DOWN -TamanoVentana, probada en la JVM-.
 import React from 'react'
 import { describe, test, expect, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, act, cleanup } from '@testing-library/react'
@@ -61,16 +63,31 @@ describe('el arrastre por el asa', () => {
     expect(enviados.filter((m) => m.tipo === 'mover')).toEqual([])
   })
 
-  test('la esquina sigue mandando tamano en cada paso', async () => {
+  // Antes -hasta el 10-11-2026, orden t167u-: la esquina mandaba 'tamano' en cada paso.
+  // Razón: esas diferencias de clientX/clientY, con la banda girada, llevaban el corrimiento de la propia ventana y la
+  // banda temblaba de lado -g86, APK 819-. Ahora la esquina avisa una sola vez y lo nativo mide el dedo -TamanoVentana-.
+  // test('la esquina sigue mandando tamano en cada paso', async () => {
+  //   const esquina = screen.getByRole('button', { name: t('cambiarTamano') })
+  //   fireEvent.pointerDown(esquina, { pointerId: 2, clientX: 340, clientY: 210, isPrimary: true })
+  //   fireEvent.pointerMove(esquina, { pointerId: 2, clientX: 350, clientY: 215 })
+  //   fireEvent.pointerMove(esquina, { pointerId: 2, clientX: 356, clientY: 230 })
+  //   fireEvent.pointerUp(esquina, { pointerId: 2 })
+  //   await esperar()
+  //   const tamanos = enviados.filter((m) => m.tipo === 'tamano')
+  //   expect(tamanos.length).toBe(2)
+  //   expect(tamanos[0]).toMatchObject({ tipo: 'tamano', sesion: 7, dw: 10, dh: 5, dx: 0, dy: 0 })
+  //   expect(enviados.filter((m) => m.tipo === 'moverInicio' || m.tipo === 'mover')).toEqual([])
+  // })
+  test('apoyar en la esquina manda un solo tamanoInicio y moverla no manda tamano', async () => {
     const esquina = screen.getByRole('button', { name: t('cambiarTamano') })
     fireEvent.pointerDown(esquina, { pointerId: 2, clientX: 340, clientY: 210, isPrimary: true })
-    fireEvent.pointerMove(esquina, { pointerId: 2, clientX: 350, clientY: 215 })
-    fireEvent.pointerMove(esquina, { pointerId: 2, clientX: 356, clientY: 230 })
+    // Un segundo dedo en la esquina no vuelve a avisar.
+    fireEvent.pointerDown(esquina, { pointerId: 4, clientX: 330, clientY: 200, isPrimary: false })
+    for (let i = 1; i <= 20; i++) fireEvent.pointerMove(esquina, { pointerId: 2, clientX: 340 + i * 4, clientY: 210 + i * 3 })
     fireEvent.pointerUp(esquina, { pointerId: 2 })
     await esperar()
-    const tamanos = enviados.filter((m) => m.tipo === 'tamano')
-    expect(tamanos.length).toBe(2)
-    expect(tamanos[0]).toMatchObject({ tipo: 'tamano', sesion: 7, dw: 10, dh: 5, dx: 0, dy: 0 })
+    expect(enviados.filter((m) => m.tipo === 'tamanoInicio')).toEqual([{ tipo: 'tamanoInicio', sesion: 7 }])
+    expect(enviados.filter((m) => m.tipo === 'tamano')).toEqual([])
     expect(enviados.filter((m) => m.tipo === 'moverInicio' || m.tipo === 'mover')).toEqual([])
   })
 })

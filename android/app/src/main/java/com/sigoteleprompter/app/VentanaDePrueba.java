@@ -339,7 +339,13 @@ final class VentanaDePrueba {
         };
         // Lo que BandaGirada hace en Android: lo de siempre del giro y poner la ventana y la vista.
         final BandaGirada.Ventana lienzo = new BandaGirada.Ventana() {
-            @Override public void terminarArrastre(String motivo) { Sesion.this.terminarArrastre(motivo, false); }
+            // Antes -hasta el 10-11-2026, orden t167u-:
+            //     @Override public void terminarArrastre(String motivo) { Sesion.this.terminarArrastre(motivo, false); }
+            // Razón: el giro termina también el cambio de tamaño por la esquina, que ahora mide lo nativo.
+            @Override public void terminarArrastre(String motivo) {
+                Sesion.this.terminarArrastre(motivo, false);
+                Sesion.this.terminarTamano(motivo, false);
+            }
             @Override public boolean enCuentaDeSeguir() { return reglas.fase() == SesionVentana.Fase.CUENTA; }
             @Override public void pausarPorGiro(String motivo) { pausarEnAndroid(motivo); }
             @Override public void cerrarMenuAa(String motivo) { Sesion.this.cerrarMenuAa(motivo, true); }
@@ -362,6 +368,8 @@ final class VentanaDePrueba {
         };
         // EL ARRASTRE POR EL ASA -09-11-2026-: lo mide lo nativo, en la pantalla. Ver ArrastreVentana y alTocarBanda.
         final ArrastreVentana arrastre = new ArrastreVentana();
+        // EL TAMAÑO POR LA ESQUINA -10-11-2026, orden t167u-: también lo mide lo nativo. Ver TamanoVentana.
+        final TamanoVentana tamano = new TamanoVentana();
         // Dónde estaba el menú de Aa respecto de la ventana al empezar: se mueve con ella, en el mismo paso.
         int menuDx, menuDy;
         // LA SESIÓN LA MANDA ANDROID -09-11-2026-. Ver SesionVentana: la pausa, la cuenta 3-2-1 de Seguir y el límite
@@ -802,6 +810,7 @@ final class VentanaDePrueba {
             int accion = ev.getActionMasked();
             if (accion == MotionEvent.ACTION_DOWN) {
                 if (arrastre.activo()) terminarArrastre("toque nuevo", true);
+                if (tamano.activo()) terminarTamano("toque nuevo", true);
                 // Antes -hasta el 10-11-2026, orden t164u-:
                 //     arrastre.alApoyar(ev.getPointerId(0), ev.getRawX(), ev.getRawY(), posicion.x, posicion.y);
                 // Razón: el arrastre se mide en el marco de quien sostiene el teléfono, el de la banda. Sin compensación
@@ -809,20 +818,33 @@ final class VentanaDePrueba {
                 int[] b = banda.banda();
                 float[] p = banda.aPersona(ev.getRawX(), ev.getRawY(), medir());
                 arrastre.alApoyar(ev.getPointerId(0), p[0], p[1], b[0], b[1]);
+                // -10-11-2026, orden t167u- El mismo dedo y la banda entera, por si la página avisa que es la esquina.
+                tamano.alApoyar(ev.getPointerId(0), p[0], p[1], b);
             } else if (accion == MotionEvent.ACTION_MOVE) {
-                if (!arrastre.activo()) return;
-                int i = ev.findPointerIndex(arrastre.dedo());
+                // Antes -hasta el 10-11-2026, orden t167u-:
+                //     if (!arrastre.activo()) return;
+                //     int i = ev.findPointerIndex(arrastre.dedo());
+                // Razón: el mismo dedo también cambia el tamaño cuando la página avisó tamanoInicio.
+                if (!arrastre.activo() && !tamano.activo()) return;
+                int i = ev.findPointerIndex(arrastre.activo() ? arrastre.dedo() : tamano.dedo());
                 if (i < 0) return;
                 // getRawX(int) es de Android 10; antes solo hay la del dedo 0, que es el primero mientras siga apoyado.
                 float rx, ry;
                 if (Build.VERSION.SDK_INT >= 29) { rx = ev.getRawX(i); ry = ev.getRawY(i); }
                 else if (i == 0) { rx = ev.getRawX(); ry = ev.getRawY(); }
                 else return;
-                moverArrastre(rx, ry);
+                // Antes -hasta el 10-11-2026, orden t167u-: moverArrastre(rx, ry);
+                if (arrastre.activo()) moverArrastre(rx, ry);
+                else cambiarTamano(rx, ry);
             } else if (accion == MotionEvent.ACTION_POINTER_UP) {
-                if (ev.getPointerId(ev.getActionIndex()) == arrastre.dedo()) terminarArrastre("primer dedo arriba", true);
+                int arriba = ev.getPointerId(ev.getActionIndex());
+                // Antes -hasta el 10-11-2026, orden t167u-:
+                //     if (ev.getPointerId(ev.getActionIndex()) == arrastre.dedo()) terminarArrastre("primer dedo arriba", true);
+                if (arriba == arrastre.dedo()) terminarArrastre("primer dedo arriba", true);
+                if (arriba == tamano.dedo()) terminarTamano("primer dedo arriba", true);
             } else if (accion == MotionEvent.ACTION_UP || accion == MotionEvent.ACTION_CANCEL) {
                 terminarArrastre(accion == MotionEvent.ACTION_UP ? "soltar" : "cancelado", true);
+                terminarTamano(accion == MotionEvent.ACTION_UP ? "soltar" : "cancelado", true);
             }
         }
 
@@ -880,6 +902,38 @@ final class VentanaDePrueba {
             if (!arrastre.terminar()) return;
             guardarGeometria();
             anotar(numero, "arrastre: hasta x=" + posicion.x + " y=" + posicion.y + ", " + pasos + " pasos (" + motivo + ")");
+            if (avisar) encuadrar();
+        }
+
+        // 'tamanoInicio' de la página -10-11-2026, orden t167u-: empieza solo si el dedo de ese toque sigue apoyado y
+        // no está moviendo la banda por el asa.
+        void empezarTamano() {
+            if (arrastre.activo() || !tamano.empezar()) {
+                anotar(numero, "tamaño: tamanoInicio sin dedo apoyado, no cambia");
+                return;
+            }
+            int[] g = tamano.inicial();
+            anotar(numero, "tamaño: desde " + g[2] + "×" + g[3]);
+        }
+
+        // Cada movimiento del dedo de la esquina: el tamaño desde el DOWN, una sola vez en la ventana si cambió. Sin
+        // guardar ni avisar a la página durante el gesto; el menú de Aa lo recoloca la página al soltar.
+        void cambiarTamano(float rawX, float rawY) {
+            if (web == null || ventanas == null || !web.isAttachedToWindow()) return;
+            BandaGirada.Medida m = medir();
+            int[] s = banda.seguro(m);
+            float[] q = banda.aPersona(rawX, rawY, m);
+            int[] g = tamano.alMover(q[0], q[1], s[2], s[3], dp(GeometriaVentana.MIN_ANCHO), dp(GeometriaVentana.MIN_ALTO));
+            banda.redimensionar(g, m, lienzo);
+        }
+
+        // Al soltar: guardar el tamaño y mandarlo a la página, una vez. En el giro la manda encuadrar() después.
+        void terminarTamano(String motivo, boolean avisar) {
+            int pasos = tamano.pasos();
+            if (!tamano.terminar()) return;
+            guardarGeometria();
+            int[] g = banda.banda();
+            anotar(numero, "tamaño: hasta " + g[2] + "×" + g[3] + ", " + pasos + " pasos (" + motivo + ")");
             if (avisar) encuadrar();
         }
 
@@ -1144,6 +1198,8 @@ final class VentanaDePrueba {
                     enviarGeometria();
                 } else if ("moverInicio".equals(tipo) && posicion != null) {
                     empezarArrastre();
+                } else if ("tamanoInicio".equals(tipo) && posicion != null) {
+                    empezarTamano();
                 } else if ("mover".equals(tipo) && posicion != null) {
                     // -09-11-2026- La página ya no manda 'mover': el arrastre lo mide lo nativo -alTocarBanda-. El caso
                     // queda para una página vieja en caché, sin el registro por paso.
@@ -1160,6 +1216,8 @@ final class VentanaDePrueba {
                     // Antes -2026-11-09-: anotar(numero, "posición x=" + posicion.x + " y=" + posicion.y);
                     // Motivo: una línea por paso; ahora el arrastre anota una al empezar y otra al terminar.
                 } else if ("tamano".equals(tipo) && posicion != null) {
+                    // -10-11-2026, orden t167u- La página ya no manda 'tamano': la esquina la mide lo nativo
+                    // -tamanoInicio, TamanoVentana-. El caso queda para una página vieja en caché.
                     float d = recursos.getDisplayMetrics().density;
                     // Antes -hasta el 10-11-2026, orden t164u-:
                     //     posicion.width += Math.round((float) o.optDouble("dw", 0) * d);
@@ -1687,6 +1745,8 @@ final class VentanaDePrueba {
             soltarGiro("cerrar " + motivo);
             // -09-11-2026- El arrastre y su oyente se van con la sesión.
             arrastre.terminar();
+            // -10-11-2026, orden t167u- Y el cambio de tamaño por la esquina.
+            tamano.terminar();
             if (web != null) web.setOnTouchListener(null);
             // Antes -hasta el 10-11-2026, orden t164u-:
             //     try { if (web.isAttachedToWindow()) ventanas.removeView(web); }

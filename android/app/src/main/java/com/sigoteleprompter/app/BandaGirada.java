@@ -100,6 +100,20 @@ final class BandaGirada {
         aplicar(m, v);
     }
 
+    // EL CAMBIO DE TAMAÑO POR LA ESQUINA -10-11-2026, orden t167u-: TamanoVentana ya acotó el ancho y el alto con la
+    // esquina opuesta fija. Solo se pone si cambió algo: el dedo quieto no vuelve a poner la ventana. true si se puso.
+    boolean redimensionar(int[] g, Medida m, Ventana v) {
+        if (g == null || java.util.Arrays.equals(g, banda)) return false;
+        int[] antes = banda.clone();
+        banda = g.clone();
+        acotar(m);
+        if (java.util.Arrays.equals(antes, banda)) return false;
+        aplicar(m, v);
+        return true;
+    }
+
+    // Antes -hasta el 10-11-2026, orden t167u- la esquina también pasaba por aquí; ahora queda el 'mover' y el 'tamano'
+    // de una página vieja en caché -VentanaDePrueba.recibirDePagina-. El gesto de la esquina va por redimensionar.
     // La esquina de cambio de tamaño y el 'mover' viejo: la página manda lo que avanzó el dedo en su propio marco, que
     // es el de la persona porque la WebView gira con la banda.
     void cambiar(int dx, int dy, int dw, int dh, Medida m, Ventana v) {
