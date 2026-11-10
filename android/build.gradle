@@ -7,7 +7,10 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.13.0'
+        // -gradle-9, 10-11-2026- El complemento de Android para Gradle sube a la 9.5.1, la última estable de la serie 9
+        // según la tabla oficial -developer.android.com/build/releases/gradle-plugin-. Play lo recomienda para que R8
+        // optimice más. Antes -10-11-2026-: classpath 'com.android.tools.build:gradle:8.13.0'
+        classpath 'com.android.tools.build:gradle:9.5.1'
         classpath 'com.google.gms:google-services:4.4.4'
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -24,6 +27,11 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+// -gradle-9, 10-11-2026- buildDir es obsoleto en Gradle 9: misma carpeta por layout.buildDirectory.
+// Antes -10-11-2026-:
+//   task clean(type: Delete) {
+//       delete rootProject.buildDir
+//   }
+tasks.register('clean', Delete) {
+    delete rootProject.layout.buildDirectory
 }

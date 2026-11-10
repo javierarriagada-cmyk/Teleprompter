@@ -265,7 +265,8 @@ B. EN LA CONSOLA -Javier-. `npm run play -- subir` solo sabe la PRUEBA INTERNA y
   7. «Iniciar lanzamiento». Si después aparece «Guardar», en Descripción general de la publicación va
      «Enviar para revisión». Con la publicación administrada apagada, Google la publica apenas la aprueba.
   8. El mapping no se sube: con un app bundle y el complemento de Gradle 4.1 o posterior -el nuestro es el
-     8.13.0, android/build.gradle-, Play toma solo el archivo de desofuscación del paquete -answer/9848633-.
+     9.5.1, android/build.gradle-, Play toma solo el archivo de desofuscación del paquete -answer/9848633-.
+     Antes -hasta el 10-11-2026-: «-el nuestro es el 8.13.0, android/build.gradle-».
   9. Después: el estado se ve en Prueba y lanza > Versiones y paquetes más recientes. La prueba cerrada
      sigue Activa, con los mismos testers. Nunca «Pausar segmento».
   Antes -hasta el 27-10-2026-: «2. Probar y publicar > Pruebas > Prueba cerrada > «Gestionar canal» en el

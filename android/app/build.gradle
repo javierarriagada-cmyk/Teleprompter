@@ -128,9 +128,14 @@ android {
             // los traia -Vosk y las demas bibliotecas .so-. Con la tabla de simbolos, los cierres que vengan de
             // codigo nativo llegan a la consola con nombres de funcion y no solo direcciones. No cambia el
             // tamano de lo que se instala: Play los guarda aparte.
-            ndk { debugSymbolLevel 'SYMBOL_TABLE' }
+            // -gradle-9, 10-11-2026- Gradle 9 avisa como obsoleta la asignación sin «=» en debugSymbolLevel y
+            // shrinkResources. Mismo valor. Antes -10-11-2026-:
+            //   ndk { debugSymbolLevel 'SYMBOL_TABLE' }
+            //   minifyEnabled conR8
+            //   shrinkResources conR8
+            ndk { debugSymbolLevel = 'SYMBOL_TABLE' }
             minifyEnabled conR8
-            shrinkResources conR8
+            shrinkResources = conR8
             // Era 'proguard-android.txt', que trae -dontoptimize: pensado para cuando R8 estaba
             // apagado. Con R8 encendido va la de optimizar, la que recomienda la documentación de
             // Android -y la única que sigue existiendo desde AGP 9-.
@@ -170,7 +175,9 @@ android {
 
     sourceSets {
         main {
-            assets.srcDirs += "$buildDir/generated/assets"
+            // -gradle-9, 10-11-2026- buildDir es obsoleto en Gradle 9; la carpeta es la misma.
+            // Antes -10-11-2026-: assets.srcDirs += "$buildDir/generated/assets"
+            assets.srcDirs += layout.buildDirectory.dir("generated/assets").get().asFile
         }
     }
 
@@ -211,7 +218,9 @@ tasks.register('genUUID') {
     // -portugues-voz, 2026-10-22- Suma model-pt: su uuid lo usan la APK de prueba y el paquete model_pt. Antes:
     //   def carpetas = ['model-es', 'model-en']
     def carpetas = ['model-es', 'model-en', 'model-pt']
-    def ofiles = carpetas.collect { file("$buildDir/generated/assets/$it/uuid") }
+    // -gradle-9, 10-11-2026- buildDir es obsoleto en Gradle 9; los archivos van al mismo lugar.
+    // Antes -10-11-2026-: def ofiles = carpetas.collect { file("$buildDir/generated/assets/$it/uuid") }
+    def ofiles = carpetas.collect { layout.buildDirectory.file("generated/assets/$it/uuid").get().asFile }
     outputs.files(ofiles)
     outputs.upToDateWhen { false }
     doLast {
@@ -247,10 +256,18 @@ repositories {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
-    implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
-    implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
-    implementation "androidx.webkit:webkit:$androidxWebkitVersion"
+    // -gradle-9, 10-11-2026- Gradle 9 avisa como obsoleto buscar androidxAppCompatVersion en el proyecto raíz sin nombrarlo. Antes -10-11-2026-: implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    implementation "androidx.appcompat:appcompat:${rootProject.ext.androidxAppCompatVersion}"
+    // -gradle-9, 10-11-2026- Gradle 9 avisa como obsoleto buscar androidxCoordinatorLayoutVersion en el proyecto raíz sin nombrarlo. Antes -10-11-2026-: implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:${rootProject.ext.androidxCoordinatorLayoutVersion}"
+    // -gradle-9, 10-11-2026- Gradle 9 avisa como obsoleto buscar coreSplashScreenVersion en el proyecto raíz sin nombrarlo. Antes -10-11-2026-: implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
+    implementation "androidx.core:core-splashscreen:${rootProject.ext.coreSplashScreenVersion}"
+    // -gradle-9, 10-11-2026- androidx.core declarado, con la versión que ya viaja en la APK -1.17.0, la que trae Capacitor-.
+    // AGP 9 apaga android.dependency.useConstraints: la compilación ya no se alinea con la ejecución y bajaba a la 1.13.0
+    // de appcompat, sin WindowCompat.enableEdgeToEdge -MainActivity.java:348, «cannot find symbol»-. No es un paquete nuevo.
+    implementation "androidx.core:core:${rootProject.ext.androidxCoreVersion}"
+    // -gradle-9, 10-11-2026- Gradle 9 avisa como obsoleto buscar androidxWebkitVersion en el proyecto raíz sin nombrarlo. Antes -10-11-2026-: implementation "androidx.webkit:webkit:$androidxWebkitVersion"
+    implementation "androidx.webkit:webkit:${rootProject.ext.androidxWebkitVersion}"
     implementation project(':capacitor-android')
 
     // CameraX View for CamaraNativaPlugin
@@ -370,9 +387,12 @@ dependencies {
     implementation 'androidx.credentials:credentials-play-services-auth:1.6.0'
     implementation 'com.google.android.libraries.identity.googleid:googleid:1.2.1'
 
-    testImplementation "junit:junit:$junitVersion"
-    androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+    // -gradle-9, 10-11-2026- Gradle 9 avisa como obsoleto buscar junitVersion en el proyecto raíz sin nombrarlo. Antes -10-11-2026-: testImplementation "junit:junit:$junitVersion"
+    testImplementation "junit:junit:${rootProject.ext.junitVersion}"
+    // -gradle-9, 10-11-2026- Gradle 9 avisa como obsoleto buscar androidxJunitVersion en el proyecto raíz sin nombrarlo. Antes -10-11-2026-: androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
+    androidTestImplementation "androidx.test.ext:junit:${rootProject.ext.androidxJunitVersion}"
+    // -gradle-9, 10-11-2026- Gradle 9 avisa como obsoleto buscar androidxEspressoCoreVersion en el proyecto raíz sin nombrarlo. Antes -10-11-2026-: androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${rootProject.ext.androidxEspressoCoreVersion}"
     implementation project(':capacitor-cordova-android-plugins')
 }
 
