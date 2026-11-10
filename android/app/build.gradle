@@ -79,7 +79,10 @@ android {
         // -30-10-2026- Propuesta 0.11.2: Sigo+, avisos, bienvenida y guardado. Antes: versionName "0.11.1"
         // -01-11-2026- 1.0: la versión para producción, como quedó decidido el 06-10-2026. Trae el texto más ancho de
         // lado, el velo con curva, el aviso de Sigo+ al borrar la cuenta y el aviso breve al guardar. Antes: versionName "0.11.2"
-        versionName "1.0"
+        // -10-11-2026- 1.1, decisión de Javier: la ventana flotante sobre otras apps, con giro y tamaño; la tarjeta
+        // Continuar, la calidad con nombre, Calificar y Compartir, el editor vacío con su ejemplo y el micrófono verde;
+        // borde a borde en Android 10 a 14 y el complemento de Gradle 9. Antes: versionName "1.0"
+        versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         // SOLO LOS PROCESADORES DE LOS TELEFONOS -24-09-2026-. Las bibliotecas nativas -Vosk,
         // la camara- venian para seis arquitecturas, y las x86 son solo de emuladores: 21 MB
