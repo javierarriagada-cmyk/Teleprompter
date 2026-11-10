@@ -419,7 +419,9 @@ export const es = {
   // Banda A, 09-11-2026: el aviso aprobado en los bocetos. Antes: accesibilidadFlotanteTitulo: 'Para seguir tu voz sobre otras apps'
   accesibilidadFlotanteTitulo: 'Lee sobre otras apps',
   // Antes: accesibilidadFlotanteTexto: 'Android solo deja que Sigo te escuche mientras otra app graba si activas “Sigo · prueba flotante” en Accesibilidad. Sigo no lee tu pantalla ni lo que escribes.'
-  accesibilidadFlotanteTexto: 'Sigo usa el micrófono para seguir tu voz mientras grabas con otra app. En Accesibilidad, activa «Sigo · ventana flotante» y vuelve a Sigo. Este servicio no lee tu pantalla ni lo que escribes.',
+  // -10-11-2026- El aviso dice para qué es el servicio de accesibilidad y qué pasa con la voz: Play lo exige en la app
+  // misma, antes de pedir el permiso -ayuda answer/10964491 y answer/10144311-. Antes -10-11-2026-: accesibilidadFlotanteTexto: 'Sigo usa el micrófono para seguir tu voz mientras grabas con otra app. En Accesibilidad, activa «Sigo · ventana flotante» y vuelve a Sigo. Este servicio no lee tu pantalla ni lo que escribes.',
+  accesibilidadFlotanteTexto: 'Sigo usa un servicio de accesibilidad para mostrar tu texto sobre otras apps y seguir tu voz mientras grabas. No lee tu pantalla ni lo que escribes, y tu voz no sale del teléfono. Actívalo: «Sigo · ventana flotante».',
   // Antes: irAActivarlo: 'Ir a activarlo' -la clave cambió de nombre con el texto-.
   abrirAccesibilidad: 'Abrir Accesibilidad',
   consecuenciaFlotante: 'Lees encima de la cámara u otra app',
