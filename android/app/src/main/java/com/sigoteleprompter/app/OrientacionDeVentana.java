@@ -26,6 +26,17 @@ package com.sigoteleprompter.app;
 //   - «Rotación automática» desactivada: el sensor se apaga y la compensación es 0, el comportamiento de d991e00.
 //   - Al cerrar la ventana o desconectarse el servicio, soltar() apaga el sensor y nada más lo enciende.
 // Los tiempos son los de esta primera vuelta, sin medir en el g86: el registro anota cada decisión con su hora.
+//
+// LA CONFIRMACIÓN NO ESPERA OTRA LECTURA -10-11-2026, orden t165u-. Javier lo reprodujo: con la pantalla fija de pie,
+// ya establecido de pie, llega UNA lectura a 90° y el teléfono queda quieto; aunque pasen tres segundos la
+// compensación sigue en 0 y proximoReloj() da -1. alSensor solo confirmaba la candidata con OTRA lectura pasados los
+// ESTABLE_MS, y OrientationEventListener solo avisa cuando el ángulo cambia: con el teléfono quieto puede no avisar.
+// Ahora la candidata trae su propio vencimiento -desdeCandidata + ESTABLE_MS- por el mismo reloj que ya usa la gracia:
+// proximoReloj() da el que llegue primero y alReloj confirma la candidata si sigue vigente, y de ahí sigue igual que
+// antes -programar, con la gracia de GRACIA_MS para que Chrome gire solo-. La invalidación va en el estado, no en el
+// reloj: una lectura de otro lado cambia o borra la candidata, plano la borra, desactivar la rotación automática y
+// soltar() la olvidan; un vencimiento que llegue tarde no encuentra candidata y no gira nada. Una lectura de otro
+// lado durante la gracia también la anula: el teléfono ya no está en el lado que se iba a aplicar.
 final class OrientacionDeVentana {
     static final int SIN_DATO = -1;
     // Un lado nuevo vale a menos de 30° de su centro: 15° pasado el límite de 45°. Android gira sus pantallas con un
@@ -68,7 +79,20 @@ final class OrientacionDeVentana {
     boolean sensorEncendido() { return encendido; }
     boolean suelto() { return suelto; }
     // Cuándo llamar a alReloj, o -1 si no hay nada pendiente.
-    long proximoReloj() { return pendiente == SIN_DATO ? -1 : aplicarEn; }
+    // Antes -10-11-2026, orden t164u-: solo la gracia; una candidata sin otra lectura no tenía reloj y no se confirmaba.
+    // long proximoReloj() { return pendiente == SIN_DATO ? -1 : aplicarEn; }
+    long proximoReloj() {
+        long gracia = pendiente == SIN_DATO ? -1 : aplicarEn;
+        long confirmacion = confirmacionEn();
+        if (gracia < 0) return confirmacion;
+        if (confirmacion < 0) return gracia;
+        return Math.min(gracia, confirmacion);
+    }
+
+    // Cuándo la candidata cumple ESTABLE_MS, o -1 si no hay candidata.
+    long confirmacionEn() {
+        return suelto || !auto || candidata == SIN_DATO ? -1 : desdeCandidata + ESTABLE_MS;
+    }
     String ultimaDecision() { return ultimaDecision; }
 
     // El lado sin histéresis: solo cerca del centro de un lado; SIN_DATO plano o entre dos.
@@ -145,22 +169,63 @@ final class OrientacionDeVentana {
         nucleo = nucleoDe(grados);
         horaCruda = ahora;
         if (lado == SIN_DATO || lado == estable) { candidata = SIN_DATO; return false; }
+        // Otro lado durante la gracia -10-11-2026, orden t165u-: el giro que se iba a aplicar ya no vale.
+        String anulada = "";
+        if (pendiente != SIN_DATO) {
+            pendiente = SIN_DATO;
+            aplicarEn = -1;
+            anulada = "lectura en " + lado + " durante la gracia: se anula el giro a " + estable + "; ";
+            ultimaDecision = anulada;
+        }
         if (lado == 2 && pantalla != 2) { candidata = SIN_DATO; return false; }
-        if (lado != candidata) { candidata = lado; desdeCandidata = ahora; return false; }
+        // Antes -10-11-2026, orden t164u-: la candidata se confirmaba solo aquí, con otra lectura pasados los ESTABLE_MS.
+        // if (lado != candidata) { candidata = lado; desdeCandidata = ahora; return false; }
+        if (lado != candidata) {
+            candidata = lado;
+            desdeCandidata = ahora;
+            ultimaDecision = anulada + "candidata " + lado + ": se confirma en " + ESTABLE_MS + " ms si sigue";
+            return false;
+        }
         if (ahora - desdeCandidata < ESTABLE_MS) return false;
+        // Antes -10-11-2026, orden t164u-: esto mismo, ahora en confirmar() para que el reloj también llegue aquí.
+        // boolean primera = estable == SIN_DATO;
+        // estable = lado;
+        // candidata = SIN_DATO;
+        // // La primera vez no hay giro de Android que esperar: la pantalla ya está como va a quedar.
+        // return programar(ahora, primera, "sensor estable en " + lado);
+        return confirmar(ahora, "sensor estable en " + lado);
+    }
+
+    // La candidata cumplió ESTABLE_MS -con otra lectura o con el reloj-: pasa a estable y sigue por programar.
+    private boolean confirmar(long ahora, String motivo) {
+        int lado = candidata;
         boolean primera = estable == SIN_DATO;
         estable = lado;
         candidata = SIN_DATO;
         // La primera vez no hay giro de Android que esperar: la pantalla ya está como va a quedar.
-        return programar(ahora, primera, "sensor estable en " + lado);
+        return programar(ahora, primera, motivo);
     }
 
     // Llegó la hora de un cambio pendiente. true si la compensación cambió.
+    // Antes -10-11-2026, orden t164u-: solo la gracia; la candidata sin otra lectura se quedaba sin confirmar.
+    // boolean alReloj(long ahora) {
+    //     if (suelto || pendiente == SIN_DATO || ahora < aplicarEn) return false;
+    //     pendiente = SIN_DATO;
+    //     aplicarEn = -1;
+    //     return poner(deseada(), "gracia cumplida: Android no giró la pantalla");
+    // }
     boolean alReloj(long ahora) {
-        if (suelto || pendiente == SIN_DATO || ahora < aplicarEn) return false;
+        if (suelto) return false;
+        boolean cambio = false;
+        long confirmacion = confirmacionEn();
+        // La candidata sigue vigente -ninguna lectura la cambió ni la borró- y cumplió ESTABLE_MS sin otra lectura.
+        if (confirmacion >= 0 && ahora >= confirmacion) {
+            cambio = confirmar(ahora, "sensor estable en " + candidata + " sin otra lectura");
+        }
+        if (pendiente == SIN_DATO || ahora < aplicarEn) return cambio;
         pendiente = SIN_DATO;
         aplicarEn = -1;
-        return poner(deseada(), "gracia cumplida: Android no giró la pantalla");
+        return poner(deseada(), "gracia cumplida: Android no giró la pantalla") || cambio;
     }
 
     // La pantalla tiene otra rotación -DisplayListener u onConfigurationChanged-. true si la compensación cambió.

@@ -64,7 +64,10 @@ public class ConexionDelGiroTest {
     @Test public void elSensorLlegaALaDecisionYSeSuelta() throws IOException {
         String v = sinComentarios("VentanaDePrueba.java");
         tiene(v, "@Override public void onOrientationChanged(int grados) { alGradosDelSensor(grados); }");
-        tiene(v, "boolean cambio = orientacion.alSensor(grados, SystemClock.elapsedRealtime());");
+        // Antes -10-11-2026, orden t164u-: la ventana llamaba a OrientacionDeVentana en línea. Desde la orden t165u va
+        // por RelojDelGiro, que se comprueba en elPrimerVencimientoLoPoneLaVentana.
+        // tiene(v, "boolean cambio = orientacion.alSensor(grados, SystemClock.elapsedRealtime());");
+        tiene(v, "relojDelGiro.alSensor(grados);");
         tiene(v, "sensorGiro.enable();");
         tiene(v, "@Override public void apagar() { if (sensorGiro != null) sensorGiro.disable(); }");
         tiene(v, "pantallas.registerDisplayListener(oyentePantalla, PRINCIPAL);");
@@ -86,5 +89,37 @@ public class ConexionDelGiroTest {
         assertTrue("desconectar debe soltar el giro antes del cierre", soltar > desconectar && soltar < cerrar);
         tiene(a, "desconectar(\"onUnbind\");");
         tiene(a, "desconectar(\"onDestroy accesibilidad\");");
+    }
+
+    // -10-11-2026, orden t165u- La ventana de verdad usa RelojDelGiro -probado en RelojDelGiroTest- con el Handler
+    // principal y la hora del sistema: así, después de UNA lectura, el vencimiento de ESTABLE_MS queda puesto en
+    // PRINCIPAL y, al llegar, vuelve a RelojDelGiro, que confirma la candidata y encuadra la banda.
+    @Test public void elPrimerVencimientoLoPoneLaVentana() throws IOException {
+        String v = sinComentarios("VentanaDePrueba.java");
+        tiene(v, "relojDelGiro = new RelojDelGiro(orientacion, new RelojDelGiro.Plataforma() {");
+        tiene(v, "@Override public long ahora() { return SystemClock.elapsedRealtime(); }");
+        tiene(v, "@Override public void quitarReloj() { PRINCIPAL.removeCallbacks(relojGiro); }");
+        tiene(v, "@Override public void programarReloj(long demoraMs) { PRINCIPAL.postDelayed(relojGiro, demoraMs); }");
+        tiene(v, "@Override public void encuadrarGiro() { alCambiarPantalla(); }");
+        // El sensor, el reloj y «Rotación automática» pasan por RelojDelGiro.
+        int sensor = v.indexOf("void alGradosDelSensor(int grados) {");
+        assertTrue(sensor >= 0);
+        assertTrue("alGradosDelSensor debe pasar por RelojDelGiro",
+            v.indexOf("relojDelGiro.alSensor(grados);", sensor) > sensor
+                && v.indexOf("relojDelGiro.alSensor(grados);", sensor) < v.indexOf("void reprogramarRelojGiro() {"));
+        int reloj = v.indexOf("final Runnable relojGiro = new Runnable() {");
+        assertTrue(reloj >= 0);
+        int vence = v.indexOf("relojDelGiro.alVencer();", reloj);
+        assertTrue("el reloj debe volver a RelojDelGiro", vence > reloj && vence < v.indexOf("final BandaGirada.Ventana lienzo"));
+        tiene(v, "relojDelGiro.alAuto(rotacionAutomatica());");
+        tiene(v, "relojDelGiro.reprogramar();");
+        // Nada vuelve a llamar a la decisión por fuera del camino probado.
+        assertTrue(!v.contains("orientacion.alSensor(") && !v.contains("orientacion.alReloj(") && !v.contains("orientacion.alAuto("));
+        // RelojDelGiro pone el vencimiento con proximoReloj, y la decisión le da uno a la candidata.
+        String r = sinComentarios("RelojDelGiro.java");
+        tiene(r, "long t = orientacion.proximoReloj();");
+        tiene(r, "if (t >= 0) plataforma.programarReloj(Math.max(0, t - plataforma.ahora()));");
+        String o = sinComentarios("OrientacionDeVentana.java");
+        tiene(o, "return suelto || !auto || candidata == SIN_DATO ? -1 : desdeCandidata + ESTABLE_MS;");
     }
 }

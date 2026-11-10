@@ -317,6 +317,8 @@ final class VentanaDePrueba {
         final BandaGirada banda = new BandaGirada();
         FrameLayout marco, marcoMenu;
         OrientacionDeVentana orientacion;
+        // -10-11-2026, orden t165u- El camino del sensor y del reloj, probado en la JVM -RelojDelGiroTest-.
+        RelojDelGiro relojDelGiro;
         OrientationEventListener sensorGiro;
         DisplayManager pantallas;
         DisplayManager.DisplayListener oyentePantalla;
@@ -324,11 +326,15 @@ final class VentanaDePrueba {
         String ultimoGiroAnotado = "";
         final Runnable relojGiro = new Runnable() {
             @Override public void run() {
-                if (!vigente() || orientacion == null) return;
-                boolean cambio = orientacion.alReloj(SystemClock.elapsedRealtime());
-                anotarGiro();
-                reprogramarRelojGiro();
-                if (cambio) alCambiarPantalla();
+                // Antes -10-11-2026, orden t164u-: lo mismo en línea; ahora en RelojDelGiro, que también confirma la
+                // candidata que no recibió otra lectura -orden t165u-.
+                // if (!vigente() || orientacion == null) return;
+                // boolean cambio = orientacion.alReloj(SystemClock.elapsedRealtime());
+                // anotarGiro();
+                // reprogramarRelojGiro();
+                // if (cambio) alCambiarPantalla();
+                if (!vigente() || relojDelGiro == null) return;
+                relojDelGiro.alVencer();
             }
         };
         // Lo que BandaGirada hace en Android: lo de siempre del giro y poner la ventana y la vista.
@@ -647,6 +653,13 @@ final class VentanaDePrueba {
                 }
                 @Override public void apagar() { if (sensorGiro != null) sensorGiro.disable(); }
             });
+            relojDelGiro = new RelojDelGiro(orientacion, new RelojDelGiro.Plataforma() {
+                @Override public long ahora() { return SystemClock.elapsedRealtime(); }
+                @Override public void quitarReloj() { PRINCIPAL.removeCallbacks(relojGiro); }
+                @Override public void programarReloj(long demoraMs) { PRINCIPAL.postDelayed(relojGiro, demoraMs); }
+                @Override public void anotarGiro() { Sesion.this.anotarGiro(); }
+                @Override public void encuadrarGiro() { alCambiarPantalla(); }
+            });
             orientacion.empezar(rotacionPantalla(), rotacionAutomatica());
             anotarGiro();
             if (pantallas != null) {
@@ -664,11 +677,14 @@ final class VentanaDePrueba {
             }
             oyenteAuto = new ContentObserver(PRINCIPAL) {
                 @Override public void onChange(boolean propio) {
-                    if (!vigente() || orientacion == null) return;
-                    boolean cambio = orientacion.alAuto(rotacionAutomatica(), SystemClock.elapsedRealtime());
-                    anotarGiro();
-                    reprogramarRelojGiro();
-                    if (cambio) alCambiarPantalla();
+                    // Antes -10-11-2026, orden t164u-: lo mismo en línea; ahora por RelojDelGiro -orden t165u-.
+                    // if (!vigente() || orientacion == null) return;
+                    // boolean cambio = orientacion.alAuto(rotacionAutomatica(), SystemClock.elapsedRealtime());
+                    // anotarGiro();
+                    // reprogramarRelojGiro();
+                    // if (cambio) alCambiarPantalla();
+                    if (!vigente() || relojDelGiro == null) return;
+                    relojDelGiro.alAuto(rotacionAutomatica());
                 }
             };
             try {
@@ -678,18 +694,26 @@ final class VentanaDePrueba {
         }
 
         void alGradosDelSensor(int grados) {
-            if (!vigente() || orientacion == null) return;
-            boolean cambio = orientacion.alSensor(grados, SystemClock.elapsedRealtime());
-            anotarGiro();
-            reprogramarRelojGiro();
-            if (cambio) alCambiarPantalla();
+            // Antes -10-11-2026, orden t164u-: lo mismo en línea; ahora por RelojDelGiro -orden t165u-, que pone el
+            // vencimiento de la candidata desde la primera lectura.
+            // if (!vigente() || orientacion == null) return;
+            // boolean cambio = orientacion.alSensor(grados, SystemClock.elapsedRealtime());
+            // anotarGiro();
+            // reprogramarRelojGiro();
+            // if (cambio) alCambiarPantalla();
+            if (!vigente() || relojDelGiro == null) return;
+            relojDelGiro.alSensor(grados);
         }
 
         void reprogramarRelojGiro() {
+            // Antes -10-11-2026, orden t164u-: lo mismo en línea; ahora en RelojDelGiro.reprogramar -orden t165u-.
+            // PRINCIPAL.removeCallbacks(relojGiro);
+            // if (orientacion == null) return;
+            // long t = orientacion.proximoReloj();
+            // if (t >= 0) PRINCIPAL.postDelayed(relojGiro, Math.max(0, t - SystemClock.elapsedRealtime()));
             PRINCIPAL.removeCallbacks(relojGiro);
-            if (orientacion == null) return;
-            long t = orientacion.proximoReloj();
-            if (t >= 0) PRINCIPAL.postDelayed(relojGiro, Math.max(0, t - SystemClock.elapsedRealtime()));
+            if (relojDelGiro == null) return;
+            relojDelGiro.reprogramar();
         }
 
         // Una línea por decisión, no por lectura: el sensor llega decenas de veces por segundo.
