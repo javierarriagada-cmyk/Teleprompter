@@ -46,7 +46,18 @@ public class ConexionDelGiroTest {
         // El lienzo copia la ventana en LayoutParams y la pone en el marco; la vista se gira dentro.
         tiene(v, "posicion.x = x; posicion.y = y; posicion.width = ancho; posicion.height = alto;");
         tiene(v, "ventanas.updateViewLayout(marco, posicion);");
-        tiene(v, "if (web != null) girarVista(web, ancho, alto, grados, dx, dy);");
+        // Antes -hasta el 11-11-2026-: tiene(v, "if (web != null) girarVista(web, ancho, alto, grados, dx, dy);");
+        // Razón: la lectura la gira MarcoGirado con la medida que Android le da a la ventana, en la misma pasada: de
+        // lado, poner la medida y el desplazamiento al tiro hacía temblar la ventana al cambiar el tamaño.
+        tiene(v, "marco = new MarcoGirado(accesibilidad);");
+        tiene(v, "if (marco != null) marco.ponerGiro(grados);");
+        assertTrue("la WebView de la lectura no debe girarse a mano", !v.contains("girarVista(web,"));
+        String m = sinComentarios("MarcoGirado.java");
+        tiene(m, "int hijoAncho = cruzado ? alto : ancho;");
+        tiene(m, "hijo.setRotation(cuartos * 90f);");
+        tiene(m, "hijo.setTranslationX((marcoAncho - ancho) / 2f);");
+        tiene(m, "hijo.setTranslationY((marcoAlto - alto) / 2f);");
+        // El menú de Aa sigue girándose con girarVista: no cambia de tamaño con el dedo.
         tiene(v, "vista.setRotation(grados);");
         tiene(v, "vista.setTranslationX(dx);");
         tiene(v, "vista.setTranslationY(dy);");

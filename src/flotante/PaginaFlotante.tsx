@@ -109,9 +109,10 @@ export function PaginaFlotante() {
   const aaRef = useRef<HTMLButtonElement | null>(null)
   const sesionRef = useRef(0)
 
+  // Antes -hasta el 11-11-2026-: sin irAToken.
   const {
     bloqueActual, lineaActual, palabraActual, totalTokens,
-    alRecibirParcial, alRecibirFinal, alNotificarVoz, reiniciarEn, motorAvance
+    alRecibirParcial, alRecibirFinal, alNotificarVoz, reiniciarEn, irAToken, motorAvance
   } = useSeguidor(contrato?.guion || '')
 
   const asr = useASR({
@@ -569,6 +570,12 @@ export function PaginaFlotante() {
             mostrarTiempo={contrato.mostrarTiempo}
             controlesVisibles={controlesVisibles}
             enPausa={estado.enPausa}
+            // EL DEDO QUE MUEVE EL TEXTO MUEVE TAMBIEN EL SEGUIDOR -11-11-2026-. Javier lo vio grabando la publicidad:
+            // en la ventana, al devolverse a mano, el texto volvia solo a donde estaba. TeleprompterView suelta el modo
+            // manual a los 350 ms y avisa el renglon elegido por onNavegacionManual; aqui no se le pasaba, asi que el
+            // seguidor y el motor seguian en la palabra de antes y el lazo devolvia el texto ahi. En Leer siempre fue
+            // irAToken -App.tsx-; ahora tambien aqui, y el token que va a Sigo al volver sale de esa misma posicion.
+            onNavegacionManual={irAToken}
           />
         )}
       </div>

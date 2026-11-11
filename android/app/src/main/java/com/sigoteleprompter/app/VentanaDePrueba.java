@@ -315,7 +315,10 @@ final class VentanaDePrueba {
         // va dentro de un marco -la vista que se pone en WindowManager-: el marco mide lo que la banda ocupa en la
         // pantalla y la WebView, con la medida de la persona, se gira dentro. Lo mismo el menú de Aa.
         final BandaGirada banda = new BandaGirada();
-        FrameLayout marco, marcoMenu;
+        // Antes -hasta el 11-11-2026-: FrameLayout marco, marcoMenu;
+        // Razón: el marco de la lectura gira a la WebView en la misma pasada que cambia la ventana -MarcoGirado-.
+        MarcoGirado marco;
+        FrameLayout marcoMenu;
         OrientacionDeVentana orientacion;
         // -10-11-2026, orden t165u- El camino del sensor y del reloj, probado en la JVM -RelojDelGiroTest-.
         RelojDelGiro relojDelGiro;
@@ -361,8 +364,12 @@ final class VentanaDePrueba {
                 try { ventanas.updateViewLayout(marco, posicion); }
                 catch (Exception e) { VentanaDePrueba.anotar(numero, "no se pudo reencuadrar: " + e); }
             }
+            // Antes -hasta el 11-11-2026-: if (web != null) girarVista(web, ancho, alto, grados, dx, dy);
+            // Razón: la medida y el desplazamiento se aplicaban al tiro y la ventana cambiaba en la pasada siguiente:
+            // de lado, cada paso de la esquina hacía temblar la lectura. Ahora solo va el giro; la medida y el
+            // desplazamiento los saca el marco de la medida que Android le da a la ventana -MarcoGirado-.
             @Override public void ponerVista(int ancho, int alto, float grados, float dx, float dy) {
-                if (web != null) girarVista(web, ancho, alto, grados, dx, dy);
+                if (marco != null) marco.ponerGiro(grados);
             }
             @Override public void anotar(String linea) { VentanaDePrueba.anotar(numero, linea); }
         };
@@ -503,7 +510,8 @@ final class VentanaDePrueba {
             //         ventanas.addView(web, posicion);
             // Razón -orden t164u-: la WebView va dentro del marco, que es lo que se pone en la pantalla, y la geometría
             // sale de BandaGirada con la compensación del giro -0 hasta que el sensor diga otra cosa-.
-            marco = new FrameLayout(accesibilidad);
+            // Antes -hasta el 11-11-2026-: marco = new FrameLayout(accesibilidad);
+            marco = new MarcoGirado(accesibilidad);
             marco.addView(web, new FrameLayout.LayoutParams(dp(240), dp(180)));
             empezarGiro();
             banda.abrir(medir(), orientacion.aplicada(), lienzo);
