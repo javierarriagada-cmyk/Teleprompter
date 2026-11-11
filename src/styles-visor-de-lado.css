@@ -97,10 +97,14 @@
    - Emulado a 640 x 330, Borrar se salía 15 px. Con la pantalla de 360 de alto o menos, el aire baja
      a 2-4 px y la columna puede desplazarse como respaldo.
    Medido: en el g86, los botones miden 70 de alto y el filtro 62. A 720 x 360, 52, 67, 48, 52 y 52.
-   A 640 x 330, 49, 63, 48, 49 y 49. En los tres casos todo cabe sin desbordar. */
+   A 640 x 330, 49, 63, 48, 49 y 49. En los tres casos todo cabe sin desbordar.
+   SIN DESPLAZAMIENTO EN LA COLUMNA -11-11-2026-. Javier lo vio en el g86 grabando de lado: al tocar
+   Subtítulos o el filtro, el panel no aparecía; de pie sí. Los dos paneles salen a la izquierda de la
+   columna, sobre el video -.opciones-subtitulos y .tira-filtros, right: calc(100% + 8px)-, y overflow-y:
+   auto vuelve auto también el eje x: lo que sale de la columna quedaba recortado, invisible. El respaldo
+   no hacía falta -medido arriba, todo cabe- y escondía los paneles. Antes: overflow-y: auto; */
 .visor-lado-acciones.sin-guardar {
   gap: var(--aire-1);
-  overflow-y: auto;
 }
 .visor-lado-acciones.sin-guardar > * + * {
   border-top: none;
