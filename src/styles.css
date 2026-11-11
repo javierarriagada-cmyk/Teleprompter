@@ -101,9 +101,12 @@
   /* El color del eco; la forma -radial de 320px a 12px del borde derecho y 15px del de abajo- va en .portada-eco-calido. */
   --eco-calido: rgba(194, 65, 12, 0.12);
   /* 160deg y no 180 -agregado aprobado-: el canto de la protagonista. Las superficies siguen en 180. */
-  --prot-fondo: linear-gradient(180deg, #312B28, #262220);
-  --prot-canto: linear-gradient(160deg, rgba(255, 154, 107, 0.38), rgba(255, 154, 107, 0.10));
-  --prot-sombra: 0 16px 40px -8px rgba(0, 0, 0, 0.55);
+  /* -evolucion visual, 11-11-2026- Antes: --prot-fondo: linear-gradient(180deg, #312B28, #262220); */
+  --prot-fondo: linear-gradient(175deg, #352E2B 0%, #211D1B 65%, #181514 100%);
+  /* -evolucion visual, 11-11-2026- Antes: --prot-canto: linear-gradient(160deg, rgba(255, 154, 107, 0.38), rgba(255, 154, 107, 0.10)); */
+  --prot-canto: linear-gradient(155deg, rgba(255, 175, 135, 0.5) 0%, rgba(255, 255, 255, 0.12) 35%, rgba(255, 154, 107, 0.05) 100%);
+  /* -evolucion visual, 11-11-2026- Antes: --prot-sombra: 0 16px 40px -8px rgba(0, 0, 0, 0.55); */
+  --prot-sombra: 0 20px 48px -10px rgba(0, 0, 0, 0.75);
   --sup-fondo: #262220;
   --sup-fondo-video: #1C1917;
   --sup-canto: linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.03));
@@ -185,9 +188,12 @@
   /* 20-10-2026: 86px a 72px, la portada perdio 14 de relleno lateral y el punto de «Sig●» se corrio igual. Antes: at 86px 50px. */
   --luz-marca: radial-gradient(circle 330px at 72px 50px, rgba(255, 154, 107, 0.22), transparent);
   --eco-calido: rgba(244, 184, 140, 0.22);
-  --prot-fondo: linear-gradient(180deg, #FFFFFF, #FBF7F3);
-  --prot-canto: linear-gradient(160deg, rgba(232, 135, 90, 0.45), rgba(232, 135, 90, 0.12));
-  --prot-sombra: 0 16px 40px -10px rgba(122, 58, 26, 0.18);
+  /* -evolucion visual, 11-11-2026- Antes: --prot-fondo: linear-gradient(180deg, #FFFFFF, #FBF7F3); */
+  --prot-fondo: linear-gradient(175deg, #FFFFFF 0%, #FBF6F1 65%, #F4EBE3 100%);
+  /* -evolucion visual, 11-11-2026- Antes: --prot-canto: linear-gradient(160deg, rgba(232, 135, 90, 0.45), rgba(232, 135, 90, 0.12)); */
+  --prot-canto: linear-gradient(155deg, rgba(232, 135, 90, 0.7) 0%, rgba(255, 255, 255, 0.95) 35%, rgba(232, 135, 90, 0.14) 100%);
+  /* -evolucion visual, 11-11-2026- Antes: --prot-sombra: 0 16px 40px -10px rgba(122, 58, 26, 0.18); */
+  --prot-sombra: 0 20px 48px -12px rgba(122, 58, 26, 0.30);
   --sup-fondo: #FFFDFB;
   --sup-fondo-video: #FFFDFB;
   --sup-canto: linear-gradient(180deg, rgba(26, 24, 21, 0.08), rgba(26, 24, 21, 0.05));
@@ -257,9 +263,12 @@
   /* El color del eco; la forma -radial de 320px a 12px del borde derecho y 15px del de abajo- va en .portada-eco-calido. */
   --eco-calido: rgba(194, 65, 12, 0.12);
   /* 160deg y no 180 -agregado aprobado-: el canto de la protagonista. Las superficies siguen en 180. */
-  --prot-fondo: linear-gradient(180deg, #312B28, #262220);
-  --prot-canto: linear-gradient(160deg, rgba(255, 154, 107, 0.38), rgba(255, 154, 107, 0.10));
-  --prot-sombra: 0 16px 40px -8px rgba(0, 0, 0, 0.55);
+  /* -evolucion visual, 11-11-2026- Antes: --prot-fondo: linear-gradient(180deg, #312B28, #262220); */
+  --prot-fondo: linear-gradient(175deg, #352E2B 0%, #211D1B 65%, #181514 100%);
+  /* -evolucion visual, 11-11-2026- Antes: --prot-canto: linear-gradient(160deg, rgba(255, 154, 107, 0.38), rgba(255, 154, 107, 0.10)); */
+  --prot-canto: linear-gradient(155deg, rgba(255, 175, 135, 0.5) 0%, rgba(255, 255, 255, 0.12) 35%, rgba(255, 154, 107, 0.05) 100%);
+  /* -evolucion visual, 11-11-2026- Antes: --prot-sombra: 0 16px 40px -8px rgba(0, 0, 0, 0.55); */
+  --prot-sombra: 0 20px 48px -10px rgba(0, 0, 0, 0.75);
   --sup-fondo: #262220;
   --sup-fondo-video: #1C1917;
   --sup-canto: linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.03));
@@ -3513,4 +3522,140 @@ button.btn-deformable.miniatura-banda:not(:active) {
    quedaban pegadas al borde del diálogo. De lado vuelve al redondeo, porque va adentro. */
 @media not ((orientation: landscape) and (max-height: 520px)) {
   .hoja-flotante .flotante-previa { border-radius: 0; }
+}
+
+/* ============================================================================================
+   EVOLUCION VISUAL -11-11-2026, version 1.1-. Canto con luz, superficies con volumen y micro-reflejos
+   en la portada y en la barra del editor. Salio del informe de Antigravity -Escritorio,
+   «especificacion de evolucion visual.pdf»- y de su pagina de ejemplos; Javier lo aprobo sobre
+   capturas de la app real en los dos temas -teleprom/00-arquitectura/evolucion-visual-11-nov-.
+   LO QUE NO SE HIZO, A PROPOSITO:
+   - Las fichas del dock de LISTO. Javier: «no me convencen las fichas del dock». Se probo la pastilla
+     con relieve y salian marrones y pesadas. Quedan como estaban.
+   - Pegar el CSS del informe tal cual. Daba por gris la pildora «Nuevo guion», que en la portada es
+     crema en oscuro y casi negra en claro -var(--crear-fondo)-: con su fondo oscuro y la letra de
+     siempre quedaba ilegible; y en el tema claro Grabar tambien. Por eso cada tono es una variable
+     con su valor en cada tema.
+   - Nada de esto entra en la lectura ni en la grabacion en marcha: el que lee mira el lente.
+   Los tonos de la tarjeta protagonista cambiaron en su lugar: --prot-fondo, --prot-canto y
+   --prot-sombra, cada uno con su «Antes».
+   ============================================================================================ */
+:root,
+[data-tema="oscuro"] {
+  --ev-crear-fondo: linear-gradient(180deg, #38322E 0%, #25211F 100%);
+  --ev-crear-canto: linear-gradient(160deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 180, 140, 0.25) 40%, rgba(255, 255, 255, 0.05) 100%);
+  --ev-crear-sombra: 0 1px 0 rgba(255, 255, 255, 0.15) inset, 0 8px 24px -4px rgba(0, 0, 0, 0.65);
+  --ev-crear-texto: #E7E1DE;
+  --ev-leer-fondo: linear-gradient(180deg, #FAF4EF 0%, #E3D5CC 100%);
+  --ev-leer-texto: #151312;
+  --ev-leer-sombra: inset 0 0 0 1px rgba(255, 255, 255, 0.8), 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 8px 20px -2px rgba(0, 0, 0, 0.45);
+  --ev-grabar-fondo: linear-gradient(180deg, #6C2226 0%, #3A1517 100%);
+  --ev-grabar-texto: #FFFFFF;
+  --ev-grabar-borde: rgba(255, 100, 100, 0.6);
+  --ev-grabar-sombra: 0 1px 0 rgba(255, 160, 160, 0.4) inset, 0 4px 20px rgba(225, 29, 46, 0.4);
+  --ev-pulso-a: 0 0 0 1px rgba(225, 29, 46, 0.7), 0 4px 16px rgba(225, 29, 46, 0.25);
+  --ev-pulso-b: 0 0 0 2px rgba(255, 90, 90, 0.9), 0 6px 24px rgba(225, 29, 46, 0.55), inset 0 0 8px rgba(225, 29, 46, 0.2);
+  --ev-reflejo: rgba(255, 255, 255, 0.25);
+  --ev-reflejo-leer: rgba(255, 255, 255, 0.4);
+  --ev-reflejo-grabar: rgba(255, 160, 160, 0.3);
+  --ev-marca-brillo: #FFFFFF;
+}
+/* El tema claro no estaba en la pagina de ejemplos: es la misma receta con los tonos de este tema. En la marca el
+   brillo es calido y no blanco: sobre letra casi negra, el blanco se ve como un corte. */
+[data-tema="claro"] {
+  --ev-crear-fondo: linear-gradient(180deg, #34302B 0%, #171513 100%);
+  --ev-crear-canto: linear-gradient(160deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 180, 140, 0.35) 40%, rgba(255, 255, 255, 0.06) 100%);
+  --ev-crear-sombra: 0 1px 0 rgba(255, 255, 255, 0.18) inset, 0 8px 22px -6px rgba(26, 24, 21, 0.45);
+  --ev-crear-texto: #F3F1ED;
+  --ev-leer-fondo: linear-gradient(180deg, #34302B 0%, #171513 100%);
+  --ev-leer-texto: #F3F1ED;
+  --ev-leer-sombra: inset 0 0 0 1px rgba(255, 255, 255, 0.12), 0 1px 0 rgba(255, 255, 255, 0.24) inset, 0 8px 20px -4px rgba(26, 24, 21, 0.45);
+  --ev-grabar-fondo: linear-gradient(180deg, #FFF7F7 0%, #FBD9DB 100%);
+  --ev-grabar-texto: #1A1815;
+  --ev-grabar-borde: rgba(225, 29, 46, 0.6);
+  --ev-grabar-sombra: 0 1px 0 rgba(255, 255, 255, 0.95) inset, 0 4px 20px rgba(225, 29, 46, 0.26);
+  --ev-pulso-a: 0 0 0 1px rgba(225, 29, 46, 0.55), 0 4px 16px rgba(225, 29, 46, 0.18);
+  --ev-pulso-b: 0 0 0 2px rgba(225, 29, 46, 0.8), 0 6px 24px rgba(225, 29, 46, 0.42), inset 0 0 8px rgba(225, 29, 46, 0.12);
+  --ev-reflejo: rgba(255, 255, 255, 0.22);
+  --ev-reflejo-leer: rgba(255, 255, 255, 0.22);
+  --ev-reflejo-grabar: rgba(255, 255, 255, 0.7);
+  --ev-marca-brillo: #E8875A;
+}
+/* «+ NUEVO GUION». Antes -.portada .boton-crear-guion > span-: background-color var(--crear-fondo), color
+   var(--crear-icono), sin borde y box-shadow var(--crear-sombra). Pasa a ser una pieza oscura con canto de
+   luz en los dos temas, y por eso la letra cambia con el fondo. */
+.portada .boton-crear-guion.boton-crear-guion-con-palabra > span {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+  background: var(--ev-crear-fondo) padding-box, var(--ev-crear-canto) border-box;
+  box-shadow: var(--ev-crear-sombra);
+  color: var(--ev-crear-texto);
+}
+/* LEER, en la tarjeta y en la barra del editor. Antes: background var(--leer-fondo), color var(--leer-texto)
+   y sin sombra. El filo va con box-shadow hacia adentro porque el boton trae border: none en linea. */
+.portada .btn-leer-tarjeta,
+.btn-leer-barra {
+  position: relative;
+  overflow: hidden;
+  background: var(--ev-leer-fondo);
+  color: var(--ev-leer-texto);
+  box-shadow: var(--ev-leer-sombra);
+}
+/* GRABAR, igual en toda la app. Antes -.btn-grabar y .portada .btn-grabar-tarjeta-rojo-: background
+   var(--grabar-fondo), border 1px solid var(--color-grabando), color var(--grabar-texto) y box-shadow
+   var(--grabar-brillo), quieto. Ahora late despacio, como la luz de una camara. */
+.btn-grabar,
+.portada .btn-grabar-tarjeta-rojo {
+  position: relative;
+  overflow: hidden;
+  background: var(--ev-grabar-fondo);
+  color: var(--ev-grabar-texto);
+  border: 1px solid var(--ev-grabar-borde);
+  box-shadow: var(--ev-grabar-sombra);
+  animation: evPulsoGrabar 3s ease-in-out infinite;
+}
+@keyframes evPulsoGrabar { 0%, 100% { box-shadow: var(--ev-pulso-a); } 50% { box-shadow: var(--ev-pulso-b); } }
+/* EL REFLEJO QUE BARRE: un haz inclinado que cruza la pieza y descansa. Tres piezas, desfasadas. */
+.portada .boton-crear-guion.boton-crear-guion-con-palabra > span::after,
+.portada .btn-leer-tarjeta::after,
+.btn-grabar::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -20%;
+  width: 40px;
+  height: 200%;
+  background: linear-gradient(90deg, transparent, var(--ev-reflejo), transparent);
+  pointer-events: none;
+  animation: evBarrido 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+.portada .btn-leer-tarjeta::after { width: 50px; background: linear-gradient(90deg, transparent, var(--ev-reflejo-leer), transparent); animation-duration: 5s; animation-delay: 0.8s; }
+.btn-grabar::after { background: linear-gradient(90deg, transparent, var(--ev-reflejo-grabar), transparent); animation-duration: 5s; animation-delay: 1.6s; }
+@keyframes evBarrido {
+  0% { transform: translateX(-150%) rotate(25deg); opacity: 0; }
+  20% { opacity: 0.7; }
+  50% { transform: translateX(250%) rotate(25deg); opacity: 0; }
+  100% { transform: translateX(250%) rotate(25deg); opacity: 0; }
+}
+/* LA MARCA «Sig●» DE LA PORTADA: el destello del punto. El brillo que recorre «Sig» va en MarcaSigo.tsx. */
+.marca-sigo-viva .punto-marca-destello { animation: evPulsoPuntoMarca 6s ease-in-out infinite; }
+@keyframes evPulsoPuntoMarca {
+  0%, 75% { filter: drop-shadow(0 0 0px transparent); }
+  85% { filter: drop-shadow(0 0 6px var(--color-grabando-texto)); }
+  100% { filter: drop-shadow(0 0 0px transparent); }
+}
+/* EL BOTON REDONDO DE EMPEZAR, EN LISTO: el satinado de Leer. Es un velo sobre su propio color y no un
+   fondo nuevo, porque ese color depende de la pareja del lienzo y no del tema -ver .btn-empezar-leer-.
+   Sin sombra propia: la sombra de ese boton es su pulso -pulsoEmpezar-. */
+.btn-empezar-leer {
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0) 45%, rgba(0, 0, 0, 0.10) 100%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-grabar,
+  .portada .btn-grabar-tarjeta-rojo,
+  .portada .boton-crear-guion.boton-crear-guion-con-palabra > span::after,
+  .portada .btn-leer-tarjeta::after,
+  .btn-grabar::after,
+  .marca-sigo-viva .punto-marca-destello { animation: none; }
 }

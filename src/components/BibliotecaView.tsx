@@ -852,7 +852,7 @@ export default function BibliotecaView({
             de alto -unos 55 de ancho-. La entrada mide este elemento para aterrizar, asi que el viaje
             se ajusta solo. Antes: alto={24}. */}
         <div className="portada-marca" onClick={handleToqueMarcaDiag}>
-          <MarcaSigo alto={28} data-marca-portada="" />
+          <MarcaSigo alto={28} data-marca-portada="" conAnimacionEspecular />
         </div>
         <button
           type="button"
