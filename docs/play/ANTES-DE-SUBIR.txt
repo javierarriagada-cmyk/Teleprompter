@@ -179,7 +179,8 @@ símbolos. No bloquea.
 
 EL PASO A PASO DE UNA SUBIDA -como salió la 0.9.2 a la prueba cerrada, 18-10-2026; Google la publicó en
 minutos-. Javier: «para que con ese doc lo tengamos clarísimo». Al día el 27-10-2026, con lo aprendido en
-la 0.11.0 y la 0.11.1.
+la 0.11.0 y la 0.11.1, y el 12-11-2026, con lo decidido después de la 1.1 (808). TALLER-ARMADO.md, en la
+raíz, dice lo mismo.
 
 A. EN EL PC -Claude-
   1. La versión: versionName a mano en android/app/build.gradle, con su comentario y su «Antes:». El
@@ -189,15 +190,32 @@ A. EN EL PC -Claude-
      sin coautor, y se sube con su sí.
      Antes -hasta el 27-10-2026-: «un bloque <es-419> y otro <en-US>» y «Commit en main con su correo y se
      sube.»
-  2. `npm run play` en la CARPETA DEL REPO, sin «subir». No se corre en una copia del scratchpad: ahí npm ls
-     tapa la ruta con *** y la comprobación de licencias da FALLA. Deja Escritorio\Sigo-play.aab, firmado
-     con la llave de subida. Todas sus comprobaciones tienen que salir en OK.
-     Antes de armar: main al día -git pull --ff-only-; `npm ci` si cambió package-lock.json -el 20-10
-     faltaba firebase, el 26-10 llegó RevenueCat-; y las tres voces en android/app/src/main/assets
-     -`npm run modelo` baja la que falte; sin model-pt, play.mjs se para-.
-  3. Las revisiones a mano, sobre ese mismo AAB, copiado antes fuera del Escritorio con su SHA-256 junto con
-     su mapping.txt -Sigo-play.aab se pisa en cada armado-. Los archivos se sacan del .aab con `tar -xf`, que
-     Windows trae:
+  2. `npm run play`, sin «subir», en una COPIA APARTE del commit aprobado, en una ruta sin uuid, con su
+     propio `npm ci` desde package-lock.json: el AAB tiene que salir del archivo de bloqueo, sin nada
+     heredado de otra copia. Antes, `adb kill-server`. Deja Escritorio\Sigo-play.aab, firmado con la llave
+     de subida. Todas sus comprobaciones tienen que salir en OK.
+     La primera vez se prueba en el próximo armado real, no en uno de prueba. Si la comprobación de
+     licencias falla en la copia aparte -en el scratchpad fallaba porque npm ls tapa con *** la ruta con el
+     uuid de la sesión-, se anota el error exacto, sin reintentar en bucle, y se arma en la CARPETA DEL REPO,
+     en main y sin cambiar de rama. Ahí, al cerrar, `git diff --stat` tiene que salir vacío: los dos
+     archivos de Gradle que deja cap sync cambian solo los finales de línea y no se commitean.
+     Antes de armar: el commit al día -git pull --ff-only en la carpeta del repo-; las tres voces en
+     android/app/src/main/assets -`npm run modelo` baja la que falte; sin model-pt, play.mjs se para-; y
+     `npx tsc --noEmit`, `npm run test`, `npm run build` y el CI del commit en verde. Si algo falla, primero
+     la causa: el armado no arregla nada ajeno.
+     Antes -hasta el 12-11-2026-: «`npm run play` en la CARPETA DEL REPO, sin «subir». No se corre en una
+     copia del scratchpad: ahí npm ls tapa la ruta con *** y la comprobación de licencias da FALLA.» y
+     «`npm ci` si cambió package-lock.json -el 20-10 faltaba firebase, el 26-10 llegó RevenueCat-». Así
+     salieron la 0.11.0, la 0.11.1 y la 1.1 (808).
+  3. Las revisiones a mano, sobre ese mismo AAB, copiado antes a su carpeta de entrega -paso 5- con su
+     SHA-256 y su mapping.txt -Sigo-play.aab se pisa en cada armado-. Los archivos se sacan del .aab con
+     `tar -xf`, que Windows trae:
+     - EL CONTENIDO, con `node scripts/revisarContenidoPlay.mjs <aab> <carpeta de entrega>\revisarContenidoPlay`:
+       paneles, registro del motor, service worker, la contraprueba guardando-toma, el audio de diagnóstico
+       apagado y los 16 KB de cada .so. Tiene que terminar sin error. npm run play todavía no lo llama:
+       conectarlo queda para una orden. 12-11-2026, sobre la 808: todo en OK.
+     - La ventana flotante: sus entradas y componentes tienen que estar en el modo Play, sin depender de un
+       interruptor de herramientas de prueba. flotante.html no puede registrar service worker.
      - 16 KB: `node scripts/elf16k.mjs <carpeta>\base\lib\arm64-v8a`, con las dos condiciones del punto 4.
      - Lo que no viaja -punto 3-: en base/assets/public/assets/ no tienen que estar panel-corpus,
        panel-mediciones, btn-abrir-mediciones, btn-abrir-corpus ni btn-borrar-copias-medicion. CON
@@ -224,9 +242,14 @@ A. EN EL PC -Claude-
      - Sin service worker: ni registerSW ni sw.js en el .aab. - versionName: `bundletool dump manifest
      --xpath=/manifest/@android:versionName`. - Flogger con su nombre en android/app/build/outputs/mapping/
      release/mapping.txt -punto 2-.»
-  4. LA APK GEMELA -26-10-2026, Javier: «cada armado deja las dos»-. Enseguida después del AAB, sin commits
-     en medio y SIN TELÉFONOS CONECTADOS -`adb devices` vacío: con uno conectado, scripts/apk.mjs sube el
-     número a lo instalado + 1-, `npm run apk` y una copia en Escritorio\Sigo-<versión>-<versionCode>.apk.
+  4. LA APK GEMELA -26-10-2026, Javier: «cada armado deja las dos»-. Cuando se arma para Play, siempre:
+     AAB y APK del mismo commit y con el mismo versionCode. Para probar un arreglo, en cambio, solo APK
+     -Javier, 07-11-2026: «no haremos aab hasta que decidamos subir una actualización»-. Enseguida después
+     del AAB, sin commits en medio, con `adb kill-server` antes -con un teléfono conectado, scripts/apk.mjs
+     sube el número a lo instalado + 1-, `npm run apk` y una copia en Escritorio\Sigo-<versión>-<versionCode>.apk.
+     Antes -hasta el 12-11-2026-: «Enseguida después del AAB, sin commits en medio y SIN TELÉFONOS
+     CONECTADOS -`adb devices` vacío: con uno conectado, scripts/apk.mjs sube el número a lo instalado + 1-,
+     `npm run apk` y una copia en Escritorio\Sigo-<versión>-<versionCode>.apk.»
      Es la que Javier sube a Firebase para la batería del agente de pruebas: App Distribution no acepta el
      AAB. Antes de dársela: versión, número, firma de depuración y las voces es, en y pt adentro. No se
      reparte con `npm run apk -- distribuir`: avisa a los probadores.
@@ -241,6 +264,12 @@ A. EN EL PC -Claude-
      Microsoft.VisualBasic; [Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile(<ruta>, 'OnlyErrorDialogs',
      'SendToRecycleBin')`. También Sigo.apk, la copia que npm run apk deja siempre. Quedan solo Sigo-play.aab
      y Sigo-<versión>-<versionCode>.apk.
+     Y LA ENTREGA COMPLETA, APARTE -12-11-2026-: antes de mandar nada a la Papelera, cada entrega va entera a
+     C:\Users\56990\Sigo-entregas\<versión>-<versionCode>\: el AAB, la APK, sus SHA-256, el commit, los
+     registros de npm run play y npm run apk, el mapping.txt y los demás informes de R8, las notas, la
+     revisión de contenido y un LEEME con el estado. Esa carpeta nunca se limpia. El estado se escribe en
+     cinco pasos separados, cada uno solo con evidencia: armado, verificado, instalado, enviado a revisión y
+     publicado. La primera es 1.1-808.
 
 B. EN LA CONSOLA -Javier-. `npm run play -- subir` solo sabe la PRUEBA INTERNA y se niega a las demás
    pistas: la prueba cerrada se sube a mano. Los nombres son los de la Ayuda de Play Console en español,

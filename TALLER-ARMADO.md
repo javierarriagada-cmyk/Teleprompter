@@ -1,14 +1,14 @@
 # Taller de armado APK y AAB
 
-Guía vigente desde el 30-10-2026. Antes: la guía describía una rama divergente, 14 Mbps y una APK gemela obligatoria; esa versión se conserva en `docs/archivo/taller-armado-hasta-20261030.md` como historia.
+Guía vigente desde el 30-10-2026, al día el 12-11-2026 con lo que Javier decidió después de la 1.1 (808). Dice lo mismo que el paso a paso de `docs/play/ANTES-DE-SUBIR.txt`. Antes: la guía describía una rama divergente, 14 Mbps y una APK gemela obligatoria; esa versión se conserva en `docs/archivo/taller-armado-hasta-20261030.md` como historia.
 
 ## Alcance y fuentes de verdad
 
 - Antes de trabajar, leer AGENTS.md, los dos documentos de criterio y esta guía. La orden concreta de Javier manda sobre las reglas anteriores.
-- Trabajar desde el commit y formato autorizados, en un worktree aislado; nunca armar en la copia del Escritorio de Javier.
+- Trabajar desde el commit y formato autorizados, en un worktree aislado en una ruta sin uuid. La primera vez se prueba en el próximo armado real. Si la comprobación de licencias falla ahí -en el scratchpad fallaba porque `npm ls` tapa con `***` la ruta con el uuid de la sesión-, se anota el error exacto, sin reintentar en bucle, y el AAB se arma en la copia del Escritorio de Javier, en `main` y sin cambiar de rama; al cerrar, `git diff --stat` tiene que salir vacío. Antes -hasta el 12-11-2026-: «nunca armar en la copia del Escritorio de Javier». La 0.11.0, la 0.11.1 y la 1.1 (808) se armaron ahí.
 - `scripts/apk.mjs` prepara APK debug; `scripts/play.mjs` prepara AAB release. Un armado no autoriza instalar, distribuir ni publicar.
 - `scripts/parcharCamara.mjs` y el código de exportación fijan actualmente 12 Mbps, integrados en #160. No usar las cifras históricas de 14 Mbps.
-- Cada worktree tiene su propio node_modules. Preservar los modelos y mediciones existentes; no copiar cientos de MB sin necesidad ni enlazar node_modules.
+- El AAB de Play sale de una copia con su propio `npm ci`, desde `package-lock.json`, sin nada heredado de otra copia. Las APK de prueba pueden enlazar el node_modules del repo, por velocidad. Preservar los modelos y mediciones existentes; no copiar cientos de MB sin necesidad. Antes -hasta el 12-11-2026-: «Cada worktree tiene su propio node_modules. […] ni enlazar node_modules».
 
 ## Regla de eficiencia
 
@@ -23,11 +23,11 @@ Si una vía falla sin una corrección concreta identificada, detener esa vía, g
 ## AAB de Play
 
 1. Ejecutar `npm run play` sin argumentos cuando se pide AAB. Confirmar firma y modelos on-demand sin imprimir credenciales.
-2. Comprobar el artefacto real con `scripts/revisarContenidoPlay.mjs`, `scripts/revisarR8.mjs`, `scripts/elf16k.mjs` y el checklist `docs/play/ANTES-DE-SUBIR.txt`: diagnóstico apagado, ausencia del motor web/VAD/service worker, clases conservadas, permisos y LOAD/RELRO de 16 KB.
-3. Preservar AAB, mapping, SHA-256 y registros antes del siguiente armado. El ícono, los medios de la ficha y sus fuentes no van dentro de la app.
-4. La entrega 0.11.2 ya se armó y se subió. Su detalle es `docs/play/entrega-0.11.2.md`. No reconstruirla al consolidar documentación ni exigir una APK gemela: Javier canceló ese armado.
+2. Comprobar el artefacto real con `scripts/revisarContenidoPlay.mjs`, `scripts/revisarR8.mjs`, `scripts/elf16k.mjs` y el checklist `docs/play/ANTES-DE-SUBIR.txt`: diagnóstico apagado, ausencia del motor web/VAD/service worker, clases conservadas, permisos y LOAD/RELRO de 16 KB. `npm run play` todavía no llama a `revisarContenidoPlay.mjs`: se corre a mano, `node scripts/revisarContenidoPlay.mjs <aab> <carpeta de entrega>\revisarContenidoPlay`; conectarlo queda para una orden. `revisarR8.mjs` es una función que usa `play.mjs`: correrlo suelto no revisa nada.
+3. Cada entrega va entera a `C:\Users\56990\Sigo-entregas\<versión>-<versionCode>\` antes del siguiente armado: AAB, APK, SHA-256, commit, registros, `mapping.txt` y los demás informes de R8, notas, la revisión de contenido y un LEEME con el estado en cinco pasos -armado, verificado, instalado, enviado a revisión y publicado-, cada uno solo con evidencia. Esa carpeta nunca se limpia. El ícono, los medios de la ficha y sus fuentes no van dentro de la app. Antes -hasta el 12-11-2026-: «Preservar AAB, mapping, SHA-256 y registros antes del siguiente armado.»
+4. La APK gemela: cuando se arma para Play, AAB y APK del mismo commit y con el mismo versionCode, siempre, con `adb kill-server` antes de armar las dos. Para probar un arreglo, solo APK. La entrega 0.11.2 ya se armó y se subió, y su detalle es `docs/play/entrega-0.11.2.md`: no se reconstruye, y su APK gemela no se exige, porque Javier canceló ese armado. Antes -hasta el 12-11-2026-: «No reconstruirla al consolidar documentación ni exigir una APK gemela: Javier canceló ese armado.»
 5. `npm run play -- subir` solo conoce la prueba interna. La prueba cerrada existente es Alpha, API `alpha`; no crear otra, cambiar verificadores ni enviar a producción por inferencia.
-6. No borrar automáticamente APK/AAB anteriores. Una limpieza requiere su propio alcance; conservar las mediciones de `docs/mediciones/banco-largo/`.
+6. En el Escritorio queda solo la versión nueva: con la entrega ya copiada a `Sigo-entregas` y revisada, cada AAB o APK anterior del Escritorio va a la Papelera de Windows, nunca borrado para siempre -Javier, 26-10-2026-. Conservar las mediciones de `docs/mediciones/banco-largo/`. Antes -hasta el 12-11-2026-: «No borrar automáticamente APK/AAB anteriores. Una limpieza requiere su propio alcance».
 
 ## Fichas y envío
 
