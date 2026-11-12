@@ -4,27 +4,43 @@
       "recortes": [
         {
           "cruda": "01-voz-b-lectura-avanza.png",
-          "ancho_recorte": 675,
-          "alto_recorte": 705,
-          "escala": 1.6,
+          "recorte_cruda": [
+            72,
+            126,
+            1032,
+            880
+          ],
+          "ancho_recorte": 960,
+          "alto_recorte": 754,
+          "escala": 1.125,
           "caja": [
             0,
             440,
             1080,
-            1128
-          ]
+            848
+          ],
+          "margen_texto_app": 103,
+          "motivo_escala": "Regla del borde -t166u-: el recorte arranca en el margen izquierdo del texto de la app (x=103) y llega a «avanza con mi voz,»; por eso mide 960 px y no 820. Ampliación 1,125×."
         },
         {
           "cruda": "01-voz-b-lectura-avanza.png",
-          "ancho_recorte": 535,
-          "alto_recorte": 140,
-          "escala": 1.6,
+          "recorte_cruda": [
+            72,
+            1829,
+            1032,
+            2391
+          ],
+          "ancho_recorte": 960,
+          "alto_recorte": 562,
+          "escala": 1.125,
           "caja": [
-            112,
-            1633,
-            856,
-            224
-          ]
+            0,
+            1288,
+            1080,
+            632
+          ],
+          "margen_texto_app": 103,
+          "motivo_escala": "Mismo ancho y escala que la lectura, para que sea una sola pieza de la app."
         }
       ],
       "cajas_texto": [
@@ -69,24 +85,62 @@
         }
       ],
       "texto_pct": 6.04,
-      "interfaz_pct": 68.0,
-      "ancho_recorte_max": 675,
-      "escala_min": 1.6,
-      "cara": false
+      "interfaz_pct": 77.08,
+      "ancho_recorte_max": 960,
+      "escala_min": 1.125,
+      "cara": false,
+      "cara_medida": null,
+      "franja_vacia_max": {
+        "alto_px": 262,
+        "pct_alto": 13.65,
+        "filas": [
+          1273,
+          1535
+        ],
+        "metodo": "Filas seguidas en que ningún canal varía más de 16 niveles a lo ancho; cuenta el fondo de la ficha y el negro de la app."
+      }
     },
     "02": {
       "recortes": [
         {
           "cruda": "02-espera-a-pausa-me-espera.png",
-          "ancho_recorte": 540,
-          "alto_recorte": 720,
-          "escala": 2.0,
+          "recorte_cruda": [
+            72,
+            118,
+            1100,
+            650
+          ],
+          "ancho_recorte": 1028,
+          "alto_recorte": 532,
+          "escala": 1.0506,
           "caja": [
             0,
-            480,
+            694,
             1080,
-            1440
-          ]
+            559
+          ],
+          "margen_texto_app": 106,
+          "motivo_escala": "Regla del borde -t166u-: el recorte arranca en el margen izquierdo del texto de la app (x=106) y llega a «pensar, me espera.»; por eso mide 1028 px y no 820. Ampliación 1,051×."
+        },
+        {
+          "cruda": "02-espera-a-pausa-me-espera.png",
+          "recorte_cruda": [
+            72,
+            1796,
+            1100,
+            2431
+          ],
+          "ancho_recorte": 1028,
+          "alto_recorte": 635,
+          "escala": 1.0506,
+          "caja": [
+            0,
+            1253,
+            1080,
+            667
+          ],
+          "margen_texto_app": 106,
+          "motivo_escala": "Mismo ancho y escala que la lectura, para que sea una sola pieza de la app."
         }
       ],
       "cajas_texto": [
@@ -146,24 +200,42 @@
         }
       ],
       "texto_pct": 8.42,
-      "interfaz_pct": 75.0,
-      "ancho_recorte_max": 540,
-      "escala_min": 2.0,
-      "cara": false
+      "interfaz_pct": 63.85,
+      "ancho_recorte_max": 1028,
+      "escala_min": 1.0506,
+      "cara": false,
+      "cara_medida": null,
+      "franja_vacia_max": {
+        "alto_px": 283,
+        "pct_alto": 14.74,
+        "filas": [
+          1235,
+          1518
+        ],
+        "metodo": "Filas seguidas en que ningún canal varía más de 16 niveles a lo ancho; cuenta el fondo de la ficha y el negro de la app."
+      }
     },
     "03": {
       "recortes": [
         {
           "cruda": "03-flotante-a-sobre-la-camara.png",
-          "ancho_recorte": 750,
-          "alto_recorte": 1000,
-          "escala": 1.44,
-          "caja": [
+          "recorte_cruda": [
             0,
+            122,
+            1220,
+            2509
+          ],
+          "ancho_recorte": 1220,
+          "alto_recorte": 2387,
+          "escala": 0.6033,
+          "caja": [
+            172,
             480,
-            1080,
+            736,
             1440
-          ]
+          ],
+          "margen_texto_app": 93,
+          "motivo_escala": "Javier -t166u- pide ver a la vez la banda, el botón de grabar y la cara más chica: hace falta la pantalla entera de ancho, reducida a 0,603×."
         }
       ],
       "cajas_texto": [
@@ -207,40 +279,96 @@
           ]
         },
         {
-          "que": "Lees encima de la cámara u otra app",
+          "que": "Lees encima de la cámara u otra app.",
           "caja": [
             64,
             413,
-            590,
+            599,
             45
           ],
           "tinta": [
             68,
             417,
-            650,
+            659,
             454
           ]
         }
       ],
-      "texto_pct": 7.95,
-      "interfaz_pct": 75.0,
-      "ancho_recorte_max": 750,
-      "escala_min": 1.44,
-      "cara": true
+      "texto_pct": 7.97,
+      "interfaz_pct": 51.11,
+      "ancho_recorte_max": 1220,
+      "escala_min": 0.6033,
+      "cara": true,
+      "cara_medida": {
+        "cruda": "03-flotante-a-sobre-la-camara.png",
+        "caja_cruda": [
+          440,
+          640,
+          1070,
+          1580
+        ],
+        "cajas_captura": [
+          [
+            437,
+            792,
+            818,
+            1360
+          ]
+        ],
+        "pct_captura": 10.44,
+        "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima; cuenta también la parte que queda detrás de la banda. Se lleva a la captura con el recorte y la escala."
+      },
+      "franja_vacia_max": {
+        "alto_px": 63,
+        "pct_alto": 3.28,
+        "filas": [
+          120,
+          183
+        ],
+        "metodo": "Filas seguidas en que ningún canal varía más de 16 niveles a lo ancho; cuenta el fondo de la ficha y el negro de la app."
+      }
     },
     "05": {
       "recortes": [
         {
-          "cruda": "05-subtitulos-c-video-guardado.png",
-          "ancho_recorte": 720,
-          "alto_recorte": 960,
-          "escala": 1.5,
+          "cruda": "05-subtitulos-a-video-guardado.png",
+          "recorte_cruda": [
+            130,
+            700,
+            1090,
+            1760
+          ],
+          "ancho_recorte": 960,
+          "alto_recorte": 1060,
+          "escala": 0.7104,
+          "caja": [
+            199,
+            480,
+            682,
+            753
+          ],
+          "margen_texto_app": 160,
+          "motivo_escala": "05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u."
+        },
+        {
+          "cruda": "05-subtitulos-d-visor-guardar-agrupado.png",
+          "recorte_cruda": [
+            56,
+            1830,
+            1164,
+            2535
+          ],
+          "ancho_recorte": 1108,
+          "alto_recorte": 705,
+          "escala": 0.9747,
           "caja": [
             0,
-            480,
+            1233,
             1080,
-            1440
-          ]
+            687
+          ],
+          "margen_texto_app": 90,
+          "motivo_escala": "El panel entero de 05-d, de borde a borde, para que «Subtítulos Rojo» y los dos botones de guardar entren sin cortar."
         }
       ],
       "cajas_texto": [
@@ -300,25 +428,84 @@
         }
       ],
       "texto_pct": 7.52,
-      "interfaz_pct": 75.0,
-      "ancho_recorte_max": 720,
-      "escala_min": 1.5,
-      "cara": true
+      "interfaz_pct": 60.55,
+      "ancho_recorte_max": 1108,
+      "escala_min": 0.7104,
+      "cara": true,
+      "cara_medida": {
+        "cruda": "05-subtitulos-a-video-guardado.png",
+        "caja_cruda": [
+          390,
+          720,
+          840,
+          1320
+        ],
+        "cajas_captura": [
+          [
+            384,
+            494,
+            703,
+            920
+          ]
+        ],
+        "pct_captura": 6.55,
+        "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima."
+      },
+      "franja_vacia_max": {
+        "alto_px": 63,
+        "pct_alto": 3.28,
+        "filas": [
+          120,
+          183
+        ],
+        "metodo": "Filas seguidas en que ningún canal varía más de 16 niveles a lo ancho; cuenta el fondo de la ficha y el negro de la app."
+      }
     }
   },
   "grafico": {
-    "recorte": {
-      "cruda": "01-voz-b-lectura-avanza.png",
-      "ancho_recorte": 540,
-      "alto_recorte": 570,
-      "escala": 0.6667,
-      "caja": [
-        630,
-        60,
-        360,
-        380
-      ]
-    },
+    "recortes": [
+      {
+        "cruda": "02-espera-a-pausa-me-espera.png",
+        "recorte_cruda": [
+          564,
+          118,
+          1099,
+          560
+        ],
+        "ancho_recorte": 535,
+        "alto_recorte": 442,
+        "escala": 0.7925,
+        "caja": [
+          600,
+          0,
+          424,
+          350
+        ],
+        "margen_texto_app": 106,
+        "motivo_escala": "A sangre arriba y a la derecha, desde el borde de la zona libre -x 600- hasta x 1024; con el micrófono, también abajo.",
+        "excepcion_borde": "El recorte arranca en «pensar,», no en el margen de la app: desde el margen, el renglón «Si me detengo a pensar, me espera.» mide 1028 px de cruda y en 424 px quedaría a 0,41×, ilegible a 270 px. Cada renglón visible empieza con palabra entera -«pensar,», «sigue», «sola»- y solo se corta por la derecha."
+      },
+      {
+        "cruda": "02-espera-a-pausa-me-espera.png",
+        "recorte_cruda": [
+          370,
+          2008,
+          905,
+          2197
+        ],
+        "ancho_recorte": 535,
+        "alto_recorte": 189,
+        "escala": 0.7925,
+        "caja": [
+          600,
+          350,
+          424,
+          150
+        ],
+        "margen_texto_app": 382,
+        "motivo_escala": "Misma escala que la lectura -0,79×-; cierra el bloque a sangre hasta abajo."
+      }
+    ],
     "cajas_texto": [
       {
         "que": "logo",
@@ -366,6 +553,27 @@
       176,
       220
     ],
+    "bloque_interfaz": [
+      600,
+      0,
+      1024,
+      500
+    ],
+    "a_sangre": {
+      "derecha": true,
+      "arriba": true,
+      "abajo": true
+    },
+    "ancho_pct": 41.41,
+    "franja_vacia_bloque": {
+      "alto_px": 134,
+      "pct_alto": 26.8,
+      "filas": [
+        149,
+        283
+      ],
+      "metodo": "Filas seguidas en que ningún canal varía más de 16 niveles a lo ancho; cuenta el fondo de la ficha y el negro de la app."
+    },
     "texto_pct": 8.7
   },
   "breves": {

@@ -1,17 +1,17 @@
 {
   "fecha": "2026-11-12",
-  "nota": "Huellas de la dirección de la fase 1 de la ficha 1.1, generadas con armar_ficha.py --alcance 1.1 (Pillow 12.0.0, PNG escrito con el zlib clásico de Python). Propuesta en revisión: no es la aprobación del 30-10, que sigue en aprobacion-20261030/.",
+  "nota": "Huellas de la dirección de la fase 1 de la ficha 1.1, generadas con armar_ficha.py --alcance 1.1 (Pillow 12.0.0, PNG escrito con el zlib clásico de Python). Propuesta en revisión: no es la aprobación del 30-10, que sigue en aprobacion-20261030/. Rehechas el 12-11-2026 con la corrección de composición t166u.",
   "salidas": {
-    "capturas/es-419/01.png": "0927588c39a35c4677041cc6a00a900990641c4b7afb0ff463fba26813cf70be",
-    "capturas/es-419/02.png": "617feb82ed63d52dbeac82e853fe8abcdafc2ab02a2027f5cb45002fde15894a",
-    "capturas/es-419/03.png": "6c21c0ec8936056ab4b2f1d33939956169b9412807ca69cc15a8e9226e5d7ae3",
-    "capturas/es-419/05.png": "8fb70018d446af72e6b06d22a66b304948b4b13c2bea14b3682d6927382c53c8",
+    "capturas/es-419/01.png": "587726400da46c79288e3c64609b0559746678fe87021346b3af39ef5bab0f0b",
+    "capturas/es-419/02.png": "9536afb4a8309fe3af82b6296426a57de7bd92559056c4f202bd9798e696692f",
+    "capturas/es-419/03.png": "72e64afd8339783713b57d2caa1b88e47bae0d6ed63273eb7cec0500768fa1eb",
+    "capturas/es-419/05.png": "6d819e7a82df90daa16e927d5ea11fcc5545958b48a4abecc8a6b1877c67ef14",
     "descripciones-breves-1.1.txt": "4d14c4b6b64aa9d7c174e02ba7bcf3f6dacf50c765886a309400a155ac300395",
-    "grafico-1024x500-es.png": "a9154ac0c398bb74fb8072cb12ac47240d72f07c1a53f221b07a1de1dea913a4",
-    "lamina-miniaturas-270.png": "314ecb3f74d43b486b86f78ea291b209c7420969c0a8a3b461d01d4040e290f8",
-    "lamina-tamano-real.png": "2509f108ad226d47f12bfd9c4bcf2ab874bccec40e6c7d079121a9d50bdb46b5",
-    "medidas.json": "fbf37f9fbcac555b40a16df48f171863ebbd4bf07044821fc19ff8242c31aa40",
-    "procedencia.json": "61c1ad257695841556d269c2266b0507bdc7a83a6fa824374ecf7230a347451d"
+    "grafico-1024x500-es.png": "40b8ced5444610831ee53372287f2948665e100cff65402fec9164e33a367a58",
+    "lamina-miniaturas-270.png": "e7ef85015404ab2328194e9e75f3aebbb93a419586a58b71ecc4faea13ee380d",
+    "lamina-tamano-real.png": "54313c84cb054959d81de6c421395e4be2bbef77a5e173a163143a99cd7952b9",
+    "medidas.json": "e455ad3af199645d6564c972a35e32518a90bbed5b0a04906ae135335e46ee36",
+    "procedencia.json": "804187405e4d835ea11e7d69e9446d6d9452fe90d3e67826bf6a6fbd7f2b0ae9"
   },
   "crudas": {
     "entradas/motorola-1.1/es/01-voz-a-lectura-avanza.png": "052b5bd19497b140528345148d74c6d5d806c9175a83c60dcf063b1d24238354",

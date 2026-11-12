@@ -82,9 +82,12 @@ Es la propuesta en español que Javier revisa antes de la fase 2. **No es materi
   - las huellas;
   - que cada recorte coincida píxel a píxel con la cruda escalada;
   - procedencia, formato y tamaño;
-  - recorte ≤ 820 px y escala ≥ 1,3 en las capturas 1 a 5;
+  - la regla del borde: cada recorte arranca en el margen izquierdo del texto de la app -`margen_texto_app`-, salvo excepción declarada en `excepcion_borde`, que sale como aviso;
+  - recorte ≤ 820 px y escala ≥ 1,3 en las capturas 1 a 5; desde la corrección del 12-11, un recorte más ancho se acepta solo con `motivo_escala` y sale como aviso;
+  - ninguna franja sin contenido de más de 15 % del alto;
   - texto < 20 % por las cajas de `contenidos.json`, e interfaz ≥ 50 % en 1 a 3;
-  - titulares de dos renglones y la cara solo en 3, 4 y 5;
+  - titulares de dos renglones, la cara solo en 3, 4 y 5 y, donde sale, medida y por debajo de 25 %;
+  - en el gráfico, el centro libre para el botón de reproducir y el recorte hasta el borde derecho;
   - las palabras prohibidas, los 80 caracteres de las breves y que la breve de control sea la publicada.
 
 **Antes -12-11-2026-:**
@@ -100,22 +103,35 @@ Es la propuesta en español que Javier revisa antes de la fase 2. **No es materi
 
 Esa parte, de la 1.0, se reemplaza en la fase 2, después del visto bueno de Javier.
 
-### La crítica de la 1.0, repetida sobre la dirección 1.1
+### Corrección de composición -12-11-2026, pedida por Javier-
 
-| Hallazgo de la 1.0 | En la dirección 1.1 |
+La dirección quedó aprobada. Se rehicieron las cuatro capturas y el gráfico con seis arreglos; titulares, orden, paleta y tipografía no cambian. La bajada de la 3 ahora termina en punto.
+
+- **Regla del borde:** el texto de la app solo se corta por la derecha. Las lecturas de la 1 y la 2 arrancan en el margen real -x 103 y 106 de la cruda-, así que el recorte mide 960 y 1028 px y se amplía 1,125 y 1,051 veces, no 1,3: con 820 px, «voz,» y «espera.» quedaban cortados.
+- **1:** la lectura y el micrófono son dos recortes de 01-voz-b con el mismo ancho y la misma escala, uno debajo del otro, sin franja clara entre ellos.
+- **2:** debajo de «Si me detengo a pensar, me espera.» va el micrófono quieto de 02-espera-a, con «00:18 / 00:28». 02-espera-a no tiene halo: el botón mide 75 px de alto, contra 85 en 02-espera-b y 91 en 01-voz-b.
+- **3:** 03-flotante-a entera de ancho, reducida a 0,603×: la banda con el guion, el botón rojo de grabar y el tiempo 00:09 de la cámara, y la cara detrás.
+- **5:** el panel de 05-d -«Subtítulos Rojo», «Filtro Natural», «Guardar», «Guardar y compartir»- y, encima, el video de 05-a con los subtítulos. 05-d está en pausa en 0:00 y no tiene subtítulos.
+- **Gráfico:** 02-espera-a a sangre, de x 600 -el borde de la zona libre- a 1024. Arriba, la lectura con «me espera.»; abajo, el micrófono quieto. **Excepción a la regla del borde:** el recorte arranca en «pensar,», no en el margen. Desde el margen, el renglón mide 1028 px de cruda y en 424 px quedaría a 0,41×, ilegible a 270 px. Cada renglón visible empieza con palabra entera.
+
+Las cifras están en `direccion-1.1/medidas.json`. Para la cara, una caja marcada a mano sobre la cruda; para las franjas, filas lisas seguidas.
+
+### La crítica de la 1.0, repetida sobre la lámina de 270 px corregida
+
+| Hallazgo de la 1.0 | En la dirección 1.1 corregida |
 | --- | --- |
-| 🔴 El diferencial -te espera y sigue contigo- no tenía captura | Captura 2, entre las tres primeras: la lectura detenida en «pensar, me espera.», con el subrayado quieto. |
-| 🔴 La pantalla entera dentro de un marco, ilegible en miniatura | Sin marco. Recortes de 540 a 750 px de ancho de la cruda, ampliados de 1,44 a 2 veces. A 270 px se lee la prueba de cada titular: ver `lamina-miniaturas-270.png`. |
-| 🟡 La 02, con un recuadro de unos 60 px y una persona generada | No hay personas generadas. La cara real sale solo en la 3 y la 5, nunca como lo más grande. La escena del recuadro -4- llega terminada en la fase 2. |
-| 🟡 La 06, velocidad fija, era un panel denso | Sale del teléfono y pasa a la descripción, en la fase 2. |
-| 🟡 La 08, horizontal, con una franja útil de 150 px | Sale del teléfono y pasa a las tabletas y a la descripción, en la fase 2. |
-| 🔴 La ventana flotante no existía en la ficha | Captura 3, entre las tres primeras, sin rótulo de «nuevo». |
-| El rótulo chico de arriba a la derecha | Eliminado. |
-| La bajada gris no se leía en miniatura | Es opcional. La 1 no la lleva, y en las demás no hace falta para entender. |
+| 🔴 El diferencial -te espera y sigue contigo- no tenía captura | Captura 2: «Si me detengo a pensar, me espera.» se lee a 270 px; el micrófono quieto se ve, pero el tiempo «00:18 / 00:28» apenas. |
+| 🔴 La pantalla entera dentro de un marco, ilegible en miniatura | Sin marco. A 270 px se leen la lectura de la 1 y la 2, los subtítulos y «Subtítulos Rojo» de la 5 y «pensar, me espera.» del gráfico. La 3 vuelve a ser casi la pantalla entera, para que entre la cámara: se reconoce la banda sobre una cámara que graba, pero su texto no se lee. |
+| 🟡 La 02, con un recuadro de unos 60 px y una persona generada | No hay personas generadas. La cara real sale solo en la 3 -10,4 %- y en la 5 -6,6 %-, entera y nunca como lo más grande. |
+| 🟡 La 06 y la 08 | Pasan a la descripción y a las tabletas en la fase 2. |
+| 🔴 La ventana flotante no existía en la ficha | Captura 3, con el botón rojo de grabar a la vista. |
+| El rótulo chico y la bajada | Sin rótulo. La bajada es opcional; el titular basta. |
 
-**Lo que todavía se puede mejorar:**
-- En la 2, la mitad de abajo es el negro real de la app.
-- En la 3, la cámara se reconoce por la cara detrás de la ventana translúcida y la barba debajo. El botón de grabar no entra sin achicar la ventana.
-- En el gráfico, el trozo de lectura corta palabras en los bordes, como en las capturas.
+**Qué queda débil:**
+- En la 1 y la 2 el acercamiento es leve -1,125× y 1,051×-, por la regla del borde. Aun así, la prueba se lee mejor que en la 1.0.
+- En la 2 hay tres franjas oscuras sin contenido: 270 px entre la bajada y la lectura, 283 entre la lectura y el micrófono y 283 bajo el micrófono. La más alta es el 14,7 % del alto, justo bajo el límite de 15 %. La pausa se nota sobre todo al compararla con la 1.
+- En la 3 el texto de la banda no se lee en miniatura: la prueba es la escena, no las palabras.
+- En la 5, la cara es lo primero que se mira, aunque el panel ocupa más.
+- En el gráfico, el corte izquierdo en «pensar,» rompe la regla del borde, y en medio queda un hueco negro de 134 px, donde «el final.» cae fuera del recorte.
 
 **Orden:** se mantiene el del encargo. Como propuesta, sin aplicar: probar la 2 como primera en un experimento de ficha -answer/6227309-. En Ads, «Te sales, vuelves y te sigue» dio 40,0 y «Te espera si te detienes» 33,8, contra 35,7 de «Tú hablas. Sigo te sigue.». Son datos en aprendizaje, así que se probaría una sola cosa a la vez.

@@ -29,7 +29,7 @@ Referencia de código: main `fe422ee`. Afirmaciones nuevas de las capturas 1, 2,
 | --- | --- | --- |
 | El texto avanza mientras lees en voz alta -«Tú hablas. Sigo te sigue.»- | Captura 1, breves B | `src/lib/seguidor.ts`, `src/lib/avance.ts`, `src/hooks/useSeguidor.ts` |
 | Si te detienes o te sales del guion, el texto espera; al volver, sigue contigo sin tocar la pantalla | Captura 2, gráfico, breves B y C | `src/lib/seguidor.ts`, `src/lib/avance.ts`, `src/hooks/useSeguidor.ts`. La cruda 02-espera-a es una pausa real de 3,3 s. |
-| La ventana flotante: lees encima de la cámara u otra app | Captura 3 | `src/flotante/PaginaFlotante.tsx`, que usa `useSeguidor`. La bajada es literal de `src/textos/es.ts`: consecuenciaFlotante, «Lees encima de la cámara u otra app». |
+| La ventana flotante: lees encima de la cámara u otra app | Captura 3 | `src/flotante/PaginaFlotante.tsx`, que usa `useSeguidor`. La bajada es literal de `src/textos/es.ts`: consecuenciaFlotante, «Lees encima de la cámara u otra app». En la captura lleva punto final, por pedido de Javier del 12-11. |
 | Video con subtítulos de las palabras de tu guion, al ritmo de tu voz | Captura 5 | `src/lib/subtitulos.ts` -calza lo oído con el guion palabra por palabra-, `src/lib/registro.ts`, `android/app/src/main/java/com/sigoteleprompter/app/CapaDeSubtitulos.java` |
 | El micrófono verde se mueve con tu voz mientras Sigo escucha | Captura 1, solo la imagen | Cruda 01-voz-b. La captura no lo rotula como aviso de «te escucho» ni de «te perdí». |
 

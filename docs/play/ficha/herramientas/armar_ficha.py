@@ -137,10 +137,39 @@ def armar_direccion_11():
         dx,dy=r['destino']
         if dx<0 or dy<0 or dx+p.width>im.width or dy+p.height>im.height:raise ValueError('El recorte se sale de la imagen: '+nombre)
         im.paste(p,(dx,dy))
+        # 12-11-2026, corrección t166u: motivo_escala explica un recorte de más de 820 px o de menos de 1,3×;
+        # excepcion_borde, un recorte que no arranca en el margen izquierdo del texto de la app.
+        extra={k:r[k] for k in ('margen_texto_app','motivo_escala','excepcion_borde') if k in r}
         procedencia.append(dict(imagen=nombre,cruda=src.relative_to(REPO).as_posix(),sha256_cruda=sha(src),recorte_cruda=[x0,y0,x1,y1],
             caja_destino=[dx,dy,p.width,alto],escala=round(escala,4),parte=r['parte'],
-            tratamiento='Recorte y escala proporcional LANCZOS. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.'))
-        return dict(cruda=r['cruda'],ancho_recorte=cw,alto_recorte=ch,escala=round(escala,4),caja=[dx,dy,p.width,alto])
+            tratamiento='Recorte y escala proporcional LANCZOS. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.',**extra))
+        return dict(cruda=r['cruda'],recorte_cruda=[x0,y0,x1,y1],ancho_recorte=cw,alto_recorte=ch,escala=round(escala,4),caja=[dx,dy,p.width,alto],**extra)
+
+    def franja_vacia(im):
+        # Franja sin contenido: filas seguidas en que ningún canal varía más de 16 niveles a lo ancho
+        # -fondo liso, claro u oscuro, o negro de la app-. Se informa la más alta.
+        im=im.convert('RGB');mejor=(0,0,0);ini=None
+        for y in range(im.height+1):
+            lisa=y<im.height and max(hi-lo for lo,hi in im.crop((0,y,im.width,y+1)).getextrema())<=16
+            if lisa and ini is None:ini=y
+            if not lisa and ini is not None:
+                if y-ini>mejor[0]:mejor=(y-ini,ini,y)
+                ini=None
+        return dict(alto_px=mejor[0],pct_alto=round(100*mejor[0]/im.height,2),filas=[mejor[1],mejor[2]],
+            metodo='Filas seguidas en que ningún canal varía más de 16 niveles a lo ancho; cuenta el fondo de la ficha y el negro de la app.')
+
+    def cara_en_captura(k,recortes,ancho,alto_im):
+        # Caja de la cara marcada sobre la cruda -cara_caja_cruda-, llevada a la captura por cada recorte que la contiene.
+        if not k:return None
+        cx0,cy0,cx1,cy1=k['caja'];area=0;cajas=[]
+        for r in recortes:
+            if r['cruda']!=k['cruda']:continue
+            x0,y0,x1,y1=r['recorte'];ix0,iy0,ix1,iy1=max(cx0,x0),max(cy0,y0),min(cx1,x1),min(cy1,y1)
+            if ix0>=ix1 or iy0>=iy1:continue
+            e=r['ancho']/(x1-x0);dx,dy=r['destino']
+            b=[round(dx+(ix0-x0)*e),round(dy+(iy0-y0)*e),round(dx+(ix1-x0)*e),round(dy+(iy1-y0)*e)]
+            cajas.append(b);area+=(b[2]-b[0])*(b[3]-b[1])
+        return dict(cruda=k['cruda'],caja_cruda=k['caja'],cajas_captura=cajas,pct_captura=round(100*area/(ancho*alto_im),2),metodo=k['metodo'])
 
     finales=[]
     for c in D['es-419']['capturas']:
@@ -160,7 +189,8 @@ def armar_direccion_11():
             recortes=recs,cajas_texto=cajas,
             texto_pct=round(100*sum(b[2]*b[3] for b in declaradas if b)/area,2),
             interfaz_pct=round(100*sum(r['caja'][2]*r['caja'][3] for r in recs)/area,2),
-            ancho_recorte_max=max(r['ancho_recorte'] for r in recs),escala_min=min(r['escala'] for r in recs),cara=c['cara'])
+            ancho_recorte_max=max(r['ancho_recorte'] for r in recs),escala_min=min(r['escala'] for r in recs),cara=c['cara'],
+            cara_medida=cara_en_captura(c.get('cara_caja_cruda'),c['recortes'],1080,1920),franja_vacia_max=franja_vacia(im))
         procedencia.append(dict(imagen=nombre,textos=[k['que'] for k in cajas[1:]],logo=(REV/('marca-oscura.png' if claro else 'marca-clara.png')).relative_to(REPO).as_posix(),fondo=bg))
         png_estable(im,OUT/f'capturas/es-419/{n:02}.png');finales.append((n,im.convert('RGB')))
 
@@ -172,14 +202,19 @@ def armar_direccion_11():
         reg=dict(reg,color='#29231F');gc.append(dict(que=t,caja=reg.get('caja'),tinta=texto(g,t,reg)))
     # La raya de la marca, bajo el titular, como en la 1.0.
     ImageDraw.Draw(g).line(G['raya'],fill='#9E462E',width=5)
-    rg=pegar(g,G['recorte'],'direccion-1.1/grafico-1024x500-es.png')
+    # 12-11-2026, corrección t166u: el gráfico lleva la lectura detenida y, debajo, el micrófono quieto -dos recortes de 02-espera-a-.
+    # Antes -12-11-2026-: un solo recorte, G['recorte'].
+    rgs=[pegar(g,r,'direccion-1.1/grafico-1024x500-es.png') for r in G['recortes']]
     centro=G['zona_libre']
-    for k in gc+[dict(que='recorte',caja=rg['caja'])]:
+    for k in gc+[dict(que='recorte '+r['cruda'],caja=r['caja']) for r in rgs]:
         b=k.get('tinta') or k['caja']
         bb=[b[0],b[1],b[2],b[3]] if 'tinta' in k else [b[0],b[1],b[0]+b[2],b[1]+b[3]]
         if bb[0]<centro[0]+centro[2] and bb[2]>centro[0] and bb[1]<centro[1]+centro[3] and bb[3]>centro[1]:
             raise ValueError('El gráfico invade la zona del botón de reproducir: '+k['que'])
-    medidas['grafico']=dict(recorte=rg,cajas_texto=gc,zona_libre_centro=centro,
+    bloque=[min(r['caja'][0] for r in rgs),min(r['caja'][1] for r in rgs),max(r['caja'][0]+r['caja'][2] for r in rgs),max(r['caja'][1]+r['caja'][3] for r in rgs)]
+    medidas['grafico']=dict(recortes=rgs,cajas_texto=gc,zona_libre_centro=centro,bloque_interfaz=bloque,
+        a_sangre=dict(derecha=bloque[2]==1024,arriba=bloque[1]==0,abajo=bloque[3]==500),
+        ancho_pct=round(100*(bloque[2]-bloque[0])/1024,2),franja_vacia_bloque=franja_vacia(g.crop(tuple(bloque))),
         texto_pct=round(100*sum(k['caja'][2]*k['caja'][3] for k in gc if k['caja'])/(1024*500),2))
     procedencia.append(dict(imagen='direccion-1.1/grafico-1024x500-es.png',textos=G['titular'],fondo='#F0EAE4'))
     png_estable(g,OUT/'grafico-1024x500-es.png')

@@ -76,32 +76,36 @@
             {
               "cruda": "01-voz-b-lectura-avanza.png",
               "recorte": [
-                495,
-                130,
-                1170,
-                835
+                72,
+                126,
+                1032,
+                880
               ],
               "destino": [
                 0,
                 440
               ],
               "ancho": 1080,
-              "parte": "renglón leído subrayado: «avanza con mi voz, y yo»"
+              "parte": "lectura desde el margen de la app: «Ahora el texto avanza con mi voz,» subrayado",
+              "margen_texto_app": 103,
+              "motivo_escala": "Regla del borde -t166u-: el recorte arranca en el margen izquierdo del texto de la app (x=103) y llega a «avanza con mi voz,»; por eso mide 960 px y no 820. Ampliación 1,125×."
             },
             {
               "cruda": "01-voz-b-lectura-avanza.png",
               "recorte": [
-                360,
-                2035,
-                895,
-                2175
+                72,
+                1829,
+                1032,
+                2391
               ],
               "destino": [
-                112,
-                1633
+                0,
+                1288
               ],
-              "ancho": 856,
-              "parte": "micrófono verde y tiempo"
+              "ancho": 1080,
+              "parte": "micrófono verde y tiempo «00:13 / 00:30», pegado bajo la lectura con el mismo ancho y la misma escala",
+              "margen_texto_app": 103,
+              "motivo_escala": "Mismo ancho y escala que la lectura, para que sea una sola pieza de la app."
             }
           ],
           "cara": false,
@@ -153,17 +157,36 @@
             {
               "cruda": "02-espera-a-pausa-me-espera.png",
               "recorte": [
-                556,
-                130,
-                1096,
-                850
+                72,
+                118,
+                1100,
+                650
               ],
               "destino": [
                 0,
-                480
+                694
               ],
               "ancho": 1080,
-              "parte": "lectura detenida en «pensar, me espera.»"
+              "parte": "lectura detenida desde el margen: «Si me detengo a pensar, me espera.», subrayado parado en «me»",
+              "margen_texto_app": 106,
+              "motivo_escala": "Regla del borde -t166u-: el recorte arranca en el margen izquierdo del texto de la app (x=106) y llega a «pensar, me espera.»; por eso mide 1028 px y no 820. Ampliación 1,051×."
+            },
+            {
+              "cruda": "02-espera-a-pausa-me-espera.png",
+              "recorte": [
+                72,
+                1796,
+                1100,
+                2431
+              ],
+              "destino": [
+                0,
+                1253
+              ],
+              "ancho": 1080,
+              "parte": "micrófono quieto, sin halo, y tiempo detenido «00:18 / 00:28», bajo la lectura con el mismo ancho y la misma escala",
+              "margen_texto_app": 106,
+              "motivo_escala": "Mismo ancho y escala que la lectura, para que sea una sola pieza de la app."
             }
           ],
           "cara": false,
@@ -221,22 +244,24 @@
             "Sigo, encima",
             "de tu cámara."
           ],
-          "bajada": "Lees encima de la cámara u otra app",
+          "bajada": "Lees encima de la cámara u otra app.",
           "recortes": [
             {
               "cruda": "03-flotante-a-sobre-la-camara.png",
               "recorte": [
                 0,
-                585,
-                750,
-                1585
+                122,
+                1220,
+                2509
               ],
               "destino": [
-                0,
+                172,
                 480
               ],
-              "ancho": 1080,
-              "parte": "ventana flotante con el guion sobre la cámara del teléfono"
+              "ancho": 736,
+              "parte": "banda de Sigo con el guion sobre la app de cámara: botón rojo de grabar y tiempo 00:09; la cara, detrás y chica",
+              "margen_texto_app": 93,
+              "motivo_escala": "Javier -t166u- pide ver a la vez la banda, el botón de grabar y la cara más chica: hace falta la pantalla entera de ancho, reducida a 0,603×."
             }
           ],
           "cara": true,
@@ -282,9 +307,19 @@
             "caja": [
               64,
               413,
-              590,
+              599,
               45
             ]
+          },
+          "cara_caja_cruda": {
+            "cruda": "03-flotante-a-sobre-la-camara.png",
+            "caja": [
+              440,
+              640,
+              1070,
+              1580
+            ],
+            "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima; cuenta también la parte que queda detrás de la banda. Se lleva a la captura con el recorte y la escala."
           }
         },
         {
@@ -297,19 +332,38 @@
           "bajada": "Con las palabras de tu guion, al ritmo de tu voz.",
           "recortes": [
             {
-              "cruda": "05-subtitulos-c-video-guardado.png",
+              "cruda": "05-subtitulos-a-video-guardado.png",
               "recorte": [
-                285,
-                1190,
-                1005,
-                2150
+                130,
+                700,
+                1090,
+                1760
+              ],
+              "destino": [
+                199,
+                480
+              ],
+              "ancho": 682,
+              "parte": "video guardado con subtítulos rojos palabra por palabra -«algo» resaltado-; la cara entera y chica",
+              "margen_texto_app": 160,
+              "motivo_escala": "05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u."
+            },
+            {
+              "cruda": "05-subtitulos-d-visor-guardar-agrupado.png",
+              "recorte": [
+                56,
+                1830,
+                1164,
+                2535
               ],
               "destino": [
                 0,
-                480
+                1233
               ],
               "ancho": 1080,
-              "parte": "video guardado con subtítulos palabra por palabra"
+              "parte": "control que produce los subtítulos: «Subtítulos Rojo», «Filtro Natural», «Guardar» y «Guardar y compartir»",
+              "margen_texto_app": 90,
+              "motivo_escala": "El panel entero de 05-d, de borde a borde, para que «Subtítulos Rojo» y los dos botones de guardar entren sin cortar."
             }
           ],
           "cara": true,
@@ -358,6 +412,16 @@
               766,
               43
             ]
+          },
+          "cara_caja_cruda": {
+            "cruda": "05-subtitulos-a-video-guardado.png",
+            "caja": [
+              390,
+              720,
+              840,
+              1320
+            ],
+            "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima."
           }
         }
       ],
@@ -366,21 +430,43 @@
           "Te espera.",
           "Sigue contigo."
         ],
-        "recorte": {
-          "cruda": "01-voz-b-lectura-avanza.png",
-          "recorte": [
-            495,
-            135,
-            1035,
-            705
-          ],
-          "destino": [
-            630,
-            60
-          ],
-          "ancho": 360,
-          "parte": "renglón en ámbar «avanza con mi voz,» subrayado"
-        },
+        "recortes": [
+          {
+            "cruda": "02-espera-a-pausa-me-espera.png",
+            "recorte": [
+              564,
+              118,
+              1099,
+              560
+            ],
+            "destino": [
+              600,
+              0
+            ],
+            "ancho": 424,
+            "parte": "lectura detenida: «pensar, me espera.», con el subrayado parado en «me»",
+            "margen_texto_app": 106,
+            "motivo_escala": "A sangre arriba y a la derecha, desde el borde de la zona libre -x 600- hasta x 1024; con el micrófono, también abajo.",
+            "excepcion_borde": "El recorte arranca en «pensar,», no en el margen de la app: desde el margen, el renglón «Si me detengo a pensar, me espera.» mide 1028 px de cruda y en 424 px quedaría a 0,41×, ilegible a 270 px. Cada renglón visible empieza con palabra entera -«pensar,», «sigue», «sola»- y solo se corta por la derecha."
+          },
+          {
+            "cruda": "02-espera-a-pausa-me-espera.png",
+            "recorte": [
+              370,
+              2008,
+              905,
+              2197
+            ],
+            "destino": [
+              600,
+              350
+            ],
+            "ancho": 424,
+            "parte": "micrófono quieto y tiempo detenido «00:18 / 00:28», bajo la lectura, a la misma escala",
+            "margen_texto_app": 382,
+            "motivo_escala": "Misma escala que la lectura -0,79×-; cierra el bloque a sangre hasta abajo."
+          }
+        ],
         "logo": {
           "x": 56,
           "y": 48,

@@ -23,6 +23,7 @@ parser.add_argument('--alcance', choices=['todo', '1.0', '1.1'], default='todo')
 args = parser.parse_args()
 manifest = json.loads((FICHA/'aprobacion-20261030/manifiesto-repositorio.json').read_text(encoding='utf-8'))
 errores = []
+avisos = []
 sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 
 def huella(path, expected, label):
@@ -115,7 +116,28 @@ def comprobar_11():
         if not any(e.get('cruda', '').endswith(r['cruda']) and e.get('recorte_cruda') == r['recorte'] and e.get('imagen') == nombre
                    and e.get('sha256_cruda') == sha(crudas/r['cruda']) for e in procedencia):
             errores.append('Falta en procedencia.json: '+nombre+' '+r['cruda'])
-        return dict(ancho=x1-x0, escala=escala, area=r['ancho']*alto)
+        # 12-11-2026, corrección t166u -regla del borde-: el recorte arranca en el margen izquierdo del texto de la app,
+        # salvo excepción declarada y explicada, que se informa como aviso.
+        if 'margen_texto_app' in r and x0 > r['margen_texto_app']:
+            if r.get('excepcion_borde'): avisos.append('Regla del borde con excepción declarada: '+nombre+': '+r['excepcion_borde'])
+            else: errores.append('El recorte corta por la izquierda el texto de la app: '+nombre+' '+r['cruda'])
+        return dict(ancho=x1-x0, escala=escala, area=r['ancho']*alto, alto=alto, r=r)
+    def franja_vacia(im):
+        # Igual que armar_ficha.py: filas seguidas en que ningún canal varía más de 16 niveles a lo ancho.
+        mejor = 0; ini = None
+        for y in range(im.height+1):
+            lisa = y < im.height and max(hi-lo for lo, hi in im.crop((0, y, im.width, y+1)).getextrema()) <= 16
+            if lisa and ini is None: ini = y
+            if not lisa and ini is not None: mejor = max(mejor, y-ini); ini = None
+        return mejor
+    def cara_pct(k, recortes):
+        cx0, cy0, cx1, cy1 = k['caja']; area = 0
+        for r in recortes:
+            if r['cruda'] != k['cruda']: continue
+            x0, y0, x1, y1 = r['recorte']; e = r['ancho']/(x1-x0)
+            w = min(cx1, x1)-max(cx0, x0); h = min(cy1, y1)-max(cy0, y0)
+            if w > 0 and h > 0: area += round(w*e)*round(h*e)
+        return area/(1080*1920)
     for c in D['es-419']['capturas']:
         nombre = f'direccion-1.1/capturas/es-419/{c["n"]:02}.png'; path = FICHA/nombre
         with Image.open(path) as im:
@@ -123,8 +145,17 @@ def comprobar_11():
                 errores.append('Formato de captura incorrecto: '+nombre)
             final = im.convert('RGB')
         rs = [recorte_fiel(final, r, nombre) for r in c['recortes']]
-        if c['n'] <= 5 and any(r['ancho'] > 820 or r['escala'] < 1.3 for r in rs):
-            errores.append('Interfaz sin ampliar 1,3 veces -recorte de más de 820 px-: '+nombre)
+        # Antes -12-11-2026-: todo recorte de más de 820 px o de menos de 1,3× era error. Desde la corrección t166u,
+        # la regla del borde y el encuadre de la cámara pueden pedir más ancho: se acepta solo con motivo_escala, como aviso.
+        for x in rs:
+            if c['n'] <= 5 and (x['ancho'] > 820 or x['escala'] < 1.3):
+                if x['r'].get('motivo_escala'): avisos.append(f'Recorte de {x["ancho"]} px a {x["escala"]:.3f}×: {nombre}: {x["r"]["motivo_escala"]}')
+                else: errores.append('Interfaz sin ampliar 1,3 veces -recorte de más de 820 px-: '+nombre)
+        franja = franja_vacia(final)
+        if franja > 0.15*1920: errores.append(f'Franja sin contenido de {franja} px, más de 15 % del alto: '+nombre)
+        if c['cara']:
+            if not c.get('cara_caja_cruda'): errores.append('Cara sin medir: '+nombre)
+            elif cara_pct(c['cara_caja_cruda'], c['recortes']) >= 0.25: errores.append('La cara ocupa 25 % o más: '+nombre)
         cajas = [c['logo']['caja']]+[t['caja'] for t in c['textos_titular']]+([c['texto_bajada']['caja']] if c.get('bajada') else [])
         if any(k is None for k in cajas): errores.append('Caja de texto sin declarar: '+nombre)
         texto = sum(k[2]*k[3] for k in cajas if k)/(1080*1920)
@@ -136,7 +167,13 @@ def comprobar_11():
     G = D['es-419']['grafico']; gp = DIR11/'grafico-1024x500-es.png'
     with Image.open(gp) as im:
         if im.size != (1024, 500) or im.mode != 'RGB' or 'transparency' in im.info: errores.append('Formato de gráfico incorrecto: dirección 1.1')
-        recorte_fiel(im.convert('RGB'), G['recorte'], 'direccion-1.1/grafico-1024x500-es.png')
+        # Antes -12-11-2026-: un solo recorte, G['recorte']. Ahora la lectura y el micrófono, en G['recortes'].
+        zx, zy, zw, zh = G['zona_libre']
+        for r in G['recortes']:
+            x = recorte_fiel(im.convert('RGB'), r, 'direccion-1.1/grafico-1024x500-es.png'); dx, dy = r['destino']
+            if dx < zx+zw and dx+r['ancho'] > zx and dy < zy+zh and dy+x['alto'] > zy:
+                errores.append('El gráfico invade la zona del botón de reproducir: '+r['cruda'])
+        if max(r['destino'][0]+r['ancho'] for r in G['recortes']) != 1024: errores.append('El recorte del gráfico no llega al borde derecho')
     palabras(' '.join(G['titular']), 'gráfico 1.1')
     for lang, ops in D['breves'].items():
         if len(ops) != 3: errores.append('Deben ser tres breves: '+lang)
@@ -163,7 +200,7 @@ if args.alcance in ('todo', '1.1'):
 result = {'pillow': Image.__version__, 'python': platform.python_version(), 'sistema': platform.system(),
           'freetype': features.version('freetype2'), 'zlib': zlib.ZLIB_VERSION,
           'salidas_aprobadas': len(manifest['salidas']), 'tabletas_conservadas': len(manifest['tabletas']),
-          'entradas': len(manifest['entradas']), 'alcance': args.alcance, 'regeneracion_verificada': bool(args.generada), 'diferencias_regeneracion': differences, 'errores': errores}
+          'entradas': len(manifest['entradas']), 'alcance': args.alcance, 'regeneracion_verificada': bool(args.generada), 'diferencias_regeneracion': differences, 'avisos': avisos, 'errores': errores}
 if args.informe:
     args.informe.write_text(json.dumps(result, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
 print(json.dumps(result, ensure_ascii=False, indent=2))
