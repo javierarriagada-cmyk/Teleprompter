@@ -58,5 +58,450 @@
     "guiones": ["Backup opcional", "Seu roteiro, do seu jeito"],
     "alts": ["Sigo pronto para ler um roteiro com acompanhamento de voz.", "Roteiro no Sigo com a imagem da câmera em uma janela pequena.", "Vídeo com legendas e seletor de estilo de legendas do Sigo.", "Controle por gestos: palma para pausar ou continuar e V para encerrar em pausa.", "Prévia do vídeo com o filtro P&B e a faixa de filtros do Sigo.", "Velocidade fixa selecionada, com controle de velocidade e prévia do texto.", "Editor de roteiros e cartão de backup opcional com o Google.", "Gravação na horizontal com o roteiro sobre a imagem da câmera."],
     "completa": "Você fala. O Sigo segue você.\n\nLeia seu roteiro no seu ritmo enquanto grava um vídeo, prepara uma aula ou ensaia uma apresentação. O Sigo acompanha sua voz: o texto avança com você e espera quando você faz uma pausa.\n\nSEU ROTEIRO E SUA IMAGEM\nGrave com a câmera frontal ou traseira, na vertical ou na horizontal. Veja sua imagem atrás do texto, em uma janela que você pode mover, ou deixe a imagem oculta enquanto grava. Você também pode ler sem gravar.\n\nDO ROTEIRO AO VÍDEO, COM LEGENDAS\nAs legendas usam as palavras do seu roteiro e o tempo da sua voz. Escolha entre três estilos, confira o resultado e salve o vídeo na galeria ou compartilhe. Experimente seis filtros e veja como seu vídeo vai ficar antes de salvar.\n\nCONTROLE O TAKE NO SEU RITMO\nPause e continue quando precisar: as pausas da gravação ficam fora do vídeo. Com o controle por gestos e a câmera frontal, mostre a palma da mão para pausar ou continuar. Durante a pausa, faça o V para encerrar o take.\n\nLEIA DO SEU JEITO\nAjuste o tamanho do texto, a fonte, a largura e as cores. Use negrito, cores e destaques no roteiro. As anotações entre colchetes ou parênteses ficam fora da leitura e das legendas. Você também tem modo espelho e leitura com velocidade fixa.\n\nSEUS ROTEIROS, COM VOCÊ\nEscreva, cole um texto ou importe arquivos .txt, .md e .docx. Você pode usar o Sigo sem entrar em uma conta. Para fazer backup dos roteiros e recuperá-los em outro celular, entre com o Google.\n\nCOMECE NO SEU RITMO\nSem assinatura, a leitura com acompanhamento de voz e a gravação têm limites de tempo por sessão, e os vídeos salvos incluem marca d’água. A leitura com velocidade fixa sem câmera não tem limite de tempo. Com o Sigo+, você lê com acompanhamento de voz e grava sem limite de tempo, e salva os vídeos sem marca d’água. Há planos mensal e anual; as condições são mostradas antes da contratação.\n\nNO SEU IDIOMA\nInterface e acompanhamento de voz em português, espanhol e inglês. O reconhecimento de voz e de gestos acontece no celular. Depois de baixar o reconhecimento do seu idioma, você pode usar essas funções sem conexão. O backup e o gerenciamento da assinatura precisam de internet.\n\nPara seus vídeos, aulas, palestras e apresentações. O Sigo segue você."
+  },
+  "direccion-1.1": {
+    "nota": "Dirección de la fase 1 de la ficha 1.1 (12-11-2026). No reemplaza la ficha canónica de 1.0: armar_ficha.py la escribe en <salida>/direccion-1.1/. Cajas en px [x, y, ancho, alto] sobre la imagen final; recortes [x0, y0, x1, y1] sobre la cruda.",
+    "crudas": "entradas/motorola-1.1/es",
+    "es-419": {
+      "capturas": [
+        {
+          "n": 1,
+          "fondo": "claro",
+          "titular": [
+            "Tú hablas.",
+            "Sigo te sigue."
+          ],
+          "bajada": null,
+          "recortes": [
+            {
+              "cruda": "01-voz-b-lectura-avanza.png",
+              "recorte": [
+                495,
+                130,
+                1170,
+                835
+              ],
+              "destino": [
+                0,
+                440
+              ],
+              "ancho": 1080,
+              "parte": "renglón leído subrayado: «avanza con mi voz, y yo»"
+            },
+            {
+              "cruda": "01-voz-b-lectura-avanza.png",
+              "recorte": [
+                360,
+                2035,
+                895,
+                2175
+              ],
+              "destino": [
+                112,
+                1633
+              ],
+              "ancho": 856,
+              "parte": "micrófono verde y tiempo"
+            }
+          ],
+          "cara": false,
+          "logo": {
+            "x": 66,
+            "y": 60,
+            "alto": 60,
+            "caja": [
+              66,
+              60,
+              118,
+              60
+            ]
+          },
+          "textos_titular": [
+            {
+              "x": 66,
+              "base": 262,
+              "tam": 112,
+              "caja": [
+                62,
+                175,
+                505,
+                93
+              ]
+            },
+            {
+              "x": 66,
+              "base": 382,
+              "tam": 112,
+              "caja": [
+                62,
+                299,
+                642,
+                111
+              ]
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "fondo": "oscuro",
+          "titular": [
+            "Te detienes.",
+            "Sigo te espera."
+          ],
+          "bajada": "Cuando vuelves, sigue contigo, sin tocar la pantalla.",
+          "recortes": [
+            {
+              "cruda": "02-espera-a-pausa-me-espera.png",
+              "recorte": [
+                556,
+                130,
+                1096,
+                850
+              ],
+              "destino": [
+                0,
+                480
+              ],
+              "ancho": 1080,
+              "parte": "lectura detenida en «pensar, me espera.»"
+            }
+          ],
+          "cara": false,
+          "logo": {
+            "x": 66,
+            "y": 60,
+            "alto": 60,
+            "caja": [
+              66,
+              60,
+              118,
+              60
+            ]
+          },
+          "textos_titular": [
+            {
+              "x": 66,
+              "base": 262,
+              "tam": 112,
+              "caja": [
+                62,
+                179,
+                589,
+                89
+              ]
+            },
+            {
+              "x": 66,
+              "base": 382,
+              "tam": 112,
+              "caja": [
+                62,
+                299,
+                711,
+                111
+              ]
+            }
+          ],
+          "texto_bajada": {
+            "x": 68,
+            "base": 446,
+            "tam": 38,
+            "caja": [
+              64,
+              415,
+              839,
+              43
+            ]
+          }
+        },
+        {
+          "n": 3,
+          "fondo": "claro",
+          "titular": [
+            "Sigo, encima",
+            "de tu cámara."
+          ],
+          "bajada": "Lees encima de la cámara u otra app",
+          "recortes": [
+            {
+              "cruda": "03-flotante-a-sobre-la-camara.png",
+              "recorte": [
+                0,
+                585,
+                750,
+                1585
+              ],
+              "destino": [
+                0,
+                480
+              ],
+              "ancho": 1080,
+              "parte": "ventana flotante con el guion sobre la cámara del teléfono"
+            }
+          ],
+          "cara": true,
+          "logo": {
+            "x": 66,
+            "y": 60,
+            "alto": 60,
+            "caja": [
+              66,
+              60,
+              118,
+              60
+            ]
+          },
+          "textos_titular": [
+            {
+              "x": 66,
+              "base": 262,
+              "tam": 112,
+              "caja": [
+                62,
+                179,
+                622,
+                111
+              ]
+            },
+            {
+              "x": 66,
+              "base": 382,
+              "tam": 112,
+              "caja": [
+                62,
+                295,
+                668,
+                93
+              ]
+            }
+          ],
+          "texto_bajada": {
+            "x": 68,
+            "base": 446,
+            "tam": 38,
+            "caja": [
+              64,
+              413,
+              590,
+              45
+            ]
+          }
+        },
+        {
+          "n": 5,
+          "fondo": "claro",
+          "titular": [
+            "Tu video,",
+            "con subtítulos."
+          ],
+          "bajada": "Con las palabras de tu guion, al ritmo de tu voz.",
+          "recortes": [
+            {
+              "cruda": "05-subtitulos-c-video-guardado.png",
+              "recorte": [
+                285,
+                1190,
+                1005,
+                2150
+              ],
+              "destino": [
+                0,
+                480
+              ],
+              "ancho": 1080,
+              "parte": "video guardado con subtítulos palabra por palabra"
+            }
+          ],
+          "cara": true,
+          "logo": {
+            "x": 66,
+            "y": 60,
+            "alto": 60,
+            "caja": [
+              66,
+              60,
+              118,
+              60
+            ]
+          },
+          "textos_titular": [
+            {
+              "x": 66,
+              "base": 262,
+              "tam": 112,
+              "caja": [
+                62,
+                179,
+                449,
+                108
+              ]
+            },
+            {
+              "x": 66,
+              "base": 382,
+              "tam": 112,
+              "caja": [
+                62,
+                295,
+                726,
+                93
+              ]
+            }
+          ],
+          "texto_bajada": {
+            "x": 68,
+            "base": 446,
+            "tam": 38,
+            "caja": [
+              64,
+              415,
+              766,
+              43
+            ]
+          }
+        }
+      ],
+      "grafico": {
+        "titular": [
+          "Te espera.",
+          "Sigue contigo."
+        ],
+        "recorte": {
+          "cruda": "01-voz-b-lectura-avanza.png",
+          "recorte": [
+            495,
+            135,
+            1035,
+            705
+          ],
+          "destino": [
+            630,
+            60
+          ],
+          "ancho": 360,
+          "parte": "renglón en ámbar «avanza con mi voz,» subrayado"
+        },
+        "logo": {
+          "x": 56,
+          "y": 48,
+          "alto": 52,
+          "caja": [
+            56,
+            48,
+            102,
+            52
+          ]
+        },
+        "textos_titular": [
+          {
+            "x": 54,
+            "base": 224,
+            "tam": 60,
+            "caja": [
+              50,
+              181,
+              274,
+              59
+            ]
+          },
+          {
+            "x": 54,
+            "base": 298,
+            "tam": 60,
+            "caja": [
+              50,
+              252,
+              372,
+              62
+            ]
+          }
+        ],
+        "zona_libre": [
+          424,
+          140,
+          176,
+          220
+        ],
+        "raya": [
+          57,
+          340,
+          150,
+          340
+        ]
+      }
+    },
+    "breves": {
+      "es-419": [
+        {
+          "papel": "control",
+          "texto": "Teleprompter que sigue tu voz: el texto avanza mientras lees en voz alta.",
+          "respaldo": "La breve publicada (textos-es-419.txt). En Ads, «Teleprompter que sigue tu voz» dio 0 instalaciones en 80 impresiones."
+        },
+        {
+          "papel": "B",
+          "texto": "Tú hablas, Sigo te sigue. Si te detienes, el texto te espera.",
+          "respaldo": "«Tú hablas. Sigo te sigue.» 35,7 inst./1000 impr. y el menor costo por instalación; «Te espera si te detienes» 33,8 y 18 instalaciones. Nombra a Sigo."
+        },
+        {
+          "papel": "C",
+          "texto": "Te sales del guion o te detienes, y Sigo te espera. Al volver, sigue contigo.",
+          "respaldo": "«Te sales, vuelves y te sigue» 40,0 inst./1000 impr., el más alto; «Te espera si te detienes» 33,8. Nombra a Sigo."
+        }
+      ],
+      "en-US": [
+        {
+          "papel": "control",
+          "texto": "A teleprompter that follows your voice: the script moves as you read aloud.",
+          "respaldo": "La breve publicada (textos-en-US.txt)."
+        },
+        {
+          "papel": "B",
+          "texto": "You speak, Sigo follows. If you pause, the script waits for you.",
+          "respaldo": "Mismo dato que la B en español."
+        },
+        {
+          "papel": "C",
+          "texto": "Go off script or pause, and Sigo waits. When you come back, it follows you.",
+          "respaldo": "Mismo dato que la C en español."
+        }
+      ],
+      "pt-BR": [
+        {
+          "papel": "control",
+          "texto": "Teleprompter que segue sua voz: o texto anda enquanto você lê em voz alta.",
+          "respaldo": "La breve publicada (textos-pt-BR.txt)."
+        },
+        {
+          "papel": "B",
+          "texto": "Você fala, o Sigo segue você. Se você parar, o texto espera.",
+          "respaldo": "Mismo dato que la B en español."
+        },
+        {
+          "papel": "C",
+          "texto": "Se você sai do roteiro ou para, o Sigo espera. Quando volta, segue com você.",
+          "respaldo": "Mismo dato que la C en español."
+        }
+      ]
+    },
+    "lamina": {
+      "referentes": [
+        {
+          "nombre": "Referente A: teleprompter con seguimiento de voz",
+          "archivos": [
+            "referentes/voice-follow-full-01.png",
+            "referentes/voice-follow-full-02.png",
+            "referentes/voice-follow-full-03.png"
+          ]
+        },
+        {
+          "nombre": "Referente B: editor de video de primer nivel",
+          "archivos": [
+            "referentes/capcut-full-01.png",
+            "referentes/capcut-full-02.png",
+            "referentes/capcut-full-03.png"
+          ]
+        }
+      ]
+    }
   }
 }

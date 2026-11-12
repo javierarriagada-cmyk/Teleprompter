@@ -1,0 +1,169 @@
+[
+  {
+    "imagen": "direccion-1.1/capturas/es-419/01.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/01-voz-b-lectura-avanza.png",
+    "sha256_cruda": "5213b95ddbf68dc3add777de6beaee9c7fd18264b0d0bd38bb8ab6de00fa74cf",
+    "recorte_cruda": [
+      495,
+      130,
+      1170,
+      835
+    ],
+    "caja_destino": [
+      0,
+      440,
+      1080,
+      1128
+    ],
+    "escala": 1.6,
+    "parte": "renglón leído subrayado: «avanza con mi voz, y yo»",
+    "tratamiento": "Recorte y escala proporcional LANCZOS. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte."
+  },
+  {
+    "imagen": "direccion-1.1/capturas/es-419/01.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/01-voz-b-lectura-avanza.png",
+    "sha256_cruda": "5213b95ddbf68dc3add777de6beaee9c7fd18264b0d0bd38bb8ab6de00fa74cf",
+    "recorte_cruda": [
+      360,
+      2035,
+      895,
+      2175
+    ],
+    "caja_destino": [
+      112,
+      1633,
+      856,
+      224
+    ],
+    "escala": 1.6,
+    "parte": "micrófono verde y tiempo",
+    "tratamiento": "Recorte y escala proporcional LANCZOS. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte."
+  },
+  {
+    "imagen": "direccion-1.1/capturas/es-419/01.png",
+    "textos": [
+      "Tú hablas.",
+      "Sigo te sigue."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-oscura.png",
+    "fondo": "#F0EAE4"
+  },
+  {
+    "imagen": "direccion-1.1/capturas/es-419/02.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/02-espera-a-pausa-me-espera.png",
+    "sha256_cruda": "fe054113106345d6da9f716f0903ab735fc1a39e61665ae3fdeb034a54f15de9",
+    "recorte_cruda": [
+      556,
+      130,
+      1096,
+      850
+    ],
+    "caja_destino": [
+      0,
+      480,
+      1080,
+      1440
+    ],
+    "escala": 2.0,
+    "parte": "lectura detenida en «pensar, me espera.»",
+    "tratamiento": "Recorte y escala proporcional LANCZOS. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte."
+  },
+  {
+    "imagen": "direccion-1.1/capturas/es-419/02.png",
+    "textos": [
+      "Te detienes.",
+      "Sigo te espera.",
+      "Cuando vuelves, sigue contigo, sin tocar la pantalla."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-clara.png",
+    "fondo": "#171412"
+  },
+  {
+    "imagen": "direccion-1.1/capturas/es-419/03.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/03-flotante-a-sobre-la-camara.png",
+    "sha256_cruda": "c5bd00d7434918f61750cd59d7e16067dc7ec892f69b99a57fd3a8ba61fd9843",
+    "recorte_cruda": [
+      0,
+      585,
+      750,
+      1585
+    ],
+    "caja_destino": [
+      0,
+      480,
+      1080,
+      1440
+    ],
+    "escala": 1.44,
+    "parte": "ventana flotante con el guion sobre la cámara del teléfono",
+    "tratamiento": "Recorte y escala proporcional LANCZOS. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte."
+  },
+  {
+    "imagen": "direccion-1.1/capturas/es-419/03.png",
+    "textos": [
+      "Sigo, encima",
+      "de tu cámara.",
+      "Lees encima de la cámara u otra app"
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-oscura.png",
+    "fondo": "#F0EAE4"
+  },
+  {
+    "imagen": "direccion-1.1/capturas/es-419/05.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-c-video-guardado.png",
+    "sha256_cruda": "def95f637a049249e81cc4cf329a0f60921c4bf2300b1f5741e752144cdc8e0f",
+    "recorte_cruda": [
+      285,
+      1190,
+      1005,
+      2150
+    ],
+    "caja_destino": [
+      0,
+      480,
+      1080,
+      1440
+    ],
+    "escala": 1.5,
+    "parte": "video guardado con subtítulos palabra por palabra",
+    "tratamiento": "Recorte y escala proporcional LANCZOS. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte."
+  },
+  {
+    "imagen": "direccion-1.1/capturas/es-419/05.png",
+    "textos": [
+      "Tu video,",
+      "con subtítulos.",
+      "Con las palabras de tu guion, al ritmo de tu voz."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-oscura.png",
+    "fondo": "#F0EAE4"
+  },
+  {
+    "imagen": "direccion-1.1/grafico-1024x500-es.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/01-voz-b-lectura-avanza.png",
+    "sha256_cruda": "5213b95ddbf68dc3add777de6beaee9c7fd18264b0d0bd38bb8ab6de00fa74cf",
+    "recorte_cruda": [
+      495,
+      135,
+      1035,
+      705
+    ],
+    "caja_destino": [
+      630,
+      60,
+      360,
+      380
+    ],
+    "escala": 0.6667,
+    "parte": "renglón en ámbar «avanza con mi voz,» subrayado",
+    "tratamiento": "Recorte y escala proporcional LANCZOS. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte."
+  },
+  {
+    "imagen": "direccion-1.1/grafico-1024x500-es.png",
+    "textos": [
+      "Te espera.",
+      "Sigue contigo."
+    ],
+    "fondo": "#F0EAE4"
+  }
+]

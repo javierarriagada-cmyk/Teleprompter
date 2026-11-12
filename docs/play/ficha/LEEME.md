@@ -1,5 +1,7 @@
 # Ficha de Sigo aprobada el 30-10-2026
 
+> **Rama `fichas-1.1`, 12-11-2026: dirección de la fase 1 de la ficha 1.1, en revisión.** Está en `direccion-1.1/` y se describe al final de este archivo. No reemplaza nada de lo aprobado el 30-10: las capturas, los gráficos, los textos, las tabletas, el ícono y el video canónicos siguen idénticos, y `verificar_ficha.py` los comprueba con las mismas huellas.
+
 Javier aprobó ocho imágenes de teléfono, un gráfico y los textos de cada idioma: es-419, en-US y pt-BR. Se conservan el ícono y las 24 imágenes de tabletas. Esta entrega se envió a revisión por API el 30-10-2026 con autorización de Javier; aún no se ha confirmado su aprobación ni publicación. Evidencia: `envio-20261030.json`.
 
 ## Material para Play
@@ -27,7 +29,7 @@ python -m venv .herramientas/ficha-python
 .herramientas/ficha-python/Scripts/python.exe docs/play/ficha/herramientas/verificar_ficha.py --generada .herramientas/ficha-revision
 ```
 
-El generador produce un paquete de revisión; no sobreescribe la ficha canónica. El comprobador exige igualdad SHA-256 de los 31 archivos aprobados: 24 capturas, tres gráficos, tres textos y el CSV alternativo; también verifica los originales utilizados, las tabletas y el ícono. El mapeo entre el paquete de aprobación y el repositorio está en `aprobacion-20261030/manifiesto-repositorio.json`.
+El generador produce un paquete de revisión; no sobreescribe la ficha canónica. Desde el 12-11-2026 acepta `--alcance 1.0`, `1.1` o `todo` -por defecto-. Lo mismo hace el comprobador. El comprobador exige igualdad SHA-256 de los 31 archivos aprobados: 24 capturas, tres gráficos, tres textos y el CSV alternativo; también verifica los originales utilizados, las tabletas y el ícono. El mapeo entre el paquete de aprobación y el repositorio está en `aprobacion-20261030/manifiesto-repositorio.json`.
 
 Se reprodujeron los 31 archivos idénticos por huella con Pillow 12.0.0. Informe: `aprobacion-20261030/reproduccion-pillow12.json`. Antes de reemplazar material, generar aparte y comparar. Nunca recalcular la lista de aprobación para dar por válido un cambio no aprobado.
 
@@ -48,3 +50,72 @@ El MP4 publicitario no forma parte del repositorio ni de la app. Los originales 
 Antes: `todo.sh`, `componer.cjs`, `armar-textos.cjs` y `lamina.cjs` capturaban o componían la ficha de 2026-10-25 y podían reemplazar la nueva con textos y escenas anteriores. Sus implementaciones se conservan identificadas como historia; los comandos que escribían están bloqueados, y `todo.sh` ahora llama al generador vigente sobre una salida de revisión. `comprobar.cjs` redirige al comprobador actual (variable `PYTHON` para elegir el entorno).
 
 El LEEME y la evidencia anteriores se conservan en `historial/`. `lamina-ficha.png` pertenece a aquella serie y es histórica; no es la revisión de esta entrega. No usar `escenas.cjs`, `titulares.cjs` ni `textos.cjs` históricos como fuentes actuales del teléfono.
+
+## Dirección 1.1, fase 1 -12-11-2026, en revisión-
+
+Es la propuesta en español que Javier revisa antes de la fase 2. **No es material para subir a Play todavía.**
+
+- `direccion-1.1/capturas/es-419/01.png`, `02.png`, `03.png` y `05.png`: 1080×1920, RGB de 24 bits sin alfa.
+- `direccion-1.1/grafico-1024x500-es.png`: 1024×500, RGB sin alfa.
+- `direccion-1.1/descripciones-breves-1.1.txt`: tres breves por idioma, como opciones. La canónica de `textos-*.txt` no cambia.
+- `direccion-1.1/lamina-tamano-real.png`: las cuatro capturas y el gráfico, a tamaño real.
+- `direccion-1.1/lamina-miniaturas-270.png`: las capturas a 270 px de ancho, junto a la 1.0 y a dos referentes.
+- `direccion-1.1/procedencia.json`: de qué cruda, con su SHA-256, y de qué recorte sale cada píxel de interfaz.
+- `direccion-1.1/medidas.json`: ancho del recorte, escala, % de texto por las cajas declaradas y % de interfaz.
+- `direccion-1.1/huellas.json`: huellas propias de esta propuesta, aparte de la aprobación del 30-10.
+- `estudio-referentes-1.1.md`: el estudio de seis fichas reales, hecho antes de componer.
+
+**Fuentes:**
+- Crudas: `herramientas/entradas/motorola-1.1/es/`, las 15 del primer ZIP copiadas tal cual. Las 07-guiones son RGBA en origen; las salidas son RGB.
+- Textos y cajas: `contenidos.json`, clave `direccion-1.1`, agregada al final. La parte aprobada del archivo se comprueba byte a byte contra su huella del 30-10.
+- Referentes de la lámina: `herramientas/entradas/referentes/`. Son capturas públicas de Play, solo para comparar; no van en la ficha.
+
+**Regenerar y comprobar** -mismas huellas en Windows y en Linux, Pillow 12.0.0-:
+
+```powershell
+.herramientas/ficha-python/Scripts/python.exe docs/play/ficha/herramientas/armar_ficha.py --salida .herramientas/ficha-1.1 --alcance 1.1
+.herramientas/ficha-python/Scripts/python.exe docs/play/ficha/herramientas/verificar_ficha.py --generada .herramientas/ficha-1.1 --alcance 1.1
+```
+
+- **Cómo se fijan las huellas:** las PNG de la 1.1 se escriben con el zlib clásico de Python y el filtro Up, para que su SHA-256 no dependa de la máquina. El zlib-ng de Pillow sí da bytes distintos según el equipo.
+- **El comprobador 1.1 revisa:**
+  - las huellas;
+  - que cada recorte coincida píxel a píxel con la cruda escalada;
+  - procedencia, formato y tamaño;
+  - recorte ≤ 820 px y escala ≥ 1,3 en las capturas 1 a 5;
+  - texto < 20 % por las cajas de `contenidos.json`, e interfaz ≥ 50 % en 1 a 3;
+  - titulares de dos renglones y la cara solo en 3, 4 y 5;
+  - las palabras prohibidas, los 80 caracteres de las breves y que la breve de control sea la publicada.
+
+**Antes -12-11-2026-:**
+- `font()` usaba la maquetación de texto de cada sistema. Ahora fija BASIC, la de Pillow en Windows, y no cambia ningún píxel aprobado.
+- Los textos se escribían con el salto de línea del sistema. Ahora van con CRLF explícito, el de las huellas aprobadas.
+- Con esto, en Linux la ficha 1.0 se regenera con textos idénticos por huella y PNG idénticos píxel a píxel (diferencia máxima 0), pero no por huella, por la compresión de Pillow. En Windows, donde se aprobó, la huella sigue siendo la referencia.
+
+**Fase 1, qué es nuevo y qué queda igual:** la dirección cubre las capturas 1, 2, 3 y 5 en español, el gráfico en español y las breves. Sin tocar quedan:
+- las ocho capturas canónicas de cada idioma;
+- los gráficos en inglés y portugués;
+- `textos-*.txt` y el CSV de textos alternativos;
+- las tabletas, el ícono y el video.
+
+Esa parte, de la 1.0, se reemplaza en la fase 2, después del visto bueno de Javier.
+
+### La crítica de la 1.0, repetida sobre la dirección 1.1
+
+| Hallazgo de la 1.0 | En la dirección 1.1 |
+| --- | --- |
+| 🔴 El diferencial -te espera y sigue contigo- no tenía captura | Captura 2, entre las tres primeras: la lectura detenida en «pensar, me espera.», con el subrayado quieto. |
+| 🔴 La pantalla entera dentro de un marco, ilegible en miniatura | Sin marco. Recortes de 540 a 750 px de ancho de la cruda, ampliados de 1,44 a 2 veces. A 270 px se lee la prueba de cada titular: ver `lamina-miniaturas-270.png`. |
+| 🟡 La 02, con un recuadro de unos 60 px y una persona generada | No hay personas generadas. La cara real sale solo en la 3 y la 5, nunca como lo más grande. La escena del recuadro -4- llega terminada en la fase 2. |
+| 🟡 La 06, velocidad fija, era un panel denso | Sale del teléfono y pasa a la descripción, en la fase 2. |
+| 🟡 La 08, horizontal, con una franja útil de 150 px | Sale del teléfono y pasa a las tabletas y a la descripción, en la fase 2. |
+| 🔴 La ventana flotante no existía en la ficha | Captura 3, entre las tres primeras, sin rótulo de «nuevo». |
+| El rótulo chico de arriba a la derecha | Eliminado. |
+| La bajada gris no se leía en miniatura | Es opcional. La 1 no la lleva, y en las demás no hace falta para entender. |
+
+**Lo que todavía se puede mejorar:**
+- En la 2, la mitad de abajo es el negro real de la app.
+- En la 3, la cámara se reconoce por la cara detrás de la ventana translúcida y la barba debajo. El botón de grabar no entra sin achicar la ventana.
+- En el gráfico, el trozo de lectura corta palabras en los bordes, como en las capturas.
+
+**Orden:** se mantiene el del encargo. Como propuesta, sin aplicar: probar la 2 como primera en un experimento de ficha -answer/6227309-. En Ads, «Te sales, vuelves y te sigue» dio 40,0 y «Te espera si te detienes» 33,8, contra 35,7 de «Tú hablas. Sigo te sigue.». Son datos en aprendizaje, así que se probaría una sola cosa a la vez.

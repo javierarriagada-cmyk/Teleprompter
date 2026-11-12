@@ -1,0 +1,39 @@
+{
+  "fecha": "2026-11-12",
+  "nota": "Huellas de la dirección de la fase 1 de la ficha 1.1, generadas con armar_ficha.py --alcance 1.1 (Pillow 12.0.0, PNG escrito con el zlib clásico de Python). Propuesta en revisión: no es la aprobación del 30-10, que sigue en aprobacion-20261030/.",
+  "salidas": {
+    "capturas/es-419/01.png": "0927588c39a35c4677041cc6a00a900990641c4b7afb0ff463fba26813cf70be",
+    "capturas/es-419/02.png": "617feb82ed63d52dbeac82e853fe8abcdafc2ab02a2027f5cb45002fde15894a",
+    "capturas/es-419/03.png": "6c21c0ec8936056ab4b2f1d33939956169b9412807ca69cc15a8e9226e5d7ae3",
+    "capturas/es-419/05.png": "8fb70018d446af72e6b06d22a66b304948b4b13c2bea14b3682d6927382c53c8",
+    "descripciones-breves-1.1.txt": "4d14c4b6b64aa9d7c174e02ba7bcf3f6dacf50c765886a309400a155ac300395",
+    "grafico-1024x500-es.png": "a9154ac0c398bb74fb8072cb12ac47240d72f07c1a53f221b07a1de1dea913a4",
+    "lamina-miniaturas-270.png": "314ecb3f74d43b486b86f78ea291b209c7420969c0a8a3b461d01d4040e290f8",
+    "lamina-tamano-real.png": "2509f108ad226d47f12bfd9c4bcf2ab874bccec40e6c7d079121a9d50bdb46b5",
+    "medidas.json": "fbf37f9fbcac555b40a16df48f171863ebbd4bf07044821fc19ff8242c31aa40",
+    "procedencia.json": "61c1ad257695841556d269c2266b0507bdc7a83a6fa824374ecf7230a347451d"
+  },
+  "crudas": {
+    "entradas/motorola-1.1/es/01-voz-a-lectura-avanza.png": "052b5bd19497b140528345148d74c6d5d806c9175a83c60dcf063b1d24238354",
+    "entradas/motorola-1.1/es/01-voz-b-lectura-avanza.png": "5213b95ddbf68dc3add777de6beaee9c7fd18264b0d0bd38bb8ab6de00fa74cf",
+    "entradas/motorola-1.1/es/02-espera-a-pausa-me-espera.png": "fe054113106345d6da9f716f0903ab735fc1a39e61665ae3fdeb034a54f15de9",
+    "entradas/motorola-1.1/es/02-espera-b-pausa-me-espera.png": "58dd55d56d91e40be9827982290f16914d122a3fda7c95cf55e0165581427b51",
+    "entradas/motorola-1.1/es/03-flotante-a-sobre-la-camara.png": "c5bd00d7434918f61750cd59d7e16067dc7ec892f69b99a57fd3a8ba61fd9843",
+    "entradas/motorola-1.1/es/03-flotante-b-sobre-la-camara.png": "f78d4a1d89182ead2413c664aaa59960b960a83556b5c0ae5461e2a060bdd705",
+    "entradas/motorola-1.1/es/04-recuadro-a-grabando.png": "48007dbc078f45718af72dd6311da3b4cab024c00d14d5958c1e9c27d15ffc7c",
+    "entradas/motorola-1.1/es/04-recuadro-b-grabando.png": "145625852b665551fea3824f24acda66f56f1c92e8630588cd828be0d2d42c7c",
+    "entradas/motorola-1.1/es/05-subtitulos-a-video-guardado.png": "5df9ad9dc0b49590fce648fd34bf31f1156f22e6b4c080fa74ce49911bc7586f",
+    "entradas/motorola-1.1/es/05-subtitulos-b-video-guardado.png": "fdb820d37c6f2a4f6d9f2e63e4f55576b5a70e3fd0e7ee23ece043de3c1817f0",
+    "entradas/motorola-1.1/es/05-subtitulos-c-video-guardado.png": "def95f637a049249e81cc4cf329a0f60921c4bf2300b1f5741e752144cdc8e0f",
+    "entradas/motorola-1.1/es/05-subtitulos-d-visor-guardar-agrupado.png": "abd0fdc36ca8c237b1f2ee597ef7b68d3a1f92df4461be60f298a7aaa1a987b3",
+    "entradas/motorola-1.1/es/07-guiones-a-portada.png": "1a326733080a5dfe98ec9ef5bcb73a13d518f67491354acda0e02d07f9786570",
+    "entradas/motorola-1.1/es/07-guiones-b-ajustes-respaldo.png": "af1a35942e72951bbb0771eda24fedb115b45a2b24ffa3006f99b89522fa991d",
+    "entradas/motorola-1.1/es/07-guiones-c-editor-colores.png": "c211d3e84c2b9bc9f0d34bcf9b2ead44ccd6ea3bfca131500012fe147ccdac30",
+    "entradas/referentes/capcut-full-01.png": "24d925d7381841d18f87665b25c9a2992ec57b22949779df54418b77ec2d6f9c",
+    "entradas/referentes/capcut-full-02.png": "6cb41af77cddadd7d634a4b7ee9cd2600227567b43d348d5c33299a82e7185bb",
+    "entradas/referentes/capcut-full-03.png": "e6ccb7f592491ff09bbcb700a7ae70534db47dca1f15a1ce89400b4573f6083a",
+    "entradas/referentes/voice-follow-full-01.png": "644c1ad02271d082a0da4b3074f1b753479e569e1d4aea47b3b2623d9cbe8ebd",
+    "entradas/referentes/voice-follow-full-02.png": "c87c823ee322dd8b73668ff01dfd22beaa705071f1600037158e53d2487f7675",
+    "entradas/referentes/voice-follow-full-03.png": "7c61b4049f66e16825bb407a5da6809ff2b21d8832cfaccc2d0edc2fe0866d83"
+  }
+}
