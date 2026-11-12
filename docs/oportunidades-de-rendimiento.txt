@@ -1,0 +1,44 @@
+OPORTUNIDADES DE RENDIMIENTO PARA SIGO
+
+Estas son oportunidades de mejora, no defectos confirmados: no se midieron en un
+teléfono durante esta revisión. El beneficio comercial esperado debe comprobarse
+con guiones reales y sin mover los umbrales existentes.
+
+1. GUIONES LARGOS SIN TIRONES — IMPACTO ALTO / ESFUERZO BAJO
+   En src/components/TeleprompterView.tsx, el render de cada línea vuelve a filtrar
+   la lista completa de tokens para quedarse con los de ese bloque y renglón.
+   Indexar los tokens por bloque y renglón en una pasada evitaría repetir ese trabajo
+   al dibujar el texto. Es la oportunidad recomendada para implementar primero:
+   la lectura de charlas y clases largas es el uso central de Sigo.
+   Medir el tiempo de render y la fluidez con guiones cortos y largos, manteniendo
+   iguales los resultados del seguimiento y la geometría de lectura.
+
+2. BIBLIOTECA LISTA MÁS RÁPIDO — IMPACTO MEDIO / ESFUERZO BAJO
+   src/App.tsx importa EditorView de forma estática, y EditorView usa Tiptap.
+   Cargar el editor solo al entrar a editar podría reducir el trabajo inicial de
+   preparar la app, sin retrasar la biblioteca. Confirmar el cambio con el tiempo
+   hasta poder abrir la biblioteca y luego abrir el editor.
+
+3. GUIONES EXTENSOS CON MENOS MEMORIA — IMPACTO ALTO / ESFUERZO ALTO
+   src/components/TeleprompterView.tsx dibuja los bloques y líneas del guion
+   completo. Evaluar renderizar solo una ventana alrededor de la lectura podría
+   reducir nodos y memoria en guiones extensos. Es una investigación de mayor riesgo:
+   no se debe perder la geometría, el lugar de lectura ni la continuidad al avanzar.
+   Medir memoria y fluidez en Android, verificando el recorrido completo del guion.
+
+4. MENOS CONSUMO MIENTRAS LA LECTURA ESTÁ QUIETA — IMPACTO MEDIO / ESFUERZO MEDIO
+   El lazo de requestAnimationFrame de src/components/TeleprompterView.tsx vuelve a
+   programarse en cada cuadro. Revisar si puede dormir cuando la pantalla está lista
+   o en pausa, y despertar al reanudar, podría ahorrar trabajo y batería durante
+   sesiones largas. Medir consumo y confirmar que al volver no haya saltos.
+
+5. VIDEO ESTABLE EN MÁS TELÉFONOS — IMPACTO MEDIO / ESFUERZO ALTO
+   src/lib/camara.ts ofrece 1080p, 720p y 480p; 4K se excluye porque puede provocar
+   limitación térmica y pérdida de cuadros. Medir fluidez, temperatura, batería y
+   espacio usado por calidad en varios teléfonos antes de evaluar una recomendación
+   automática. No cambiar la calidad por omisión ni sacrificar imagen sin aprobación.
+
+ALCANCE DE ESTA PROPUESTA
+   El primer trabajo a evaluar es el índice de tokens por renglón del punto 1.
+   La mejora queda pendiente de medición en Android; esta propuesta no modifica la
+   app ni afirma una ganancia ya comprobada.
