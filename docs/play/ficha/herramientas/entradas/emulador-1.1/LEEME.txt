@@ -1,0 +1,12 @@
+CRUDAS DE TABLETA DE SIGO 1.1 (808), 12-11-2026
+
+Sacadas en el emulador de Android 36, en horizontal, con guiones de prueba y sin datos personales.
+- tableta-10/: 2560×1600.
+- tableta-7/: 1920×1200.
+Cada una trae es/, en/ y pt/, con cuatro capturas:
+- 1-portada: la portada, con «Continuar con este guion».
+- 2-editor-colores: el editor con el guion en colores.
+- 3-antes-de-leer: la pantalla de lectura con los controles a los lados.
+- 4-lectura-avanza: la lectura en curso, con el renglón ámbar subrayado. El texto se avanzó a mano.
+
+Vienen en 16:10, con la barra de estado arriba y la barra de tareas del sistema abajo, con íconos de otras apps.

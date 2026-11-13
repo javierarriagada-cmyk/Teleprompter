@@ -58,5 +58,2988 @@
     "guiones": ["Backup opcional", "Seu roteiro, do seu jeito"],
     "alts": ["Sigo pronto para ler um roteiro com acompanhamento de voz.", "Roteiro no Sigo com a imagem da câmera em uma janela pequena.", "Vídeo com legendas e seletor de estilo de legendas do Sigo.", "Controle por gestos: palma para pausar ou continuar e V para encerrar em pausa.", "Prévia do vídeo com o filtro P&B e a faixa de filtros do Sigo.", "Velocidade fixa selecionada, com controle de velocidade e prévia do texto.", "Editor de roteiros e cartão de backup opcional com o Google.", "Gravação na horizontal com o roteiro sobre a imagem da câmera."],
     "completa": "Você fala. O Sigo segue você.\n\nLeia seu roteiro no seu ritmo enquanto grava um vídeo, prepara uma aula ou ensaia uma apresentação. O Sigo acompanha sua voz: o texto avança com você e espera quando você faz uma pausa.\n\nSEU ROTEIRO E SUA IMAGEM\nGrave com a câmera frontal ou traseira, na vertical ou na horizontal. Veja sua imagem atrás do texto, em uma janela que você pode mover, ou deixe a imagem oculta enquanto grava. Você também pode ler sem gravar.\n\nDO ROTEIRO AO VÍDEO, COM LEGENDAS\nAs legendas usam as palavras do seu roteiro e o tempo da sua voz. Escolha entre três estilos, confira o resultado e salve o vídeo na galeria ou compartilhe. Experimente seis filtros e veja como seu vídeo vai ficar antes de salvar.\n\nCONTROLE O TAKE NO SEU RITMO\nPause e continue quando precisar: as pausas da gravação ficam fora do vídeo. Com o controle por gestos e a câmera frontal, mostre a palma da mão para pausar ou continuar. Durante a pausa, faça o V para encerrar o take.\n\nLEIA DO SEU JEITO\nAjuste o tamanho do texto, a fonte, a largura e as cores. Use negrito, cores e destaques no roteiro. As anotações entre colchetes ou parênteses ficam fora da leitura e das legendas. Você também tem modo espelho e leitura com velocidade fixa.\n\nSEUS ROTEIROS, COM VOCÊ\nEscreva, cole um texto ou importe arquivos .txt, .md e .docx. Você pode usar o Sigo sem entrar em uma conta. Para fazer backup dos roteiros e recuperá-los em outro celular, entre com o Google.\n\nCOMECE NO SEU RITMO\nSem assinatura, a leitura com acompanhamento de voz e a gravação têm limites de tempo por sessão, e os vídeos salvos incluem marca d’água. A leitura com velocidade fixa sem câmera não tem limite de tempo. Com o Sigo+, você lê com acompanhamento de voz e grava sem limite de tempo, e salva os vídeos sem marca d’água. Há planos mensal e anual; as condições são mostradas antes da contratação.\n\nNO SEU IDIOMA\nInterface e acompanhamento de voz em português, espanhol e inglês. O reconhecimento de voz e de gestos acontece no celular. Depois de baixar o reconhecimento do seu idioma, você pode usar essas funções sem conexão. O backup e o gerenciamento da assinatura precisam de internet.\n\nPara seus vídeos, aulas, palestras e apresentações. O Sigo segue você."
+  },
+  "direccion-1.1": {
+    "nota": "Dirección de la fase 1 de la ficha 1.1 (12-11-2026). No reemplaza la ficha canónica de 1.0: armar_ficha.py la escribe en <salida>/direccion-1.1/. Cajas en px [x, y, ancho, alto] sobre la imagen final; recortes [x0, y0, x1, y1] sobre la cruda.",
+    "crudas": "entradas/motorola-1.1/es",
+    "es-419": {
+      "capturas": [
+        {
+          "n": 1,
+          "fondo": "claro",
+          "titular": [
+            "Tú hablas.",
+            "Sigo te sigue."
+          ],
+          "bajada": null,
+          "recortes": [
+            {
+              "cruda": "01-voz-b-lectura-avanza.png",
+              "recorte": [
+                72,
+                126,
+                1032,
+                880
+              ],
+              "destino": [
+                0,
+                440
+              ],
+              "ancho": 1080,
+              "parte": "lectura desde el margen de la app: «Ahora el texto avanza con mi voz,» subrayado",
+              "margen_texto_app": 103,
+              "motivo_escala": "Regla del borde -t166u-: el recorte arranca en el margen izquierdo del texto de la app (x=103) y llega a «avanza con mi voz,»; por eso mide 960 px y no 820. Ampliación 1,125×."
+            },
+            {
+              "cruda": "01-voz-b-lectura-avanza.png",
+              "recorte": [
+                72,
+                1829,
+                1032,
+                2391
+              ],
+              "destino": [
+                0,
+                1288
+              ],
+              "ancho": 1080,
+              "parte": "micrófono verde y tiempo «00:13 / 00:30», pegado bajo la lectura con el mismo ancho y la misma escala",
+              "margen_texto_app": 103,
+              "motivo_escala": "Mismo ancho y escala que la lectura, para que sea una sola pieza de la app."
+            }
+          ],
+          "cara": false,
+          "logo": {
+            "x": 66,
+            "y": 60,
+            "alto": 60,
+            "caja": [
+              66,
+              60,
+              118,
+              60
+            ]
+          },
+          "textos_titular": [
+            {
+              "x": 66,
+              "base": 262,
+              "tam": 112,
+              "caja": [
+                62,
+                175,
+                505,
+                93
+              ]
+            },
+            {
+              "x": 66,
+              "base": 382,
+              "tam": 112,
+              "caja": [
+                62,
+                299,
+                642,
+                111
+              ]
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "fondo": "oscuro",
+          "titular": [
+            "Te detienes.",
+            "Sigo te espera."
+          ],
+          "bajada": "Cuando vuelves, sigue contigo, sin tocar la pantalla.",
+          "recortes": [
+            {
+              "cruda": "02-espera-a-pausa-me-espera.png",
+              "recorte": [
+                72,
+                118,
+                1100,
+                650
+              ],
+              "destino": [
+                0,
+                694
+              ],
+              "ancho": 1080,
+              "parte": "lectura detenida desde el margen: «Si me detengo a pensar, me espera.», subrayado parado en «me»",
+              "margen_texto_app": 106,
+              "motivo_escala": "Regla del borde -t166u-: el recorte arranca en el margen izquierdo del texto de la app (x=106) y llega a «pensar, me espera.»; por eso mide 1028 px y no 820. Ampliación 1,051×."
+            },
+            {
+              "cruda": "02-espera-a-pausa-me-espera.png",
+              "recorte": [
+                72,
+                1796,
+                1100,
+                2431
+              ],
+              "destino": [
+                0,
+                1253
+              ],
+              "ancho": 1080,
+              "parte": "micrófono quieto, sin halo, y tiempo detenido «00:18 / 00:28», bajo la lectura con el mismo ancho y la misma escala",
+              "margen_texto_app": 106,
+              "motivo_escala": "Mismo ancho y escala que la lectura, para que sea una sola pieza de la app."
+            }
+          ],
+          "cara": false,
+          "logo": {
+            "x": 66,
+            "y": 60,
+            "alto": 60,
+            "caja": [
+              66,
+              60,
+              118,
+              60
+            ]
+          },
+          "textos_titular": [
+            {
+              "x": 66,
+              "base": 262,
+              "tam": 112,
+              "caja": [
+                62,
+                179,
+                589,
+                89
+              ]
+            },
+            {
+              "x": 66,
+              "base": 382,
+              "tam": 112,
+              "caja": [
+                62,
+                299,
+                711,
+                111
+              ]
+            }
+          ],
+          "texto_bajada": {
+            "x": 68,
+            "base": 446,
+            "tam": 38,
+            "caja": [
+              64,
+              415,
+              839,
+              43
+            ]
+          }
+        },
+        {
+          "n": 3,
+          "fondo": "claro",
+          "titular": [
+            "Sigo, encima",
+            "de tu cámara."
+          ],
+          "bajada": "Lees encima de la cámara u otra app.",
+          "recortes": [
+            {
+              "cruda": "03-flotante-a-sobre-la-camara.png",
+              "recorte": [
+                0,
+                122,
+                1220,
+                2509
+              ],
+              "destino": [
+                172,
+                480
+              ],
+              "ancho": 736,
+              "parte": "banda de Sigo con el guion sobre la app de cámara: botón rojo de grabar y tiempo 00:09; la cara, detrás y chica",
+              "margen_texto_app": 93,
+              "motivo_escala": "Javier -t166u- pide ver a la vez la banda, el botón de grabar y la cara más chica: hace falta la pantalla entera de ancho, reducida a 0,603×."
+            }
+          ],
+          "cara": true,
+          "logo": {
+            "x": 66,
+            "y": 60,
+            "alto": 60,
+            "caja": [
+              66,
+              60,
+              118,
+              60
+            ]
+          },
+          "textos_titular": [
+            {
+              "x": 66,
+              "base": 262,
+              "tam": 112,
+              "caja": [
+                62,
+                179,
+                622,
+                111
+              ]
+            },
+            {
+              "x": 66,
+              "base": 382,
+              "tam": 112,
+              "caja": [
+                62,
+                295,
+                668,
+                93
+              ]
+            }
+          ],
+          "texto_bajada": {
+            "x": 68,
+            "base": 446,
+            "tam": 38,
+            "caja": [
+              64,
+              413,
+              599,
+              45
+            ]
+          },
+          "cara_caja_cruda": {
+            "cruda": "03-flotante-a-sobre-la-camara.png",
+            "caja": [
+              440,
+              640,
+              1070,
+              1580
+            ],
+            "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima; cuenta también la parte que queda detrás de la banda. Se lleva a la captura con el recorte y la escala."
+          }
+        },
+        {
+          "n": 5,
+          "fondo": "claro",
+          "titular": [
+            "Tu video,",
+            "con subtítulos."
+          ],
+          "bajada": "Con las palabras de tu guion, al ritmo de tu voz.",
+          "recortes": [
+            {
+              "cruda": "05-subtitulos-a-video-guardado.png",
+              "recorte": [
+                130,
+                700,
+                1090,
+                1760
+              ],
+              "destino": [
+                199,
+                480
+              ],
+              "ancho": 682,
+              "parte": "video guardado con subtítulos rojos palabra por palabra -«algo» resaltado-; la cara entera y chica",
+              "margen_texto_app": 160,
+              "motivo_escala": "05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u."
+            },
+            {
+              "cruda": "05-subtitulos-d-visor-guardar-agrupado.png",
+              "recorte": [
+                56,
+                1830,
+                1164,
+                2535
+              ],
+              "destino": [
+                0,
+                1233
+              ],
+              "ancho": 1080,
+              "parte": "control que produce los subtítulos: «Subtítulos Rojo», «Filtro Natural», «Guardar» y «Guardar y compartir»",
+              "margen_texto_app": 90,
+              "motivo_escala": "El panel entero de 05-d, de borde a borde, para que «Subtítulos Rojo» y los dos botones de guardar entren sin cortar."
+            }
+          ],
+          "cara": true,
+          "logo": {
+            "x": 66,
+            "y": 60,
+            "alto": 60,
+            "caja": [
+              66,
+              60,
+              118,
+              60
+            ]
+          },
+          "textos_titular": [
+            {
+              "x": 66,
+              "base": 262,
+              "tam": 112,
+              "caja": [
+                62,
+                179,
+                449,
+                108
+              ]
+            },
+            {
+              "x": 66,
+              "base": 382,
+              "tam": 112,
+              "caja": [
+                62,
+                295,
+                726,
+                93
+              ]
+            }
+          ],
+          "texto_bajada": {
+            "x": 68,
+            "base": 446,
+            "tam": 38,
+            "caja": [
+              64,
+              415,
+              766,
+              43
+            ]
+          },
+          "cara_caja_cruda": {
+            "cruda": "05-subtitulos-a-video-guardado.png",
+            "caja": [
+              390,
+              720,
+              840,
+              1320
+            ],
+            "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima."
+          }
+        }
+      ],
+      "grafico": {
+        "titular": [
+          "Te espera.",
+          "Sigue contigo."
+        ],
+        "recortes": [
+          {
+            "cruda": "02-espera-a-pausa-me-espera.png",
+            "recorte": [
+              564,
+              118,
+              1099,
+              560
+            ],
+            "destino": [
+              600,
+              0
+            ],
+            "ancho": 424,
+            "parte": "lectura detenida: «pensar, me espera.», con el subrayado parado en «me»",
+            "margen_texto_app": 106,
+            "motivo_escala": "A sangre arriba y a la derecha, desde el borde de la zona libre -x 600- hasta x 1024; con el micrófono, también abajo.",
+            "excepcion_borde": "El recorte arranca en «pensar,», no en el margen de la app: desde el margen, el renglón «Si me detengo a pensar, me espera.» mide 1028 px de cruda y en 424 px quedaría a 0,41×, ilegible a 270 px. Cada renglón visible empieza con palabra entera -«pensar,», «sigue», «sola»- y solo se corta por la derecha."
+          },
+          {
+            "cruda": "02-espera-a-pausa-me-espera.png",
+            "recorte": [
+              370,
+              2008,
+              905,
+              2197
+            ],
+            "destino": [
+              600,
+              350
+            ],
+            "ancho": 424,
+            "parte": "micrófono quieto y tiempo detenido «00:18 / 00:28», bajo la lectura, a la misma escala",
+            "margen_texto_app": 382,
+            "motivo_escala": "Misma escala que la lectura -0,79×-; cierra el bloque a sangre hasta abajo."
+          }
+        ],
+        "logo": {
+          "x": 56,
+          "y": 48,
+          "alto": 52,
+          "caja": [
+            56,
+            48,
+            102,
+            52
+          ]
+        },
+        "textos_titular": [
+          {
+            "x": 54,
+            "base": 224,
+            "tam": 60,
+            "caja": [
+              50,
+              181,
+              274,
+              59
+            ]
+          },
+          {
+            "x": 54,
+            "base": 298,
+            "tam": 60,
+            "caja": [
+              50,
+              252,
+              372,
+              62
+            ]
+          }
+        ],
+        "zona_libre": [
+          424,
+          140,
+          176,
+          220
+        ],
+        "raya": [
+          57,
+          340,
+          150,
+          340
+        ]
+      }
+    },
+    "breves": {
+      "es-419": [
+        {
+          "papel": "control",
+          "texto": "Teleprompter que sigue tu voz: el texto avanza mientras lees en voz alta.",
+          "respaldo": "La breve publicada (textos-es-419.txt). En Ads, «Teleprompter que sigue tu voz» dio 0 instalaciones en 80 impresiones."
+        },
+        {
+          "papel": "B",
+          "texto": "Tú hablas, Sigo te sigue. Si te detienes, el texto te espera.",
+          "respaldo": "«Tú hablas. Sigo te sigue.» 35,7 inst./1000 impr. y el menor costo por instalación; «Te espera si te detienes» 33,8 y 18 instalaciones. Nombra a Sigo."
+        },
+        {
+          "papel": "C",
+          "texto": "Te sales del guion o te detienes, y Sigo te espera. Al volver, sigue contigo.",
+          "respaldo": "«Te sales, vuelves y te sigue» 40,0 inst./1000 impr., el más alto; «Te espera si te detienes» 33,8. Nombra a Sigo."
+        }
+      ],
+      "en-US": [
+        {
+          "papel": "control",
+          "texto": "A teleprompter that follows your voice: the script moves as you read aloud.",
+          "respaldo": "La breve publicada (textos-en-US.txt)."
+        },
+        {
+          "papel": "B",
+          "texto": "You speak, Sigo follows. If you pause, the script waits for you.",
+          "respaldo": "Mismo dato que la B en español."
+        },
+        {
+          "papel": "C",
+          "texto": "Go off script or pause, and Sigo waits. When you come back, it follows you.",
+          "respaldo": "Mismo dato que la C en español."
+        }
+      ],
+      "pt-BR": [
+        {
+          "papel": "control",
+          "texto": "Teleprompter que segue sua voz: o texto anda enquanto você lê em voz alta.",
+          "respaldo": "La breve publicada (textos-pt-BR.txt)."
+        },
+        {
+          "papel": "B",
+          "texto": "Você fala, o Sigo segue você. Se você parar, o texto espera.",
+          "respaldo": "Mismo dato que la B en español."
+        },
+        {
+          "papel": "C",
+          "texto": "Se você sai do roteiro ou para, o Sigo espera. Quando volta, segue com você.",
+          "respaldo": "Mismo dato que la C en español."
+        }
+      ]
+    },
+    "lamina": {
+      "referentes": [
+        {
+          "nombre": "Referente A: teleprompter con seguimiento de voz",
+          "archivos": [
+            "referentes/voice-follow-full-01.png",
+            "referentes/voice-follow-full-02.png",
+            "referentes/voice-follow-full-03.png"
+          ]
+        },
+        {
+          "nombre": "Referente B: editor de video de primer nivel",
+          "archivos": [
+            "referentes/capcut-full-01.png",
+            "referentes/capcut-full-02.png",
+            "referentes/capcut-full-03.png"
+          ]
+        }
+      ]
+    }
+  },
+  "ficha-1.1": {
+    "nota": "Ficha 1.1, fase 2 (12-11-2026, t169u y t170u). Reemplaza la ficha canónica en la rama fichas-1.1; la 1.0 aprobada el 30-10 queda en historial/ficha-1.0-20261030/. armar_ficha.py la escribe en <salida>/ficha-1.1/. Cajas [x, y, ancho, alto] sobre la imagen final; recortes [x0, y0, x1, y1] sobre la cruda. Las breves salen de direccion-1.1.breves: se publica la B; la C queda guardada para un experimento después de publicar.",
+    "crudas": {
+      "es": "entradas/motorola-1.1/es",
+      "en": "entradas/motorola-1.1/en",
+      "pt": "entradas/motorola-1.1/pt"
+    },
+    "idiomas": {
+      "es-419": {
+        "titulo": "Sigo — Teleprompter de voz",
+        "breve_publicada": "B",
+        "breve_guardada": "C",
+        "completa": "Tú hablas. Sigo te sigue.\n\nLee tu guion a tu ritmo mientras grabas un video, preparas una clase o ensayas una presentación. Sigo sigue tu voz: el texto avanza contigo y te espera cuando haces una pausa.\n\nENCIMA DE TU CÁMARA\nCon la ventana flotante, lees tu guion encima de la cámara de tu teléfono u otra app, y el texto sigue tu voz.\n\nTU GUION Y TU IMAGEN\nGraba con la cámara frontal o trasera, en vertical o en horizontal. Elige ver tu imagen detrás del texto, en un recuadro que puedes mover, u ocultarla mientras grabas. También puedes leer sin grabar.\n\nDEL GUION AL VIDEO, CON SUBTÍTULOS\nLos subtítulos se crean con las palabras de tu guion y el tiempo de tu voz. Elige entre tres estilos, revisa el resultado y guarda el video en tu galería o compártelo. Puedes aplicar seis filtros viendo cómo quedará tu video.\n\nCONTROLA LA TOMA A TU RITMO\nPausa y continúa cuando lo necesites: las pausas de grabación quedan fuera del video. Con el control por gestos y la cámara frontal, muestra la palma para pausar o seguir; estando en pausa, haz la V para terminar.\n\nLEE A TU MANERA\nAjusta el tamaño de letra, la tipografía, el ancho y los colores. Usa negrita, colores y destacados en tu guion. Las notas entre corchetes o paréntesis quedan fuera de la lectura y de los subtítulos. También tienes modo espejo y lectura a velocidad fija.\n\nTUS GUIONES, CONTIGO\nEscribe, pega texto o importa archivos .txt, .md y .docx. Puedes usar Sigo sin iniciar sesión. Si quieres respaldar tus guiones y recuperarlos en otro teléfono, entra con Google.\n\nEMPIEZA A TU RITMO\nSin suscripción puedes leer con seguimiento de voz y grabar con límites de tiempo por sesión; los videos se guardan con marca de agua. La lectura sin cámara a velocidad fija no tiene límite de tiempo. Con Sigo+ lees con seguimiento de voz y grabas sin límite de tiempo, y guardas tus videos sin marca de agua. Hay planes mensual y anual; las condiciones se muestran antes de contratar.\n\nEN TU IDIOMA\nInterfaz y seguimiento de voz en español, inglés y portugués. El reconocimiento de voz y de gestos se procesa en el teléfono. Una vez descargado el reconocimiento de tu idioma, puedes usar esas funciones sin conexión. El respaldo y la gestión de la suscripción requieren conexión.\n\nPara tus videos, clases, charlas y presentaciones. Sigo te sigue.",
+        "alts": [
+          "Lectura en Sigo: el renglón que lees avanza con tu voz y el micrófono verde marca el tiempo.",
+          "Lectura detenida en Sigo: el texto espera en «Si me detengo a pensar, me espera».",
+          "Ventana flotante de Sigo con el guion, encima de la app de cámara mientras graba.",
+          "Grabación en Sigo con el guion, el punto rojo de grabación y la cámara en un recuadro chico.",
+          "Video guardado con subtítulos rojos palabra por palabra y el panel de subtítulos, filtro y guardar.",
+          "Panel de imagen de la cámara con el control por gestos: palma para pausar o seguir.",
+          "Ajustes de Sigo con el menú de idioma de la app: español, inglés y portugués.",
+          "Portada de Sigo con «Continuar con este guion», Leer, Grabar y la lista de guiones."
+        ],
+        "alts_tableta": {
+          "4-lectura-avanza": "Sigo en una tableta en horizontal: la lectura avanza con tu voz.",
+          "3-antes-de-leer": "Sigo en una tableta, con el guion listo antes de leer.",
+          "2-editor-colores": "Editor de guiones de Sigo en una tableta, con palabras en colores."
+        },
+        "capturas": [
+          {
+            "n": 1,
+            "aprobada": "direccion-1.1/capturas/es-419/01.png"
+          },
+          {
+            "n": 2,
+            "aprobada": "direccion-1.1/capturas/es-419/02.png"
+          },
+          {
+            "n": 3,
+            "aprobada": "direccion-1.1/capturas/es-419/03.png"
+          },
+          {
+            "n": 4,
+            "fondo": "oscuro",
+            "titular": [
+              "Graba mirando",
+              "al lente."
+            ],
+            "bajada": "Tu imagen, en un recuadro que puedes mover.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  62,
+                  179,
+                  733,
+                  89
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  299,
+                  396,
+                  88
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 446,
+              "tam": 38,
+              "caja": [
+                64,
+                415,
+                750,
+                43
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "04-recuadro-a-grabando.png",
+                "recorte": [
+                  72,
+                  120,
+                  1170,
+                  560
+                ],
+                "destino": [
+                  0,
+                  480
+                ],
+                "ancho": 1080,
+                "parte": "lectura en curso desde el margen: «Antes tenía que memorizar cada frase» subrayado, con el punto rojo de grabación",
+                "margen_texto_app": 106,
+                "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=106) y solo corta por la derecha; por eso mide 1098 px de cruda y no 820. Escala 0,984. Se quitan las filas negras y los renglones grises entre la lectura y el recuadro, que se puede mover."
+              },
+              {
+                "cruda": "04-recuadro-a-grabando.png",
+                "recorte": [
+                  72,
+                  1130,
+                  1170,
+                  1695
+                ],
+                "destino": [
+                  0,
+                  913
+                ],
+                "ancho": 1080,
+                "parte": "recuadro de cámara chico, con la cara entera",
+                "margen_texto_app": 106,
+                "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+              },
+              {
+                "cruda": "04-recuadro-a-grabando.png",
+                "recorte": [
+                  72,
+                  1975,
+                  1170,
+                  2434
+                ],
+                "destino": [
+                  0,
+                  1469
+                ],
+                "ancho": 1080,
+                "parte": "micrófono verde y tiempo «00:08 / 00:23»",
+                "margen_texto_app": 106,
+                "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+              }
+            ],
+            "cara": true,
+            "cara_caja_cruda": {
+              "cruda": "04-recuadro-a-grabando.png",
+              "caja": [
+                900,
+                1305,
+                1027,
+                1475
+              ],
+              "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima. Se lleva a la captura con el recorte y la escala."
+            }
+          },
+          {
+            "n": 5,
+            "aprobada": "direccion-1.1/capturas/es-419/05.png"
+          },
+          {
+            "n": 6,
+            "fondo": "oscuro",
+            "titular": [
+              "Pausa",
+              "con un gesto."
+            ],
+            "bajada": "Las pausas de grabación quedan fuera del video.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  62,
+                  185,
+                  301,
+                  82
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  306,
+                  650,
+                  104
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 446,
+              "tam": 38,
+              "caja": [
+                64,
+                413,
+                784,
+                45
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "06-gestos-panel.png",
+                "recorte": [
+                  0,
+                  1110,
+                  1220,
+                  2520
+                ],
+                "destino": [
+                  0,
+                  672
+                ],
+                "ancho": 1080,
+                "parte": "panel «Imagen de la cámara» con el control por gestos, la ventana flotante y la barra de grabar",
+                "margen_texto_app": 96,
+                "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=96) y solo corta por la derecha; por eso mide 1220 px de cruda y no 820. Escala 0,885."
+              }
+            ],
+            "cara": false
+          },
+          {
+            "n": 7,
+            "fondo": "claro",
+            "titular": [
+              "En tu idioma."
+            ],
+            "bajada": "Sigo en español, inglés y portugués.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  62,
+                  179,
+                  645,
+                  89
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 326,
+              "tam": 38,
+              "caja": [
+                64,
+                293,
+                583,
+                45
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "07-idioma-menu.png",
+                "recorte": [
+                  30,
+                  990,
+                  1120,
+                  2524
+                ],
+                "destino": [
+                  0,
+                  400
+                ],
+                "ancho": 1080,
+                "parte": "Ajustes con el menú de idioma de la app abierto: Español, English y Português",
+                "margen_texto_app": 103,
+                "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=103) y solo corta por la derecha; por eso mide 1090 px de cruda y no 820. Escala 0,991."
+              }
+            ],
+            "cara": false
+          },
+          {
+            "n": 8,
+            "fondo": "oscuro",
+            "titular": [
+              "Tus guiones,",
+              "contigo."
+            ],
+            "bajada": "Continúa tu último guion desde la portada.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  62,
+                  179,
+                  611,
+                  111
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  299,
+                  405,
+                  111
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 446,
+              "tam": 38,
+              "caja": [
+                64,
+                413,
+                698,
+                45
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "07-guiones-a-portada.png",
+                "recorte": [
+                  25,
+                  85,
+                  1136,
+                  1290
+                ],
+                "destino": [
+                  0,
+                  480
+                ],
+                "ancho": 1080,
+                "parte": "portada: «Continuar con este guion» entera, con Leer y Grabar, y el primer guion de la lista",
+                "margen_texto_app": 62,
+                "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=62) y solo corta por la derecha; por eso mide 1111 px de cruda y no 820. Escala 0,972."
+              }
+            ],
+            "cara": false
+          }
+        ],
+        "grafico": {
+          "aprobado": "direccion-1.1/grafico-1024x500-es.png"
+        }
+      },
+      "en-US": {
+        "titulo": "Sigo — Voice Teleprompter",
+        "breve_publicada": "B",
+        "breve_guardada": "C",
+        "completa": "You speak. Sigo follows.\n\nRead your script at your own pace while recording a video, preparing a class or rehearsing a presentation. Sigo follows your voice: the text moves with you and waits when you pause.\n\nON TOP OF YOUR CAMERA\nWith the floating window, read your script on top of your phone’s camera or another app, and the text follows your voice.\n\nYOUR SCRIPT AND YOUR CAMERA\nRecord with the front or rear camera, in portrait or landscape. See yourself behind the text, in a movable window, or keep the camera view hidden while recording. You can also read without recording.\n\nFROM SCRIPT TO VIDEO, WITH CAPTIONS\nCaptions use the words in your script and the timing of your voice. Choose from three styles, preview the result, then save your video to your gallery or share it. Try six filters and see how your video will look before saving.\n\nCONTROL THE TAKE AT YOUR PACE\nPause and resume whenever you need to: recording pauses stay out of the video. With gesture control and the front camera, show your palm to pause or resume. While paused, make a V sign to end the take.\n\nREAD YOUR WAY\nAdjust text size, font, width and colors. Add bold text, colors and highlights to your script. Notes in brackets or parentheses are excluded from the reading and captions. Mirror mode and fixed-speed reading are available, too.\n\nKEEP YOUR SCRIPTS WITH YOU\nWrite, paste text or import .txt, .md and .docx files. You can use Sigo without signing in. To back up your scripts and recover them on another phone, sign in with Google.\n\nGET STARTED AT YOUR PACE\nWithout a subscription, voice-following reading and recording have time limits per session, and saved videos include a watermark. Fixed-speed reading without the camera has no time limit. With Sigo+, voice-following reading and recording have no time limit, and saved videos have no watermark. Monthly and yearly plans are available; terms are shown before you subscribe.\n\nIN YOUR LANGUAGE\nInterface and voice following in English, Spanish and Portuguese. Voice and gesture recognition run on your phone. Once recognition for your language has downloaded, you can use those features offline. Backup and subscription management require an internet connection.\n\nFor your videos, classes, talks and presentations. Sigo follows.",
+        "alts": [
+          "Reading in Sigo: the script moves with your voice and the green mic shows the time.",
+          "Reading paused in Sigo: the script waits at “If I stop to think, it waits for me.”",
+          "Sigo’s floating window with the script, on top of the camera app while it records.",
+          "Recording in Sigo with the script, the red recording dot and the camera in a small window.",
+          "Saved video with red word-by-word captions and Sigo’s captions, filter and save panel, shown in Spanish.",
+          "Camera view panel with gesture control: show your palm to pause or resume.",
+          "Sigo settings with the app language menu: Spanish, English and Portuguese.",
+          "Sigo home screen with “Continue with this script”, Read, Record and the script list."
+        ],
+        "alts_tableta": {
+          "4-lectura-avanza": "Sigo on a tablet in landscape: the script moves with your voice.",
+          "3-antes-de-leer": "Sigo on a tablet, with the script ready before reading.",
+          "2-editor-colores": "Sigo’s script editor on a tablet, with words in color."
+        },
+        "capturas": [
+          {
+            "n": 1,
+            "fondo": "claro",
+            "titular": [
+              "You speak.",
+              "Sigo follows."
+            ],
+            "bajada": null,
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  61,
+                  179,
+                  527,
+                  109
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  297,
+                  623,
+                  113
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "01-voz-lectura-avanza.png",
+                "recorte": [
+                  72,
+                  126,
+                  1110,
+                  1010
+                ],
+                "destino": [
+                  0,
+                  440
+                ],
+                "ancho": 1080,
+                "parte": "lectura desde el margen de la app: «Now the text moves with my voice,» en ámbar; «or read looking down.» subrayado",
+                "margen_texto_app": 101,
+                "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=101) y solo corta por la derecha; por eso mide 1038 px de cruda y no 820. Escala 1,040."
+              },
+              {
+                "cruda": "01-voz-lectura-avanza.png",
+                "recorte": [
+                  72,
+                  1835,
+                  1110,
+                  2373
+                ],
+                "destino": [
+                  0,
+                  1360
+                ],
+                "ancho": 1080,
+                "parte": "micrófono verde y tiempo «00:18 / 00:38», pegado bajo la lectura; sin halo: no hubo voz real, el texto se avanzó arrastrándolo",
+                "margen_texto_app": 101,
+                "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+              }
+            ],
+            "cara": false
+          },
+          {
+            "n": 2,
+            "fondo": "oscuro",
+            "titular": [
+              "You pause.",
+              "Sigo waits."
+            ],
+            "bajada": "When you resume, it follows you. No tapping.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  61,
+                  185,
+                  531,
+                  103
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  299,
+                  529,
+                  111
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 446,
+              "tam": 38,
+              "caja": [
+                64,
+                414,
+                730,
+                44
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "02-espera-pausa.png",
+                "recorte": [
+                  72,
+                  118,
+                  1110,
+                  700
+                ],
+                "destino": [
+                  0,
+                  712
+                ],
+                "ancho": 1080,
+                "parte": "lectura detenida desde el margen: «If I stop to think, it waits for me.», subrayado",
+                "margen_texto_app": 101,
+                "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=101) y solo corta por la derecha; por eso mide 1038 px de cruda y no 820. Escala 1,040."
+              },
+              {
+                "cruda": "02-espera-pausa.png",
+                "recorte": [
+                  72,
+                  1856,
+                  1110,
+                  2435
+                ],
+                "destino": [
+                  0,
+                  1318
+                ],
+                "ancho": 1080,
+                "parte": "micrófono quieto, sin halo, y tiempo detenido «00:55 / 01:08», bajo la lectura",
+                "margen_texto_app": 101,
+                "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+              }
+            ],
+            "cara": false
+          },
+          {
+            "n": 3,
+            "fondo": "claro",
+            "titular": [
+              "Sigo, on top of",
+              "your camera."
+            ],
+            "bajada": "Read on top of the camera or another app.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  62,
+                  177,
+                  704,
+                  113
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  321,
+                  644,
+                  87
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 446,
+              "tam": 38,
+              "caja": [
+                64,
+                414,
+                684,
+                44
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "03-flotante-a.png",
+                "recorte": [
+                  0,
+                  122,
+                  1220,
+                  2509
+                ],
+                "destino": [
+                  172,
+                  480
+                ],
+                "ancho": 736,
+                "parte": "ventana flotante de Sigo con el guion sobre la app de cámara -techo de madera, sin cara-: tiempo rojo 00:18 y botón rojo de grabar. Es la 03-a: no trae la fila «Pausa / Volver a Sigo» en español",
+                "margen_texto_app": 133,
+                "motivo_escala": "Como la 3 aprobada en español: hace falta la pantalla entera de ancho para ver a la vez la banda, el tiempo rojo y el botón de grabar; reducida a 0,603×."
+              }
+            ],
+            "cara": false
+          },
+          {
+            "n": 4,
+            "fondo": "oscuro",
+            "titular": [
+              "Record looking",
+              "at the lens."
+            ],
+            "bajada": "See yourself in a small window you can move.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  62,
+                  179,
+                  735,
+                  111
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  299,
+                  537,
+                  88
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 446,
+              "tam": 38,
+              "caja": [
+                64,
+                414,
+                738,
+                44
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "04-recuadro-grabando.png",
+                "recorte": [
+                  72,
+                  120,
+                  1180,
+                  575
+                ],
+                "destino": [
+                  0,
+                  480
+                ],
+                "ancho": 1080,
+                "parte": "lectura en curso desde el margen, con el renglón subrayado y el punto rojo de grabación",
+                "margen_texto_app": 96,
+                "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=96) y solo corta por la derecha; por eso mide 1108 px de cruda y no 820. Escala 0,975. Se quitan las filas negras y los renglones grises entre la lectura y el recuadro, que se puede mover."
+              },
+              {
+                "cruda": "04-recuadro-grabando.png",
+                "recorte": [
+                  72,
+                  1385,
+                  1180,
+                  1955
+                ],
+                "destino": [
+                  0,
+                  924
+                ],
+                "ancho": 1080,
+                "parte": "recuadro de cámara chico -techo de madera, sin cara-",
+                "margen_texto_app": 96,
+                "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+              },
+              {
+                "cruda": "04-recuadro-grabando.png",
+                "recorte": [
+                  72,
+                  1990,
+                  1180,
+                  2441
+                ],
+                "destino": [
+                  0,
+                  1480
+                ],
+                "ancho": 1080,
+                "parte": "micrófono verde y tiempo «00:05 / 03:00»",
+                "margen_texto_app": 96,
+                "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+              }
+            ],
+            "cara": false
+          },
+          {
+            "n": 5,
+            "fondo": "claro",
+            "titular": [
+              "Your video,",
+              "with subtitles."
+            ],
+            "bajada": "With the words from your script, in time with your voice.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  61,
+                  179,
+                  549,
+                  108
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  299,
+                  694,
+                  89
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 446,
+              "tam": 38,
+              "caja": [
+                64,
+                414,
+                905,
+                44
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "05-subtitulos-a-video-guardado.png",
+                "recorte": [
+                  130,
+                  700,
+                  1090,
+                  1760
+                ],
+                "destino": [
+                  199,
+                  480
+                ],
+                "ancho": 682,
+                "parte": "video guardado con subtítulos rojos palabra por palabra -«algo» resaltado-; la cara entera y chica",
+                "margen_texto_app": 160,
+                "motivo_escala": "05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u."
+              },
+              {
+                "cruda": "05-subtitulos-d-visor-guardar-agrupado.png",
+                "recorte": [
+                  56,
+                  1830,
+                  1164,
+                  2535
+                ],
+                "destino": [
+                  0,
+                  1233
+                ],
+                "ancho": 1080,
+                "parte": "control que produce los subtítulos: «Subtítulos Rojo», «Filtro Natural», «Guardar» y «Guardar y compartir»",
+                "margen_texto_app": 90,
+                "motivo_escala": "El panel entero de 05-d, de borde a borde, para que «Subtítulos Rojo» y los dos botones de guardar entren sin cortar."
+              }
+            ],
+            "cara": true,
+            "cara_caja_cruda": {
+              "cruda": "05-subtitulos-a-video-guardado.png",
+              "caja": [
+                390,
+                720,
+                840,
+                1320
+              ],
+              "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima."
+            },
+            "crudas": "entradas/motorola-1.1/es",
+            "zona_igual": {
+              "referencia": "capturas/es-419/05.png",
+              "nota": "Javier -t170u-: la captura es la de español, píxel por píxel -la app se ve en español-. Solo cambian el titular y la bajada, con el mismo tamaño, lugar y letra que en español. Zona de la captura: la unión de las cajas de destino de los recortes."
+            }
+          },
+          {
+            "n": 6,
+            "fondo": "oscuro",
+            "titular": [
+              "Pause",
+              "with a gesture."
+            ],
+            "bajada": "Recording pauses stay out of your video.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  62,
+                  185,
+                  299,
+                  82
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  299,
+                  719,
+                  111
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 446,
+              "tam": 38,
+              "caja": [
+                64,
+                414,
+                656,
+                44
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "06-gestos-panel.png",
+                "recorte": [
+                  0,
+                  1084,
+                  1220,
+                  2520
+                ],
+                "destino": [
+                  0,
+                  649
+                ],
+                "ancho": 1080,
+                "parte": "panel «Camera view» con el control por gestos, la ventana flotante y la barra de grabar",
+                "margen_texto_app": 96,
+                "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=96) y solo corta por la derecha; por eso mide 1220 px de cruda y no 820. Escala 0,885."
+              }
+            ],
+            "cara": false
+          },
+          {
+            "n": 7,
+            "fondo": "claro",
+            "titular": [
+              "In your language."
+            ],
+            "bajada": "Sigo in English, Spanish and Portuguese.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  62,
+                  179,
+                  845,
+                  111
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 326,
+              "tam": 38,
+              "caja": [
+                64,
+                295,
+                658,
+                43
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "07-idioma-menu.png",
+                "recorte": [
+                  30,
+                  990,
+                  1120,
+                  2524
+                ],
+                "destino": [
+                  0,
+                  400
+                ],
+                "ancho": 1080,
+                "parte": "Ajustes con el menú de idioma de la app abierto: Español, English y Português",
+                "margen_texto_app": 103,
+                "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=103) y solo corta por la derecha; por eso mide 1090 px de cruda y no 820. Escala 0,991."
+              }
+            ],
+            "cara": false
+          },
+          {
+            "n": 8,
+            "fondo": "oscuro",
+            "titular": [
+              "Keep your scripts",
+              "with you."
+            ],
+            "bajada": "Continue your latest script from the home screen.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  62,
+                  179,
+                  838,
+                  109
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  299,
+                  456,
+                  109
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 446,
+              "tam": 38,
+              "caja": [
+                64,
+                414,
+                802,
+                44
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "08-guiones-a-portada.png",
+                "recorte": [
+                  25,
+                  85,
+                  1136,
+                  1290
+                ],
+                "destino": [
+                  0,
+                  480
+                ],
+                "ancho": 1080,
+                "parte": "portada: «Continue with this script» entera, con Leer y Grabar, y el primer guion de la lista",
+                "margen_texto_app": 62,
+                "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=62) y solo corta por la derecha; por eso mide 1111 px de cruda y no 820. Escala 0,972.",
+                "excluye": [
+                  {
+                    "que": "guion «Hola», en español",
+                    "caja": [
+                      58,
+                      1324,
+                      1092,
+                      1512
+                    ]
+                  }
+                ]
+              }
+            ],
+            "cara": false
+          }
+        ],
+        "grafico": {
+          "titular": [
+            "It waits.",
+            "It follows you."
+          ],
+          "textos_titular": [
+            {
+              "x": 54,
+              "base": 224,
+              "tam": 60,
+              "caja": [
+                50,
+                178,
+                216,
+                51
+              ]
+            },
+            {
+              "x": 54,
+              "base": 298,
+              "tam": 60,
+              "caja": [
+                50,
+                251,
+                369,
+                64
+              ]
+            }
+          ],
+          "logo": {
+            "x": 56,
+            "y": 48,
+            "alto": 52,
+            "caja": [
+              56,
+              48,
+              102,
+              52
+            ]
+          },
+          "recortes": [
+            {
+              "cruda": "02-espera-pausa.png",
+              "recorte": [
+                568,
+                118,
+                1103,
+                228
+              ],
+              "destino": [
+                600,
+                0
+              ],
+              "ancho": 424,
+              "margen_texto_app": 101,
+              "parte": "renglón detenido desde «it»: «it waits for me. And», con el subrayado",
+              "motivo_escala": "A sangre arriba y a la derecha, desde el borde de la zona libre -x 600- hasta x 1024, a la misma escala que el gráfico aprobado -0,79×-.",
+              "excepcion_borde": "El recorte de arriba arranca en «it», no en el margen: desde el margen, «If I stop to think, it waits for me. And» mide 1000 px de cruda y en 424 px quedaría a 0,42×, ilegible a 270 px, como en el gráfico aprobado en español. Los renglones de abajo son otro recorte, que sí arranca en el margen -«when I start again,» y «to the end.»-. Cada renglón empieza con palabra entera y solo se corta por la derecha."
+            },
+            {
+              "cruda": "02-espera-pausa.png",
+              "recorte": [
+                96,
+                228,
+                631,
+                440
+              ],
+              "destino": [
+                600,
+                87
+              ],
+              "ancho": 424,
+              "margen_texto_app": 101,
+              "parte": "los dos renglones siguientes desde el margen de la app: «when I start again,» y «to the end.»",
+              "motivo_escala": "Misma escala que el renglón de arriba."
+            },
+            {
+              "cruda": "02-espera-pausa.png",
+              "recorte": [
+                350,
+                1950,
+                885,
+                2259
+              ],
+              "destino": [
+                600,
+                255
+              ],
+              "ancho": 424,
+              "margen_texto_app": 360,
+              "parte": "micrófono quieto y tiempo detenido, a la misma escala; cierra el bloque a sangre hasta abajo",
+              "motivo_escala": "Misma escala que la lectura."
+            }
+          ],
+          "zona_libre": [
+            424,
+            140,
+            176,
+            220
+          ],
+          "raya": [
+            57,
+            340,
+            150,
+            340
+          ]
+        }
+      },
+      "pt-BR": {
+        "titulo": "Sigo — Teleprompter de voz",
+        "breve_publicada": "B",
+        "breve_guardada": "C",
+        "completa": "Você fala. O Sigo segue você.\n\nLeia seu roteiro no seu ritmo enquanto grava um vídeo, prepara uma aula ou ensaia uma apresentação. O Sigo acompanha sua voz: o texto avança com você e espera quando você faz uma pausa.\n\nPOR CIMA DA SUA CÂMERA\nCom a janela flutuante, leia seu roteiro por cima da câmera do celular ou de outro app, e o texto acompanha sua voz.\n\nSEU ROTEIRO E SUA IMAGEM\nGrave com a câmera frontal ou traseira, na vertical ou na horizontal. Veja sua imagem atrás do texto, em uma janela que você pode mover, ou deixe a imagem oculta enquanto grava. Você também pode ler sem gravar.\n\nDO ROTEIRO AO VÍDEO, COM LEGENDAS\nAs legendas usam as palavras do seu roteiro e o tempo da sua voz. Escolha entre três estilos, confira o resultado e salve o vídeo na galeria ou compartilhe. Experimente seis filtros e veja como seu vídeo vai ficar antes de salvar.\n\nCONTROLE O TAKE NO SEU RITMO\nPause e continue quando precisar: as pausas da gravação ficam fora do vídeo. Com o controle por gestos e a câmera frontal, mostre a palma da mão para pausar ou continuar. Durante a pausa, faça o V para encerrar o take.\n\nLEIA DO SEU JEITO\nAjuste o tamanho do texto, a fonte, a largura e as cores. Use negrito, cores e destaques no roteiro. As anotações entre colchetes ou parênteses ficam fora da leitura e das legendas. Você também tem modo espelho e leitura com velocidade fixa.\n\nSEUS ROTEIROS, COM VOCÊ\nEscreva, cole um texto ou importe arquivos .txt, .md e .docx. Você pode usar o Sigo sem entrar em uma conta. Para fazer backup dos roteiros e recuperá-los em outro celular, entre com o Google.\n\nCOMECE NO SEU RITMO\nSem assinatura, a leitura com acompanhamento de voz e a gravação têm limites de tempo por sessão, e os vídeos salvos incluem marca d’água. A leitura com velocidade fixa sem câmera não tem limite de tempo. Com o Sigo+, você lê com acompanhamento de voz e grava sem limite de tempo, e salva os vídeos sem marca d’água. Há planos mensal e anual; as condições são mostradas antes da contratação.\n\nNO SEU IDIOMA\nInterface e acompanhamento de voz em português, espanhol e inglês. O reconhecimento de voz e de gestos acontece no celular. Depois de baixar o reconhecimento do seu idioma, você pode usar essas funções sem conexão. O backup e o gerenciamento da assinatura precisam de internet.\n\nPara seus vídeos, aulas, palestras e apresentações. O Sigo segue você.",
+        "alts": [
+          "Leitura no Sigo: o roteiro avança com a sua voz e o microfone verde mostra o tempo.",
+          "Leitura parada no Sigo: o texto espera em “Se eu paro para pensar, ele me espera.”",
+          "Janela flutuante do Sigo com o roteiro, por cima do app da câmera enquanto grava.",
+          "Gravação no Sigo com o roteiro, o ponto vermelho de gravação e a câmera em uma janela pequena.",
+          "Vídeo salvo com legendas vermelhas palavra por palavra e o painel de legendas, filtro e salvar do Sigo, em espanhol.",
+          "Painel da imagem da câmera com o controle por gestos: palma da mão para pausar ou continuar.",
+          "Configurações do Sigo com o menu de idioma do app: espanhol, inglês e português.",
+          "Tela inicial do Sigo com “Continuar com este roteiro”, Ler, Gravar e a lista de roteiros."
+        ],
+        "alts_tableta": {
+          "4-lectura-avanza": "O Sigo em um tablet na horizontal: o roteiro avança com a sua voz.",
+          "3-antes-de-leer": "O Sigo em um tablet, com o roteiro pronto antes de ler.",
+          "2-editor-colores": "Editor de roteiros do Sigo em um tablet, com palavras coloridas."
+        },
+        "capturas": [
+          {
+            "n": 1,
+            "fondo": "claro",
+            "titular": [
+              "Você fala.",
+              "O Sigo segue você."
+            ],
+            "bajada": null,
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  61,
+                  175,
+                  474,
+                  92
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  295,
+                  895,
+                  115
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "01-voz-lectura-avanza.png",
+                "recorte": [
+                  72,
+                  110,
+                  1080,
+                  900
+                ],
+                "destino": [
+                  0,
+                  440
+                ],
+                "ancho": 1080,
+                "parte": "lectura desde el margen de la app: «avança com a minha voz,» en ámbar y subrayado",
+                "margen_texto_app": 100,
+                "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=100) y solo corta por la derecha; por eso mide 1008 px de cruda y no 820. Escala 1,071."
+              },
+              {
+                "cruda": "01-voz-lectura-avanza.png",
+                "recorte": [
+                  72,
+                  1819,
+                  1080,
+                  2411
+                ],
+                "destino": [
+                  0,
+                  1286
+                ],
+                "ancho": 1080,
+                "parte": "micrófono verde y tiempo «00:20 / 00:38», pegado bajo la lectura; sin halo: no hubo voz real, el texto se avanzó arrastrándolo",
+                "margen_texto_app": 100,
+                "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+              }
+            ],
+            "cara": false
+          },
+          {
+            "n": 2,
+            "fondo": "oscuro",
+            "titular": [
+              "Você para.",
+              "O Sigo espera."
+            ],
+            "bajada": "Quando você volta, ele segue com você, sem tocar na tela.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  61,
+                  175,
+                  513,
+                  113
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  299,
+                  690,
+                  111
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 446,
+              "tam": 38,
+              "caja": [
+                64,
+                413,
+                940,
+                45
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "02-espera-pausa.png",
+                "recorte": [
+                  72,
+                  118,
+                  1080,
+                  712
+                ],
+                "destino": [
+                  0,
+                  701
+                ],
+                "ancho": 1080,
+                "parte": "lectura detenida desde el margen: «Se eu paro para pensar, ele me espera.», subrayado",
+                "margen_texto_app": 100,
+                "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=100) y solo corta por la derecha; por eso mide 1008 px de cruda y no 820. Escala 1,071."
+              },
+              {
+                "cruda": "02-espera-pausa.png",
+                "recorte": [
+                  72,
+                  1872,
+                  1080,
+                  2416
+                ],
+                "destino": [
+                  0,
+                  1337
+                ],
+                "ancho": 1080,
+                "parte": "micrófono quieto, sin halo, y tiempo detenido «00:34 / 00:46», bajo la lectura",
+                "margen_texto_app": 100,
+                "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+              }
+            ],
+            "cara": false
+          },
+          {
+            "n": 3,
+            "fondo": "claro",
+            "titular": [
+              "O Sigo, por cima",
+              "da sua câmera."
+            ],
+            "bajada": "Leia por cima da câmera ou de outro app.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  62,
+                  179,
+                  789,
+                  111
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  295,
+                  734,
+                  93
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 446,
+              "tam": 38,
+              "caja": [
+                64,
+                413,
+                671,
+                45
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "03-flotante-a.png",
+                "recorte": [
+                  44,
+                  122,
+                  1064,
+                  1236
+                ],
+                "destino": [
+                  0,
+                  740
+                ],
+                "ancho": 1080,
+                "parte": "ventana flotante de Sigo con el guion sobre la app de cámara -techo de madera, sin cara-, con el tiempo rojo 00:30 de la cámara. Recortada por encima de la fila «Pausa / Volver a Sigo», que salió en español",
+                "margen_texto_app": 125,
+                "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=125) y solo corta por la derecha; por eso mide 1020 px de cruda y no 820. Escala 1,059. Javier -t169u- pide recortar por encima de «Pausa / Volver a Sigo»: el recorte va a sangre por abajo y por la derecha para que la ventana no termine en un borde suelto; el botón de grabar queda fuera y la cámara se reconoce por el tiempo rojo.",
+                "excluye": [
+                  {
+                    "que": "fila «Pausa / Volver a Sigo», en español",
+                    "caja": [
+                      47,
+                      1246,
+                      1097,
+                      1300
+                    ]
+                  }
+                ]
+              }
+            ],
+            "cara": false
+          },
+          {
+            "n": 4,
+            "fondo": "oscuro",
+            "titular": [
+              "Grave olhando",
+              "para a lente."
+            ],
+            "bajada": "Sua imagem em uma janela que você pode mover.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  62,
+                  179,
+                  712,
+                  89
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  299,
+                  608,
+                  109
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 446,
+              "tam": 38,
+              "caja": [
+                64,
+                413,
+                811,
+                45
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "04-recuadro-grabando.png",
+                "recorte": [
+                  72,
+                  120,
+                  1180,
+                  610
+                ],
+                "destino": [
+                  0,
+                  480
+                ],
+                "ancho": 1080,
+                "parte": "lectura en curso desde el margen, con el renglón subrayado y el punto rojo de grabación",
+                "margen_texto_app": 100,
+                "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=100) y solo corta por la derecha; por eso mide 1108 px de cruda y no 820. Escala 0,975. Se quitan las filas negras y los renglones grises entre la lectura y el recuadro, que se puede mover."
+              },
+              {
+                "cruda": "04-recuadro-grabando.png",
+                "recorte": [
+                  72,
+                  1385,
+                  1180,
+                  1955
+                ],
+                "destino": [
+                  0,
+                  958
+                ],
+                "ancho": 1080,
+                "parte": "recuadro de cámara chico -techo de madera, sin cara-",
+                "margen_texto_app": 100,
+                "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+              },
+              {
+                "cruda": "04-recuadro-grabando.png",
+                "recorte": [
+                  72,
+                  1985,
+                  1180,
+                  2402
+                ],
+                "destino": [
+                  0,
+                  1514
+                ],
+                "ancho": 1080,
+                "parte": "micrófono verde y tiempo «00:05 / 03:00»",
+                "margen_texto_app": 100,
+                "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+              }
+            ],
+            "cara": false
+          },
+          {
+            "n": 5,
+            "fondo": "claro",
+            "titular": [
+              "Seu vídeo,",
+              "com legendas."
+            ],
+            "bajada": "Com as palavras do seu roteiro, no ritmo da sua voz.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  62,
+                  175,
+                  505,
+                  112
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  299,
+                  703,
+                  111
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 446,
+              "tam": 38,
+              "caja": [
+                64,
+                415,
+                839,
+                43
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "05-subtitulos-a-video-guardado.png",
+                "recorte": [
+                  130,
+                  700,
+                  1090,
+                  1760
+                ],
+                "destino": [
+                  199,
+                  480
+                ],
+                "ancho": 682,
+                "parte": "video guardado con subtítulos rojos palabra por palabra -«algo» resaltado-; la cara entera y chica",
+                "margen_texto_app": 160,
+                "motivo_escala": "05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u."
+              },
+              {
+                "cruda": "05-subtitulos-d-visor-guardar-agrupado.png",
+                "recorte": [
+                  56,
+                  1830,
+                  1164,
+                  2535
+                ],
+                "destino": [
+                  0,
+                  1233
+                ],
+                "ancho": 1080,
+                "parte": "control que produce los subtítulos: «Subtítulos Rojo», «Filtro Natural», «Guardar» y «Guardar y compartir»",
+                "margen_texto_app": 90,
+                "motivo_escala": "El panel entero de 05-d, de borde a borde, para que «Subtítulos Rojo» y los dos botones de guardar entren sin cortar."
+              }
+            ],
+            "cara": true,
+            "cara_caja_cruda": {
+              "cruda": "05-subtitulos-a-video-guardado.png",
+              "caja": [
+                390,
+                720,
+                840,
+                1320
+              ],
+              "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima."
+            },
+            "crudas": "entradas/motorola-1.1/es",
+            "zona_igual": {
+              "referencia": "capturas/es-419/05.png",
+              "nota": "Javier -t170u-: la captura es la de español, píxel por píxel -la app se ve en español-. Solo cambian el titular y la bajada, con el mismo tamaño, lugar y letra que en español. Zona de la captura: la unión de las cajas de destino de los recortes."
+            }
+          },
+          {
+            "n": 6,
+            "fondo": "oscuro",
+            "titular": [
+              "Pause",
+              "com um gesto."
+            ],
+            "bajada": "As pausas da gravação ficam fora do vídeo.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  62,
+                  185,
+                  299,
+                  82
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  306,
+                  714,
+                  104
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 446,
+              "tam": 38,
+              "caja": [
+                64,
+                414,
+                692,
+                44
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "06-gestos-panel.png",
+                "recorte": [
+                  0,
+                  1084,
+                  1220,
+                  2520
+                ],
+                "destino": [
+                  0,
+                  649
+                ],
+                "ancho": 1080,
+                "parte": "panel «Imagem da câmera» con el control por gestos, la ventana flotante y la barra de grabar",
+                "margen_texto_app": 96,
+                "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=96) y solo corta por la derecha; por eso mide 1220 px de cruda y no 820. Escala 0,885."
+              }
+            ],
+            "cara": false
+          },
+          {
+            "n": 7,
+            "fondo": "claro",
+            "titular": [
+              "No seu idioma."
+            ],
+            "bajada": "O Sigo em português, espanhol e inglês.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  62,
+                  179,
+                  721,
+                  89
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 326,
+              "tam": 38,
+              "caja": [
+                64,
+                293,
+                648,
+                45
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "07-idioma-menu.png",
+                "recorte": [
+                  30,
+                  990,
+                  1120,
+                  2524
+                ],
+                "destino": [
+                  0,
+                  400
+                ],
+                "ancho": 1080,
+                "parte": "Ajustes con el menú de idioma de la app abierto: Español, English y Português",
+                "margen_texto_app": 103,
+                "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=103) y solo corta por la derecha; por eso mide 1090 px de cruda y no 820. Escala 0,991."
+              }
+            ],
+            "cara": false
+          },
+          {
+            "n": 8,
+            "fondo": "oscuro",
+            "titular": [
+              "Seus roteiros,",
+              "com você."
+            ],
+            "bajada": "Continue seu último roteiro na tela inicial.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  62,
+                  179,
+                  668,
+                  108
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  295,
+                  495,
+                  92
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 446,
+              "tam": 38,
+              "caja": [
+                64,
+                413,
+                684,
+                37
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "08-guiones-a-portada.png",
+                "recorte": [
+                  25,
+                  85,
+                  1136,
+                  1290
+                ],
+                "destino": [
+                  0,
+                  480
+                ],
+                "ancho": 1080,
+                "parte": "portada: «Continuar com este roteiro» entera, con Leer y Grabar, y el primer guion de la lista",
+                "margen_texto_app": 62,
+                "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=62) y solo corta por la derecha; por eso mide 1111 px de cruda y no 820. Escala 0,972.",
+                "excluye": [
+                  {
+                    "que": "guion «My video for today», en inglés",
+                    "caja": [
+                      58,
+                      1324,
+                      1092,
+                      1512
+                    ]
+                  },
+                  {
+                    "que": "guion «Hola», en español",
+                    "caja": [
+                      58,
+                      1546,
+                      1092,
+                      1735
+                    ]
+                  }
+                ]
+              }
+            ],
+            "cara": false
+          }
+        ],
+        "grafico": {
+          "titular": [
+            "Ele espera.",
+            "E segue você."
+          ],
+          "textos_titular": [
+            {
+              "x": 54,
+              "base": 224,
+              "tam": 60,
+              "caja": [
+                50,
+                178,
+                288,
+                62
+              ]
+            },
+            {
+              "x": 54,
+              "base": 298,
+              "tam": 60,
+              "caja": [
+                50,
+                249,
+                350,
+                65
+              ]
+            }
+          ],
+          "logo": {
+            "x": 56,
+            "y": 48,
+            "alto": 52,
+            "caja": [
+              56,
+              48,
+              102,
+              52
+            ]
+          },
+          "recortes": [
+            {
+              "cruda": "02-espera-pausa.png",
+              "recorte": [
+                550,
+                118,
+                1085,
+                228
+              ],
+              "destino": [
+                600,
+                0
+              ],
+              "ancho": 424,
+              "margen_texto_app": 101,
+              "parte": "renglón detenido desde «pensar,»: «pensar, ele me», con el subrayado",
+              "motivo_escala": "A sangre arriba y a la derecha, desde el borde de la zona libre -x 600- hasta x 1024, a la misma escala que el gráfico aprobado -0,79×-.",
+              "excepcion_borde": "El recorte de arriba arranca en «pensar,», no en el margen, como el gráfico aprobado en español: desde el margen, el renglón mide 851 px de cruda y en 424 px quedaría a 0,50×. La espera, «ele me espera.», sigue en el renglón de abajo, que es otro recorte y sí arranca en el margen -«espera. E quando eu», «segue comigo até o»-. Cada renglón empieza con palabra entera y solo se corta por la derecha."
+            },
+            {
+              "cruda": "02-espera-pausa.png",
+              "recorte": [
+                96,
+                228,
+                631,
+                440
+              ],
+              "destino": [
+                600,
+                87
+              ],
+              "ancho": 424,
+              "margen_texto_app": 101,
+              "parte": "los dos renglones siguientes desde el margen de la app: «espera. E quando eu» y «segue comigo até o»",
+              "motivo_escala": "Misma escala que el renglón de arriba."
+            },
+            {
+              "cruda": "02-espera-pausa.png",
+              "recorte": [
+                350,
+                1950,
+                885,
+                2259
+              ],
+              "destino": [
+                600,
+                255
+              ],
+              "ancho": 424,
+              "margen_texto_app": 360,
+              "parte": "micrófono quieto y tiempo detenido, a la misma escala; cierra el bloque a sangre hasta abajo",
+              "motivo_escala": "Misma escala que la lectura."
+            }
+          ],
+          "zona_libre": [
+            424,
+            140,
+            176,
+            220
+          ],
+          "raya": [
+            57,
+            340,
+            150,
+            340
+          ]
+        }
+      }
+    },
+    "tabletas": {
+      "nota": "Tabletas 1.1 -12-11-2026, t169u y t170u-. Crudas del emulador, Android 36, en horizontal, copiadas tal cual desde adjuntos-grok-tabletas-1.1.zip. Recortes [x0, y0, x1, y1] sobre la cruda. Las de 10 pulgadas van sin escala; las de 7, con la única ampliación permitida -ver «escala»-. Barras medidas en la cruda: barra_estado es la primera fila bajo los íconos de estado; barra_tareas, la primera fila entera del color de la barra de tareas. Las esquinas redondeadas de la ventana dejan ver ese color -o uno a 2 niveles- encima de la barra: es sistema; no puede quedar dentro y no cuenta al medir si una franja cortada es lisa. Sin portadas -decisión de Javier, t170u-. Los mismos archivos van en los dos lugares de Play, 7 y 10 pulgadas. «descartadas»: lugares del plan que no se pueden entregar sin romper una regla; no se reemplazan con otra cruda ni con otro idioma.",
+      "color_barra_tareas": [
+        17,
+        19,
+        24
+      ],
+      "tolerancia_sistema": 2,
+      "crudas": "entradas/emulador-1.1",
+      "plan": [
+        {
+          "lugar": 1,
+          "tamano": "10",
+          "cruda": "4-lectura-avanza"
+        },
+        {
+          "lugar": 2,
+          "tamano": "10",
+          "cruda": "3-antes-de-leer"
+        },
+        {
+          "lugar": 3,
+          "tamano": "10",
+          "cruda": "2-editor-colores"
+        },
+        {
+          "lugar": 4,
+          "tamano": "7",
+          "cruda": "4-lectura-avanza"
+        },
+        {
+          "lugar": 5,
+          "tamano": "7",
+          "cruda": "3-antes-de-leer"
+        },
+        {
+          "lugar": 6,
+          "tamano": "7",
+          "cruda": "2-editor-colores"
+        }
+      ],
+      "piezas": [
+        {
+          "idioma": "es-419",
+          "tamano": "10",
+          "lugar_previsto": 1,
+          "cruda": "tableta-10/es/4-lectura-avanza.png",
+          "barra_estado": 54,
+          "barra_tareas": 1488,
+          "n": 1,
+          "recorte": [
+            16,
+            62,
+            2544,
+            1484
+          ],
+          "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana."
+        },
+        {
+          "idioma": "es-419",
+          "tamano": "10",
+          "lugar_previsto": 2,
+          "cruda": "tableta-10/es/3-antes-de-leer.png",
+          "barra_estado": 54,
+          "barra_tareas": 1488,
+          "n": 2,
+          "recorte": [
+            15,
+            61,
+            2543,
+            1483
+          ],
+          "parte": "lectura lista antes de empezar, con los controles a los lados -Voz, tamaño, posición, brillo, Ventana flotante y Más- y el botón de reproducir",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 7 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 5 filas lisas de fondo encima. A los lados, 15 y 17 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana."
+        },
+        {
+          "idioma": "es-419",
+          "tamano": "10",
+          "lugar_previsto": 3,
+          "cruda": "tableta-10/es/2-editor-colores.png",
+          "barra_estado": 54,
+          "barra_tareas": 1488,
+          "n": 3,
+          "recorte": [
+            16,
+            62,
+            2544,
+            1484
+          ],
+          "parte": "editor con el guion en colores, con Leer y Grabar",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana."
+        },
+        {
+          "idioma": "es-419",
+          "tamano": "7",
+          "lugar_previsto": 4,
+          "cruda": "tableta-7/es/4-lectura-avanza.png",
+          "barra_estado": 44,
+          "barra_tareas": 1088,
+          "n": 4,
+          "recorte": [
+            32,
+            44,
+            1888,
+            1088
+          ],
+          "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+          "escala": {
+            "salida": [
+              1920,
+              1080
+            ],
+            "factor": "1080/1044",
+            "filtro": "LANCZOS",
+            "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos."
+          }
+        },
+        {
+          "idioma": "es-419",
+          "tamano": "7",
+          "lugar_previsto": 6,
+          "cruda": "tableta-7/es/2-editor-colores.png",
+          "barra_estado": 44,
+          "barra_tareas": 1088,
+          "n": 5,
+          "recorte": [
+            32,
+            44,
+            1888,
+            1088
+          ],
+          "parte": "editor con el guion en colores, con Leer y Grabar",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+          "escala": {
+            "salida": [
+              1920,
+              1080
+            ],
+            "factor": "1080/1044",
+            "filtro": "LANCZOS",
+            "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos."
+          }
+        },
+        {
+          "idioma": "en-US",
+          "tamano": "10",
+          "lugar_previsto": 1,
+          "cruda": "tableta-10/en/4-lectura-avanza.png",
+          "barra_estado": 54,
+          "barra_tareas": 1488,
+          "n": 1,
+          "recorte": [
+            16,
+            62,
+            2544,
+            1484
+          ],
+          "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana."
+        },
+        {
+          "idioma": "en-US",
+          "tamano": "10",
+          "lugar_previsto": 2,
+          "cruda": "tableta-10/en/3-antes-de-leer.png",
+          "barra_estado": 54,
+          "barra_tareas": 1488,
+          "n": 2,
+          "recorte": [
+            15,
+            61,
+            2543,
+            1483
+          ],
+          "parte": "lectura lista antes de empezar, con los controles a los lados -Voz, tamaño, posición, brillo, Ventana flotante y Más- y el botón de reproducir",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 7 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 5 filas lisas de fondo encima. A los lados, 15 y 17 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana."
+        },
+        {
+          "idioma": "en-US",
+          "tamano": "10",
+          "lugar_previsto": 3,
+          "cruda": "tableta-10/en/2-editor-colores.png",
+          "barra_estado": 54,
+          "barra_tareas": 1488,
+          "n": 3,
+          "recorte": [
+            16,
+            62,
+            2544,
+            1484
+          ],
+          "parte": "editor con el guion en colores, con Leer y Grabar",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana."
+        },
+        {
+          "idioma": "en-US",
+          "tamano": "7",
+          "lugar_previsto": 4,
+          "cruda": "tableta-7/en/4-lectura-avanza.png",
+          "barra_estado": 44,
+          "barra_tareas": 1088,
+          "n": 4,
+          "recorte": [
+            32,
+            44,
+            1888,
+            1088
+          ],
+          "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+          "escala": {
+            "salida": [
+              1920,
+              1080
+            ],
+            "factor": "1080/1044",
+            "filtro": "LANCZOS",
+            "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos."
+          }
+        },
+        {
+          "idioma": "en-US",
+          "tamano": "7",
+          "lugar_previsto": 6,
+          "cruda": "tableta-7/en/2-editor-colores.png",
+          "barra_estado": 44,
+          "barra_tareas": 1088,
+          "n": 5,
+          "recorte": [
+            32,
+            44,
+            1888,
+            1088
+          ],
+          "parte": "editor con el guion en colores, con Leer y Grabar",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+          "escala": {
+            "salida": [
+              1920,
+              1080
+            ],
+            "factor": "1080/1044",
+            "filtro": "LANCZOS",
+            "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos."
+          }
+        },
+        {
+          "idioma": "pt-BR",
+          "tamano": "10",
+          "lugar_previsto": 1,
+          "cruda": "tableta-10/pt/4-lectura-avanza.png",
+          "barra_estado": 54,
+          "barra_tareas": 1488,
+          "n": 1,
+          "recorte": [
+            16,
+            62,
+            2544,
+            1484
+          ],
+          "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana."
+        },
+        {
+          "idioma": "pt-BR",
+          "tamano": "10",
+          "lugar_previsto": 2,
+          "cruda": "tableta-10/pt/3-antes-de-leer.png",
+          "barra_estado": 54,
+          "barra_tareas": 1488,
+          "n": 2,
+          "recorte": [
+            15,
+            61,
+            2543,
+            1483
+          ],
+          "parte": "lectura lista antes de empezar, con los controles a los lados -Voz, tamaño, posición, brillo, Ventana flotante y Más- y el botón de reproducir",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 7 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 5 filas lisas de fondo encima. A los lados, 15 y 17 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana."
+        },
+        {
+          "idioma": "pt-BR",
+          "tamano": "10",
+          "lugar_previsto": 3,
+          "cruda": "tableta-10/pt/2-editor-colores.png",
+          "barra_estado": 54,
+          "barra_tareas": 1488,
+          "n": 3,
+          "recorte": [
+            16,
+            62,
+            2544,
+            1484
+          ],
+          "parte": "editor con el guion en colores, con Leer y Grabar",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana."
+        },
+        {
+          "idioma": "pt-BR",
+          "tamano": "7",
+          "lugar_previsto": 4,
+          "cruda": "tableta-7/pt/4-lectura-avanza.png",
+          "barra_estado": 44,
+          "barra_tareas": 1088,
+          "n": 4,
+          "recorte": [
+            32,
+            44,
+            1888,
+            1088
+          ],
+          "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+          "escala": {
+            "salida": [
+              1920,
+              1080
+            ],
+            "factor": "1080/1044",
+            "filtro": "LANCZOS",
+            "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos."
+          }
+        },
+        {
+          "idioma": "pt-BR",
+          "tamano": "7",
+          "lugar_previsto": 6,
+          "cruda": "tableta-7/pt/2-editor-colores.png",
+          "barra_estado": 44,
+          "barra_tareas": 1088,
+          "n": 5,
+          "recorte": [
+            32,
+            44,
+            1888,
+            1088
+          ],
+          "parte": "editor con el guion en colores, con Leer y Grabar",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+          "escala": {
+            "salida": [
+              1920,
+              1080
+            ],
+            "factor": "1080/1044",
+            "filtro": "LANCZOS",
+            "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos."
+          }
+        }
+      ],
+      "descartadas": [
+        {
+          "idioma": "es-419",
+          "tamano": "7",
+          "lugar_previsto": 5,
+          "cruda": "tableta-7/es/3-antes-de-leer.png",
+          "barra_estado": 44,
+          "barra_tareas": 1088,
+          "tipos": [
+            "ancho"
+          ],
+          "contenido_x": [
+            16,
+            1879
+          ],
+          "motivo_corto": "contenido de Sigo de la columna 16 a la 1879: 1864 > 1856",
+          "motivos": [
+            "Entre las filas 44 y 1088 -1044 de alto útil- el 16:9 es de 1856 de ancho. El botón «Ventana flotante» empieza en la columna 16 y el borde del tiempo termina en la 1879: son 1864 columnas de Sigo, más que 1856. Cualquier recorte de 1856 corta un botón de Sigo, y eso no se hace."
+          ]
+        },
+        {
+          "idioma": "en-US",
+          "tamano": "7",
+          "lugar_previsto": 5,
+          "cruda": "tableta-7/en/3-antes-de-leer.png",
+          "barra_estado": 44,
+          "barra_tareas": 1088,
+          "tipos": [
+            "ancho"
+          ],
+          "contenido_x": [
+            16,
+            1879
+          ],
+          "motivo_corto": "contenido de Sigo de la columna 16 a la 1879: 1864 > 1856",
+          "motivos": [
+            "Entre las filas 44 y 1088 -1044 de alto útil- el 16:9 es de 1856 de ancho. El botón «Ventana flotante» empieza en la columna 16 y el borde del tiempo termina en la 1879: son 1864 columnas de Sigo, más que 1856. Cualquier recorte de 1856 corta un botón de Sigo, y eso no se hace."
+          ]
+        },
+        {
+          "idioma": "pt-BR",
+          "tamano": "7",
+          "lugar_previsto": 5,
+          "cruda": "tableta-7/pt/3-antes-de-leer.png",
+          "barra_estado": 44,
+          "barra_tareas": 1088,
+          "tipos": [
+            "ancho"
+          ],
+          "contenido_x": [
+            16,
+            1879
+          ],
+          "motivo_corto": "contenido de Sigo de la columna 16 a la 1879: 1864 > 1856",
+          "motivos": [
+            "Entre las filas 44 y 1088 -1044 de alto útil- el 16:9 es de 1856 de ancho. El botón «Ventana flotante» empieza en la columna 16 y el borde del tiempo termina en la 1879: son 1864 columnas de Sigo, más que 1856. Cualquier recorte de 1856 corta un botón de Sigo, y eso no se hace."
+          ]
+        }
+      ]
+    }
   }
 }

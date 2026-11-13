@@ -1,0 +1,41 @@
+DESCRIPCIONES BREVES PROPUESTAS PARA SIGO 1.1 -12-11-2026-, TRES POR IDIOMA
+La de control es la publicada hoy. Javier elige una; otra queda para un experimento de ficha -answer/6227309-, una sola cosa a la vez.
+
+es-419
+  control (73/80)
+  [[Teleprompter que sigue tu voz: el texto avanza mientras lees en voz alta.]]
+  Respaldo: La breve publicada (textos-es-419.txt). En Ads, «Teleprompter que sigue tu voz» dio 0 instalaciones en 80 impresiones.
+
+  B (61/80)
+  [[Tú hablas, Sigo te sigue. Si te detienes, el texto te espera.]]
+  Respaldo: «Tú hablas. Sigo te sigue.» 35,7 inst./1000 impr. y el menor costo por instalación; «Te espera si te detienes» 33,8 y 18 instalaciones. Nombra a Sigo.
+
+  C (77/80)
+  [[Te sales del guion o te detienes, y Sigo te espera. Al volver, sigue contigo.]]
+  Respaldo: «Te sales, vuelves y te sigue» 40,0 inst./1000 impr., el más alto; «Te espera si te detienes» 33,8. Nombra a Sigo.
+
+en-US
+  control (75/80)
+  [[A teleprompter that follows your voice: the script moves as you read aloud.]]
+  Respaldo: La breve publicada (textos-en-US.txt).
+
+  B (64/80)
+  [[You speak, Sigo follows. If you pause, the script waits for you.]]
+  Respaldo: Mismo dato que la B en español.
+
+  C (75/80)
+  [[Go off script or pause, and Sigo waits. When you come back, it follows you.]]
+  Respaldo: Mismo dato que la C en español.
+
+pt-BR
+  control (74/80)
+  [[Teleprompter que segue sua voz: o texto anda enquanto você lê em voz alta.]]
+  Respaldo: La breve publicada (textos-pt-BR.txt).
+
+  B (60/80)
+  [[Você fala, o Sigo segue você. Se você parar, o texto espera.]]
+  Respaldo: Mismo dato que la B en español.
+
+  C (76/80)
+  [[Se você sai do roteiro ou para, o Sigo espera. Quando volta, segue com você.]]
+  Respaldo: Mismo dato que la C en español.

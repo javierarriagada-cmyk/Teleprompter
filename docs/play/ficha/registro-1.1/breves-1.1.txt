@@ -1,0 +1,35 @@
+DESCRIPCIONES BREVES DE SIGO 1.1 -decisión de Javier del 12-11-2026, t169u-
+
+PUBLICADA: la B, en los tres idiomas. Es la que va en textos-<idioma>.txt.
+GUARDADA: la C, para un experimento de ficha DESPUÉS de publicar -answer/6227309-. No se publica ahora.
+CONTROL: la publicada hasta la 1.0. No se publica en la 1.1; queda como registro de lo que estaba en Play.
+
+es-419
+  control -CONTROL, no se publica- (73/80)
+  [[Teleprompter que sigue tu voz: el texto avanza mientras lees en voz alta.]]
+
+  B -PUBLICADA- (61/80)
+  [[Tú hablas, Sigo te sigue. Si te detienes, el texto te espera.]]
+
+  C -GUARDADA para el experimento- (77/80)
+  [[Te sales del guion o te detienes, y Sigo te espera. Al volver, sigue contigo.]]
+
+en-US
+  control -CONTROL, no se publica- (75/80)
+  [[A teleprompter that follows your voice: the script moves as you read aloud.]]
+
+  B -PUBLICADA- (64/80)
+  [[You speak, Sigo follows. If you pause, the script waits for you.]]
+
+  C -GUARDADA para el experimento- (75/80)
+  [[Go off script or pause, and Sigo waits. When you come back, it follows you.]]
+
+pt-BR
+  control -CONTROL, no se publica- (74/80)
+  [[Teleprompter que segue sua voz: o texto anda enquanto você lê em voz alta.]]
+
+  B -PUBLICADA- (60/80)
+  [[Você fala, o Sigo segue você. Se você parar, o texto espera.]]
+
+  C -GUARDADA para el experimento- (76/80)
+  [[Se você sai do roteiro ou para, o Sigo espera. Quando volta, segue com você.]]

@@ -1,0 +1,2854 @@
+{
+  "capturas": {
+    "es-419/01": {
+      "aprobada": "direccion-1.1/capturas/es-419/01.png"
+    },
+    "es-419/02": {
+      "aprobada": "direccion-1.1/capturas/es-419/02.png"
+    },
+    "es-419/03": {
+      "aprobada": "direccion-1.1/capturas/es-419/03.png"
+    },
+    "es-419/04": {
+      "recortes": [
+        {
+          "cruda": "04-recuadro-a-grabando.png",
+          "recorte_cruda": [
+            72,
+            120,
+            1170,
+            560
+          ],
+          "ancho_recorte": 1098,
+          "alto_recorte": 440,
+          "escala": 0.9836,
+          "caja": [
+            0,
+            480,
+            1080,
+            433
+          ],
+          "margen_texto_app": 106,
+          "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=106) y solo corta por la derecha; por eso mide 1098 px de cruda y no 820. Escala 0,984. Se quitan las filas negras y los renglones grises entre la lectura y el recuadro, que se puede mover."
+        },
+        {
+          "cruda": "04-recuadro-a-grabando.png",
+          "recorte_cruda": [
+            72,
+            1130,
+            1170,
+            1695
+          ],
+          "ancho_recorte": 1098,
+          "alto_recorte": 565,
+          "escala": 0.9836,
+          "caja": [
+            0,
+            913,
+            1080,
+            556
+          ],
+          "margen_texto_app": 106,
+          "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+        },
+        {
+          "cruda": "04-recuadro-a-grabando.png",
+          "recorte_cruda": [
+            72,
+            1975,
+            1170,
+            2434
+          ],
+          "ancho_recorte": 1098,
+          "alto_recorte": 459,
+          "escala": 0.9836,
+          "caja": [
+            0,
+            1469,
+            1080,
+            451
+          ],
+          "margen_texto_app": 106,
+          "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "Graba mirando",
+          "caja": [
+            62,
+            179,
+            733,
+            89
+          ],
+          "tinta": [
+            66,
+            183,
+            791,
+            264
+          ]
+        },
+        {
+          "que": "al lente.",
+          "caja": [
+            62,
+            299,
+            396,
+            88
+          ],
+          "tinta": [
+            66,
+            303,
+            454,
+            383
+          ]
+        },
+        {
+          "que": "Tu imagen, en un recuadro que puedes mover.",
+          "caja": [
+            64,
+            415,
+            750,
+            43
+          ],
+          "tinta": [
+            68,
+            419,
+            810,
+            454
+          ]
+        }
+      ],
+      "texto_pct": 6.72,
+      "interfaz_pct": 75.0,
+      "ancho_recorte_max": 1098,
+      "escala_min": 0.9836,
+      "cara": true,
+      "cara_medida": {
+        "cruda": "04-recuadro-a-grabando.png",
+        "caja_cruda": [
+          900,
+          1305,
+          1027,
+          1475
+        ],
+        "cajas_captura": [
+          [
+            814,
+            1085,
+            939,
+            1252
+          ]
+        ],
+        "pct_captura": 1.01,
+        "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima. Se lleva a la captura con el recorte y la escala."
+      },
+      "franja_vacia_max": {
+        "alto_px": 268,
+        "pct_alto": 13.96,
+        "filas": [
+          1652,
+          1920
+        ]
+      }
+    },
+    "es-419/05": {
+      "aprobada": "direccion-1.1/capturas/es-419/05.png"
+    },
+    "es-419/06": {
+      "recortes": [
+        {
+          "cruda": "06-gestos-panel.png",
+          "recorte_cruda": [
+            0,
+            1110,
+            1220,
+            2520
+          ],
+          "ancho_recorte": 1220,
+          "alto_recorte": 1410,
+          "escala": 0.8852,
+          "caja": [
+            0,
+            672,
+            1080,
+            1248
+          ],
+          "margen_texto_app": 96,
+          "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=96) y solo corta por la derecha; por eso mide 1220 px de cruda y no 820. Escala 0,885."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "Pausa",
+          "caja": [
+            62,
+            185,
+            301,
+            82
+          ],
+          "tinta": [
+            66,
+            189,
+            359,
+            263
+          ]
+        },
+        {
+          "que": "con un gesto.",
+          "caja": [
+            62,
+            306,
+            650,
+            104
+          ],
+          "tinta": [
+            66,
+            310,
+            708,
+            406
+          ]
+        },
+        {
+          "que": "Las pausas de grabación quedan fuera del video.",
+          "caja": [
+            64,
+            413,
+            784,
+            45
+          ],
+          "tinta": [
+            68,
+            417,
+            844,
+            454
+          ]
+        }
+      ],
+      "texto_pct": 6.49,
+      "interfaz_pct": 65.0,
+      "ancho_recorte_max": 1220,
+      "escala_min": 0.8852,
+      "cara": false,
+      "cara_medida": null,
+      "franja_vacia_max": {
+        "alto_px": 218,
+        "pct_alto": 11.35,
+        "filas": [
+          454,
+          672
+        ]
+      }
+    },
+    "es-419/07": {
+      "recortes": [
+        {
+          "cruda": "07-idioma-menu.png",
+          "recorte_cruda": [
+            30,
+            990,
+            1120,
+            2524
+          ],
+          "ancho_recorte": 1090,
+          "alto_recorte": 1534,
+          "escala": 0.9908,
+          "caja": [
+            0,
+            400,
+            1080,
+            1520
+          ],
+          "margen_texto_app": 103,
+          "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=103) y solo corta por la derecha; por eso mide 1090 px de cruda y no 820. Escala 0,991."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "En tu idioma.",
+          "caja": [
+            62,
+            179,
+            645,
+            89
+          ],
+          "tinta": [
+            66,
+            183,
+            703,
+            264
+          ]
+        },
+        {
+          "que": "Sigo en español, inglés y portugués.",
+          "caja": [
+            64,
+            293,
+            583,
+            45
+          ],
+          "tinta": [
+            68,
+            297,
+            643,
+            334
+          ]
+        }
+      ],
+      "texto_pct": 4.38,
+      "interfaz_pct": 79.17,
+      "ancho_recorte_max": 1090,
+      "escala_min": 0.9908,
+      "cara": false,
+      "cara_medida": null,
+      "franja_vacia_max": {
+        "alto_px": 66,
+        "pct_alto": 3.44,
+        "filas": [
+          334,
+          400
+        ]
+      }
+    },
+    "es-419/08": {
+      "recortes": [
+        {
+          "cruda": "07-guiones-a-portada.png",
+          "recorte_cruda": [
+            25,
+            85,
+            1136,
+            1290
+          ],
+          "ancho_recorte": 1111,
+          "alto_recorte": 1205,
+          "escala": 0.9721,
+          "caja": [
+            0,
+            480,
+            1080,
+            1171
+          ],
+          "margen_texto_app": 62,
+          "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=62) y solo corta por la derecha; por eso mide 1111 px de cruda y no 820. Escala 0,972."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "Tus guiones,",
+          "caja": [
+            62,
+            179,
+            611,
+            111
+          ],
+          "tinta": [
+            66,
+            183,
+            669,
+            286
+          ]
+        },
+        {
+          "que": "contigo.",
+          "caja": [
+            62,
+            299,
+            405,
+            111
+          ],
+          "tinta": [
+            66,
+            303,
+            463,
+            406
+          ]
+        },
+        {
+          "que": "Continúa tu último guion desde la portada.",
+          "caja": [
+            64,
+            413,
+            698,
+            45
+          ],
+          "tinta": [
+            68,
+            417,
+            758,
+            454
+          ]
+        }
+      ],
+      "texto_pct": 7.29,
+      "interfaz_pct": 60.99,
+      "ancho_recorte_max": 1111,
+      "escala_min": 0.9721,
+      "cara": false,
+      "cara_medida": null,
+      "franja_vacia_max": {
+        "alto_px": 271,
+        "pct_alto": 14.11,
+        "filas": [
+          1649,
+          1920
+        ]
+      }
+    },
+    "en-US/01": {
+      "recortes": [
+        {
+          "cruda": "01-voz-lectura-avanza.png",
+          "recorte_cruda": [
+            72,
+            126,
+            1110,
+            1010
+          ],
+          "ancho_recorte": 1038,
+          "alto_recorte": 884,
+          "escala": 1.0405,
+          "caja": [
+            0,
+            440,
+            1080,
+            920
+          ],
+          "margen_texto_app": 101,
+          "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=101) y solo corta por la derecha; por eso mide 1038 px de cruda y no 820. Escala 1,040."
+        },
+        {
+          "cruda": "01-voz-lectura-avanza.png",
+          "recorte_cruda": [
+            72,
+            1835,
+            1110,
+            2373
+          ],
+          "ancho_recorte": 1038,
+          "alto_recorte": 538,
+          "escala": 1.0405,
+          "caja": [
+            0,
+            1360,
+            1080,
+            560
+          ],
+          "margen_texto_app": 101,
+          "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "You speak.",
+          "caja": [
+            61,
+            179,
+            527,
+            109
+          ],
+          "tinta": [
+            65,
+            183,
+            584,
+            284
+          ]
+        },
+        {
+          "que": "Sigo follows.",
+          "caja": [
+            62,
+            297,
+            623,
+            113
+          ],
+          "tinta": [
+            66,
+            301,
+            681,
+            406
+          ]
+        }
+      ],
+      "texto_pct": 6.51,
+      "interfaz_pct": 77.08,
+      "ancho_recorte_max": 1038,
+      "escala_min": 1.0405,
+      "cara": false,
+      "cara_medida": null,
+      "franja_vacia_max": {
+        "alto_px": 240,
+        "pct_alto": 12.5,
+        "filas": [
+          1342,
+          1582
+        ]
+      }
+    },
+    "en-US/02": {
+      "recortes": [
+        {
+          "cruda": "02-espera-pausa.png",
+          "recorte_cruda": [
+            72,
+            118,
+            1110,
+            700
+          ],
+          "ancho_recorte": 1038,
+          "alto_recorte": 582,
+          "escala": 1.0405,
+          "caja": [
+            0,
+            712,
+            1080,
+            606
+          ],
+          "margen_texto_app": 101,
+          "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=101) y solo corta por la derecha; por eso mide 1038 px de cruda y no 820. Escala 1,040."
+        },
+        {
+          "cruda": "02-espera-pausa.png",
+          "recorte_cruda": [
+            72,
+            1856,
+            1110,
+            2435
+          ],
+          "ancho_recorte": 1038,
+          "alto_recorte": 579,
+          "escala": 1.0405,
+          "caja": [
+            0,
+            1318,
+            1080,
+            602
+          ],
+          "margen_texto_app": 101,
+          "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "You pause.",
+          "caja": [
+            61,
+            185,
+            531,
+            103
+          ],
+          "tinta": [
+            65,
+            189,
+            588,
+            284
+          ]
+        },
+        {
+          "que": "Sigo waits.",
+          "caja": [
+            62,
+            299,
+            529,
+            111
+          ],
+          "tinta": [
+            66,
+            303,
+            587,
+            406
+          ]
+        },
+        {
+          "que": "When you resume, it follows you. No tapping.",
+          "caja": [
+            64,
+            414,
+            730,
+            44
+          ],
+          "tinta": [
+            68,
+            418,
+            790,
+            454
+          ]
+        }
+      ],
+      "texto_pct": 7.36,
+      "interfaz_pct": 62.92,
+      "ancho_recorte_max": 1038,
+      "escala_min": 1.0405,
+      "cara": false,
+      "cara_medida": null,
+      "franja_vacia_max": {
+        "alto_px": 285,
+        "pct_alto": 14.84,
+        "filas": [
+          454,
+          739
+        ]
+      }
+    },
+    "en-US/03": {
+      "recortes": [
+        {
+          "cruda": "03-flotante-a.png",
+          "recorte_cruda": [
+            0,
+            122,
+            1220,
+            2509
+          ],
+          "ancho_recorte": 1220,
+          "alto_recorte": 2387,
+          "escala": 0.6033,
+          "caja": [
+            172,
+            480,
+            736,
+            1440
+          ],
+          "margen_texto_app": 133,
+          "motivo_escala": "Como la 3 aprobada en español: hace falta la pantalla entera de ancho para ver a la vez la banda, el tiempo rojo y el botón de grabar; reducida a 0,603×."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "Sigo, on top of",
+          "caja": [
+            62,
+            177,
+            704,
+            113
+          ],
+          "tinta": [
+            66,
+            181,
+            762,
+            286
+          ]
+        },
+        {
+          "que": "your camera.",
+          "caja": [
+            62,
+            321,
+            644,
+            87
+          ],
+          "tinta": [
+            66,
+            325,
+            702,
+            404
+          ]
+        },
+        {
+          "que": "Read on top of the camera or another app.",
+          "caja": [
+            64,
+            414,
+            684,
+            44
+          ],
+          "tinta": [
+            68,
+            418,
+            744,
+            454
+          ]
+        }
+      ],
+      "texto_pct": 8.33,
+      "interfaz_pct": 51.11,
+      "ancho_recorte_max": 1220,
+      "escala_min": 0.6033,
+      "cara": false,
+      "cara_medida": null,
+      "franja_vacia_max": {
+        "alto_px": 61,
+        "pct_alto": 3.18,
+        "filas": [
+          120,
+          181
+        ]
+      }
+    },
+    "en-US/04": {
+      "recortes": [
+        {
+          "cruda": "04-recuadro-grabando.png",
+          "recorte_cruda": [
+            72,
+            120,
+            1180,
+            575
+          ],
+          "ancho_recorte": 1108,
+          "alto_recorte": 455,
+          "escala": 0.9747,
+          "caja": [
+            0,
+            480,
+            1080,
+            444
+          ],
+          "margen_texto_app": 96,
+          "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=96) y solo corta por la derecha; por eso mide 1108 px de cruda y no 820. Escala 0,975. Se quitan las filas negras y los renglones grises entre la lectura y el recuadro, que se puede mover."
+        },
+        {
+          "cruda": "04-recuadro-grabando.png",
+          "recorte_cruda": [
+            72,
+            1385,
+            1180,
+            1955
+          ],
+          "ancho_recorte": 1108,
+          "alto_recorte": 570,
+          "escala": 0.9747,
+          "caja": [
+            0,
+            924,
+            1080,
+            556
+          ],
+          "margen_texto_app": 96,
+          "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+        },
+        {
+          "cruda": "04-recuadro-grabando.png",
+          "recorte_cruda": [
+            72,
+            1990,
+            1180,
+            2441
+          ],
+          "ancho_recorte": 1108,
+          "alto_recorte": 451,
+          "escala": 0.9747,
+          "caja": [
+            0,
+            1480,
+            1080,
+            440
+          ],
+          "margen_texto_app": 96,
+          "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "Record looking",
+          "caja": [
+            62,
+            179,
+            735,
+            111
+          ],
+          "tinta": [
+            66,
+            183,
+            793,
+            286
+          ]
+        },
+        {
+          "que": "at the lens.",
+          "caja": [
+            62,
+            299,
+            537,
+            88
+          ],
+          "tinta": [
+            66,
+            303,
+            595,
+            383
+          ]
+        },
+        {
+          "que": "See yourself in a small window you can move.",
+          "caja": [
+            64,
+            414,
+            738,
+            44
+          ],
+          "tinta": [
+            68,
+            418,
+            798,
+            454
+          ]
+        }
+      ],
+      "texto_pct": 8.12,
+      "interfaz_pct": 75.0,
+      "ancho_recorte_max": 1108,
+      "escala_min": 0.9747,
+      "cara": false,
+      "cara_medida": null,
+      "franja_vacia_max": {
+        "alto_px": 273,
+        "pct_alto": 14.22,
+        "filas": [
+          1647,
+          1920
+        ]
+      }
+    },
+    "en-US/05": {
+      "recortes": [
+        {
+          "cruda": "05-subtitulos-a-video-guardado.png",
+          "recorte_cruda": [
+            130,
+            700,
+            1090,
+            1760
+          ],
+          "ancho_recorte": 960,
+          "alto_recorte": 1060,
+          "escala": 0.7104,
+          "caja": [
+            199,
+            480,
+            682,
+            753
+          ],
+          "margen_texto_app": 160,
+          "motivo_escala": "05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u."
+        },
+        {
+          "cruda": "05-subtitulos-d-visor-guardar-agrupado.png",
+          "recorte_cruda": [
+            56,
+            1830,
+            1164,
+            2535
+          ],
+          "ancho_recorte": 1108,
+          "alto_recorte": 705,
+          "escala": 0.9747,
+          "caja": [
+            0,
+            1233,
+            1080,
+            687
+          ],
+          "margen_texto_app": 90,
+          "motivo_escala": "El panel entero de 05-d, de borde a borde, para que «Subtítulos Rojo» y los dos botones de guardar entren sin cortar."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "Your video,",
+          "caja": [
+            61,
+            179,
+            549,
+            108
+          ],
+          "tinta": [
+            65,
+            183,
+            606,
+            283
+          ]
+        },
+        {
+          "que": "with subtitles.",
+          "caja": [
+            62,
+            299,
+            694,
+            89
+          ],
+          "tinta": [
+            66,
+            303,
+            752,
+            384
+          ]
+        },
+        {
+          "que": "With the words from your script, in time with your voice.",
+          "caja": [
+            64,
+            414,
+            905,
+            44
+          ],
+          "tinta": [
+            68,
+            418,
+            965,
+            454
+          ]
+        }
+      ],
+      "texto_pct": 8.1,
+      "interfaz_pct": 60.55,
+      "ancho_recorte_max": 1108,
+      "escala_min": 0.7104,
+      "cara": true,
+      "zona_igual": {
+        "referencia": "capturas/es-419/05.png",
+        "nota": "Javier -t170u-: la captura es la de español, píxel por píxel -la app se ve en español-. Solo cambian el titular y la bajada, con el mismo tamaño, lugar y letra que en español. Zona de la captura: la unión de las cajas de destino de los recortes.",
+        "cajas": [
+          [
+            199,
+            480,
+            682,
+            753
+          ],
+          [
+            0,
+            1233,
+            1080,
+            687
+          ]
+        ],
+        "igual": true
+      },
+      "cara_medida": {
+        "cruda": "05-subtitulos-a-video-guardado.png",
+        "caja_cruda": [
+          390,
+          720,
+          840,
+          1320
+        ],
+        "cajas_captura": [
+          [
+            384,
+            494,
+            703,
+            920
+          ]
+        ],
+        "pct_captura": 6.55,
+        "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima."
+      },
+      "franja_vacia_max": {
+        "alto_px": 63,
+        "pct_alto": 3.28,
+        "filas": [
+          120,
+          183
+        ]
+      }
+    },
+    "en-US/06": {
+      "recortes": [
+        {
+          "cruda": "06-gestos-panel.png",
+          "recorte_cruda": [
+            0,
+            1084,
+            1220,
+            2520
+          ],
+          "ancho_recorte": 1220,
+          "alto_recorte": 1436,
+          "escala": 0.8852,
+          "caja": [
+            0,
+            649,
+            1080,
+            1271
+          ],
+          "margen_texto_app": 96,
+          "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=96) y solo corta por la derecha; por eso mide 1220 px de cruda y no 820. Escala 0,885."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "Pause",
+          "caja": [
+            62,
+            185,
+            299,
+            82
+          ],
+          "tinta": [
+            66,
+            189,
+            357,
+            263
+          ]
+        },
+        {
+          "que": "with a gesture.",
+          "caja": [
+            62,
+            299,
+            719,
+            111
+          ],
+          "tinta": [
+            66,
+            303,
+            777,
+            406
+          ]
+        },
+        {
+          "que": "Recording pauses stay out of your video.",
+          "caja": [
+            64,
+            414,
+            656,
+            44
+          ],
+          "tinta": [
+            68,
+            418,
+            716,
+            454
+          ]
+        }
+      ],
+      "texto_pct": 6.76,
+      "interfaz_pct": 66.2,
+      "ancho_recorte_max": 1220,
+      "escala_min": 0.8852,
+      "cara": false,
+      "cara_medida": null,
+      "franja_vacia_max": {
+        "alto_px": 195,
+        "pct_alto": 10.16,
+        "filas": [
+          454,
+          649
+        ]
+      }
+    },
+    "en-US/07": {
+      "recortes": [
+        {
+          "cruda": "07-idioma-menu.png",
+          "recorte_cruda": [
+            30,
+            990,
+            1120,
+            2524
+          ],
+          "ancho_recorte": 1090,
+          "alto_recorte": 1534,
+          "escala": 0.9908,
+          "caja": [
+            0,
+            400,
+            1080,
+            1520
+          ],
+          "margen_texto_app": 103,
+          "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=103) y solo corta por la derecha; por eso mide 1090 px de cruda y no 820. Escala 0,991."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "In your language.",
+          "caja": [
+            62,
+            179,
+            845,
+            111
+          ],
+          "tinta": [
+            66,
+            183,
+            903,
+            286
+          ]
+        },
+        {
+          "que": "Sigo in English, Spanish and Portuguese.",
+          "caja": [
+            64,
+            295,
+            658,
+            43
+          ],
+          "tinta": [
+            68,
+            299,
+            718,
+            334
+          ]
+        }
+      ],
+      "texto_pct": 6.23,
+      "interfaz_pct": 79.17,
+      "ancho_recorte_max": 1090,
+      "escala_min": 0.9908,
+      "cara": false,
+      "cara_medida": null,
+      "franja_vacia_max": {
+        "alto_px": 66,
+        "pct_alto": 3.44,
+        "filas": [
+          334,
+          400
+        ]
+      }
+    },
+    "en-US/08": {
+      "recortes": [
+        {
+          "cruda": "08-guiones-a-portada.png",
+          "recorte_cruda": [
+            25,
+            85,
+            1136,
+            1290
+          ],
+          "ancho_recorte": 1111,
+          "alto_recorte": 1205,
+          "escala": 0.9721,
+          "caja": [
+            0,
+            480,
+            1080,
+            1171
+          ],
+          "margen_texto_app": 62,
+          "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=62) y solo corta por la derecha; por eso mide 1111 px de cruda y no 820. Escala 0,972.",
+          "excluye": [
+            {
+              "que": "guion «Hola», en español",
+              "caja": [
+                58,
+                1324,
+                1092,
+                1512
+              ]
+            }
+          ]
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "Keep your scripts",
+          "caja": [
+            62,
+            179,
+            838,
+            109
+          ],
+          "tinta": [
+            66,
+            183,
+            896,
+            284
+          ]
+        },
+        {
+          "que": "with you.",
+          "caja": [
+            62,
+            299,
+            456,
+            109
+          ],
+          "tinta": [
+            66,
+            303,
+            514,
+            404
+          ]
+        },
+        {
+          "que": "Continue your latest script from the home screen.",
+          "caja": [
+            64,
+            414,
+            802,
+            44
+          ],
+          "tinta": [
+            68,
+            418,
+            862,
+            454
+          ]
+        }
+      ],
+      "texto_pct": 8.85,
+      "interfaz_pct": 60.99,
+      "ancho_recorte_max": 1111,
+      "escala_min": 0.9721,
+      "cara": false,
+      "cara_medida": null,
+      "franja_vacia_max": {
+        "alto_px": 271,
+        "pct_alto": 14.11,
+        "filas": [
+          1649,
+          1920
+        ]
+      }
+    },
+    "pt-BR/01": {
+      "recortes": [
+        {
+          "cruda": "01-voz-lectura-avanza.png",
+          "recorte_cruda": [
+            72,
+            110,
+            1080,
+            900
+          ],
+          "ancho_recorte": 1008,
+          "alto_recorte": 790,
+          "escala": 1.0714,
+          "caja": [
+            0,
+            440,
+            1080,
+            846
+          ],
+          "margen_texto_app": 100,
+          "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=100) y solo corta por la derecha; por eso mide 1008 px de cruda y no 820. Escala 1,071."
+        },
+        {
+          "cruda": "01-voz-lectura-avanza.png",
+          "recorte_cruda": [
+            72,
+            1819,
+            1080,
+            2411
+          ],
+          "ancho_recorte": 1008,
+          "alto_recorte": 592,
+          "escala": 1.0714,
+          "caja": [
+            0,
+            1286,
+            1080,
+            634
+          ],
+          "margen_texto_app": 100,
+          "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "Você fala.",
+          "caja": [
+            61,
+            175,
+            474,
+            92
+          ],
+          "tinta": [
+            65,
+            179,
+            531,
+            263
+          ]
+        },
+        {
+          "que": "O Sigo segue você.",
+          "caja": [
+            62,
+            295,
+            895,
+            115
+          ],
+          "tinta": [
+            66,
+            299,
+            953,
+            406
+          ]
+        }
+      ],
+      "texto_pct": 7.41,
+      "interfaz_pct": 77.08,
+      "ancho_recorte_max": 1008,
+      "escala_min": 1.0714,
+      "cara": false,
+      "cara_medida": null,
+      "franja_vacia_max": {
+        "alto_px": 282,
+        "pct_alto": 14.69,
+        "filas": [
+          1250,
+          1532
+        ]
+      }
+    },
+    "pt-BR/02": {
+      "recortes": [
+        {
+          "cruda": "02-espera-pausa.png",
+          "recorte_cruda": [
+            72,
+            118,
+            1080,
+            712
+          ],
+          "ancho_recorte": 1008,
+          "alto_recorte": 594,
+          "escala": 1.0714,
+          "caja": [
+            0,
+            701,
+            1080,
+            636
+          ],
+          "margen_texto_app": 100,
+          "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=100) y solo corta por la derecha; por eso mide 1008 px de cruda y no 820. Escala 1,071."
+        },
+        {
+          "cruda": "02-espera-pausa.png",
+          "recorte_cruda": [
+            72,
+            1872,
+            1080,
+            2416
+          ],
+          "ancho_recorte": 1008,
+          "alto_recorte": 544,
+          "escala": 1.0714,
+          "caja": [
+            0,
+            1337,
+            1080,
+            583
+          ],
+          "margen_texto_app": 100,
+          "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "Você para.",
+          "caja": [
+            61,
+            175,
+            513,
+            113
+          ],
+          "tinta": [
+            65,
+            179,
+            570,
+            284
+          ]
+        },
+        {
+          "que": "O Sigo espera.",
+          "caja": [
+            62,
+            299,
+            690,
+            111
+          ],
+          "tinta": [
+            66,
+            303,
+            748,
+            406
+          ]
+        },
+        {
+          "que": "Quando você volta, ele segue com você, sem tocar na tela.",
+          "caja": [
+            64,
+            413,
+            940,
+            45
+          ],
+          "tinta": [
+            68,
+            417,
+            1000,
+            454
+          ]
+        }
+      ],
+      "texto_pct": 8.87,
+      "interfaz_pct": 63.49,
+      "ancho_recorte_max": 1008,
+      "escala_min": 1.0714,
+      "cara": false,
+      "cara_medida": null,
+      "franja_vacia_max": {
+        "alto_px": 279,
+        "pct_alto": 14.53,
+        "filas": [
+          454,
+          733
+        ]
+      }
+    },
+    "pt-BR/03": {
+      "recortes": [
+        {
+          "cruda": "03-flotante-a.png",
+          "recorte_cruda": [
+            44,
+            122,
+            1064,
+            1236
+          ],
+          "ancho_recorte": 1020,
+          "alto_recorte": 1114,
+          "escala": 1.0588,
+          "caja": [
+            0,
+            740,
+            1080,
+            1180
+          ],
+          "margen_texto_app": 125,
+          "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=125) y solo corta por la derecha; por eso mide 1020 px de cruda y no 820. Escala 1,059. Javier -t169u- pide recortar por encima de «Pausa / Volver a Sigo»: el recorte va a sangre por abajo y por la derecha para que la ventana no termine en un borde suelto; el botón de grabar queda fuera y la cámara se reconoce por el tiempo rojo.",
+          "excluye": [
+            {
+              "que": "fila «Pausa / Volver a Sigo», en español",
+              "caja": [
+                47,
+                1246,
+                1097,
+                1300
+              ]
+            }
+          ]
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "O Sigo, por cima",
+          "caja": [
+            62,
+            179,
+            789,
+            111
+          ],
+          "tinta": [
+            66,
+            183,
+            847,
+            286
+          ]
+        },
+        {
+          "que": "da sua câmera.",
+          "caja": [
+            62,
+            295,
+            734,
+            93
+          ],
+          "tinta": [
+            66,
+            299,
+            792,
+            384
+          ]
+        },
+        {
+          "que": "Leia por cima da câmera ou de outro app.",
+          "caja": [
+            64,
+            413,
+            671,
+            45
+          ],
+          "tinta": [
+            68,
+            417,
+            731,
+            454
+          ]
+        }
+      ],
+      "texto_pct": 9.31,
+      "interfaz_pct": 61.46,
+      "ancho_recorte_max": 1020,
+      "escala_min": 1.0588,
+      "cara": false,
+      "cara_medida": null,
+      "franja_vacia_max": {
+        "alto_px": 286,
+        "pct_alto": 14.9,
+        "filas": [
+          454,
+          740
+        ]
+      }
+    },
+    "pt-BR/04": {
+      "recortes": [
+        {
+          "cruda": "04-recuadro-grabando.png",
+          "recorte_cruda": [
+            72,
+            120,
+            1180,
+            610
+          ],
+          "ancho_recorte": 1108,
+          "alto_recorte": 490,
+          "escala": 0.9747,
+          "caja": [
+            0,
+            480,
+            1080,
+            478
+          ],
+          "margen_texto_app": 100,
+          "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=100) y solo corta por la derecha; por eso mide 1108 px de cruda y no 820. Escala 0,975. Se quitan las filas negras y los renglones grises entre la lectura y el recuadro, que se puede mover."
+        },
+        {
+          "cruda": "04-recuadro-grabando.png",
+          "recorte_cruda": [
+            72,
+            1385,
+            1180,
+            1955
+          ],
+          "ancho_recorte": 1108,
+          "alto_recorte": 570,
+          "escala": 0.9747,
+          "caja": [
+            0,
+            958,
+            1080,
+            556
+          ],
+          "margen_texto_app": 100,
+          "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+        },
+        {
+          "cruda": "04-recuadro-grabando.png",
+          "recorte_cruda": [
+            72,
+            1985,
+            1180,
+            2402
+          ],
+          "ancho_recorte": 1108,
+          "alto_recorte": 417,
+          "escala": 0.9747,
+          "caja": [
+            0,
+            1514,
+            1080,
+            406
+          ],
+          "margen_texto_app": 100,
+          "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "Grave olhando",
+          "caja": [
+            62,
+            179,
+            712,
+            89
+          ],
+          "tinta": [
+            66,
+            183,
+            770,
+            264
+          ]
+        },
+        {
+          "que": "para a lente.",
+          "caja": [
+            62,
+            299,
+            608,
+            109
+          ],
+          "tinta": [
+            66,
+            303,
+            666,
+            404
+          ]
+        },
+        {
+          "que": "Sua imagem em uma janela que você pode mover.",
+          "caja": [
+            64,
+            413,
+            811,
+            45
+          ],
+          "tinta": [
+            68,
+            417,
+            871,
+            454
+          ]
+        }
+      ],
+      "texto_pct": 8.35,
+      "interfaz_pct": 75.0,
+      "ancho_recorte_max": 1108,
+      "escala_min": 0.9747,
+      "cara": false,
+      "cara_medida": null,
+      "franja_vacia_max": {
+        "alto_px": 234,
+        "pct_alto": 12.19,
+        "filas": [
+          1686,
+          1920
+        ]
+      }
+    },
+    "pt-BR/05": {
+      "recortes": [
+        {
+          "cruda": "05-subtitulos-a-video-guardado.png",
+          "recorte_cruda": [
+            130,
+            700,
+            1090,
+            1760
+          ],
+          "ancho_recorte": 960,
+          "alto_recorte": 1060,
+          "escala": 0.7104,
+          "caja": [
+            199,
+            480,
+            682,
+            753
+          ],
+          "margen_texto_app": 160,
+          "motivo_escala": "05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u."
+        },
+        {
+          "cruda": "05-subtitulos-d-visor-guardar-agrupado.png",
+          "recorte_cruda": [
+            56,
+            1830,
+            1164,
+            2535
+          ],
+          "ancho_recorte": 1108,
+          "alto_recorte": 705,
+          "escala": 0.9747,
+          "caja": [
+            0,
+            1233,
+            1080,
+            687
+          ],
+          "margen_texto_app": 90,
+          "motivo_escala": "El panel entero de 05-d, de borde a borde, para que «Subtítulos Rojo» y los dos botones de guardar entren sin cortar."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "Seu vídeo,",
+          "caja": [
+            62,
+            175,
+            505,
+            112
+          ],
+          "tinta": [
+            66,
+            179,
+            563,
+            283
+          ]
+        },
+        {
+          "que": "com legendas.",
+          "caja": [
+            62,
+            299,
+            703,
+            111
+          ],
+          "tinta": [
+            66,
+            303,
+            761,
+            406
+          ]
+        },
+        {
+          "que": "Com as palavras do seu roteiro, no ritmo da sua voz.",
+          "caja": [
+            64,
+            415,
+            839,
+            43
+          ],
+          "tinta": [
+            68,
+            419,
+            899,
+            454
+          ]
+        }
+      ],
+      "texto_pct": 8.57,
+      "interfaz_pct": 60.55,
+      "ancho_recorte_max": 1108,
+      "escala_min": 0.7104,
+      "cara": true,
+      "zona_igual": {
+        "referencia": "capturas/es-419/05.png",
+        "nota": "Javier -t170u-: la captura es la de español, píxel por píxel -la app se ve en español-. Solo cambian el titular y la bajada, con el mismo tamaño, lugar y letra que en español. Zona de la captura: la unión de las cajas de destino de los recortes.",
+        "cajas": [
+          [
+            199,
+            480,
+            682,
+            753
+          ],
+          [
+            0,
+            1233,
+            1080,
+            687
+          ]
+        ],
+        "igual": true
+      },
+      "cara_medida": {
+        "cruda": "05-subtitulos-a-video-guardado.png",
+        "caja_cruda": [
+          390,
+          720,
+          840,
+          1320
+        ],
+        "cajas_captura": [
+          [
+            384,
+            494,
+            703,
+            920
+          ]
+        ],
+        "pct_captura": 6.55,
+        "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima."
+      },
+      "franja_vacia_max": {
+        "alto_px": 60,
+        "pct_alto": 3.12,
+        "filas": [
+          0,
+          60
+        ]
+      }
+    },
+    "pt-BR/06": {
+      "recortes": [
+        {
+          "cruda": "06-gestos-panel.png",
+          "recorte_cruda": [
+            0,
+            1084,
+            1220,
+            2520
+          ],
+          "ancho_recorte": 1220,
+          "alto_recorte": 1436,
+          "escala": 0.8852,
+          "caja": [
+            0,
+            649,
+            1080,
+            1271
+          ],
+          "margen_texto_app": 96,
+          "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=96) y solo corta por la derecha; por eso mide 1220 px de cruda y no 820. Escala 0,885."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "Pause",
+          "caja": [
+            62,
+            185,
+            299,
+            82
+          ],
+          "tinta": [
+            66,
+            189,
+            357,
+            263
+          ]
+        },
+        {
+          "que": "com um gesto.",
+          "caja": [
+            62,
+            306,
+            714,
+            104
+          ],
+          "tinta": [
+            66,
+            310,
+            772,
+            406
+          ]
+        },
+        {
+          "que": "As pausas da gravação ficam fora do vídeo.",
+          "caja": [
+            64,
+            414,
+            692,
+            44
+          ],
+          "tinta": [
+            68,
+            418,
+            752,
+            454
+          ]
+        }
+      ],
+      "texto_pct": 6.57,
+      "interfaz_pct": 66.2,
+      "ancho_recorte_max": 1220,
+      "escala_min": 0.8852,
+      "cara": false,
+      "cara_medida": null,
+      "franja_vacia_max": {
+        "alto_px": 195,
+        "pct_alto": 10.16,
+        "filas": [
+          454,
+          649
+        ]
+      }
+    },
+    "pt-BR/07": {
+      "recortes": [
+        {
+          "cruda": "07-idioma-menu.png",
+          "recorte_cruda": [
+            30,
+            990,
+            1120,
+            2524
+          ],
+          "ancho_recorte": 1090,
+          "alto_recorte": 1534,
+          "escala": 0.9908,
+          "caja": [
+            0,
+            400,
+            1080,
+            1520
+          ],
+          "margen_texto_app": 103,
+          "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=103) y solo corta por la derecha; por eso mide 1090 px de cruda y no 820. Escala 0,991."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "No seu idioma.",
+          "caja": [
+            62,
+            179,
+            721,
+            89
+          ],
+          "tinta": [
+            66,
+            183,
+            779,
+            264
+          ]
+        },
+        {
+          "que": "O Sigo em português, espanhol e inglês.",
+          "caja": [
+            64,
+            293,
+            648,
+            45
+          ],
+          "tinta": [
+            68,
+            297,
+            708,
+            334
+          ]
+        }
+      ],
+      "texto_pct": 4.84,
+      "interfaz_pct": 79.17,
+      "ancho_recorte_max": 1090,
+      "escala_min": 0.9908,
+      "cara": false,
+      "cara_medida": null,
+      "franja_vacia_max": {
+        "alto_px": 66,
+        "pct_alto": 3.44,
+        "filas": [
+          334,
+          400
+        ]
+      }
+    },
+    "pt-BR/08": {
+      "recortes": [
+        {
+          "cruda": "08-guiones-a-portada.png",
+          "recorte_cruda": [
+            25,
+            85,
+            1136,
+            1290
+          ],
+          "ancho_recorte": 1111,
+          "alto_recorte": 1205,
+          "escala": 0.9721,
+          "caja": [
+            0,
+            480,
+            1080,
+            1171
+          ],
+          "margen_texto_app": 62,
+          "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=62) y solo corta por la derecha; por eso mide 1111 px de cruda y no 820. Escala 0,972.",
+          "excluye": [
+            {
+              "que": "guion «My video for today», en inglés",
+              "caja": [
+                58,
+                1324,
+                1092,
+                1512
+              ]
+            },
+            {
+              "que": "guion «Hola», en español",
+              "caja": [
+                58,
+                1546,
+                1092,
+                1735
+              ]
+            }
+          ]
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "Seus roteiros,",
+          "caja": [
+            62,
+            179,
+            668,
+            108
+          ],
+          "tinta": [
+            66,
+            183,
+            726,
+            283
+          ]
+        },
+        {
+          "que": "com você.",
+          "caja": [
+            62,
+            295,
+            495,
+            92
+          ],
+          "tinta": [
+            66,
+            299,
+            553,
+            383
+          ]
+        },
+        {
+          "que": "Continue seu último roteiro na tela inicial.",
+          "caja": [
+            64,
+            413,
+            684,
+            37
+          ],
+          "tinta": [
+            68,
+            417,
+            744,
+            446
+          ]
+        }
+      ],
+      "texto_pct": 7.24,
+      "interfaz_pct": 60.99,
+      "ancho_recorte_max": 1111,
+      "escala_min": 0.9721,
+      "cara": false,
+      "cara_medida": null,
+      "franja_vacia_max": {
+        "alto_px": 271,
+        "pct_alto": 14.11,
+        "filas": [
+          1649,
+          1920
+        ]
+      }
+    }
+  },
+  "graficos": {
+    "es-419": {
+      "aprobado": "direccion-1.1/grafico-1024x500-es.png"
+    },
+    "en-US": {
+      "recortes": [
+        {
+          "cruda": "02-espera-pausa.png",
+          "recorte_cruda": [
+            568,
+            118,
+            1103,
+            228
+          ],
+          "ancho_recorte": 535,
+          "alto_recorte": 110,
+          "escala": 0.7925,
+          "caja": [
+            600,
+            0,
+            424,
+            87
+          ],
+          "margen_texto_app": 101,
+          "motivo_escala": "A sangre arriba y a la derecha, desde el borde de la zona libre -x 600- hasta x 1024, a la misma escala que el gráfico aprobado -0,79×-.",
+          "excepcion_borde": "El recorte de arriba arranca en «it», no en el margen: desde el margen, «If I stop to think, it waits for me. And» mide 1000 px de cruda y en 424 px quedaría a 0,42×, ilegible a 270 px, como en el gráfico aprobado en español. Los renglones de abajo son otro recorte, que sí arranca en el margen -«when I start again,» y «to the end.»-. Cada renglón empieza con palabra entera y solo se corta por la derecha."
+        },
+        {
+          "cruda": "02-espera-pausa.png",
+          "recorte_cruda": [
+            96,
+            228,
+            631,
+            440
+          ],
+          "ancho_recorte": 535,
+          "alto_recorte": 212,
+          "escala": 0.7925,
+          "caja": [
+            600,
+            87,
+            424,
+            168
+          ],
+          "margen_texto_app": 101,
+          "motivo_escala": "Misma escala que el renglón de arriba."
+        },
+        {
+          "cruda": "02-espera-pausa.png",
+          "recorte_cruda": [
+            350,
+            1950,
+            885,
+            2259
+          ],
+          "ancho_recorte": 535,
+          "alto_recorte": 309,
+          "escala": 0.7925,
+          "caja": [
+            600,
+            255,
+            424,
+            245
+          ],
+          "margen_texto_app": 360,
+          "motivo_escala": "Misma escala que la lectura."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            56,
+            48,
+            102,
+            52
+          ]
+        },
+        {
+          "que": "It waits.",
+          "caja": [
+            50,
+            178,
+            216,
+            51
+          ],
+          "tinta": [
+            54,
+            182,
+            262,
+            225
+          ]
+        },
+        {
+          "que": "It follows you.",
+          "caja": [
+            50,
+            251,
+            369,
+            64
+          ],
+          "tinta": [
+            54,
+            255,
+            415,
+            311
+          ]
+        }
+      ],
+      "zona_libre_centro": [
+        424,
+        140,
+        176,
+        220
+      ],
+      "bloque_interfaz": [
+        600,
+        0,
+        1024,
+        500
+      ],
+      "a_sangre": {
+        "derecha": true,
+        "arriba": true,
+        "abajo": true
+      },
+      "ancho_pct": 41.41,
+      "texto_pct": 7.8
+    },
+    "pt-BR": {
+      "recortes": [
+        {
+          "cruda": "02-espera-pausa.png",
+          "recorte_cruda": [
+            550,
+            118,
+            1085,
+            228
+          ],
+          "ancho_recorte": 535,
+          "alto_recorte": 110,
+          "escala": 0.7925,
+          "caja": [
+            600,
+            0,
+            424,
+            87
+          ],
+          "margen_texto_app": 101,
+          "motivo_escala": "A sangre arriba y a la derecha, desde el borde de la zona libre -x 600- hasta x 1024, a la misma escala que el gráfico aprobado -0,79×-.",
+          "excepcion_borde": "El recorte de arriba arranca en «pensar,», no en el margen, como el gráfico aprobado en español: desde el margen, el renglón mide 851 px de cruda y en 424 px quedaría a 0,50×. La espera, «ele me espera.», sigue en el renglón de abajo, que es otro recorte y sí arranca en el margen -«espera. E quando eu», «segue comigo até o»-. Cada renglón empieza con palabra entera y solo se corta por la derecha."
+        },
+        {
+          "cruda": "02-espera-pausa.png",
+          "recorte_cruda": [
+            96,
+            228,
+            631,
+            440
+          ],
+          "ancho_recorte": 535,
+          "alto_recorte": 212,
+          "escala": 0.7925,
+          "caja": [
+            600,
+            87,
+            424,
+            168
+          ],
+          "margen_texto_app": 101,
+          "motivo_escala": "Misma escala que el renglón de arriba."
+        },
+        {
+          "cruda": "02-espera-pausa.png",
+          "recorte_cruda": [
+            350,
+            1950,
+            885,
+            2259
+          ],
+          "ancho_recorte": 535,
+          "alto_recorte": 309,
+          "escala": 0.7925,
+          "caja": [
+            600,
+            255,
+            424,
+            245
+          ],
+          "margen_texto_app": 360,
+          "motivo_escala": "Misma escala que la lectura."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            56,
+            48,
+            102,
+            52
+          ]
+        },
+        {
+          "que": "Ele espera.",
+          "caja": [
+            50,
+            178,
+            288,
+            62
+          ],
+          "tinta": [
+            54,
+            182,
+            334,
+            236
+          ]
+        },
+        {
+          "que": "E segue você.",
+          "caja": [
+            50,
+            249,
+            350,
+            65
+          ],
+          "tinta": [
+            54,
+            253,
+            396,
+            310
+          ]
+        }
+      ],
+      "zona_libre_centro": [
+        424,
+        140,
+        176,
+        220
+      ],
+      "bloque_interfaz": [
+        600,
+        0,
+        1024,
+        500
+      ],
+      "a_sangre": {
+        "derecha": true,
+        "arriba": true,
+        "abajo": true
+      },
+      "ancho_pct": 41.41,
+      "texto_pct": 8.97
+    }
+  },
+  "tabletas": {
+    "capturas/tableta/es-419/01.png": {
+      "tamano_tableta": "10",
+      "cruda": "tableta-10/es/4-lectura-avanza.png",
+      "recorte_cruda": [
+        16,
+        62,
+        2544,
+        1484
+      ],
+      "recorte": [
+        2528,
+        1422
+      ],
+      "tamano": [
+        2528,
+        1422
+      ],
+      "escala": 1,
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": [],
+      "va_en": "los dos lugares de tableta de Play, 7 y 10 pulgadas"
+    },
+    "capturas/tableta/es-419/02.png": {
+      "tamano_tableta": "10",
+      "cruda": "tableta-10/es/3-antes-de-leer.png",
+      "recorte_cruda": [
+        15,
+        61,
+        2543,
+        1483
+      ],
+      "recorte": [
+        2528,
+        1422
+      ],
+      "tamano": [
+        2528,
+        1422
+      ],
+      "escala": 1,
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 7 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 5 filas lisas de fondo encima. A los lados, 15 y 17 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": [],
+      "va_en": "los dos lugares de tableta de Play, 7 y 10 pulgadas"
+    },
+    "capturas/tableta/es-419/03.png": {
+      "tamano_tableta": "10",
+      "cruda": "tableta-10/es/2-editor-colores.png",
+      "recorte_cruda": [
+        16,
+        62,
+        2544,
+        1484
+      ],
+      "recorte": [
+        2528,
+        1422
+      ],
+      "tamano": [
+        2528,
+        1422
+      ],
+      "escala": 1,
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": [],
+      "va_en": "los dos lugares de tableta de Play, 7 y 10 pulgadas"
+    },
+    "capturas/tableta/es-419/04.png": {
+      "tamano_tableta": "7",
+      "cruda": "tableta-7/es/4-lectura-avanza.png",
+      "recorte_cruda": [
+        32,
+        44,
+        1888,
+        1088
+      ],
+      "recorte": [
+        1856,
+        1044
+      ],
+      "tamano": [
+        1920,
+        1080
+      ],
+      "escala": "1080/1044",
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": [],
+      "va_en": "los dos lugares de tableta de Play, 7 y 10 pulgadas"
+    },
+    "capturas/tableta/es-419/05.png": {
+      "tamano_tableta": "7",
+      "cruda": "tableta-7/es/2-editor-colores.png",
+      "recorte_cruda": [
+        32,
+        44,
+        1888,
+        1088
+      ],
+      "recorte": [
+        1856,
+        1044
+      ],
+      "tamano": [
+        1920,
+        1080
+      ],
+      "escala": "1080/1044",
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": [],
+      "va_en": "los dos lugares de tableta de Play, 7 y 10 pulgadas"
+    },
+    "capturas/tableta/en-US/01.png": {
+      "tamano_tableta": "10",
+      "cruda": "tableta-10/en/4-lectura-avanza.png",
+      "recorte_cruda": [
+        16,
+        62,
+        2544,
+        1484
+      ],
+      "recorte": [
+        2528,
+        1422
+      ],
+      "tamano": [
+        2528,
+        1422
+      ],
+      "escala": 1,
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": [],
+      "va_en": "los dos lugares de tableta de Play, 7 y 10 pulgadas"
+    },
+    "capturas/tableta/en-US/02.png": {
+      "tamano_tableta": "10",
+      "cruda": "tableta-10/en/3-antes-de-leer.png",
+      "recorte_cruda": [
+        15,
+        61,
+        2543,
+        1483
+      ],
+      "recorte": [
+        2528,
+        1422
+      ],
+      "tamano": [
+        2528,
+        1422
+      ],
+      "escala": 1,
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 7 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 5 filas lisas de fondo encima. A los lados, 15 y 17 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": [],
+      "va_en": "los dos lugares de tableta de Play, 7 y 10 pulgadas"
+    },
+    "capturas/tableta/en-US/03.png": {
+      "tamano_tableta": "10",
+      "cruda": "tableta-10/en/2-editor-colores.png",
+      "recorte_cruda": [
+        16,
+        62,
+        2544,
+        1484
+      ],
+      "recorte": [
+        2528,
+        1422
+      ],
+      "tamano": [
+        2528,
+        1422
+      ],
+      "escala": 1,
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": [],
+      "va_en": "los dos lugares de tableta de Play, 7 y 10 pulgadas"
+    },
+    "capturas/tableta/en-US/04.png": {
+      "tamano_tableta": "7",
+      "cruda": "tableta-7/en/4-lectura-avanza.png",
+      "recorte_cruda": [
+        32,
+        44,
+        1888,
+        1088
+      ],
+      "recorte": [
+        1856,
+        1044
+      ],
+      "tamano": [
+        1920,
+        1080
+      ],
+      "escala": "1080/1044",
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": [],
+      "va_en": "los dos lugares de tableta de Play, 7 y 10 pulgadas"
+    },
+    "capturas/tableta/en-US/05.png": {
+      "tamano_tableta": "7",
+      "cruda": "tableta-7/en/2-editor-colores.png",
+      "recorte_cruda": [
+        32,
+        44,
+        1888,
+        1088
+      ],
+      "recorte": [
+        1856,
+        1044
+      ],
+      "tamano": [
+        1920,
+        1080
+      ],
+      "escala": "1080/1044",
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": [],
+      "va_en": "los dos lugares de tableta de Play, 7 y 10 pulgadas"
+    },
+    "capturas/tableta/pt-BR/01.png": {
+      "tamano_tableta": "10",
+      "cruda": "tableta-10/pt/4-lectura-avanza.png",
+      "recorte_cruda": [
+        16,
+        62,
+        2544,
+        1484
+      ],
+      "recorte": [
+        2528,
+        1422
+      ],
+      "tamano": [
+        2528,
+        1422
+      ],
+      "escala": 1,
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": [],
+      "va_en": "los dos lugares de tableta de Play, 7 y 10 pulgadas"
+    },
+    "capturas/tableta/pt-BR/02.png": {
+      "tamano_tableta": "10",
+      "cruda": "tableta-10/pt/3-antes-de-leer.png",
+      "recorte_cruda": [
+        15,
+        61,
+        2543,
+        1483
+      ],
+      "recorte": [
+        2528,
+        1422
+      ],
+      "tamano": [
+        2528,
+        1422
+      ],
+      "escala": 1,
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 7 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 5 filas lisas de fondo encima. A los lados, 15 y 17 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": [],
+      "va_en": "los dos lugares de tableta de Play, 7 y 10 pulgadas"
+    },
+    "capturas/tableta/pt-BR/03.png": {
+      "tamano_tableta": "10",
+      "cruda": "tableta-10/pt/2-editor-colores.png",
+      "recorte_cruda": [
+        16,
+        62,
+        2544,
+        1484
+      ],
+      "recorte": [
+        2528,
+        1422
+      ],
+      "tamano": [
+        2528,
+        1422
+      ],
+      "escala": 1,
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": [],
+      "va_en": "los dos lugares de tableta de Play, 7 y 10 pulgadas"
+    },
+    "capturas/tableta/pt-BR/04.png": {
+      "tamano_tableta": "7",
+      "cruda": "tableta-7/pt/4-lectura-avanza.png",
+      "recorte_cruda": [
+        32,
+        44,
+        1888,
+        1088
+      ],
+      "recorte": [
+        1856,
+        1044
+      ],
+      "tamano": [
+        1920,
+        1080
+      ],
+      "escala": "1080/1044",
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": [],
+      "va_en": "los dos lugares de tableta de Play, 7 y 10 pulgadas"
+    },
+    "capturas/tableta/pt-BR/05.png": {
+      "tamano_tableta": "7",
+      "cruda": "tableta-7/pt/2-editor-colores.png",
+      "recorte_cruda": [
+        32,
+        44,
+        1888,
+        1088
+      ],
+      "recorte": [
+        1856,
+        1044
+      ],
+      "tamano": [
+        1920,
+        1080
+      ],
+      "escala": "1080/1044",
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": [],
+      "va_en": "los dos lugares de tableta de Play, 7 y 10 pulgadas"
+    },
+    "lugar 5 · es-419 · 7 pulgadas · 3-antes-de-leer.png": {
+      "descartada": true,
+      "cruda": "tableta-7/es/3-antes-de-leer.png",
+      "motivos": [
+        "Entre las filas 44 y 1088 -1044 de alto útil- el 16:9 es de 1856 de ancho. El botón «Ventana flotante» empieza en la columna 16 y el borde del tiempo termina en la 1879: son 1864 columnas de Sigo, más que 1856. Cualquier recorte de 1856 corta un botón de Sigo, y eso no se hace."
+      ],
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "alto_util": 1044,
+      "contenido_x": [
+        16,
+        1879
+      ]
+    },
+    "lugar 5 · en-US · 7 pulgadas · 3-antes-de-leer.png": {
+      "descartada": true,
+      "cruda": "tableta-7/en/3-antes-de-leer.png",
+      "motivos": [
+        "Entre las filas 44 y 1088 -1044 de alto útil- el 16:9 es de 1856 de ancho. El botón «Ventana flotante» empieza en la columna 16 y el borde del tiempo termina en la 1879: son 1864 columnas de Sigo, más que 1856. Cualquier recorte de 1856 corta un botón de Sigo, y eso no se hace."
+      ],
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "alto_util": 1044,
+      "contenido_x": [
+        16,
+        1879
+      ]
+    },
+    "lugar 5 · pt-BR · 7 pulgadas · 3-antes-de-leer.png": {
+      "descartada": true,
+      "cruda": "tableta-7/pt/3-antes-de-leer.png",
+      "motivos": [
+        "Entre las filas 44 y 1088 -1044 de alto útil- el 16:9 es de 1856 de ancho. El botón «Ventana flotante» empieza en la columna 16 y el borde del tiempo termina en la 1879: son 1864 columnas de Sigo, más que 1856. Cualquier recorte de 1856 corta un botón de Sigo, y eso no se hace."
+      ],
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "alto_util": 1044,
+      "contenido_x": [
+        16,
+        1879
+      ]
+    }
+  }
+}

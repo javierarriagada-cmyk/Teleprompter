@@ -1,0 +1,1354 @@
+[
+  {
+    "imagen": "capturas/es-419/01.png",
+    "copia_de": "direccion-1.1/capturas/es-419/01.png",
+    "sha256": "587726400da46c79288e3c64609b0559746678fe87021346b3af39ef5bab0f0b",
+    "tratamiento": "Copia byte a byte de la pieza aprobada en la fase 1 -t169u-."
+  },
+  {
+    "imagen": "capturas/es-419/02.png",
+    "copia_de": "direccion-1.1/capturas/es-419/02.png",
+    "sha256": "9536afb4a8309fe3af82b6296426a57de7bd92559056c4f202bd9798e696692f",
+    "tratamiento": "Copia byte a byte de la pieza aprobada en la fase 1 -t169u-."
+  },
+  {
+    "imagen": "capturas/es-419/03.png",
+    "copia_de": "direccion-1.1/capturas/es-419/03.png",
+    "sha256": "72e64afd8339783713b57d2caa1b88e47bae0d6ed63273eb7cec0500768fa1eb",
+    "tratamiento": "Copia byte a byte de la pieza aprobada en la fase 1 -t169u-."
+  },
+  {
+    "imagen": "capturas/es-419/04.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/04-recuadro-a-grabando.png",
+    "sha256_cruda": "48007dbc078f45718af72dd6311da3b4cab024c00d14d5958c1e9c27d15ffc7c",
+    "recorte_cruda": [
+      72,
+      120,
+      1170,
+      560
+    ],
+    "caja_destino": [
+      0,
+      480,
+      1080,
+      433
+    ],
+    "escala": 0.9836,
+    "parte": "lectura en curso desde el margen: «Antes tenía que memorizar cada frase» subrayado, con el punto rojo de grabación",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 106,
+    "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=106) y solo corta por la derecha; por eso mide 1098 px de cruda y no 820. Escala 0,984. Se quitan las filas negras y los renglones grises entre la lectura y el recuadro, que se puede mover."
+  },
+  {
+    "imagen": "capturas/es-419/04.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/04-recuadro-a-grabando.png",
+    "sha256_cruda": "48007dbc078f45718af72dd6311da3b4cab024c00d14d5958c1e9c27d15ffc7c",
+    "recorte_cruda": [
+      72,
+      1130,
+      1170,
+      1695
+    ],
+    "caja_destino": [
+      0,
+      913,
+      1080,
+      556
+    ],
+    "escala": 0.9836,
+    "parte": "recuadro de cámara chico, con la cara entera",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 106,
+    "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+  },
+  {
+    "imagen": "capturas/es-419/04.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/04-recuadro-a-grabando.png",
+    "sha256_cruda": "48007dbc078f45718af72dd6311da3b4cab024c00d14d5958c1e9c27d15ffc7c",
+    "recorte_cruda": [
+      72,
+      1975,
+      1170,
+      2434
+    ],
+    "caja_destino": [
+      0,
+      1469,
+      1080,
+      451
+    ],
+    "escala": 0.9836,
+    "parte": "micrófono verde y tiempo «00:08 / 00:23»",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 106,
+    "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+  },
+  {
+    "imagen": "capturas/es-419/04.png",
+    "textos": [
+      "Graba mirando",
+      "al lente.",
+      "Tu imagen, en un recuadro que puedes mover."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-clara.png",
+    "fondo": "#171412"
+  },
+  {
+    "imagen": "capturas/es-419/05.png",
+    "copia_de": "direccion-1.1/capturas/es-419/05.png",
+    "sha256": "6d819e7a82df90daa16e927d5ea11fcc5545958b48a4abecc8a6b1877c67ef14",
+    "tratamiento": "Copia byte a byte de la pieza aprobada en la fase 1 -t169u-."
+  },
+  {
+    "imagen": "capturas/es-419/06.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/06-gestos-panel.png",
+    "sha256_cruda": "813dc71dd4dae34e61a48584e3eaae6468b2ffa29af68a0faa8da9ef297c9f60",
+    "recorte_cruda": [
+      0,
+      1110,
+      1220,
+      2520
+    ],
+    "caja_destino": [
+      0,
+      672,
+      1080,
+      1248
+    ],
+    "escala": 0.8852,
+    "parte": "panel «Imagen de la cámara» con el control por gestos, la ventana flotante y la barra de grabar",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 96,
+    "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=96) y solo corta por la derecha; por eso mide 1220 px de cruda y no 820. Escala 0,885."
+  },
+  {
+    "imagen": "capturas/es-419/06.png",
+    "textos": [
+      "Pausa",
+      "con un gesto.",
+      "Las pausas de grabación quedan fuera del video."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-clara.png",
+    "fondo": "#171412"
+  },
+  {
+    "imagen": "capturas/es-419/07.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/07-idioma-menu.png",
+    "sha256_cruda": "4c24bdb9d5e87b689f598722171a709004922fd7305c8a6db7cc457ece928943",
+    "recorte_cruda": [
+      30,
+      990,
+      1120,
+      2524
+    ],
+    "caja_destino": [
+      0,
+      400,
+      1080,
+      1520
+    ],
+    "escala": 0.9908,
+    "parte": "Ajustes con el menú de idioma de la app abierto: Español, English y Português",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 103,
+    "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=103) y solo corta por la derecha; por eso mide 1090 px de cruda y no 820. Escala 0,991."
+  },
+  {
+    "imagen": "capturas/es-419/07.png",
+    "textos": [
+      "En tu idioma.",
+      "Sigo en español, inglés y portugués."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-oscura.png",
+    "fondo": "#F0EAE4"
+  },
+  {
+    "imagen": "capturas/es-419/08.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/07-guiones-a-portada.png",
+    "sha256_cruda": "1a326733080a5dfe98ec9ef5bcb73a13d518f67491354acda0e02d07f9786570",
+    "recorte_cruda": [
+      25,
+      85,
+      1136,
+      1290
+    ],
+    "caja_destino": [
+      0,
+      480,
+      1080,
+      1171
+    ],
+    "escala": 0.9721,
+    "parte": "portada: «Continuar con este guion» entera, con Leer y Grabar, y el primer guion de la lista",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 62,
+    "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=62) y solo corta por la derecha; por eso mide 1111 px de cruda y no 820. Escala 0,972."
+  },
+  {
+    "imagen": "capturas/es-419/08.png",
+    "textos": [
+      "Tus guiones,",
+      "contigo.",
+      "Continúa tu último guion desde la portada."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-clara.png",
+    "fondo": "#171412"
+  },
+  {
+    "imagen": "grafico-1024x500-es.png",
+    "copia_de": "direccion-1.1/grafico-1024x500-es.png",
+    "sha256": "40b8ced5444610831ee53372287f2948665e100cff65402fec9164e33a367a58",
+    "tratamiento": "Copia byte a byte de la pieza aprobada en la fase 1 -t169u-."
+  },
+  {
+    "imagen": "capturas/en-US/01.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/en/01-voz-lectura-avanza.png",
+    "sha256_cruda": "ef6288d206f7859eef4635b5596c765780a6bb9671ffee2ce3dd96158a34b75c",
+    "recorte_cruda": [
+      72,
+      126,
+      1110,
+      1010
+    ],
+    "caja_destino": [
+      0,
+      440,
+      1080,
+      920
+    ],
+    "escala": 1.0405,
+    "parte": "lectura desde el margen de la app: «Now the text moves with my voice,» en ámbar; «or read looking down.» subrayado",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 101,
+    "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=101) y solo corta por la derecha; por eso mide 1038 px de cruda y no 820. Escala 1,040."
+  },
+  {
+    "imagen": "capturas/en-US/01.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/en/01-voz-lectura-avanza.png",
+    "sha256_cruda": "ef6288d206f7859eef4635b5596c765780a6bb9671ffee2ce3dd96158a34b75c",
+    "recorte_cruda": [
+      72,
+      1835,
+      1110,
+      2373
+    ],
+    "caja_destino": [
+      0,
+      1360,
+      1080,
+      560
+    ],
+    "escala": 1.0405,
+    "parte": "micrófono verde y tiempo «00:18 / 00:38», pegado bajo la lectura; sin halo: no hubo voz real, el texto se avanzó arrastrándolo",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 101,
+    "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+  },
+  {
+    "imagen": "capturas/en-US/01.png",
+    "textos": [
+      "You speak.",
+      "Sigo follows."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-oscura.png",
+    "fondo": "#F0EAE4"
+  },
+  {
+    "imagen": "capturas/en-US/02.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/en/02-espera-pausa.png",
+    "sha256_cruda": "031d9e16e32095ef5af01e87f2500a6c258426d55f8d8f436b4a8b4bd216e05f",
+    "recorte_cruda": [
+      72,
+      118,
+      1110,
+      700
+    ],
+    "caja_destino": [
+      0,
+      712,
+      1080,
+      606
+    ],
+    "escala": 1.0405,
+    "parte": "lectura detenida desde el margen: «If I stop to think, it waits for me.», subrayado",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 101,
+    "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=101) y solo corta por la derecha; por eso mide 1038 px de cruda y no 820. Escala 1,040."
+  },
+  {
+    "imagen": "capturas/en-US/02.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/en/02-espera-pausa.png",
+    "sha256_cruda": "031d9e16e32095ef5af01e87f2500a6c258426d55f8d8f436b4a8b4bd216e05f",
+    "recorte_cruda": [
+      72,
+      1856,
+      1110,
+      2435
+    ],
+    "caja_destino": [
+      0,
+      1318,
+      1080,
+      602
+    ],
+    "escala": 1.0405,
+    "parte": "micrófono quieto, sin halo, y tiempo detenido «00:55 / 01:08», bajo la lectura",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 101,
+    "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+  },
+  {
+    "imagen": "capturas/en-US/02.png",
+    "textos": [
+      "You pause.",
+      "Sigo waits.",
+      "When you resume, it follows you. No tapping."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-clara.png",
+    "fondo": "#171412"
+  },
+  {
+    "imagen": "capturas/en-US/03.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/en/03-flotante-a.png",
+    "sha256_cruda": "f56f7d93962ad37352ae4344cbe305cd9e60c4bcb0a2f4448e4c755515a8c0bf",
+    "recorte_cruda": [
+      0,
+      122,
+      1220,
+      2509
+    ],
+    "caja_destino": [
+      172,
+      480,
+      736,
+      1440
+    ],
+    "escala": 0.6033,
+    "parte": "ventana flotante de Sigo con el guion sobre la app de cámara -techo de madera, sin cara-: tiempo rojo 00:18 y botón rojo de grabar. Es la 03-a: no trae la fila «Pausa / Volver a Sigo» en español",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 133,
+    "motivo_escala": "Como la 3 aprobada en español: hace falta la pantalla entera de ancho para ver a la vez la banda, el tiempo rojo y el botón de grabar; reducida a 0,603×."
+  },
+  {
+    "imagen": "capturas/en-US/03.png",
+    "textos": [
+      "Sigo, on top of",
+      "your camera.",
+      "Read on top of the camera or another app."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-oscura.png",
+    "fondo": "#F0EAE4"
+  },
+  {
+    "imagen": "capturas/en-US/04.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/en/04-recuadro-grabando.png",
+    "sha256_cruda": "867ea59d1873e76a52f774834fe143cedf29093b454bb2ddd95f7a2d4500b56f",
+    "recorte_cruda": [
+      72,
+      120,
+      1180,
+      575
+    ],
+    "caja_destino": [
+      0,
+      480,
+      1080,
+      444
+    ],
+    "escala": 0.9747,
+    "parte": "lectura en curso desde el margen, con el renglón subrayado y el punto rojo de grabación",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 96,
+    "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=96) y solo corta por la derecha; por eso mide 1108 px de cruda y no 820. Escala 0,975. Se quitan las filas negras y los renglones grises entre la lectura y el recuadro, que se puede mover."
+  },
+  {
+    "imagen": "capturas/en-US/04.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/en/04-recuadro-grabando.png",
+    "sha256_cruda": "867ea59d1873e76a52f774834fe143cedf29093b454bb2ddd95f7a2d4500b56f",
+    "recorte_cruda": [
+      72,
+      1385,
+      1180,
+      1955
+    ],
+    "caja_destino": [
+      0,
+      924,
+      1080,
+      556
+    ],
+    "escala": 0.9747,
+    "parte": "recuadro de cámara chico -techo de madera, sin cara-",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 96,
+    "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+  },
+  {
+    "imagen": "capturas/en-US/04.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/en/04-recuadro-grabando.png",
+    "sha256_cruda": "867ea59d1873e76a52f774834fe143cedf29093b454bb2ddd95f7a2d4500b56f",
+    "recorte_cruda": [
+      72,
+      1990,
+      1180,
+      2441
+    ],
+    "caja_destino": [
+      0,
+      1480,
+      1080,
+      440
+    ],
+    "escala": 0.9747,
+    "parte": "micrófono verde y tiempo «00:05 / 03:00»",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 96,
+    "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+  },
+  {
+    "imagen": "capturas/en-US/04.png",
+    "textos": [
+      "Record looking",
+      "at the lens.",
+      "See yourself in a small window you can move."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-clara.png",
+    "fondo": "#171412"
+  },
+  {
+    "imagen": "capturas/en-US/05.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-a-video-guardado.png",
+    "sha256_cruda": "5df9ad9dc0b49590fce648fd34bf31f1156f22e6b4c080fa74ce49911bc7586f",
+    "recorte_cruda": [
+      130,
+      700,
+      1090,
+      1760
+    ],
+    "caja_destino": [
+      199,
+      480,
+      682,
+      753
+    ],
+    "escala": 0.7104,
+    "parte": "video guardado con subtítulos rojos palabra por palabra -«algo» resaltado-; la cara entera y chica",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 160,
+    "motivo_escala": "05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u."
+  },
+  {
+    "imagen": "capturas/en-US/05.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-d-visor-guardar-agrupado.png",
+    "sha256_cruda": "abd0fdc36ca8c237b1f2ee597ef7b68d3a1f92df4461be60f298a7aaa1a987b3",
+    "recorte_cruda": [
+      56,
+      1830,
+      1164,
+      2535
+    ],
+    "caja_destino": [
+      0,
+      1233,
+      1080,
+      687
+    ],
+    "escala": 0.9747,
+    "parte": "control que produce los subtítulos: «Subtítulos Rojo», «Filtro Natural», «Guardar» y «Guardar y compartir»",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 90,
+    "motivo_escala": "El panel entero de 05-d, de borde a borde, para que «Subtítulos Rojo» y los dos botones de guardar entren sin cortar."
+  },
+  {
+    "imagen": "capturas/en-US/05.png",
+    "textos": [
+      "Your video,",
+      "with subtitles.",
+      "With the words from your script, in time with your voice."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-oscura.png",
+    "fondo": "#F0EAE4"
+  },
+  {
+    "imagen": "capturas/en-US/06.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/en/06-gestos-panel.png",
+    "sha256_cruda": "003d19e87a2ab898784f10777b268648ce40163d25a9a18106619fa2dcb2d365",
+    "recorte_cruda": [
+      0,
+      1084,
+      1220,
+      2520
+    ],
+    "caja_destino": [
+      0,
+      649,
+      1080,
+      1271
+    ],
+    "escala": 0.8852,
+    "parte": "panel «Camera view» con el control por gestos, la ventana flotante y la barra de grabar",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 96,
+    "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=96) y solo corta por la derecha; por eso mide 1220 px de cruda y no 820. Escala 0,885."
+  },
+  {
+    "imagen": "capturas/en-US/06.png",
+    "textos": [
+      "Pause",
+      "with a gesture.",
+      "Recording pauses stay out of your video."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-clara.png",
+    "fondo": "#171412"
+  },
+  {
+    "imagen": "capturas/en-US/07.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/en/07-idioma-menu.png",
+    "sha256_cruda": "81118eec3eb584ae3883fb8831e01a0faba8d318c9fe719a13969cb12dfc3840",
+    "recorte_cruda": [
+      30,
+      990,
+      1120,
+      2524
+    ],
+    "caja_destino": [
+      0,
+      400,
+      1080,
+      1520
+    ],
+    "escala": 0.9908,
+    "parte": "Ajustes con el menú de idioma de la app abierto: Español, English y Português",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 103,
+    "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=103) y solo corta por la derecha; por eso mide 1090 px de cruda y no 820. Escala 0,991."
+  },
+  {
+    "imagen": "capturas/en-US/07.png",
+    "textos": [
+      "In your language.",
+      "Sigo in English, Spanish and Portuguese."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-oscura.png",
+    "fondo": "#F0EAE4"
+  },
+  {
+    "imagen": "capturas/en-US/08.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/en/08-guiones-a-portada.png",
+    "sha256_cruda": "26b06c10a136e9792c3d0c0f3dc5d7974a363966f54b1ad2f2170f9373b39474",
+    "recorte_cruda": [
+      25,
+      85,
+      1136,
+      1290
+    ],
+    "caja_destino": [
+      0,
+      480,
+      1080,
+      1171
+    ],
+    "escala": 0.9721,
+    "parte": "portada: «Continue with this script» entera, con Leer y Grabar, y el primer guion de la lista",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 62,
+    "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=62) y solo corta por la derecha; por eso mide 1111 px de cruda y no 820. Escala 0,972.",
+    "excluye": [
+      {
+        "que": "guion «Hola», en español",
+        "caja": [
+          58,
+          1324,
+          1092,
+          1512
+        ]
+      }
+    ]
+  },
+  {
+    "imagen": "capturas/en-US/08.png",
+    "textos": [
+      "Keep your scripts",
+      "with you.",
+      "Continue your latest script from the home screen."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-clara.png",
+    "fondo": "#171412"
+  },
+  {
+    "imagen": "grafico-1024x500-en.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/en/02-espera-pausa.png",
+    "sha256_cruda": "031d9e16e32095ef5af01e87f2500a6c258426d55f8d8f436b4a8b4bd216e05f",
+    "recorte_cruda": [
+      568,
+      118,
+      1103,
+      228
+    ],
+    "caja_destino": [
+      600,
+      0,
+      424,
+      87
+    ],
+    "escala": 0.7925,
+    "parte": "renglón detenido desde «it»: «it waits for me. And», con el subrayado",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 101,
+    "motivo_escala": "A sangre arriba y a la derecha, desde el borde de la zona libre -x 600- hasta x 1024, a la misma escala que el gráfico aprobado -0,79×-.",
+    "excepcion_borde": "El recorte de arriba arranca en «it», no en el margen: desde el margen, «If I stop to think, it waits for me. And» mide 1000 px de cruda y en 424 px quedaría a 0,42×, ilegible a 270 px, como en el gráfico aprobado en español. Los renglones de abajo son otro recorte, que sí arranca en el margen -«when I start again,» y «to the end.»-. Cada renglón empieza con palabra entera y solo se corta por la derecha."
+  },
+  {
+    "imagen": "grafico-1024x500-en.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/en/02-espera-pausa.png",
+    "sha256_cruda": "031d9e16e32095ef5af01e87f2500a6c258426d55f8d8f436b4a8b4bd216e05f",
+    "recorte_cruda": [
+      96,
+      228,
+      631,
+      440
+    ],
+    "caja_destino": [
+      600,
+      87,
+      424,
+      168
+    ],
+    "escala": 0.7925,
+    "parte": "los dos renglones siguientes desde el margen de la app: «when I start again,» y «to the end.»",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 101,
+    "motivo_escala": "Misma escala que el renglón de arriba."
+  },
+  {
+    "imagen": "grafico-1024x500-en.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/en/02-espera-pausa.png",
+    "sha256_cruda": "031d9e16e32095ef5af01e87f2500a6c258426d55f8d8f436b4a8b4bd216e05f",
+    "recorte_cruda": [
+      350,
+      1950,
+      885,
+      2259
+    ],
+    "caja_destino": [
+      600,
+      255,
+      424,
+      245
+    ],
+    "escala": 0.7925,
+    "parte": "micrófono quieto y tiempo detenido, a la misma escala; cierra el bloque a sangre hasta abajo",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 360,
+    "motivo_escala": "Misma escala que la lectura."
+  },
+  {
+    "imagen": "grafico-1024x500-en.png",
+    "textos": [
+      "It waits.",
+      "It follows you."
+    ],
+    "fondo": "#F0EAE4"
+  },
+  {
+    "imagen": "capturas/pt-BR/01.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/pt/01-voz-lectura-avanza.png",
+    "sha256_cruda": "43f4b0f827654805424172de8d11ae7d5e966ff04c0e4a3c0713d010dd6315b9",
+    "recorte_cruda": [
+      72,
+      110,
+      1080,
+      900
+    ],
+    "caja_destino": [
+      0,
+      440,
+      1080,
+      846
+    ],
+    "escala": 1.0714,
+    "parte": "lectura desde el margen de la app: «avança com a minha voz,» en ámbar y subrayado",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 100,
+    "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=100) y solo corta por la derecha; por eso mide 1008 px de cruda y no 820. Escala 1,071."
+  },
+  {
+    "imagen": "capturas/pt-BR/01.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/pt/01-voz-lectura-avanza.png",
+    "sha256_cruda": "43f4b0f827654805424172de8d11ae7d5e966ff04c0e4a3c0713d010dd6315b9",
+    "recorte_cruda": [
+      72,
+      1819,
+      1080,
+      2411
+    ],
+    "caja_destino": [
+      0,
+      1286,
+      1080,
+      634
+    ],
+    "escala": 1.0714,
+    "parte": "micrófono verde y tiempo «00:20 / 00:38», pegado bajo la lectura; sin halo: no hubo voz real, el texto se avanzó arrastrándolo",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 100,
+    "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+  },
+  {
+    "imagen": "capturas/pt-BR/01.png",
+    "textos": [
+      "Você fala.",
+      "O Sigo segue você."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-oscura.png",
+    "fondo": "#F0EAE4"
+  },
+  {
+    "imagen": "capturas/pt-BR/02.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/pt/02-espera-pausa.png",
+    "sha256_cruda": "c27ce7823f8b8839992f20f171bca044f2cd2172b26a85010767ad3c40db0e14",
+    "recorte_cruda": [
+      72,
+      118,
+      1080,
+      712
+    ],
+    "caja_destino": [
+      0,
+      701,
+      1080,
+      636
+    ],
+    "escala": 1.0714,
+    "parte": "lectura detenida desde el margen: «Se eu paro para pensar, ele me espera.», subrayado",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 100,
+    "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=100) y solo corta por la derecha; por eso mide 1008 px de cruda y no 820. Escala 1,071."
+  },
+  {
+    "imagen": "capturas/pt-BR/02.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/pt/02-espera-pausa.png",
+    "sha256_cruda": "c27ce7823f8b8839992f20f171bca044f2cd2172b26a85010767ad3c40db0e14",
+    "recorte_cruda": [
+      72,
+      1872,
+      1080,
+      2416
+    ],
+    "caja_destino": [
+      0,
+      1337,
+      1080,
+      583
+    ],
+    "escala": 1.0714,
+    "parte": "micrófono quieto, sin halo, y tiempo detenido «00:34 / 00:46», bajo la lectura",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 100,
+    "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+  },
+  {
+    "imagen": "capturas/pt-BR/02.png",
+    "textos": [
+      "Você para.",
+      "O Sigo espera.",
+      "Quando você volta, ele segue com você, sem tocar na tela."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-clara.png",
+    "fondo": "#171412"
+  },
+  {
+    "imagen": "capturas/pt-BR/03.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/pt/03-flotante-a.png",
+    "sha256_cruda": "56955d1cef5c109b7f7eee8820937f6a1739a6bd60db3bbcfc7d90170f4eda78",
+    "recorte_cruda": [
+      44,
+      122,
+      1064,
+      1236
+    ],
+    "caja_destino": [
+      0,
+      740,
+      1080,
+      1180
+    ],
+    "escala": 1.0588,
+    "parte": "ventana flotante de Sigo con el guion sobre la app de cámara -techo de madera, sin cara-, con el tiempo rojo 00:30 de la cámara. Recortada por encima de la fila «Pausa / Volver a Sigo», que salió en español",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 125,
+    "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=125) y solo corta por la derecha; por eso mide 1020 px de cruda y no 820. Escala 1,059. Javier -t169u- pide recortar por encima de «Pausa / Volver a Sigo»: el recorte va a sangre por abajo y por la derecha para que la ventana no termine en un borde suelto; el botón de grabar queda fuera y la cámara se reconoce por el tiempo rojo.",
+    "excluye": [
+      {
+        "que": "fila «Pausa / Volver a Sigo», en español",
+        "caja": [
+          47,
+          1246,
+          1097,
+          1300
+        ]
+      }
+    ]
+  },
+  {
+    "imagen": "capturas/pt-BR/03.png",
+    "textos": [
+      "O Sigo, por cima",
+      "da sua câmera.",
+      "Leia por cima da câmera ou de outro app."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-oscura.png",
+    "fondo": "#F0EAE4"
+  },
+  {
+    "imagen": "capturas/pt-BR/04.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/pt/04-recuadro-grabando.png",
+    "sha256_cruda": "341e9703e9554150f735e5a9fed15b024a8c2bc0c0c588dda273054ba8b9f59a",
+    "recorte_cruda": [
+      72,
+      120,
+      1180,
+      610
+    ],
+    "caja_destino": [
+      0,
+      480,
+      1080,
+      478
+    ],
+    "escala": 0.9747,
+    "parte": "lectura en curso desde el margen, con el renglón subrayado y el punto rojo de grabación",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 100,
+    "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=100) y solo corta por la derecha; por eso mide 1108 px de cruda y no 820. Escala 0,975. Se quitan las filas negras y los renglones grises entre la lectura y el recuadro, que se puede mover."
+  },
+  {
+    "imagen": "capturas/pt-BR/04.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/pt/04-recuadro-grabando.png",
+    "sha256_cruda": "341e9703e9554150f735e5a9fed15b024a8c2bc0c0c588dda273054ba8b9f59a",
+    "recorte_cruda": [
+      72,
+      1385,
+      1180,
+      1955
+    ],
+    "caja_destino": [
+      0,
+      958,
+      1080,
+      556
+    ],
+    "escala": 0.9747,
+    "parte": "recuadro de cámara chico -techo de madera, sin cara-",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 100,
+    "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+  },
+  {
+    "imagen": "capturas/pt-BR/04.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/pt/04-recuadro-grabando.png",
+    "sha256_cruda": "341e9703e9554150f735e5a9fed15b024a8c2bc0c0c588dda273054ba8b9f59a",
+    "recorte_cruda": [
+      72,
+      1985,
+      1180,
+      2402
+    ],
+    "caja_destino": [
+      0,
+      1514,
+      1080,
+      406
+    ],
+    "escala": 0.9747,
+    "parte": "micrófono verde y tiempo «00:05 / 03:00»",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 100,
+    "motivo_escala": "Mismo ancho y escala que la pieza de arriba, para que sea una sola pieza de la app."
+  },
+  {
+    "imagen": "capturas/pt-BR/04.png",
+    "textos": [
+      "Grave olhando",
+      "para a lente.",
+      "Sua imagem em uma janela que você pode mover."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-clara.png",
+    "fondo": "#171412"
+  },
+  {
+    "imagen": "capturas/pt-BR/05.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-a-video-guardado.png",
+    "sha256_cruda": "5df9ad9dc0b49590fce648fd34bf31f1156f22e6b4c080fa74ce49911bc7586f",
+    "recorte_cruda": [
+      130,
+      700,
+      1090,
+      1760
+    ],
+    "caja_destino": [
+      199,
+      480,
+      682,
+      753
+    ],
+    "escala": 0.7104,
+    "parte": "video guardado con subtítulos rojos palabra por palabra -«algo» resaltado-; la cara entera y chica",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 160,
+    "motivo_escala": "05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u."
+  },
+  {
+    "imagen": "capturas/pt-BR/05.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-d-visor-guardar-agrupado.png",
+    "sha256_cruda": "abd0fdc36ca8c237b1f2ee597ef7b68d3a1f92df4461be60f298a7aaa1a987b3",
+    "recorte_cruda": [
+      56,
+      1830,
+      1164,
+      2535
+    ],
+    "caja_destino": [
+      0,
+      1233,
+      1080,
+      687
+    ],
+    "escala": 0.9747,
+    "parte": "control que produce los subtítulos: «Subtítulos Rojo», «Filtro Natural», «Guardar» y «Guardar y compartir»",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 90,
+    "motivo_escala": "El panel entero de 05-d, de borde a borde, para que «Subtítulos Rojo» y los dos botones de guardar entren sin cortar."
+  },
+  {
+    "imagen": "capturas/pt-BR/05.png",
+    "textos": [
+      "Seu vídeo,",
+      "com legendas.",
+      "Com as palavras do seu roteiro, no ritmo da sua voz."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-oscura.png",
+    "fondo": "#F0EAE4"
+  },
+  {
+    "imagen": "capturas/pt-BR/06.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/pt/06-gestos-panel.png",
+    "sha256_cruda": "9b7e5543f552b99bc7920eb568abaacba358520120a4f1e1f9701cbf96603547",
+    "recorte_cruda": [
+      0,
+      1084,
+      1220,
+      2520
+    ],
+    "caja_destino": [
+      0,
+      649,
+      1080,
+      1271
+    ],
+    "escala": 0.8852,
+    "parte": "panel «Imagem da câmera» con el control por gestos, la ventana flotante y la barra de grabar",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 96,
+    "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=96) y solo corta por la derecha; por eso mide 1220 px de cruda y no 820. Escala 0,885."
+  },
+  {
+    "imagen": "capturas/pt-BR/06.png",
+    "textos": [
+      "Pause",
+      "com um gesto.",
+      "As pausas da gravação ficam fora do vídeo."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-clara.png",
+    "fondo": "#171412"
+  },
+  {
+    "imagen": "capturas/pt-BR/07.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/pt/07-idioma-menu.png",
+    "sha256_cruda": "47cccc9c9d4d258e5046a7035aea7f4e351ad0831d45a8b86d2d30c44311cd42",
+    "recorte_cruda": [
+      30,
+      990,
+      1120,
+      2524
+    ],
+    "caja_destino": [
+      0,
+      400,
+      1080,
+      1520
+    ],
+    "escala": 0.9908,
+    "parte": "Ajustes con el menú de idioma de la app abierto: Español, English y Português",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 103,
+    "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=103) y solo corta por la derecha; por eso mide 1090 px de cruda y no 820. Escala 0,991."
+  },
+  {
+    "imagen": "capturas/pt-BR/07.png",
+    "textos": [
+      "No seu idioma.",
+      "O Sigo em português, espanhol e inglês."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-oscura.png",
+    "fondo": "#F0EAE4"
+  },
+  {
+    "imagen": "capturas/pt-BR/08.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/pt/08-guiones-a-portada.png",
+    "sha256_cruda": "f74662fc46662cce56d358f58597185968a7253f95b69da49e7e3619525d458b",
+    "recorte_cruda": [
+      25,
+      85,
+      1136,
+      1290
+    ],
+    "caja_destino": [
+      0,
+      480,
+      1080,
+      1171
+    ],
+    "escala": 0.9721,
+    "parte": "portada: «Continuar com este roteiro» entera, con Leer y Grabar, y el primer guion de la lista",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 62,
+    "motivo_escala": "Regla del borde: el recorte arranca antes del margen izquierdo del texto de la app (x=62) y solo corta por la derecha; por eso mide 1111 px de cruda y no 820. Escala 0,972.",
+    "excluye": [
+      {
+        "que": "guion «My video for today», en inglés",
+        "caja": [
+          58,
+          1324,
+          1092,
+          1512
+        ]
+      },
+      {
+        "que": "guion «Hola», en español",
+        "caja": [
+          58,
+          1546,
+          1092,
+          1735
+        ]
+      }
+    ]
+  },
+  {
+    "imagen": "capturas/pt-BR/08.png",
+    "textos": [
+      "Seus roteiros,",
+      "com você.",
+      "Continue seu último roteiro na tela inicial."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-clara.png",
+    "fondo": "#171412"
+  },
+  {
+    "imagen": "grafico-1024x500-pt.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/pt/02-espera-pausa.png",
+    "sha256_cruda": "c27ce7823f8b8839992f20f171bca044f2cd2172b26a85010767ad3c40db0e14",
+    "recorte_cruda": [
+      550,
+      118,
+      1085,
+      228
+    ],
+    "caja_destino": [
+      600,
+      0,
+      424,
+      87
+    ],
+    "escala": 0.7925,
+    "parte": "renglón detenido desde «pensar,»: «pensar, ele me», con el subrayado",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 101,
+    "motivo_escala": "A sangre arriba y a la derecha, desde el borde de la zona libre -x 600- hasta x 1024, a la misma escala que el gráfico aprobado -0,79×-.",
+    "excepcion_borde": "El recorte de arriba arranca en «pensar,», no en el margen, como el gráfico aprobado en español: desde el margen, el renglón mide 851 px de cruda y en 424 px quedaría a 0,50×. La espera, «ele me espera.», sigue en el renglón de abajo, que es otro recorte y sí arranca en el margen -«espera. E quando eu», «segue comigo até o»-. Cada renglón empieza con palabra entera y solo se corta por la derecha."
+  },
+  {
+    "imagen": "grafico-1024x500-pt.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/pt/02-espera-pausa.png",
+    "sha256_cruda": "c27ce7823f8b8839992f20f171bca044f2cd2172b26a85010767ad3c40db0e14",
+    "recorte_cruda": [
+      96,
+      228,
+      631,
+      440
+    ],
+    "caja_destino": [
+      600,
+      87,
+      424,
+      168
+    ],
+    "escala": 0.7925,
+    "parte": "los dos renglones siguientes desde el margen de la app: «espera. E quando eu» y «segue comigo até o»",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 101,
+    "motivo_escala": "Misma escala que el renglón de arriba."
+  },
+  {
+    "imagen": "grafico-1024x500-pt.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/pt/02-espera-pausa.png",
+    "sha256_cruda": "c27ce7823f8b8839992f20f171bca044f2cd2172b26a85010767ad3c40db0e14",
+    "recorte_cruda": [
+      350,
+      1950,
+      885,
+      2259
+    ],
+    "caja_destino": [
+      600,
+      255,
+      424,
+      245
+    ],
+    "escala": 0.7925,
+    "parte": "micrófono quieto y tiempo detenido, a la misma escala; cierra el bloque a sangre hasta abajo",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 360,
+    "motivo_escala": "Misma escala que la lectura."
+  },
+  {
+    "imagen": "grafico-1024x500-pt.png",
+    "textos": [
+      "Ele espera.",
+      "E segue você."
+    ],
+    "fondo": "#F0EAE4"
+  },
+  {
+    "imagen": "capturas/tableta/es-419/01.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/es/4-lectura-avanza.png",
+    "sha256_cruda": "0991226802047a77c63658ccf69e67bad51e8d820d25134ef65a04ef7d4354a4",
+    "recorte_cruda": [
+      16,
+      62,
+      2544,
+      1484
+    ],
+    "escala": 1,
+    "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/es-419/02.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/es/3-antes-de-leer.png",
+    "sha256_cruda": "32fb9bcc6dfbbe772d099b7c4154d2dbd86fee75096f29c0fe5b02889631e296",
+    "recorte_cruda": [
+      15,
+      61,
+      2543,
+      1483
+    ],
+    "escala": 1,
+    "parte": "lectura lista antes de empezar, con los controles a los lados -Voz, tamaño, posición, brillo, Ventana flotante y Más- y el botón de reproducir",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 7 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 5 filas lisas de fondo encima. A los lados, 15 y 17 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/es-419/03.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/es/2-editor-colores.png",
+    "sha256_cruda": "885b9201467b305328d65aa7eb33e6373d283e21c40f8a0f5168668ffe2ecc94",
+    "recorte_cruda": [
+      16,
+      62,
+      2544,
+      1484
+    ],
+    "escala": 1,
+    "parte": "editor con el guion en colores, con Leer y Grabar",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/es-419/04.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-7/es/4-lectura-avanza.png",
+    "sha256_cruda": "9d593a54e3cbff20578e03f135517feaa819ae60d23ec47de94e0937143601e7",
+    "recorte_cruda": [
+      32,
+      44,
+      1888,
+      1088
+    ],
+    "escala": "1080/1044",
+    "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos.",
+    "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Recorte 16:9 de 1856×1044 y ampliación pareja con Lanczos a 1920×1080, la única permitida: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/es-419/05.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-7/es/2-editor-colores.png",
+    "sha256_cruda": "9613493e5cce22ba1a3164f10748bd5abed16448e4c9ef22be3614600ff958ad",
+    "recorte_cruda": [
+      32,
+      44,
+      1888,
+      1088
+    ],
+    "escala": "1080/1044",
+    "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos.",
+    "parte": "editor con el guion en colores, con Leer y Grabar",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Recorte 16:9 de 1856×1044 y ampliación pareja con Lanczos a 1920×1080, la única permitida: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/en-US/01.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/en/4-lectura-avanza.png",
+    "sha256_cruda": "a9e4d1af367e2a7e9aee246fd5af29e0fa1cba35b9b73771dabab3d8980c866a",
+    "recorte_cruda": [
+      16,
+      62,
+      2544,
+      1484
+    ],
+    "escala": 1,
+    "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/en-US/02.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/en/3-antes-de-leer.png",
+    "sha256_cruda": "d091a2f6c03c5a190a6204d7853e7c84803d9507b20217792f7fb6649c8de201",
+    "recorte_cruda": [
+      15,
+      61,
+      2543,
+      1483
+    ],
+    "escala": 1,
+    "parte": "lectura lista antes de empezar, con los controles a los lados -Voz, tamaño, posición, brillo, Ventana flotante y Más- y el botón de reproducir",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 7 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 5 filas lisas de fondo encima. A los lados, 15 y 17 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/en-US/03.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/en/2-editor-colores.png",
+    "sha256_cruda": "3ec540f89ec9acdc2061eeb1f3a08931be33e26df16eb597270b0ff33b5575ed",
+    "recorte_cruda": [
+      16,
+      62,
+      2544,
+      1484
+    ],
+    "escala": 1,
+    "parte": "editor con el guion en colores, con Leer y Grabar",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/en-US/04.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-7/en/4-lectura-avanza.png",
+    "sha256_cruda": "2eb7b82760b5811152ae0d1833708c6c70d5bdeeb084c30585732005ae7fe498",
+    "recorte_cruda": [
+      32,
+      44,
+      1888,
+      1088
+    ],
+    "escala": "1080/1044",
+    "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos.",
+    "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Recorte 16:9 de 1856×1044 y ampliación pareja con Lanczos a 1920×1080, la única permitida: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/en-US/05.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-7/en/2-editor-colores.png",
+    "sha256_cruda": "fba27d4de5a5dbb009663323221985a51b5de8f97669c5a4859c3660cae30df9",
+    "recorte_cruda": [
+      32,
+      44,
+      1888,
+      1088
+    ],
+    "escala": "1080/1044",
+    "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos.",
+    "parte": "editor con el guion en colores, con Leer y Grabar",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Recorte 16:9 de 1856×1044 y ampliación pareja con Lanczos a 1920×1080, la única permitida: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/pt-BR/01.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/pt/4-lectura-avanza.png",
+    "sha256_cruda": "9a56b73b0297027248589b3afd139508639199f73322d684a179fef73689cd8b",
+    "recorte_cruda": [
+      16,
+      62,
+      2544,
+      1484
+    ],
+    "escala": 1,
+    "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/pt-BR/02.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/pt/3-antes-de-leer.png",
+    "sha256_cruda": "d5f218a20ade9511c7742842ee9e8b5b156d65e9c60c9f44789897fc9613d4a8",
+    "recorte_cruda": [
+      15,
+      61,
+      2543,
+      1483
+    ],
+    "escala": 1,
+    "parte": "lectura lista antes de empezar, con los controles a los lados -Voz, tamaño, posición, brillo, Ventana flotante y Más- y el botón de reproducir",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 7 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 5 filas lisas de fondo encima. A los lados, 15 y 17 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/pt-BR/03.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/pt/2-editor-colores.png",
+    "sha256_cruda": "2434b97a0ce9cdec674fb1def8660cc24e50fa03caf56832cdd179d491f037e1",
+    "recorte_cruda": [
+      16,
+      62,
+      2544,
+      1484
+    ],
+    "escala": 1,
+    "parte": "editor con el guion en colores, con Leer y Grabar",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/pt-BR/04.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-7/pt/4-lectura-avanza.png",
+    "sha256_cruda": "f704b4ca4eb82514fe8f595c71c6743a4420c490b39bef05f5c9a336796eb167",
+    "recorte_cruda": [
+      32,
+      44,
+      1888,
+      1088
+    ],
+    "escala": "1080/1044",
+    "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos.",
+    "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Recorte 16:9 de 1856×1044 y ampliación pareja con Lanczos a 1920×1080, la única permitida: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/pt-BR/05.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-7/pt/2-editor-colores.png",
+    "sha256_cruda": "60cdce1faf2872a53e562fe6d7f9df7696ac5a6281ba3a15cadbb1f8c8b15de9",
+    "recorte_cruda": [
+      32,
+      44,
+      1888,
+      1088
+    ],
+    "escala": "1080/1044",
+    "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos.",
+    "parte": "editor con el guion en colores, con Leer y Grabar",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Recorte 16:9 de 1856×1044 y ampliación pareja con Lanczos a 1920×1080, la única permitida: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  }
+]

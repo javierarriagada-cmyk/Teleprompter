@@ -1,0 +1,33 @@
+NOMBRE (26/30)
+[[Sigo — Teleprompter de voz]]
+
+DESCRIPCIÓN BREVE (74/80)
+[[Teleprompter que segue sua voz: o texto anda enquanto você lê em voz alta.]]
+
+DESCRIPCIÓN COMPLETA (2225/4000)
+[[Você fala. O Sigo segue você.
+
+Leia seu roteiro no seu ritmo enquanto grava um vídeo, prepara uma aula ou ensaia uma apresentação. O Sigo acompanha sua voz: o texto avança com você e espera quando você faz uma pausa.
+
+SEU ROTEIRO E SUA IMAGEM
+Grave com a câmera frontal ou traseira, na vertical ou na horizontal. Veja sua imagem atrás do texto, em uma janela que você pode mover, ou deixe a imagem oculta enquanto grava. Você também pode ler sem gravar.
+
+DO ROTEIRO AO VÍDEO, COM LEGENDAS
+As legendas usam as palavras do seu roteiro e o tempo da sua voz. Escolha entre três estilos, confira o resultado e salve o vídeo na galeria ou compartilhe. Experimente seis filtros e veja como seu vídeo vai ficar antes de salvar.
+
+CONTROLE O TAKE NO SEU RITMO
+Pause e continue quando precisar: as pausas da gravação ficam fora do vídeo. Com o controle por gestos e a câmera frontal, mostre a palma da mão para pausar ou continuar. Durante a pausa, faça o V para encerrar o take.
+
+LEIA DO SEU JEITO
+Ajuste o tamanho do texto, a fonte, a largura e as cores. Use negrito, cores e destaques no roteiro. As anotações entre colchetes ou parênteses ficam fora da leitura e das legendas. Você também tem modo espelho e leitura com velocidade fixa.
+
+SEUS ROTEIROS, COM VOCÊ
+Escreva, cole um texto ou importe arquivos .txt, .md e .docx. Você pode usar o Sigo sem entrar em uma conta. Para fazer backup dos roteiros e recuperá-los em outro celular, entre com o Google.
+
+COMECE NO SEU RITMO
+Sem assinatura, a leitura com acompanhamento de voz e a gravação têm limites de tempo por sessão, e os vídeos salvos incluem marca d’água. A leitura com velocidade fixa sem câmera não tem limite de tempo. Com o Sigo+, você lê com acompanhamento de voz e grava sem limite de tempo, e salva os vídeos sem marca d’água. Há planos mensal e anual; as condições são mostradas antes da contratação.
+
+NO SEU IDIOMA
+Interface e acompanhamento de voz em português, espanhol e inglês. O reconhecimento de voz e de gestos acontece no celular. Depois de baixar o reconhecimento do seu idioma, você pode usar essas funções sem conexão. O backup e o gerenciamento da assinatura precisam de internet.
+
+Para seus vídeos, aulas, palestras e apresentações. O Sigo segue você.]]
