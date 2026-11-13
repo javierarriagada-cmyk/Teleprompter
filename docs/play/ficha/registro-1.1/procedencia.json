@@ -417,9 +417,57 @@
   },
   {
     "imagen": "capturas/en-US/05.png",
-    "copia_de": "direccion-1.1/capturas/es-419/05.png",
-    "sha256": "6d819e7a82df90daa16e927d5ea11fcc5545958b48a4abecc8a6b1877c67ef14",
-    "tratamiento": "Copia byte a byte de la pieza aprobada en la fase 1 -t169u-."
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-a-video-guardado.png",
+    "sha256_cruda": "5df9ad9dc0b49590fce648fd34bf31f1156f22e6b4c080fa74ce49911bc7586f",
+    "recorte_cruda": [
+      130,
+      700,
+      1090,
+      1760
+    ],
+    "caja_destino": [
+      199,
+      480,
+      682,
+      753
+    ],
+    "escala": 0.7104,
+    "parte": "video guardado con subtítulos rojos palabra por palabra -«algo» resaltado-; la cara entera y chica",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 160,
+    "motivo_escala": "05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u."
+  },
+  {
+    "imagen": "capturas/en-US/05.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-d-visor-guardar-agrupado.png",
+    "sha256_cruda": "abd0fdc36ca8c237b1f2ee597ef7b68d3a1f92df4461be60f298a7aaa1a987b3",
+    "recorte_cruda": [
+      56,
+      1830,
+      1164,
+      2535
+    ],
+    "caja_destino": [
+      0,
+      1233,
+      1080,
+      687
+    ],
+    "escala": 0.9747,
+    "parte": "control que produce los subtítulos: «Subtítulos Rojo», «Filtro Natural», «Guardar» y «Guardar y compartir»",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 90,
+    "motivo_escala": "El panel entero de 05-d, de borde a borde, para que «Subtítulos Rojo» y los dos botones de guardar entren sin cortar."
+  },
+  {
+    "imagen": "capturas/en-US/05.png",
+    "textos": [
+      "Your video,",
+      "with subtitles.",
+      "With the words from your script, in time with your voice."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-oscura.png",
+    "fondo": "#F0EAE4"
   },
   {
     "imagen": "capturas/en-US/06.png",
@@ -830,9 +878,57 @@
   },
   {
     "imagen": "capturas/pt-BR/05.png",
-    "copia_de": "direccion-1.1/capturas/es-419/05.png",
-    "sha256": "6d819e7a82df90daa16e927d5ea11fcc5545958b48a4abecc8a6b1877c67ef14",
-    "tratamiento": "Copia byte a byte de la pieza aprobada en la fase 1 -t169u-."
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-a-video-guardado.png",
+    "sha256_cruda": "5df9ad9dc0b49590fce648fd34bf31f1156f22e6b4c080fa74ce49911bc7586f",
+    "recorte_cruda": [
+      130,
+      700,
+      1090,
+      1760
+    ],
+    "caja_destino": [
+      199,
+      480,
+      682,
+      753
+    ],
+    "escala": 0.7104,
+    "parte": "video guardado con subtítulos rojos palabra por palabra -«algo» resaltado-; la cara entera y chica",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 160,
+    "motivo_escala": "05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u."
+  },
+  {
+    "imagen": "capturas/pt-BR/05.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-d-visor-guardar-agrupado.png",
+    "sha256_cruda": "abd0fdc36ca8c237b1f2ee597ef7b68d3a1f92df4461be60f298a7aaa1a987b3",
+    "recorte_cruda": [
+      56,
+      1830,
+      1164,
+      2535
+    ],
+    "caja_destino": [
+      0,
+      1233,
+      1080,
+      687
+    ],
+    "escala": 0.9747,
+    "parte": "control que produce los subtítulos: «Subtítulos Rojo», «Filtro Natural», «Guardar» y «Guardar y compartir»",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 90,
+    "motivo_escala": "El panel entero de 05-d, de borde a borde, para que «Subtítulos Rojo» y los dos botones de guardar entren sin cortar."
+  },
+  {
+    "imagen": "capturas/pt-BR/05.png",
+    "textos": [
+      "Seu vídeo,",
+      "com legendas.",
+      "Com as palavras do seu roteiro, no ritmo da sua voz."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-oscura.png",
+    "fondo": "#F0EAE4"
   },
   {
     "imagen": "capturas/pt-BR/06.png",
@@ -1025,7 +1121,7 @@
     "fondo": "#F0EAE4"
   },
   {
-    "imagen": "capturas/tableta/es-419/10/01.png",
+    "imagen": "capturas/tableta/es-419/01.png",
     "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/es/4-lectura-avanza.png",
     "sha256_cruda": "0991226802047a77c63658ccf69e67bad51e8d820d25134ef65a04ef7d4354a4",
     "recorte_cruda": [
@@ -1040,7 +1136,7 @@
     "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
   },
   {
-    "imagen": "capturas/tableta/es-419/10/02.png",
+    "imagen": "capturas/tableta/es-419/02.png",
     "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/es/3-antes-de-leer.png",
     "sha256_cruda": "32fb9bcc6dfbbe772d099b7c4154d2dbd86fee75096f29c0fe5b02889631e296",
     "recorte_cruda": [
@@ -1055,7 +1151,7 @@
     "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
   },
   {
-    "imagen": "capturas/tableta/es-419/10/03.png",
+    "imagen": "capturas/tableta/es-419/03.png",
     "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/es/2-editor-colores.png",
     "sha256_cruda": "885b9201467b305328d65aa7eb33e6373d283e21c40f8a0f5168668ffe2ecc94",
     "recorte_cruda": [
@@ -1070,7 +1166,39 @@
     "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
   },
   {
-    "imagen": "capturas/tableta/en-US/10/01.png",
+    "imagen": "capturas/tableta/es-419/04.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-7/es/4-lectura-avanza.png",
+    "sha256_cruda": "9d593a54e3cbff20578e03f135517feaa819ae60d23ec47de94e0937143601e7",
+    "recorte_cruda": [
+      32,
+      44,
+      1888,
+      1088
+    ],
+    "escala": "1080/1044",
+    "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos.",
+    "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Recorte 16:9 de 1856×1044 y ampliación pareja con Lanczos a 1920×1080, la única permitida: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/es-419/05.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-7/es/2-editor-colores.png",
+    "sha256_cruda": "9613493e5cce22ba1a3164f10748bd5abed16448e4c9ef22be3614600ff958ad",
+    "recorte_cruda": [
+      32,
+      44,
+      1888,
+      1088
+    ],
+    "escala": "1080/1044",
+    "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos.",
+    "parte": "editor con el guion en colores, con Leer y Grabar",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Recorte 16:9 de 1856×1044 y ampliación pareja con Lanczos a 1920×1080, la única permitida: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/en-US/01.png",
     "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/en/4-lectura-avanza.png",
     "sha256_cruda": "a9e4d1af367e2a7e9aee246fd5af29e0fa1cba35b9b73771dabab3d8980c866a",
     "recorte_cruda": [
@@ -1085,7 +1213,7 @@
     "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
   },
   {
-    "imagen": "capturas/tableta/en-US/10/02.png",
+    "imagen": "capturas/tableta/en-US/02.png",
     "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/en/3-antes-de-leer.png",
     "sha256_cruda": "d091a2f6c03c5a190a6204d7853e7c84803d9507b20217792f7fb6649c8de201",
     "recorte_cruda": [
@@ -1100,7 +1228,7 @@
     "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
   },
   {
-    "imagen": "capturas/tableta/en-US/10/03.png",
+    "imagen": "capturas/tableta/en-US/03.png",
     "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/en/2-editor-colores.png",
     "sha256_cruda": "3ec540f89ec9acdc2061eeb1f3a08931be33e26df16eb597270b0ff33b5575ed",
     "recorte_cruda": [
@@ -1115,7 +1243,39 @@
     "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
   },
   {
-    "imagen": "capturas/tableta/pt-BR/10/01.png",
+    "imagen": "capturas/tableta/en-US/04.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-7/en/4-lectura-avanza.png",
+    "sha256_cruda": "2eb7b82760b5811152ae0d1833708c6c70d5bdeeb084c30585732005ae7fe498",
+    "recorte_cruda": [
+      32,
+      44,
+      1888,
+      1088
+    ],
+    "escala": "1080/1044",
+    "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos.",
+    "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Recorte 16:9 de 1856×1044 y ampliación pareja con Lanczos a 1920×1080, la única permitida: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/en-US/05.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-7/en/2-editor-colores.png",
+    "sha256_cruda": "fba27d4de5a5dbb009663323221985a51b5de8f97669c5a4859c3660cae30df9",
+    "recorte_cruda": [
+      32,
+      44,
+      1888,
+      1088
+    ],
+    "escala": "1080/1044",
+    "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos.",
+    "parte": "editor con el guion en colores, con Leer y Grabar",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Recorte 16:9 de 1856×1044 y ampliación pareja con Lanczos a 1920×1080, la única permitida: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/pt-BR/01.png",
     "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/pt/4-lectura-avanza.png",
     "sha256_cruda": "9a56b73b0297027248589b3afd139508639199f73322d684a179fef73689cd8b",
     "recorte_cruda": [
@@ -1130,7 +1290,7 @@
     "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
   },
   {
-    "imagen": "capturas/tableta/pt-BR/10/02.png",
+    "imagen": "capturas/tableta/pt-BR/02.png",
     "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/pt/3-antes-de-leer.png",
     "sha256_cruda": "d5f218a20ade9511c7742842ee9e8b5b156d65e9c60c9f44789897fc9613d4a8",
     "recorte_cruda": [
@@ -1145,7 +1305,7 @@
     "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
   },
   {
-    "imagen": "capturas/tableta/pt-BR/10/03.png",
+    "imagen": "capturas/tableta/pt-BR/03.png",
     "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/pt/2-editor-colores.png",
     "sha256_cruda": "2434b97a0ce9cdec674fb1def8660cc24e50fa03caf56832cdd179d491f037e1",
     "recorte_cruda": [
@@ -1158,5 +1318,37 @@
     "parte": "editor con el guion en colores, con Leer y Grabar",
     "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
     "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/pt-BR/04.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-7/pt/4-lectura-avanza.png",
+    "sha256_cruda": "f704b4ca4eb82514fe8f595c71c6743a4420c490b39bef05f5c9a336796eb167",
+    "recorte_cruda": [
+      32,
+      44,
+      1888,
+      1088
+    ],
+    "escala": "1080/1044",
+    "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos.",
+    "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Recorte 16:9 de 1856×1044 y ampliación pareja con Lanczos a 1920×1080, la única permitida: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/pt-BR/05.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-7/pt/2-editor-colores.png",
+    "sha256_cruda": "60cdce1faf2872a53e562fe6d7f9df7696ac5a6281ba3a15cadbb1f8c8b15de9",
+    "recorte_cruda": [
+      32,
+      44,
+      1888,
+      1088
+    ],
+    "escala": "1080/1044",
+    "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos.",
+    "parte": "editor con el guion en colores, con Leer y Grabar",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Recorte 16:9 de 1856×1044 y ampliación pareja con Lanczos a 1920×1080, la única permitida: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
   }
 ]

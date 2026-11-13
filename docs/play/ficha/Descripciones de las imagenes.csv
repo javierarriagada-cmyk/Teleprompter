@@ -7,9 +7,11 @@ es-419,05.png,"Video guardado con subtítulos rojos palabra por palabra y el pan
 es-419,06.png,Panel de imagen de la cámara con el control por gestos: palma para pausar o seguir.
 es-419,07.png,"Ajustes de Sigo con el menú de idioma de la app: español, inglés y portugués."
 es-419,08.png,"Portada de Sigo con «Continuar con este guion», Leer, Grabar y la lista de guiones."
-es-419,tableta/10/01.png,Sigo en una tableta en horizontal: la lectura avanza con tu voz.
-es-419,tableta/10/02.png,"Sigo en una tableta, con el guion listo antes de leer."
-es-419,tableta/10/03.png,"Editor de guiones de Sigo en una tableta, con palabras en colores."
+es-419,tableta/01.png,Sigo en una tableta en horizontal: la lectura avanza con tu voz.
+es-419,tableta/02.png,"Sigo en una tableta, con el guion listo antes de leer."
+es-419,tableta/03.png,"Editor de guiones de Sigo en una tableta, con palabras en colores."
+es-419,tableta/04.png,Sigo en una tableta en horizontal: la lectura avanza con tu voz.
+es-419,tableta/05.png,"Editor de guiones de Sigo en una tableta, con palabras en colores."
 en-US,01.png,Reading in Sigo: the script moves with your voice and the green mic shows the time.
 en-US,02.png,"Reading paused in Sigo: the script waits at “If I stop to think, it waits for me.”"
 en-US,03.png,"Sigo’s floating window with the script, on top of the camera app while it records."
@@ -18,9 +20,11 @@ en-US,05.png,"Saved video with red word-by-word captions and Sigo’s captions, 
 en-US,06.png,Camera view panel with gesture control: show your palm to pause or resume.
 en-US,07.png,"Sigo settings with the app language menu: Spanish, English and Portuguese."
 en-US,08.png,"Sigo home screen with “Continue with this script”, Read, Record and the script list."
-en-US,tableta/10/01.png,Sigo on a tablet in landscape: the script moves with your voice.
-en-US,tableta/10/02.png,"Sigo on a tablet, with the script ready before reading."
-en-US,tableta/10/03.png,"Sigo’s script editor on a tablet, with words in color."
+en-US,tableta/01.png,Sigo on a tablet in landscape: the script moves with your voice.
+en-US,tableta/02.png,"Sigo on a tablet, with the script ready before reading."
+en-US,tableta/03.png,"Sigo’s script editor on a tablet, with words in color."
+en-US,tableta/04.png,Sigo on a tablet in landscape: the script moves with your voice.
+en-US,tableta/05.png,"Sigo’s script editor on a tablet, with words in color."
 pt-BR,01.png,Leitura no Sigo: o roteiro avança com a sua voz e o microfone verde mostra o tempo.
 pt-BR,02.png,"Leitura parada no Sigo: o texto espera em “Se eu paro para pensar, ele me espera.”"
 pt-BR,03.png,"Janela flutuante do Sigo com o roteiro, por cima do app da câmera enquanto grava."
@@ -29,6 +33,8 @@ pt-BR,05.png,"Vídeo salvo com legendas vermelhas palavra por palavra e o painel
 pt-BR,06.png,Painel da imagem da câmera com o controle por gestos: palma da mão para pausar ou continuar.
 pt-BR,07.png,"Configurações do Sigo com o menu de idioma do app: espanhol, inglês e português."
 pt-BR,08.png,"Tela inicial do Sigo com “Continuar com este roteiro”, Ler, Gravar e a lista de roteiros."
-pt-BR,tableta/10/01.png,O Sigo em um tablet na horizontal: o roteiro avança com a sua voz.
-pt-BR,tableta/10/02.png,"O Sigo em um tablet, com o roteiro pronto antes de ler."
-pt-BR,tableta/10/03.png,"Editor de roteiros do Sigo em um tablet, com palavras coloridas."
+pt-BR,tableta/01.png,O Sigo em um tablet na horizontal: o roteiro avança com a sua voz.
+pt-BR,tableta/02.png,"O Sigo em um tablet, com o roteiro pronto antes de ler."
+pt-BR,tableta/03.png,"Editor de roteiros do Sigo em um tablet, com palavras coloridas."
+pt-BR,tableta/04.png,O Sigo em um tablet na horizontal: o roteiro avança com a sua voz.
+pt-BR,tableta/05.png,"Editor de roteiros do Sigo em um tablet, com palavras coloridas."

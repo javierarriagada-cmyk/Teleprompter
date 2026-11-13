@@ -160,7 +160,12 @@ Javier aprobó la fase 1 tal como quedó en `1ec2fd7` y pidió la ficha completa
 - Capturas 1, 2, 3 y 5 en español y gráfico en español: las de la fase 1, copiadas byte a byte. El gráfico empieza en «pensar,».
 - Breve B en los tres idiomas. La C queda guardada; la de control no se publica.
 - 3 en inglés: `en/03-flotante-a`, que no trae la fila en español.
-- 5 en inglés y portugués: la misma 05 aprobada en español. **Ojo:** su titular -«Tu video, con subtítulos.»- y el panel están en español dentro de las fichas en inglés y portugués. El texto alternativo lo dice.
+- 5 en inglés y portugués -t170u-: la captura es la de español, píxel por píxel, y solo cambian el titular y la bajada, con el mismo tamaño, lugar y letra:
+  - inglés: «Your video, / with subtitles.» y «With the words from your script, in time with your voice.»;
+  - portugués: «Seu vídeo, / com legendas.» y «Com as palavras do seu roteiro, no ritmo da sua voz.».
+  - Se arma con los mismos dos recortes de las crudas en español -`motorola-1.1/es`, 05-a y 05-d- y se comprueba que la zona de la captura sea igual a `capturas/es-419/05.png`; dentro de la app se sigue viendo español -«Subtítulos Rojo», «Guardar»- y el texto alternativo lo dice.
+
+  > Antes -12-11-2026-: «5 en inglés y portugués: la misma 05 aprobada en español. **Ojo:** su titular -«Tu video, con subtítulos.»- y el panel están en español dentro de las fichas en inglés y portugués. El texto alternativo lo dice.»
 - 3 en portugués: la ventana recortada por encima de «Pausa / Volver a Sigo». Va a sangre por abajo y por la derecha. Los renglones salen enteros y no queda ni una línea de la fila en español: la caja de esa fila está declarada en `excluye`, y el generador y el comprobador fallan si el recorte la toca. El botón rojo de grabar queda fuera; la cámara se reconoce por el tiempo rojo 00:30. Si a Javier le parece cortada, se quita y la ficha portuguesa queda con siete capturas, sin usar la de otro idioma.
 - Portadas, captura 8:
   - inglés: el recorte termina antes del guion «Hola»;
@@ -179,6 +184,26 @@ Javier aprobó la fase 1 tal como quedó en `1ec2fd7` y pidió la ficha completa
 - Titulares: «It waits. / It follows you.» y «Ele espera. / E segue você.».
 - El renglón de arriba arranca en «it» y en «pensar,». Es la misma excepción a la regla del borde que en español, declarada; los de abajo arrancan en el margen.
 - «E segue você.» y no «E segue com você.»: la segunda no cabía antes de la zona libre del botón de reproducir.
+
+**Tabletas -12-11-2026, t170u-:** Javier decidió que no van portadas y que **el mismo juego va en los dos lugares de tableta de Play, 7 y 10 pulgadas**. Se suben los mismos archivos `capturas/tableta/<idioma>/NN.png` en los dos lugares.
+- Plan de Javier, seis por idioma: 01 ← 10 pulgadas, lectura; 02 ← 10, antes de leer; 03 ← 10, editor; 04 ← 7, lectura; 05 ← 7, antes de leer; 06 ← 7, editor.
+- Se entregan **15 de los 18**, cinco por idioma, numerados seguidos:
+  - 01, 02 y 03: las de 10 pulgadas, **2528×1422**, los mismos píxeles y huellas que antes, sin escala;
+  - 04 ← 7 pulgadas, lectura, y 05 ← 7 pulgadas, editor: **1920×1080**.
+- **No se entrega la de 7 pulgadas «antes de leer»,** en ningún idioma. En el alto útil, 1044 filas, el 16:9 es de 1856 de ancho. El botón «Ventana flotante» empieza en la columna 16 y el borde del tiempo termina en la 1879: son 1864 columnas de Sigo. Cualquier recorte de 1856 corta un botón de Sigo, y eso no se hace. No se reemplazó con otra cruda. Si Javier acepta quitar 8 columnas de esos bordes, se agrega como 06.
+- **Las de 7 pulgadas:** recorte 16:9 de **1856×1044**, columnas 32 a 1888 y filas 44 a 1088 -todo el alto útil entre la barra de estado y la de tareas-, y ampliación pareja con Lanczos a **1920×1080**, ×1080/1044 -cerca de 3,4 %-. Es la única ampliación permitida, y su motivo está en `contenidos.json`, en `escala.motivo_escala`. A los lados se quitan 32 columnas lisas de fondo por lado.
+- **Las de 10 pulgadas:**
+  - arriba, la barra de estado -íconos hasta la fila 53- y unas filas lisas de fondo;
+  - abajo, la barra de tareas -desde la fila 1488- y unas filas lisas;
+  - a los lados, 15 o 16 columnas lisas por lado.
+  - Así quedan en 16:9 exacto sin escalar.
+- Esquinas: las esquinas redondeadas de la ventana dejan ver el color de la barra de tareas, (17, 19, 24), y su borde suavizado, hasta 2 niveles de ese color. Es sistema: no queda ni un píxel dentro y no cuenta al medir si una franja cortada es lisa.
+- No se usa Ajustes ni la portada.
+- Crudas: `herramientas/entradas/emulador-1.1/tableta-{10,7}/{es,en,pt}/` y su `LEEME.txt`, copiados tal cual del ZIP (SHA-256 del ZIP `bd4dbcff…5defa7`). Son RGBA de alfa 255 en todos los píxeles: pasarlas a RGB no cambia ningún color.
+- Lámina: `registro-1.1/lamina-tabletas.png`, con los 18 lugares del plan, una fila por idioma. La entregada va reducida, con su nombre, tamaño, tableta y escala; la que no se entrega, como cruda atenuada, con «NO SE ENTREGA» y el motivo.
+- El CSV trae un texto alternativo por tableta entregada, `tableta/NN.png`, según su cruda.
+
+<details><summary>Antes -12-11-2026-: el apartado de tabletas, antes de t170u.</summary>
 
 **Tabletas -12-11-2026, crudas del emulador-:** se entregan **9 de los 24 lugares**: las de 10 pulgadas 01, 02 y 03 de cada idioma, a **2528×1422**. Los otros 15 no se pueden hacer sin romper una regla. No se reemplazaron con otra cruda ni con otro idioma.
 - **Las 12 de 7 pulgadas:** en la cruda de 1920×1200, los íconos de estado llegan hasta la fila 43 y la barra de tareas empieza en la 1088. Entre ambas quedan 1044 filas, y un 16:9 de al menos 1080 de alto no cabe: habría que escalar hacia arriba o dejar una barra del sistema.
@@ -201,6 +226,8 @@ Javier aprobó la fase 1 tal como quedó en `1ec2fd7` y pidió la ficha completa
   - Orden: 01 ← 4-lectura-avanza, 02 ← 3-antes-de-leer, 03 ← 2-editor-colores. No se usa Ajustes.
 - Lámina: `registro-1.1/lamina-tabletas.png`, con los 24 lugares en el orden de la ficha. La entregada va reducida con su nombre y tamaño; la que no se entrega, como cruda atenuada, con «NO SE ENTREGA» y el motivo.
 - El CSV trae los textos alternativos solo de las 9 entregadas.
+
+</details>
 
 > Antes -12-11-2026-: este punto decía «el comprobador ya exige 24 en `capturas/tableta/<idioma>/{7,10}/01-04.png`. Revisa: - 16:9 exacto y horizontal, lados entre 1080 y 7680, RGB sin alfa; - el ancho completo de la cruda, sin escalar; - sin barra de estado ni de tareas; - que solo se corten filas lisas; - las cajas excluidas; - que no se use Ajustes.  El ZIP `adjuntos-grok-tabletas-1.1.zip` no estaba en el equipo de trabajo, así que no hay crudas en `herramientas/entradas/emulador-1.1/` ni salidas.»
 
@@ -228,15 +255,23 @@ El comprobador de la ficha 1.1 revisa:
 - los límites de los textos;
 - que la breve sea la B y que no se publiquen ni la C ni la de control;
 - que no haya voseo;
+- en la 5 en inglés y portugués:
+  - que cada caja de recorte sea igual, píxel por píxel, a la de `capturas/es-419/05.png`;
+  - que fuera de esas cajas, del logo y de las cajas de texto no haya nada más que el fondo;
+  - que cada caja de texto sea exactamente el texto declarado, dibujado de nuevo con la misma letra, tamaño y lugar;
+  - que el titular y la bajada no lleven palabras del español de esa pieza;
 - las tabletas:
-  - los 24 lugares, cada uno entregado o descartado con motivo;
+  - el plan de Javier, 6 por idioma, cada lugar entregado o descartado con motivo, y los entregados numerados seguidos en `capturas/tableta/<idioma>/`;
   - 16:9, de 1080 a 7680, RGB sin alfa;
-  - recorte exacto y sin escala de la cruda de su tamaño, su idioma y su orden;
+  - recorte exacto de la cruda de su tamaño, su idioma y su lugar; sin escala en 10 pulgadas;
+  - en 7 pulgadas, solo la ampliación declarada: 1856×1044 → 1920×1080 con Lanczos, ×1080/1044, y que el archivo sea exactamente esa ampliación;
   - barras medidas en la cruda, no tomadas de `contenidos.json`;
-  - que no quede ningún píxel del color de la barra de tareas;
-  - que las franjas cortadas sean lisas, ≤ 16 niveles, fuera de ese color;
-  - que no se use Ajustes;
-  - que los descartes sean de verdad imposibles.
+  - que no quede ningún píxel de las esquinas de la ventana -el color de la barra de tareas, a 2 niveles-;
+  - que las franjas cortadas sean lisas, ≤ 16 niveles, fuera de esas esquinas;
+  - que no se use Ajustes ni la portada;
+  - que los descartes sean de verdad imposibles: en la de 7 pulgadas «antes de leer», mide de nuevo en la cruda que el contenido de Sigo es más ancho que 1856.
+
+  > Antes -12-11-2026-: «las tabletas: los 24 lugares, cada uno entregado o descartado con motivo; 16:9, de 1080 a 7680, RGB sin alfa; recorte exacto y sin escala de la cruda de su tamaño, su idioma y su orden; barras medidas en la cruda, no tomadas de `contenidos.json`; que no quede ningún píxel del color de la barra de tareas; que las franjas cortadas sean lisas, ≤ 16 niveles, fuera de ese color; que no se use Ajustes; que los descartes sean de verdad imposibles.»
 
 ### Crítica de diseño sobre la lámina de 270 px
 
@@ -246,13 +281,26 @@ El comprobador de la ficha 1.1 revisa:
 | 3, inglés | La escena entera, como la aprobada en español: banda, tiempo rojo y botón de grabar. | El texto de la ventana no se lee a 270 px. |
 | 3, portugués | Es la que más se lee de las tres: la ventana a 1,06×, con «avança com a minha voz» en ámbar. | No se ve el botón de grabar, y la ventana termina a sangre, no en su borde. Es la que más se aparta de la serie. |
 | 4 | Se entiende «grabo mientras leo»: el punto rojo, el recuadro chico y el micrófono. | En español, la cara del recuadro es pequeña -1 %-. En inglés y portugués, el recuadro muestra un techo y se lee peor como cámara. |
-| 5, inglés y portugués | La misma prueba fuerte de español. | El titular y el panel en español rompen la serie en esas fichas. Lo mejor sería una cruda en cada idioma. |
+| 5, inglés y portugués | La misma prueba fuerte de español, ahora con titular y bajada en su idioma. «Your video, with subtitles.» y «Seu vídeo, com legendas.» se leen a 270 px. | Dentro de la app sigue el español: los subtítulos «Hoy te quiero mostrar algo…», «Subtítulos Rojo», «Guardar» y «Mi video de hoy». A 270 px casi no se lee, pero a tamaño real sí. La bajada en inglés es la más larga -905 px de caja-. Antes -12-11-2026-: «El titular y el panel en español rompen la serie en esas fichas. Lo mejor sería una cruda en cada idioma.» |
 | 6 | El panel completo con la palma y la ventana flotante. | Mucha interfaz chica: a 270 px, «Control por gestos» apenas se lee. Lo que comunica es el titular. |
 | 7 | Se ve el menú abierto con los tres idiomas. | Es una pantalla de ajustes, la menos atractiva de la serie. En inglés asoma «Restore purcha…», recortado, sin precio ni Sigo+. |
 | 8 | La tarjeta «Continuar» entera y legible, con Leer y Grabar. | Abajo quedan 271 px de fondo oscuro, el 14,1 %, porque la lista se corta antes del guion de otro idioma. |
 | Gráficos en inglés y portugués | Siguen la dirección aprobada; el titular se lee a 540 px. | Igual que en español: el corte izquierdo en «it» o en «pensar,» rompe la regla del borde, aunque esté declarado. |
 
 **Tabletas, sobre `lamina-tabletas.png`:**
+
+| Tableta | Qué funciona | Qué queda débil |
+| --- | --- | --- |
+| 01, 10 pulgadas, la lectura | El renglón ámbar subrayado se lee bien. | El texto ocupa solo el cuarto de arriba; el resto es negro, salvo el micrófono y el tiempo, chicos, en la esquina. Es la más vacía. |
+| 02, 10 pulgadas, antes de leer | La mejor: el guion con colores al centro y los controles reales a los lados -Voz, tamaño, Arriba, Auto, Ventana flotante, Más y reproducir-. | Los controles de los lados quedan a pocos píxeles del borde, porque solo había 15 columnas de fondo para cortar a cada lado. |
+| 03, 10 pulgadas, el editor | Las palabras en colores se leen grandes. | La tarjeta del guion sigue bajo el borde inferior, como en la app, y el último renglón queda a 10 px del borde. «Leer / Grabar» flotan encima de un renglón, como en la app. |
+| 04, 7 pulgadas, la lectura | El texto se ve más grande que en la 01 y llena más la imagen. | El primer renglón visible, «leer mirando hacia abajo.», queda pegado arriba: la lectura sigue sobre la barra de estado, como en la app. La ampliación de 3,4 % suaviza un poco la letra; a tamaño de tienda no se nota. |
+| 05, 7 pulgadas, el editor | Igual que la 03, más grande. | Como en la 03, «Leer / Grabar» tapan un renglón y la tarjeta sigue bajo el borde. Es casi la misma imagen que la 03: en cada idioma hay dos parejas parecidas -01 y 04, 03 y 05-, porque es el mismo juego para los dos tamaños. |
+
+- **Falta la de 7 pulgadas «antes de leer»** -lugar 05 del plan-: el contenido de Sigo mide 1864 columnas y el 16:9 de 1044 filas, 1856. Ver arriba.
+- En Play, cada idioma tiene **5 capturas de tableta**, las mismas en los dos lugares. Google pide al menos 4 para pantallas grandes (answer/9866151).
+
+<details><summary>Antes -12-11-2026-: la crítica de tabletas, antes de t170u.</summary>
 
 | Tableta de 10 pulgadas | Qué funciona | Qué queda débil |
 | --- | --- | --- |
@@ -264,5 +312,7 @@ El comprobador de la ficha 1.1 revisa:
   - portadas solo con guiones del mismo idioma;
   - en 7 pulgadas, una pantalla con al menos 1080 filas útiles, por ejemplo con la barra de tareas oculta o en modo de gestos.
 - Mientras tanto, en Play, cada idioma tendría 3 capturas de tableta de 10 pulgadas y ninguna de 7. Google pide al menos 4 para pantallas grandes (answer/9866151).
+
+</details>
 
 **Orden:** se mantiene 1 a 8. La 7 es la más floja y podría ir al final si se sacara la 3 portuguesa.

@@ -8,7 +8,7 @@ import argparse
 import hashlib
 import json
 import sys
-from PIL import Image, ImageChops, features
+from PIL import Image, ImageChops, ImageDraw, ImageFont, features
 import platform
 import zlib
 
@@ -276,7 +276,37 @@ def comprobar_ficha_11():
                 if sha(path) != HD['salidas'].get(rel) or sha(path) != sha(FICHA/c['aprobada']):
                     errores.append('No es idéntica a la pieza aprobada: '+nombre)
                 continue
-            rs = [recorte_fiel(final, crudas, r, nombre) for r in c['recortes']]
+            # 12-11-2026, t170u: una captura puede traer sus propias crudas -la 5 en inglés y portugués usa las de español-.
+            rs = [recorte_fiel(final, c.get('crudas', crudas), r, nombre) for r in c['recortes']]
+            if c.get('zona_igual'):
+                # La zona de la captura -la unión de las cajas de destino de los recortes- tiene que ser, píxel por píxel, la de la
+                # pieza de referencia; y fuera de esa zona, del logo y de las cajas de texto, solo el fondo liso: ninguna palabra en
+                # español puede quedar fuera de la captura.
+                ref_rel = c['zona_igual']['referencia']
+                with Image.open(FICHA/ref_rel) as rim: ref = rim.convert('RGB')
+                cajas_zona = [(r['destino'][0], r['destino'][1], r['destino'][0]+r['ancho'], r['destino'][1]+x['alto']) for r, x in zip(c['recortes'], rs)]
+                for b in cajas_zona:
+                    if ImageChops.difference(final.crop(b), ref.crop(b)).getbbox(): errores.append(f'La zona de la captura {b} no es igual a {ref_rel}: '+nombre)
+                fondo = Image.new('RGB', final.size, {'claro': (240, 234, 228), 'oscuro': (23, 20, 18)}[c['fondo']])
+                mascara = Image.new('L', final.size, 255); dm = ImageDraw.Draw(mascara)
+                lg = c['logo']['caja']; dm.rectangle((lg[0], lg[1], lg[0]+lg[2]-1, lg[1]+lg[3]-1), fill=0)
+                for k in [t['caja'] for t in c['textos_titular']]+([c['texto_bajada']['caja']] if c.get('bajada') else []):
+                    dm.rectangle((k[0], k[1], k[0]+k[2]-1, k[1]+k[3]-1), fill=0)
+                for b in cajas_zona: dm.rectangle((b[0], b[1], b[2]-1, b[3]-1), fill=0)
+                if ImageChops.multiply(ImageChops.difference(final, fondo).convert('L').point(lambda v: 255 if v else 0), mascara).getbbox():
+                    errores.append('Hay algo más que fondo fuera de la captura, del logo y de los textos: '+nombre)
+                # Los textos declarados no son los de español ni llevan palabras propias del español de esa pieza.
+                ES_PROPIAS = {'en-US': {'tu', 'con', 'subtítulos', 'las', 'palabras', 'de', 'guion', 'al', 'ritmo', 'voz'},
+                              'pt-BR': {'tu', 'video', 'con', 'subtítulos', 'las', 'palabras', 'guion', 'al'}}.get(lang, set())
+                propio = re.findall(r'\w+', (' '.join(c['titular'])+' '+(c.get('bajada') or '')).lower())
+                if set(propio) & ES_PROPIAS: errores.append('Palabras en español en el titular o la bajada: '+nombre+' '+str(sorted(set(propio) & ES_PROPIAS)))
+                # Los textos se vuelven a dibujar: la tinta de las cajas es exactamente la del texto declarado, en la letra y el lugar declarados.
+                COL = {'claro': ('#F0EAE4', '#29231F', '#5E5147'), 'oscuro': ('#171412', '#ECE6E0', '#C6B6A6')}[c['fondo']]
+                for t, reg, color, peso in [(t, reg, COL[1], 600) for t, reg in zip(c['titular'], c['textos_titular'])]+([(c['bajada'], c['texto_bajada'], COL[2], 400)] if c.get('bajada') else []):
+                    k = reg['caja']; b = (k[0], k[1], k[0]+k[2], k[1]+k[3])
+                    lienzo = Image.new('RGB', final.size, COL[0]); dl = ImageDraw.Draw(lienzo)
+                    dl.text((reg['x'], reg['base']), t, font=ImageFont.truetype(str(SOURCE/'entradas'/'fuentes'/f'source-sans-3-latin-{peso}-normal.woff2'), reg['tam'], layout_engine=ImageFont.Layout.BASIC), fill=color, anchor='ls')
+                    if ImageChops.difference(final.crop(b), lienzo.crop(b)).getbbox(): errores.append('La caja de texto no es exactamente el texto declarado: '+nombre+' «'+t+'»')
             for x in rs:
                 if c['n'] <= 5 and (x['ancho'] > 820 or x['escala'] < 1.3):
                     if x['r'].get('motivo_escala'): avisos.append(f'Recorte de {x["ancho"]} px a {x["escala"]:.3f}×: {nombre}: {x["r"]["motivo_escala"]}')
@@ -329,18 +359,32 @@ def comprobar_ficha_11():
     # el corte puede quitar columnas a los lados, y se exige lo mismo que en armar_ficha.py: que cada franja cortada sea
     # la continuación lisa -≤ 16 niveles- del borde que queda. Las barras se miden en la cruda, no se toman de contenidos.
     # Los lugares que no se entregan van en «descartadas», y su imposibilidad también se comprueba aquí.
-    T = F.get('tabletas') or {'piezas': [], 'descartadas': []}
-    TAREAS = tuple(T.get('color_barra_tareas', (17, 19, 24)))
-    ORDEN_CRUDA = {1: '4-lectura-avanza', 2: '3-antes-de-leer', 3: '2-editor-colores', 4: '1-portada'}
+    # Antes -12-11-2026-: 24 lugares, capturas/tableta/<idioma>/<7|10>/NN.png, con portadas y sin ninguna escala.
+    # Ahora -t170u-: el plan de Javier, 6 lugares por idioma -10 pulgadas: lectura, antes de leer, editor; 7 pulgadas: lo mismo-, sin portadas,
+    # numerados seguidos en capturas/tableta/<idioma>/NN.png; el mismo juego va en los dos lugares de Play. La única escala permitida es
+    # la de 7 pulgadas: un 16:9 de 1856×1044 ampliado con Lanczos a 1920×1080.
+    # Antes -12-11-2026-: «sistema» era solo el color exacto de la barra de tareas; ahora, ese color o uno a «tolerancia_sistema» niveles,
+    # en las 80 filas sobre la barra y las 80 columnas de cada lado: el borde suavizado de la esquina redondeada.
+    T = F.get('tabletas') or {'piezas': [], 'descartadas': [], 'plan': []}
+    TAREAS = tuple(T.get('color_barra_tareas', (17, 19, 24))); TOL = T.get('tolerancia_sistema', 0)
+    PLAN = [(1, '10', '4-lectura-avanza'), (2, '10', '3-antes-de-leer'), (3, '10', '2-editor-colores'),
+            (4, '7', '4-lectura-avanza'), (5, '7', '3-antes-de-leer'), (6, '7', '2-editor-colores')]
     ANCHO_TAM = {'10': 2560, '7': 1920}
-    def rango(px, x0, y0, x1, y1):
-        # Los píxeles del color de la barra de tareas -las esquinas redondeadas de la ventana- son sistema y no cuentan.
+    if [(p['lugar'], p['tamano'], p['cruda']) for p in T.get('plan', [])] != PLAN: errores.append('Tabletas: el plan no es el de Javier -t170u-')
+    def sistema(px, W, bt):
+        S = set()
+        for y in range(max(0, bt-80), bt):
+            for x in list(range(0, 80))+list(range(W-80, W)):
+                v = px[x, y]
+                if max(abs(v[i]-TAREAS[i]) for i in range(3)) <= TOL: S.add((x, y))
+        return S
+    def rango(px, S, x0, y0, x1, y1):
+        # Las esquinas redondeadas de la ventana son sistema y no cuentan.
         lo = [255]*3; hi = [0]*3; hay = False
         for y in range(y0, y1):
             for x in range(x0, x1):
-                v = px[x, y]
-                if v == TAREAS: continue
-                hay = True
+                if (x, y) in S: continue
+                v = px[x, y]; hay = True
                 for i in range(3): lo[i] = min(lo[i], v[i]); hi[i] = max(hi[i], v[i])
         return max(hi[i]-lo[i] for i in range(3)) if hay else 0
     def barras(c):
@@ -355,52 +399,69 @@ def comprobar_ficha_11():
         bt = next(y for y in range(H//2, H) if all(px[x, y] == TAREAS for x in list(range(0, int(W*0.3)))+list(range(int(W*0.9), W))))
         return ult+1, bt
     def cruza(a, x0, y0, x1, y1): return a[0] < x1 and a[2] > x0 and a[1] < y1 and a[3] > y0
-    lugares = [f'capturas/tableta/{l}/{s}/{n:02}.png' for l in F['idiomas'] for s in ('7', '10') for n in range(1, 5)]
-    nombre_de = lambda t: f"capturas/tableta/{t['idioma']}/{t['tamano']}/{t['n']:02}.png"
-    declarados = [nombre_de(t) for t in T['piezas']]+[nombre_de(t) for t in T.get('descartadas', [])]
-    if sorted(declarados) != sorted(lugares): errores.append('Tabletas: los 24 lugares deben estar, una vez cada uno, en piezas o en descartadas')
+    esperados = []
+    for l in F['idiomas']:
+        n = 0
+        for lugar, tam, cr in PLAN:
+            pz = [t for t in T['piezas'] if t['idioma'] == l and t.get('lugar_previsto') == lugar]
+            ds = [t for t in T.get('descartadas', []) if t['idioma'] == l and t.get('lugar_previsto') == lugar]
+            if len(pz)+len(ds) != 1: errores.append(f'Tabletas: el lugar {lugar} de {l} debe estar una vez, en piezas o en descartadas'); continue
+            t = (pz or ds)[0]
+            if t['tamano'] != tam or t['cruda'] != f'tableta-{tam}/{CORTO[l]}/{cr}.png': errores.append(f'Tabletas: cruda de otro idioma, tamaño u orden en el lugar {lugar} de {l}')
+            if pz:
+                n += 1; esperados.append(f'capturas/tableta/{l}/{n:02}.png')
+                if t['n'] != n: errores.append(f'Tabletas: numeración no seguida en {l}, lugar {lugar}')
+    nombre_de = lambda t: f"capturas/tableta/{t['idioma']}/{t['n']:02}.png" if 'n' in t else f"lugar {t['lugar_previsto']} · {t['idioma']} · {t['tamano']} pulgadas"
     halladas = sorted(p.relative_to(FICHA).as_posix() for p in (FICHA/'capturas/tableta').rglob('*.png')) if (FICHA/'capturas/tableta').is_dir() else []
-    if halladas != sorted(nombre_de(t) for t in T['piezas']): errores.append('Tabletas: los archivos de capturas/tableta no son exactamente las piezas declaradas')
+    if halladas != sorted(esperados) or sorted(esperados) != sorted(nombre_de(t) for t in T['piezas']):
+        errores.append('Tabletas: los archivos de capturas/tableta no son exactamente las piezas declaradas')
     for t in T['piezas']+T.get('descartadas', []):
         nombre = nombre_de(t)
-        if 'ajustes' in t['cruda'].lower(): errores.append('Tableta hecha con Ajustes, que muestra la promoción de Sigo+: '+nombre)
-        if t['cruda'] != f"tableta-{t['tamano']}/{CORTO[t['idioma']]}/{ORDEN_CRUDA[t['n']]}.png": errores.append('Cruda de otro idioma, tamaño u orden: '+nombre)
+        if 'ajustes' in t['cruda'].lower() or 'portada' in t['cruda'].lower(): errores.append('Tableta hecha con Ajustes o con la portada: '+nombre)
         with Image.open(SOURCE/T['crudas']/t['cruda']) as cr:
             c = cr.convert('RGB')
             if cr.mode == 'RGBA' and cr.getextrema()[3][0] != 255: errores.append('La cruda tiene transparencia: '+t['cruda'])
         if c.width != ANCHO_TAM[t['tamano']]: errores.append('La cruda no tiene el ancho de su tamaño: '+nombre)
         be, bt = barras(c)
         if (be, bt) != (t['barra_estado'], t['barra_tareas']): errores.append(f'Barras declaradas {t["barra_estado"]}/{t["barra_tareas"]}, medidas {be}/{bt}: '+nombre)
+        px = c.load(); W = c.width; S = sistema(px, W, bt)
         if t in T.get('descartadas', []):
-            # Que de verdad no se pueda: sin escalar, un 16:9 necesita al menos 1080 filas útiles; y en las portadas,
-            # ninguna ventana de 1920×1080 entre las barras puede quedar fuera de los guiones de otro idioma.
-            if 'alto' in t['tipos'] and bt-be >= 1080: errores.append('Descartada por alto, pero hay 1080 filas útiles: '+nombre)
-            if 'guion' in t['tipos']:
-                cajas = [e['caja'] for e in t['excluye']]
-                libre = [(x0, y0) for y0 in range(be, bt-1080+1) for x0 in range(0, c.width-1920+1)
-                         if not any(cruza(k, x0, y0, x0+1920, y0+1080) for k in cajas)]
-                if libre: errores.append('Descartada por guion de otro idioma, pero hay un recorte posible: '+nombre)
+            # Que de verdad no se pueda. «ancho»: el contenido de Sigo entre las barras -todo lo que no es el fondo del borde ni
+            # sistema- es más ancho que el 16:9 de todo el alto útil, así que cualquier recorte corta Sigo.
+            if 'ancho' in t['tipos']:
+                ancho16 = (bt-be)*16//9
+                def dif(a, b): return max(abs(a[i]-b[i]) for i in range(3))
+                izq = min(next((x for x in range(W) if (x, y) not in S and dif(px[x, y], px[0, y]) > 16), W) for y in range(be, bt))
+                der = max(next((x for x in range(W-1, -1, -1) if (x, y) not in S and dif(px[x, y], px[W-1, y]) > 16), -1) for y in range(be, bt))
+                if der-izq+1 <= ancho16 or [izq, der] != t.get('contenido_x'): errores.append(f'Descartada por ancho, pero el contenido medido va de {izq} a {der} -cabe en {ancho16}-: '+nombre)
             avisos.append(f'Tableta no entregada, {nombre}: '+' '.join(t['motivos']))
             continue
         path = FICHA/nombre
-        x0, y0, x1, y1 = t['recorte']
+        x0, y0, x1, y1 = t['recorte']; E = t.get('escala')
+        if (x1-x0)*9 != (y1-y0)*16: errores.append('El recorte de la tableta no es 16:9: '+nombre)
         with Image.open(path) as im:
             w, h = im.size
             if w*9 != h*16 or not (1080 <= min(w, h) and max(w, h) <= 7680) or w <= h: errores.append(f'Tableta fuera de 16:9 horizontal o de 1080-7680: {nombre} {w}×{h}')
             if im.mode != 'RGB' or 'transparency' in im.info: errores.append('Tableta con alfa o sin RGB: '+nombre)
-            if (w, h) != (x1-x0, y1-y0): errores.append('La tableta no es un recorte sin escala de su cruda: '+nombre)
             final = im.convert('RGB')
-        if ImageChops.difference(final, c.crop((x0, y0, x1, y1))).getbbox(): errores.append('La tableta no es el recorte exacto de la cruda: '+nombre)
+        if E:
+            if not (t['tamano'] == '7' and (x1-x0, y1-y0) == (1856, 1044) and (w, h) == (1920, 1080) == tuple(E['salida']) and E.get('filtro') == 'LANCZOS' and E.get('factor') == '1080/1044' and E.get('motivo_escala')):
+                errores.append('Escala no permitida: solo 7 pulgadas, 1856×1044 → 1920×1080 con Lanczos y motivo: '+nombre)
+            esperado = c.crop((x0, y0, x1, y1)).resize((1920, 1080), Image.Resampling.LANCZOS)
+        else:
+            if (w, h) != (x1-x0, y1-y0): errores.append('La tableta no es un recorte sin escala de su cruda: '+nombre)
+            esperado = c.crop((x0, y0, x1, y1))
+        if esperado.size != final.size or ImageChops.difference(final, esperado).getbbox(): errores.append('La tableta no es el recorte exacto -y, si corresponde, la ampliación declarada- de la cruda: '+nombre)
         if not (be <= y0 and y1 <= bt): errores.append('Se ve la barra de estado o la de tareas: '+nombre)
-        if sum(1 for v in final.getdata() if v == TAREAS): errores.append('Quedan píxeles del color de la barra de tareas -esquinas de la ventana-: '+nombre)
-        px = c.load(); W = c.width; mal = None
+        if any(x0 <= x < x1 and y0 <= y < y1 for x, y in S): errores.append('Quedan píxeles de las esquinas de la ventana, del color de la barra de tareas: '+nombre)
+        mal = None
         for y in range(y0, y1):
-            if x0 > 0 and rango(px, 0, y, x0+1, y+1) > 16: mal = f'columnas 0-{x0}, fila {y}'; break
-            if x1 < W and rango(px, x1-1, y, W, y+1) > 16: mal = f'columnas {x1}-{W}, fila {y}'; break
+            if x0 > 0 and rango(px, S, 0, y, x0+1, y+1) > 16: mal = f'columnas 0-{x0}, fila {y}'; break
+            if x1 < W and rango(px, S, x1-1, y, W, y+1) > 16: mal = f'columnas {x1}-{W}, fila {y}'; break
         if not mal:
             for x in range(x0, x1):
-                if y0 > be and rango(px, x, be, x+1, y0+1) > 16: mal = f'filas {be}-{y0}, columna {x}'; break
-                if bt > y1 and rango(px, x, y1-1, x+1, bt) > 16: mal = f'filas {y1}-{bt}, columna {x}'; break
+                if y0 > be and rango(px, S, x, be, x+1, y0+1) > 16: mal = f'filas {be}-{y0}, columna {x}'; break
+                if bt > y1 and rango(px, S, x, y1-1, x+1, bt) > 16: mal = f'filas {y1}-{bt}, columna {x}'; break
         if mal: errores.append(f'El corte quita algo que no es fondo liso -{mal}-: '+nombre)
         for ex in t.get('excluye', []):
             if cruza(ex['caja'], x0, y0, x1, y1): errores.append(f'La tableta deja ver {ex["que"]}: {nombre}')

@@ -591,7 +591,7 @@
     }
   },
   "ficha-1.1": {
-    "nota": "Ficha 1.1, fase 2 (12-11-2026, t169u). Reemplaza la ficha canónica en la rama fichas-1.1; la 1.0 aprobada el 30-10 queda en historial/ficha-1.0-20261030/. armar_ficha.py la escribe en <salida>/ficha-1.1/. Cajas [x, y, ancho, alto] sobre la imagen final; recortes [x0, y0, x1, y1] sobre la cruda. Las breves salen de direccion-1.1.breves: se publica la B; la C queda guardada para un experimento después de publicar.",
+    "nota": "Ficha 1.1, fase 2 (12-11-2026, t169u y t170u). Reemplaza la ficha canónica en la rama fichas-1.1; la 1.0 aprobada el 30-10 queda en historial/ficha-1.0-20261030/. armar_ficha.py la escribe en <salida>/ficha-1.1/. Cajas [x, y, ancho, alto] sobre la imagen final; recortes [x0, y0, x1, y1] sobre la cruda. Las breves salen de direccion-1.1.breves: se publica la B; la C queda guardada para un experimento después de publicar.",
     "crudas": {
       "es": "entradas/motorola-1.1/es",
       "en": "entradas/motorola-1.1/en",
@@ -613,12 +613,11 @@
           "Ajustes de Sigo con el menú de idioma de la app: español, inglés y portugués.",
           "Portada de Sigo con «Continuar con este guion», Leer, Grabar y la lista de guiones."
         ],
-        "alts_tableta": [
-          "Sigo en una tableta en horizontal: la lectura avanza con tu voz.",
-          "Sigo en una tableta, con el guion listo antes de leer.",
-          "Editor de guiones de Sigo en una tableta, con palabras en colores.",
-          "Portada de Sigo en una tableta, con «Continuar con este guion»."
-        ],
+        "alts_tableta": {
+          "4-lectura-avanza": "Sigo en una tableta en horizontal: la lectura avanza con tu voz.",
+          "3-antes-de-leer": "Sigo en una tableta, con el guion listo antes de leer.",
+          "2-editor-colores": "Editor de guiones de Sigo en una tableta, con palabras en colores."
+        },
         "capturas": [
           {
             "n": 1,
@@ -988,12 +987,11 @@
           "Sigo settings with the app language menu: Spanish, English and Portuguese.",
           "Sigo home screen with “Continue with this script”, Read, Record and the script list."
         ],
-        "alts_tableta": [
-          "Sigo on a tablet in landscape: the script moves with your voice.",
-          "Sigo on a tablet, with the script ready before reading.",
-          "Sigo’s script editor on a tablet, with words in color.",
-          "Sigo home screen on a tablet, with “Continue with this script”."
-        ],
+        "alts_tableta": {
+          "4-lectura-avanza": "Sigo on a tablet in landscape: the script moves with your voice.",
+          "3-antes-de-leer": "Sigo on a tablet, with the script ready before reading.",
+          "2-editor-colores": "Sigo’s script editor on a tablet, with words in color."
+        },
         "capturas": [
           {
             "n": 1,
@@ -1354,8 +1352,110 @@
           },
           {
             "n": 5,
-            "aprobada": "direccion-1.1/capturas/es-419/05.png",
-            "nota": "Javier -t169u-: la 5 en inglés y portugués usa la captura de español."
+            "fondo": "claro",
+            "titular": [
+              "Your video,",
+              "with subtitles."
+            ],
+            "bajada": "With the words from your script, in time with your voice.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  61,
+                  179,
+                  549,
+                  108
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  299,
+                  694,
+                  89
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 446,
+              "tam": 38,
+              "caja": [
+                64,
+                414,
+                905,
+                44
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "05-subtitulos-a-video-guardado.png",
+                "recorte": [
+                  130,
+                  700,
+                  1090,
+                  1760
+                ],
+                "destino": [
+                  199,
+                  480
+                ],
+                "ancho": 682,
+                "parte": "video guardado con subtítulos rojos palabra por palabra -«algo» resaltado-; la cara entera y chica",
+                "margen_texto_app": 160,
+                "motivo_escala": "05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u."
+              },
+              {
+                "cruda": "05-subtitulos-d-visor-guardar-agrupado.png",
+                "recorte": [
+                  56,
+                  1830,
+                  1164,
+                  2535
+                ],
+                "destino": [
+                  0,
+                  1233
+                ],
+                "ancho": 1080,
+                "parte": "control que produce los subtítulos: «Subtítulos Rojo», «Filtro Natural», «Guardar» y «Guardar y compartir»",
+                "margen_texto_app": 90,
+                "motivo_escala": "El panel entero de 05-d, de borde a borde, para que «Subtítulos Rojo» y los dos botones de guardar entren sin cortar."
+              }
+            ],
+            "cara": true,
+            "cara_caja_cruda": {
+              "cruda": "05-subtitulos-a-video-guardado.png",
+              "caja": [
+                390,
+                720,
+                840,
+                1320
+              ],
+              "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima."
+            },
+            "crudas": "entradas/motorola-1.1/es",
+            "zona_igual": {
+              "referencia": "capturas/es-419/05.png",
+              "nota": "Javier -t170u-: la captura es la de español, píxel por píxel -la app se ve en español-. Solo cambian el titular y la bajada, con el mismo tamaño, lugar y letra que en español. Zona de la captura: la unión de las cajas de destino de los recortes."
+            }
           },
           {
             "n": 6,
@@ -1705,12 +1805,11 @@
           "Configurações do Sigo com o menu de idioma do app: espanhol, inglês e português.",
           "Tela inicial do Sigo com “Continuar com este roteiro”, Ler, Gravar e a lista de roteiros."
         ],
-        "alts_tableta": [
-          "O Sigo em um tablet na horizontal: o roteiro avança com a sua voz.",
-          "O Sigo em um tablet, com o roteiro pronto antes de ler.",
-          "Editor de roteiros do Sigo em um tablet, com palavras coloridas.",
-          "Tela inicial do Sigo em um tablet, com “Continuar com este roteiro”."
-        ],
+        "alts_tableta": {
+          "4-lectura-avanza": "O Sigo em um tablet na horizontal: o roteiro avança com a sua voz.",
+          "3-antes-de-leer": "O Sigo em um tablet, com o roteiro pronto antes de ler.",
+          "2-editor-colores": "Editor de roteiros do Sigo em um tablet, com palavras coloridas."
+        },
         "capturas": [
           {
             "n": 1,
@@ -2082,8 +2181,110 @@
           },
           {
             "n": 5,
-            "aprobada": "direccion-1.1/capturas/es-419/05.png",
-            "nota": "Javier -t169u-: la 5 en inglés y portugués usa la captura de español."
+            "fondo": "claro",
+            "titular": [
+              "Seu vídeo,",
+              "com legendas."
+            ],
+            "bajada": "Com as palavras do seu roteiro, no ritmo da sua voz.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  62,
+                  175,
+                  505,
+                  112
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  299,
+                  703,
+                  111
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 446,
+              "tam": 38,
+              "caja": [
+                64,
+                415,
+                839,
+                43
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "05-subtitulos-a-video-guardado.png",
+                "recorte": [
+                  130,
+                  700,
+                  1090,
+                  1760
+                ],
+                "destino": [
+                  199,
+                  480
+                ],
+                "ancho": 682,
+                "parte": "video guardado con subtítulos rojos palabra por palabra -«algo» resaltado-; la cara entera y chica",
+                "margen_texto_app": 160,
+                "motivo_escala": "05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u."
+              },
+              {
+                "cruda": "05-subtitulos-d-visor-guardar-agrupado.png",
+                "recorte": [
+                  56,
+                  1830,
+                  1164,
+                  2535
+                ],
+                "destino": [
+                  0,
+                  1233
+                ],
+                "ancho": 1080,
+                "parte": "control que produce los subtítulos: «Subtítulos Rojo», «Filtro Natural», «Guardar» y «Guardar y compartir»",
+                "margen_texto_app": 90,
+                "motivo_escala": "El panel entero de 05-d, de borde a borde, para que «Subtítulos Rojo» y los dos botones de guardar entren sin cortar."
+              }
+            ],
+            "cara": true,
+            "cara_caja_cruda": {
+              "cruda": "05-subtitulos-a-video-guardado.png",
+              "caja": [
+                390,
+                720,
+                840,
+                1320
+              ],
+              "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima."
+            },
+            "crudas": "entradas/motorola-1.1/es",
+            "zona_igual": {
+              "referencia": "capturas/es-419/05.png",
+              "nota": "Javier -t170u-: la captura es la de español, píxel por píxel -la app se ve en español-. Solo cambian el titular y la bajada, con el mismo tamaño, lugar y letra que en español. Zona de la captura: la unión de las cajas de destino de los recortes."
+            }
           },
           {
             "n": 6,
@@ -2429,21 +2630,55 @@
       }
     },
     "tabletas": {
-      "nota": "Tabletas 1.1 -12-11-2026, t169u-. Crudas del emulador, Android 36, en horizontal, copiadas tal cual desde adjuntos-grok-tabletas-1.1.zip. Recortes [x0, y0, x1, y1] sobre la cruda, sin escala. Barras medidas en la cruda: barra_estado es la primera fila bajo los íconos de estado; barra_tareas, la primera fila entera del color de la barra de tareas. Las esquinas redondeadas de la ventana dejan ver ese color encima de la barra: no puede quedar ningún píxel de ese color dentro. «descartadas»: lugares que no se pueden entregar sin romper una regla; no se reemplazan con otra cruda ni con otro idioma.",
+      "nota": "Tabletas 1.1 -12-11-2026, t169u y t170u-. Crudas del emulador, Android 36, en horizontal, copiadas tal cual desde adjuntos-grok-tabletas-1.1.zip. Recortes [x0, y0, x1, y1] sobre la cruda. Las de 10 pulgadas van sin escala; las de 7, con la única ampliación permitida -ver «escala»-. Barras medidas en la cruda: barra_estado es la primera fila bajo los íconos de estado; barra_tareas, la primera fila entera del color de la barra de tareas. Las esquinas redondeadas de la ventana dejan ver ese color -o uno a 2 niveles- encima de la barra: es sistema; no puede quedar dentro y no cuenta al medir si una franja cortada es lisa. Sin portadas -decisión de Javier, t170u-. Los mismos archivos van en los dos lugares de Play, 7 y 10 pulgadas. «descartadas»: lugares del plan que no se pueden entregar sin romper una regla; no se reemplazan con otra cruda ni con otro idioma.",
       "color_barra_tareas": [
         17,
         19,
         24
       ],
+      "tolerancia_sistema": 2,
       "crudas": "entradas/emulador-1.1",
+      "plan": [
+        {
+          "lugar": 1,
+          "tamano": "10",
+          "cruda": "4-lectura-avanza"
+        },
+        {
+          "lugar": 2,
+          "tamano": "10",
+          "cruda": "3-antes-de-leer"
+        },
+        {
+          "lugar": 3,
+          "tamano": "10",
+          "cruda": "2-editor-colores"
+        },
+        {
+          "lugar": 4,
+          "tamano": "7",
+          "cruda": "4-lectura-avanza"
+        },
+        {
+          "lugar": 5,
+          "tamano": "7",
+          "cruda": "3-antes-de-leer"
+        },
+        {
+          "lugar": 6,
+          "tamano": "7",
+          "cruda": "2-editor-colores"
+        }
+      ],
       "piezas": [
         {
           "idioma": "es-419",
           "tamano": "10",
-          "n": 1,
+          "lugar_previsto": 1,
           "cruda": "tableta-10/es/4-lectura-avanza.png",
           "barra_estado": 54,
           "barra_tareas": 1488,
+          "n": 1,
           "recorte": [
             16,
             62,
@@ -2456,10 +2691,11 @@
         {
           "idioma": "es-419",
           "tamano": "10",
-          "n": 2,
+          "lugar_previsto": 2,
           "cruda": "tableta-10/es/3-antes-de-leer.png",
           "barra_estado": 54,
           "barra_tareas": 1488,
+          "n": 2,
           "recorte": [
             15,
             61,
@@ -2472,10 +2708,11 @@
         {
           "idioma": "es-419",
           "tamano": "10",
-          "n": 3,
+          "lugar_previsto": 3,
           "cruda": "tableta-10/es/2-editor-colores.png",
           "barra_estado": 54,
           "barra_tareas": 1488,
+          "n": 3,
           "recorte": [
             16,
             62,
@@ -2486,12 +2723,65 @@
           "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana."
         },
         {
+          "idioma": "es-419",
+          "tamano": "7",
+          "lugar_previsto": 4,
+          "cruda": "tableta-7/es/4-lectura-avanza.png",
+          "barra_estado": 44,
+          "barra_tareas": 1088,
+          "n": 4,
+          "recorte": [
+            32,
+            44,
+            1888,
+            1088
+          ],
+          "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+          "escala": {
+            "salida": [
+              1920,
+              1080
+            ],
+            "factor": "1080/1044",
+            "filtro": "LANCZOS",
+            "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos."
+          }
+        },
+        {
+          "idioma": "es-419",
+          "tamano": "7",
+          "lugar_previsto": 6,
+          "cruda": "tableta-7/es/2-editor-colores.png",
+          "barra_estado": 44,
+          "barra_tareas": 1088,
+          "n": 5,
+          "recorte": [
+            32,
+            44,
+            1888,
+            1088
+          ],
+          "parte": "editor con el guion en colores, con Leer y Grabar",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+          "escala": {
+            "salida": [
+              1920,
+              1080
+            ],
+            "factor": "1080/1044",
+            "filtro": "LANCZOS",
+            "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos."
+          }
+        },
+        {
           "idioma": "en-US",
           "tamano": "10",
-          "n": 1,
+          "lugar_previsto": 1,
           "cruda": "tableta-10/en/4-lectura-avanza.png",
           "barra_estado": 54,
           "barra_tareas": 1488,
+          "n": 1,
           "recorte": [
             16,
             62,
@@ -2504,10 +2794,11 @@
         {
           "idioma": "en-US",
           "tamano": "10",
-          "n": 2,
+          "lugar_previsto": 2,
           "cruda": "tableta-10/en/3-antes-de-leer.png",
           "barra_estado": 54,
           "barra_tareas": 1488,
+          "n": 2,
           "recorte": [
             15,
             61,
@@ -2520,10 +2811,11 @@
         {
           "idioma": "en-US",
           "tamano": "10",
-          "n": 3,
+          "lugar_previsto": 3,
           "cruda": "tableta-10/en/2-editor-colores.png",
           "barra_estado": 54,
           "barra_tareas": 1488,
+          "n": 3,
           "recorte": [
             16,
             62,
@@ -2534,12 +2826,65 @@
           "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana."
         },
         {
+          "idioma": "en-US",
+          "tamano": "7",
+          "lugar_previsto": 4,
+          "cruda": "tableta-7/en/4-lectura-avanza.png",
+          "barra_estado": 44,
+          "barra_tareas": 1088,
+          "n": 4,
+          "recorte": [
+            32,
+            44,
+            1888,
+            1088
+          ],
+          "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+          "escala": {
+            "salida": [
+              1920,
+              1080
+            ],
+            "factor": "1080/1044",
+            "filtro": "LANCZOS",
+            "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos."
+          }
+        },
+        {
+          "idioma": "en-US",
+          "tamano": "7",
+          "lugar_previsto": 6,
+          "cruda": "tableta-7/en/2-editor-colores.png",
+          "barra_estado": 44,
+          "barra_tareas": 1088,
+          "n": 5,
+          "recorte": [
+            32,
+            44,
+            1888,
+            1088
+          ],
+          "parte": "editor con el guion en colores, con Leer y Grabar",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+          "escala": {
+            "salida": [
+              1920,
+              1080
+            ],
+            "factor": "1080/1044",
+            "filtro": "LANCZOS",
+            "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos."
+          }
+        },
+        {
           "idioma": "pt-BR",
           "tamano": "10",
-          "n": 1,
+          "lugar_previsto": 1,
           "cruda": "tableta-10/pt/4-lectura-avanza.png",
           "barra_estado": 54,
           "barra_tareas": 1488,
+          "n": 1,
           "recorte": [
             16,
             62,
@@ -2552,10 +2897,11 @@
         {
           "idioma": "pt-BR",
           "tamano": "10",
-          "n": 2,
+          "lugar_previsto": 2,
           "cruda": "tableta-10/pt/3-antes-de-leer.png",
           "barra_estado": 54,
           "barra_tareas": 1488,
+          "n": 2,
           "recorte": [
             15,
             61,
@@ -2568,10 +2914,11 @@
         {
           "idioma": "pt-BR",
           "tamano": "10",
-          "n": 3,
+          "lugar_previsto": 3,
           "cruda": "tableta-10/pt/2-editor-colores.png",
           "barra_estado": 54,
           "barra_tareas": 1488,
+          "n": 3,
           "recorte": [
             16,
             62,
@@ -2580,313 +2927,116 @@
           ],
           "parte": "editor con el guion en colores, con Leer y Grabar",
           "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana."
+        },
+        {
+          "idioma": "pt-BR",
+          "tamano": "7",
+          "lugar_previsto": 4,
+          "cruda": "tableta-7/pt/4-lectura-avanza.png",
+          "barra_estado": 44,
+          "barra_tareas": 1088,
+          "n": 4,
+          "recorte": [
+            32,
+            44,
+            1888,
+            1088
+          ],
+          "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+          "escala": {
+            "salida": [
+              1920,
+              1080
+            ],
+            "factor": "1080/1044",
+            "filtro": "LANCZOS",
+            "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos."
+          }
+        },
+        {
+          "idioma": "pt-BR",
+          "tamano": "7",
+          "lugar_previsto": 6,
+          "cruda": "tableta-7/pt/2-editor-colores.png",
+          "barra_estado": 44,
+          "barra_tareas": 1088,
+          "n": 5,
+          "recorte": [
+            32,
+            44,
+            1888,
+            1088
+          ],
+          "parte": "editor con el guion en colores, con Leer y Grabar",
+          "cortes": "Arriba, la barra de estado -íconos hasta la fila 43-. Abajo, la barra de tareas desde la fila 1088. Se usa todo el alto útil, 1044 filas. A los lados, 32 y 32 columnas lisas de fondo, para llegar a 16:9 exacto -1856×1044- sin dejar dentro las esquinas redondeadas de la ventana.",
+          "escala": {
+            "salida": [
+              1920,
+              1080
+            ],
+            "factor": "1080/1044",
+            "filtro": "LANCZOS",
+            "motivo_escala": "Autorizada por Javier el 12-11-2026 -t170u-, la única ampliación permitida: la tableta de 7 pulgadas tiene 1044 filas útiles entre la barra de estado y la de tareas, y Google pide al menos 1080 por lado. El 16:9 de 1856×1044 se amplía de forma pareja a 1920×1080 -×1080/1044, cerca de 3,4 %- con Lanczos."
+          }
         }
       ],
       "descartadas": [
         {
           "idioma": "es-419",
-          "tamano": "10",
-          "n": 4,
-          "cruda": "tableta-10/es/1-portada.png",
-          "barra_estado": 54,
-          "barra_tareas": 1488,
-          "motivos": [
-            "Portada: la lista de guiones muestra guion «Hi», en inglés. Por encima de esa tarjeta quedan menos de 1080 filas desde la barra de estado, así que ningún 16:9 de al menos 1080 de alto la deja fuera."
-          ],
-          "tipos": [
-            "guion"
-          ],
-          "motivo_corto": "guion de otro idioma en la lista",
-          "excluye": [
-            {
-              "que": "guion «Hi», en inglés",
-              "caja": [
-                480,
-                934,
-                2080,
-                1076
-              ]
-            }
-          ]
-        },
-        {
-          "idioma": "es-419",
           "tamano": "7",
-          "n": 1,
-          "cruda": "tableta-7/es/4-lectura-avanza.png",
-          "barra_estado": 44,
-          "barra_tareas": 1088,
-          "motivos": [
-            "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema."
-          ],
-          "tipos": [
-            "alto"
-          ],
-          "motivo_corto": "alto útil 1044 < 1080"
-        },
-        {
-          "idioma": "es-419",
-          "tamano": "7",
-          "n": 2,
+          "lugar_previsto": 5,
           "cruda": "tableta-7/es/3-antes-de-leer.png",
           "barra_estado": 44,
           "barra_tareas": 1088,
-          "motivos": [
-            "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema."
-          ],
           "tipos": [
-            "alto"
+            "ancho"
           ],
-          "motivo_corto": "alto útil 1044 < 1080"
-        },
-        {
-          "idioma": "es-419",
-          "tamano": "7",
-          "n": 3,
-          "cruda": "tableta-7/es/2-editor-colores.png",
-          "barra_estado": 44,
-          "barra_tareas": 1088,
+          "contenido_x": [
+            16,
+            1879
+          ],
+          "motivo_corto": "contenido de Sigo de la columna 16 a la 1879: 1864 > 1856",
           "motivos": [
-            "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema."
-          ],
-          "tipos": [
-            "alto"
-          ],
-          "motivo_corto": "alto útil 1044 < 1080"
-        },
-        {
-          "idioma": "es-419",
-          "tamano": "7",
-          "n": 4,
-          "cruda": "tableta-7/es/1-portada.png",
-          "barra_estado": 44,
-          "barra_tareas": 1088,
-          "motivos": [
-            "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema.",
-            "Portada: la lista de guiones muestra guion «My video for today», en inglés. Por encima de esa tarjeta quedan menos de 1080 filas desde la barra de estado, así que ningún 16:9 de al menos 1080 de alto la deja fuera."
-          ],
-          "tipos": [
-            "alto",
-            "guion"
-          ],
-          "motivo_corto": "alto útil 1044 < 1080 · guion de otro idioma en la lista",
-          "excluye": [
-            {
-              "que": "guion «My video for today», en inglés",
-              "caja": [
-                160,
-                914,
-                1760,
-                1056
-              ]
-            }
-          ]
-        },
-        {
-          "idioma": "en-US",
-          "tamano": "10",
-          "n": 4,
-          "cruda": "tableta-10/en/1-portada.png",
-          "barra_estado": 54,
-          "barra_tareas": 1488,
-          "motivos": [
-            "Portada: la lista de guiones muestra guion «Mi video de hoy», en español. Por encima de esa tarjeta quedan menos de 1080 filas desde la barra de estado, así que ningún 16:9 de al menos 1080 de alto la deja fuera."
-          ],
-          "tipos": [
-            "guion"
-          ],
-          "motivo_corto": "guion de otro idioma en la lista",
-          "excluye": [
-            {
-              "que": "guion «Mi video de hoy», en español",
-              "caja": [
-                480,
-                934,
-                2080,
-                1076
-              ]
-            }
+            "Entre las filas 44 y 1088 -1044 de alto útil- el 16:9 es de 1856 de ancho. El botón «Ventana flotante» empieza en la columna 16 y el borde del tiempo termina en la 1879: son 1864 columnas de Sigo, más que 1856. Cualquier recorte de 1856 corta un botón de Sigo, y eso no se hace."
           ]
         },
         {
           "idioma": "en-US",
           "tamano": "7",
-          "n": 1,
-          "cruda": "tableta-7/en/4-lectura-avanza.png",
-          "barra_estado": 44,
-          "barra_tareas": 1088,
-          "motivos": [
-            "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema."
-          ],
-          "tipos": [
-            "alto"
-          ],
-          "motivo_corto": "alto útil 1044 < 1080"
-        },
-        {
-          "idioma": "en-US",
-          "tamano": "7",
-          "n": 2,
+          "lugar_previsto": 5,
           "cruda": "tableta-7/en/3-antes-de-leer.png",
           "barra_estado": 44,
           "barra_tareas": 1088,
-          "motivos": [
-            "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema."
-          ],
           "tipos": [
-            "alto"
+            "ancho"
           ],
-          "motivo_corto": "alto útil 1044 < 1080"
-        },
-        {
-          "idioma": "en-US",
-          "tamano": "7",
-          "n": 3,
-          "cruda": "tableta-7/en/2-editor-colores.png",
-          "barra_estado": 44,
-          "barra_tareas": 1088,
+          "contenido_x": [
+            16,
+            1879
+          ],
+          "motivo_corto": "contenido de Sigo de la columna 16 a la 1879: 1864 > 1856",
           "motivos": [
-            "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema."
-          ],
-          "tipos": [
-            "alto"
-          ],
-          "motivo_corto": "alto útil 1044 < 1080"
-        },
-        {
-          "idioma": "en-US",
-          "tamano": "7",
-          "n": 4,
-          "cruda": "tableta-7/en/1-portada.png",
-          "barra_estado": 44,
-          "barra_tareas": 1088,
-          "motivos": [
-            "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema.",
-            "Portada: la lista de guiones muestra guion «Mi video de hoy», en español. Por encima de esa tarjeta quedan menos de 1080 filas desde la barra de estado, así que ningún 16:9 de al menos 1080 de alto la deja fuera."
-          ],
-          "tipos": [
-            "alto",
-            "guion"
-          ],
-          "motivo_corto": "alto útil 1044 < 1080 · guion de otro idioma en la lista",
-          "excluye": [
-            {
-              "que": "guion «Mi video de hoy», en español",
-              "caja": [
-                160,
-                914,
-                1760,
-                1056
-              ]
-            }
-          ]
-        },
-        {
-          "idioma": "pt-BR",
-          "tamano": "10",
-          "n": 4,
-          "cruda": "tableta-10/pt/1-portada.png",
-          "barra_estado": 54,
-          "barra_tareas": 1488,
-          "motivos": [
-            "Portada: la lista de guiones muestra guion «My video for today», en inglés, guion «Mi video de hoy», en español. Por encima de esa tarjeta quedan menos de 1080 filas desde la barra de estado, así que ningún 16:9 de al menos 1080 de alto la deja fuera."
-          ],
-          "tipos": [
-            "guion"
-          ],
-          "motivo_corto": "guion de otro idioma en la lista",
-          "excluye": [
-            {
-              "que": "guion «My video for today», en inglés",
-              "caja": [
-                480,
-                934,
-                2080,
-                1076
-              ]
-            },
-            {
-              "que": "guion «Mi video de hoy», en español",
-              "caja": [
-                480,
-                1102,
-                2080,
-                1243
-              ]
-            }
+            "Entre las filas 44 y 1088 -1044 de alto útil- el 16:9 es de 1856 de ancho. El botón «Ventana flotante» empieza en la columna 16 y el borde del tiempo termina en la 1879: son 1864 columnas de Sigo, más que 1856. Cualquier recorte de 1856 corta un botón de Sigo, y eso no se hace."
           ]
         },
         {
           "idioma": "pt-BR",
           "tamano": "7",
-          "n": 1,
-          "cruda": "tableta-7/pt/4-lectura-avanza.png",
-          "barra_estado": 44,
-          "barra_tareas": 1088,
-          "motivos": [
-            "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema."
-          ],
-          "tipos": [
-            "alto"
-          ],
-          "motivo_corto": "alto útil 1044 < 1080"
-        },
-        {
-          "idioma": "pt-BR",
-          "tamano": "7",
-          "n": 2,
+          "lugar_previsto": 5,
           "cruda": "tableta-7/pt/3-antes-de-leer.png",
           "barra_estado": 44,
           "barra_tareas": 1088,
-          "motivos": [
-            "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema."
-          ],
           "tipos": [
-            "alto"
+            "ancho"
           ],
-          "motivo_corto": "alto útil 1044 < 1080"
-        },
-        {
-          "idioma": "pt-BR",
-          "tamano": "7",
-          "n": 3,
-          "cruda": "tableta-7/pt/2-editor-colores.png",
-          "barra_estado": 44,
-          "barra_tareas": 1088,
+          "contenido_x": [
+            16,
+            1879
+          ],
+          "motivo_corto": "contenido de Sigo de la columna 16 a la 1879: 1864 > 1856",
           "motivos": [
-            "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema."
-          ],
-          "tipos": [
-            "alto"
-          ],
-          "motivo_corto": "alto útil 1044 < 1080"
-        },
-        {
-          "idioma": "pt-BR",
-          "tamano": "7",
-          "n": 4,
-          "cruda": "tableta-7/pt/1-portada.png",
-          "barra_estado": 44,
-          "barra_tareas": 1088,
-          "motivos": [
-            "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema.",
-            "Portada: la lista de guiones muestra guion «My video for today», en inglés. Por encima de esa tarjeta quedan menos de 1080 filas desde la barra de estado, así que ningún 16:9 de al menos 1080 de alto la deja fuera."
-          ],
-          "tipos": [
-            "alto",
-            "guion"
-          ],
-          "motivo_corto": "alto útil 1044 < 1080 · guion de otro idioma en la lista",
-          "excluye": [
-            {
-              "que": "guion «My video for today», en inglés",
-              "caja": [
-                160,
-                914,
-                1760,
-                1056
-              ]
-            }
+            "Entre las filas 44 y 1088 -1044 de alto útil- el 16:9 es de 1856 de ancho. El botón «Ventana flotante» empieza en la columna 16 y el borde del tiempo termina en la 1879: son 1864 columnas de Sigo, más que 1856. Cualquier recorte de 1856 corta un botón de Sigo, y eso no se hace."
           ]
         }
       ]
