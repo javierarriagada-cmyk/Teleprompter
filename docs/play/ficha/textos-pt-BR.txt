@@ -1,13 +1,16 @@
 NOMBRE (26/30)
 [[Sigo — Teleprompter de voz]]
 
-DESCRIPCIÓN BREVE (74/80)
-[[Teleprompter que segue sua voz: o texto anda enquanto você lê em voz alta.]]
+DESCRIPCIÓN BREVE (60/80)
+[[Você fala, o Sigo segue você. Se você parar, o texto espera.]]
 
-DESCRIPCIÓN COMPLETA (2225/4000)
+DESCRIPCIÓN COMPLETA (2366/4000)
 [[Você fala. O Sigo segue você.
 
 Leia seu roteiro no seu ritmo enquanto grava um vídeo, prepara uma aula ou ensaia uma apresentação. O Sigo acompanha sua voz: o texto avança com você e espera quando você faz uma pausa.
+
+POR CIMA DA SUA CÂMERA
+Com a janela flutuante, leia seu roteiro por cima da câmera do celular ou de outro app, e o texto acompanha sua voz.
 
 SEU ROTEIRO E SUA IMAGEM
 Grave com a câmera frontal ou traseira, na vertical ou na horizontal. Veja sua imagem atrás do texto, em uma janela que você pode mover, ou deixe a imagem oculta enquanto grava. Você também pode ler sem gravar.

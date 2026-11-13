@@ -34,3 +34,18 @@ Referencia de código: main `fe422ee`. Afirmaciones nuevas de las capturas 1, 2,
 | El micrófono verde se mueve con tu voz mientras Sigo escucha | Captura 1, solo la imagen | Cruda 01-voz-b. La captura no lo rotula como aviso de «te escucho» ni de «te perdí». |
 
 Lo que no se afirma: ni exclusividad -PromptSmart+ anuncia también la espera al improvisar y el uso local-, ni «nunca» o «siempre», ni comparaciones. La breve de control es la publicada hoy, sin cambios.
+
+## Ficha 1.1, fase 2 -12-11-2026-
+
+Referencia de código: main `fe422ee`. Afirmaciones nuevas de las capturas 4, 6, 7 y 8, de los gráficos en inglés y portugués, de la sección nueva de la descripción completa y de los textos alternativos. Las tablas de arriba se conservan tal cual.
+
+| Afirmación | Dónde aparece | Fuente en fe422ee |
+| --- | --- | --- |
+| Con la ventana flotante lees encima de la cámara u otra app, y el texto sigue tu voz | Descripción completa, «ENCIMA DE TU CÁMARA»; capturas 3 en inglés y portugués | `src/flotante/PaginaFlotante.tsx`, que usa `useSeguidor`; `consecuenciaFlotante` en `src/textos/es.ts` |
+| Graba mirando al lente, con tu imagen en un recuadro que puedes mover | Captura 4 | `src/components/RecuadroCamara.tsx`, `src/lib/camara.ts` |
+| Pausa con un gesto; las pausas de grabación quedan fuera del video | Captura 6 | `src/lib/confirmadorGestos.ts`, `src/lib/pausaToma.ts`, `src/lib/tramos.ts`; `controlPorGestos` en `src/textos/es.ts` |
+| Sigo en español, inglés y portugués, con menú de idioma de la app | Captura 7 | `src/lib/idioma.ts`, `src/components/PanelAjustes.tsx`, `src/textos/{es,en,pt}.ts` |
+| Continúa tu último guion desde la portada | Captura 8 | `src/components/TarjetaLectura.tsx`; `continuarConEsteGuion` en `src/textos/es.ts` |
+| Te espera y sigue contigo -gráficos en inglés y portugués- | Gráficos | Igual que el gráfico en español de la fase 1 |
+
+Lo que no se afirma: ni «sin señal» en una imagen -queda solo en la descripción, con su condición: la voz se baja una vez-, ni precios, ni «gratis», ni Sigo+ en las imágenes. La captura 5 en inglés y portugués es la de español; su texto alternativo lo dice.

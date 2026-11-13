@@ -1,0 +1,32 @@
+ADJUNTOS DEL ENCARGO «FICHA DE PLAY DE SIGO 1.1», SEGUNDO ZIP: INGLÉS, PORTUGUÉS Y LO QUE FALTABA EN ESPAÑOL
+
+Todas son capturas PNG directas de Sigo 1.1 (808) en el Motorola g86, del 12-11-2026, con guiones de prueba y sin
+datos personales. Miden 1220×2712 y traen la barra de estado, igual que las del primer ZIP.
+La app se puso en cada idioma desde Ajustes > Idioma de la app. El guion de prueba es el mismo de español,
+traducido y con los mismos colores: «My video for today» y «Meu vídeo de hoje».
+Sin voz real: el texto se avanzó a mano, arrastrándolo, como hace quien usa la app.
+La cámara apuntaba al techo de madera: en las escenas 3 y 4 no hay cara.
+
+POR ESCENA, en en/ y pt/ (es/ solo trae la 6 y la 7):
+- 01-voz-lectura-avanza: la lectura en curso, con el renglón ámbar «moves with my voice» / «avança com a minha voz»
+  subrayado y el micrófono verde con el tiempo.
+- 02-espera-pausa: la lectura detenida en «If I stop to think, it waits for me.» / «Se eu paro para pensar, ele me
+  espera.», subrayado, con el micrófono.
+- 03-flotante-a y -b: la ventana flotante de Sigo sobre la app de cámara del teléfono, grabando (00:18 a 00:33).
+  OJO: la fila de abajo de la ventana, «Pausa» y «Volver a Sigo», salió en ESPAÑOL en en/03-b y en las dos de pt/.
+  Usa en/03-flotante-a, que no la trae. En pt/, recorta la ventana por encima de esa fila; si no se puede sin que
+  la ventana se vea cortada, dilo y no la uses.
+- 04-recuadro-grabando: Grabar en curso, con el punto rojo, el recuadro de cámara chico y el micrófono.
+- 06-gestos-panel: el panel «Camera view / Imagem da câmera / Imagen de la cámara» abierto, con «Gesture control /
+  Controle por gestos / Control por gestos». Es la escena 6.
+- 07-idioma-menu: Ajustes con el menú «App language / Idioma do app / Idioma de la app» abierto y los tres idiomas.
+  Es la escena 7, que ahora es «En tu idioma» (ver abajo).
+- 08-guiones-a-portada, -b-ajustes, -c-editor-colores: la portada con «Continue with this script», Ajustes con
+  «Never lose a script» y el editor con el guion en colores. Es la escena 8.
+  En la portada inglesa aparece también el guion «Hola», en español: si se ve, recórtalo.
+
+CAMBIO EN LA ESCENA 7: ya no hay lectura en modo avión. La escena 7 es «En tu idioma»: Sigo en español, inglés y
+portugués, con el menú de idioma (07-idioma-menu). «Sin señal» queda solo en la descripción, con su condición:
+la voz se baja una vez y después funciona sin internet.
+
+ESCENA 5, SUBTÍTULOS, EN INGLÉS Y PORTUGUÉS: no hay crudas. Se usa la captura de español en las tres fichas.

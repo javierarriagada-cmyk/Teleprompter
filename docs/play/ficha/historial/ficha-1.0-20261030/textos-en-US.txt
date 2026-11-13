@@ -1,0 +1,33 @@
+NOMBRE (25/30)
+[[Sigo — Voice Teleprompter]]
+
+DESCRIPCIÓN BREVE (75/80)
+[[A teleprompter that follows your voice: the script moves as you read aloud.]]
+
+DESCRIPCIÓN COMPLETA (2128/4000)
+[[You speak. Sigo follows.
+
+Read your script at your own pace while recording a video, preparing a class or rehearsing a presentation. Sigo follows your voice: the text moves with you and waits when you pause.
+
+YOUR SCRIPT AND YOUR CAMERA
+Record with the front or rear camera, in portrait or landscape. See yourself behind the text, in a movable window, or keep the camera view hidden while recording. You can also read without recording.
+
+FROM SCRIPT TO VIDEO, WITH CAPTIONS
+Captions use the words in your script and the timing of your voice. Choose from three styles, preview the result, then save your video to your gallery or share it. Try six filters and see how your video will look before saving.
+
+CONTROL THE TAKE AT YOUR PACE
+Pause and resume whenever you need to: recording pauses stay out of the video. With gesture control and the front camera, show your palm to pause or resume. While paused, make a V sign to end the take.
+
+READ YOUR WAY
+Adjust text size, font, width and colors. Add bold text, colors and highlights to your script. Notes in brackets or parentheses are excluded from the reading and captions. Mirror mode and fixed-speed reading are available, too.
+
+KEEP YOUR SCRIPTS WITH YOU
+Write, paste text or import .txt, .md and .docx files. You can use Sigo without signing in. To back up your scripts and recover them on another phone, sign in with Google.
+
+GET STARTED AT YOUR PACE
+Without a subscription, voice-following reading and recording have time limits per session, and saved videos include a watermark. Fixed-speed reading without the camera has no time limit. With Sigo+, voice-following reading and recording have no time limit, and saved videos have no watermark. Monthly and yearly plans are available; terms are shown before you subscribe.
+
+IN YOUR LANGUAGE
+Interface and voice following in English, Spanish and Portuguese. Voice and gesture recognition run on your phone. Once recognition for your language has downloaded, you can use those features offline. Backup and subscription management require an internet connection.
+
+For your videos, classes, talks and presentations. Sigo follows.]]

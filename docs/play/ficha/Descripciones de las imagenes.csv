@@ -1,25 +1,25 @@
 ﻿idioma,archivo,descripcion
-es-419,01.png,Sigo preparado para leer un guion con seguimiento de voz.
-es-419,02.png,Guion de Sigo con la vista de cámara en un recuadro.
-es-419,03.png,Video subtitulado y selector de estilo de subtítulos de Sigo.
-es-419,04.png,Control por gestos: palma para pausar o seguir y V para terminar estando en pausa.
-es-419,05.png,Vista previa del video con el filtro B/N y la tira de filtros de Sigo.
-es-419,06.png,Velocidad fija seleccionada con control de velocidad y vista previa del texto.
-es-419,07.png,Editor de guiones y tarjeta de respaldo opcional con Google.
-es-419,08.png,Grabación en horizontal con el guion sobre la imagen de cámara.
-en-US,01.png,Sigo ready to read a script with voice following.
-en-US,02.png,Sigo script with the camera view in a small window.
-en-US,03.png,Captioned video and caption-style selector in Sigo.
-en-US,04.png,"Gesture control: palm to pause or resume, and V to end while paused."
-en-US,05.png,Video preview with the B&W filter and Sigo’s filter strip.
-en-US,06.png,"Fixed speed selected, with speed control and text preview."
-en-US,07.png,Script editor and optional Google backup card.
-en-US,08.png,Landscape recording with the script over the camera image.
-pt-BR,01.png,Sigo pronto para ler um roteiro com acompanhamento de voz.
-pt-BR,02.png,Roteiro no Sigo com a imagem da câmera em uma janela pequena.
-pt-BR,03.png,Vídeo com legendas e seletor de estilo de legendas do Sigo.
-pt-BR,04.png,Controle por gestos: palma para pausar ou continuar e V para encerrar em pausa.
-pt-BR,05.png,Prévia do vídeo com o filtro P&B e a faixa de filtros do Sigo.
-pt-BR,06.png,"Velocidade fixa selecionada, com controle de velocidade e prévia do texto."
-pt-BR,07.png,Editor de roteiros e cartão de backup opcional com o Google.
-pt-BR,08.png,Gravação na horizontal com o roteiro sobre a imagem da câmera.
+es-419,01.png,Lectura en Sigo: el renglón que lees avanza con tu voz y el micrófono verde marca el tiempo.
+es-419,02.png,"Lectura detenida en Sigo: el texto espera en «Si me detengo a pensar, me espera»."
+es-419,03.png,"Ventana flotante de Sigo con el guion, encima de la app de cámara mientras graba."
+es-419,04.png,"Grabación en Sigo con el guion, el punto rojo de grabación y la cámara en un recuadro chico."
+es-419,05.png,"Video guardado con subtítulos rojos palabra por palabra y el panel de subtítulos, filtro y guardar."
+es-419,06.png,Panel de imagen de la cámara con el control por gestos: palma para pausar o seguir.
+es-419,07.png,"Ajustes de Sigo con el menú de idioma de la app: español, inglés y portugués."
+es-419,08.png,"Portada de Sigo con «Continuar con este guion», Leer, Grabar y la lista de guiones."
+en-US,01.png,Reading in Sigo: the script moves with your voice and the green mic shows the time.
+en-US,02.png,"Reading paused in Sigo: the script waits at “If I stop to think, it waits for me.”"
+en-US,03.png,"Sigo’s floating window with the script, on top of the camera app while it records."
+en-US,04.png,"Recording in Sigo with the script, the red recording dot and the camera in a small window."
+en-US,05.png,"Saved video with red word-by-word captions and Sigo’s captions, filter and save panel, shown in Spanish."
+en-US,06.png,Camera view panel with gesture control: show your palm to pause or resume.
+en-US,07.png,"Sigo settings with the app language menu: Spanish, English and Portuguese."
+en-US,08.png,"Sigo home screen with “Continue with this script”, Read, Record and the script list."
+pt-BR,01.png,Leitura no Sigo: o roteiro avança com a sua voz e o microfone verde mostra o tempo.
+pt-BR,02.png,"Leitura parada no Sigo: o texto espera em “Se eu paro para pensar, ele me espera.”"
+pt-BR,03.png,"Janela flutuante do Sigo com o roteiro, por cima do app da câmera enquanto grava."
+pt-BR,04.png,"Gravação no Sigo com o roteiro, o ponto vermelho de gravação e a câmera em uma janela pequena."
+pt-BR,05.png,"Vídeo salvo com legendas vermelhas palavra por palavra e o painel de legendas, filtro e salvar do Sigo, em espanhol."
+pt-BR,06.png,Painel da imagem da câmera com o controle por gestos: palma da mão para pausar ou continuar.
+pt-BR,07.png,"Configurações do Sigo com o menu de idioma do app: espanhol, inglês e português."
+pt-BR,08.png,"Tela inicial do Sigo com “Continuar com este roteiro”, Ler, Gravar e a lista de roteiros."

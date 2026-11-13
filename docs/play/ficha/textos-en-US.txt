@@ -1,13 +1,16 @@
 NOMBRE (25/30)
 [[Sigo — Voice Teleprompter]]
 
-DESCRIPCIÓN BREVE (75/80)
-[[A teleprompter that follows your voice: the script moves as you read aloud.]]
+DESCRIPCIÓN BREVE (64/80)
+[[You speak, Sigo follows. If you pause, the script waits for you.]]
 
-DESCRIPCIÓN COMPLETA (2128/4000)
+DESCRIPCIÓN COMPLETA (2273/4000)
 [[You speak. Sigo follows.
 
 Read your script at your own pace while recording a video, preparing a class or rehearsing a presentation. Sigo follows your voice: the text moves with you and waits when you pause.
+
+ON TOP OF YOUR CAMERA
+With the floating window, read your script on top of your phone’s camera or another app, and the text follows your voice.
 
 YOUR SCRIPT AND YOUR CAMERA
 Record with the front or rear camera, in portrait or landscape. See yourself behind the text, in a movable window, or keep the camera view hidden while recording. You can also read without recording.

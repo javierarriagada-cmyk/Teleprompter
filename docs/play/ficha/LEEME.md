@@ -1,10 +1,14 @@
-# Ficha de Sigo aprobada el 30-10-2026
+# Ficha de Sigo 1.1 -rama `fichas-1.1`, fase 2, 12-11-2026, en revisión-
 
-> **Rama `fichas-1.1`, 12-11-2026: dirección de la fase 1 de la ficha 1.1, en revisión.** Está en `direccion-1.1/` y se describe al final de este archivo. No reemplaza nada de lo aprobado el 30-10: las capturas, los gráficos, los textos, las tabletas, el ícono y el video canónicos siguen idénticos, y `verificar_ficha.py` los comprueba con las mismas huellas.
+> **Fase 2 -12-11-2026, t169u-:** las rutas canónicas -`capturas/`, `grafico-1024x500-*.png`, `textos-*.txt` y el CSV- son ahora la ficha 1.1, descrita en «Ficha 1.1, fase 2», al final. La ficha aprobada el 30-10 pasó con `git mv`, sin cambiar un byte, a `historial/ficha-1.0-20261030/`, y `verificar_ficha.py` la sigue comprobando allí con sus huellas aprobadas. **Nada de esto se subió a Play.**
+>
+> Antes -12-11-2026-: el título era «Ficha de Sigo aprobada el 30-10-2026» y esta nota decía: «Rama `fichas-1.1`, 12-11-2026: dirección de la fase 1 de la ficha 1.1, en revisión. Está en `direccion-1.1/` y se describe al final de este archivo. No reemplaza nada de lo aprobado el 30-10: las capturas, los gráficos, los textos, las tabletas, el ícono y el video canónicos siguen idénticos, y `verificar_ficha.py` los comprueba con las mismas huellas.»
 
 Javier aprobó ocho imágenes de teléfono, un gráfico y los textos de cada idioma: es-419, en-US y pt-BR. Se conservan el ícono y las 24 imágenes de tabletas. Esta entrega se envió a revisión por API el 30-10-2026 con autorización de Javier; aún no se ha confirmado su aprobación ni publicación. Evidencia: `envio-20261030.json`.
 
 ## Material para Play
+
+> Antes -12-11-2026-: esta lista describe la ficha 1.0. Desde la fase 2 esos archivos están en `historial/ficha-1.0-20261030/`, con las mismas rutas relativas; en las rutas de abajo está ahora la 1.1.
 
 - `capturas/<idioma>/01.png` a `08.png`: teléfono, en ese orden.
 - `grafico-1024x500-{es,en,pt}.png`: gráfico de cada idioma.
@@ -135,3 +139,95 @@ Las cifras están en `direccion-1.1/medidas.json`. Para la cara, una caja marcad
 - En el gráfico, el corte izquierdo en «pensar,» rompe la regla del borde, y en medio queda un hueco negro de 134 px, donde «el final.» cae fuera del recorte.
 
 **Orden:** se mantiene el del encargo. Como propuesta, sin aplicar: probar la 2 como primera en un experimento de ficha -answer/6227309-. En Ads, «Te sales, vuelves y te sigue» dio 40,0 y «Te espera si te detienes» 33,8, contra 35,7 de «Tú hablas. Sigo te sigue.». Son datos en aprendizaje, así que se probaría una sola cosa a la vez.
+
+## Ficha 1.1, fase 2 -12-11-2026, t169u, en revisión-
+
+Javier aprobó la fase 1 tal como quedó en `1ec2fd7` y pidió la ficha completa en los tres idiomas. **No se subió nada a Play, no se tocó la app y el PR no se fusiona.**
+
+**Qué hay y dónde:**
+- `capturas/{es-419,en-US,pt-BR}/01.png` a `08.png`: 1080×1920, RGB de 24 bits sin alfa.
+- `grafico-1024x500-{es,en,pt}.png`: 1024×500, RGB sin alfa. El de español es el aprobado, copiado byte a byte.
+- `textos-<idioma>.txt`: nombre igual que en la 1.0; breve **B**; completa de la 1.0 con una sección nueva antes de «TU GUION Y TU IMAGEN»: «ENCIMA DE TU CÁMARA».
+- `Descripciones de las imagenes.csv`: un texto alternativo por captura; también los de las tabletas, cuando estén.
+- `registro-1.1/`:
+  - `breves-1.1.txt`: la B, publicada; la C, guardada para un experimento después de publicar; la de control, sin publicar;
+  - `lamina-<idioma>-tamano-real.png`, `lamina-miniaturas-270.png` y, con las tabletas, `lamina-tabletas.png`;
+  - `procedencia.json`, `medidas.json` y `huellas.json`.
+- Crudas nuevas: `herramientas/entradas/motorola-1.1/{en,pt}/` y `es/06-gestos-panel.png`, `es/07-idioma-menu.png`, copiadas tal cual del segundo ZIP; su LEEME, en `motorola-1.1/LEEME-segundo-zip.txt`.
+- Textos, cajas y recortes: `contenidos.json`, clave `ficha-1.1`, agregada al final, después de `direccion-1.1`. La parte aprobada del 30-10 sigue idéntica byte a byte.
+
+**Decisiones de Javier aplicadas:**
+- Capturas 1, 2, 3 y 5 en español y gráfico en español: las de la fase 1, copiadas byte a byte. El gráfico empieza en «pensar,».
+- Breve B en los tres idiomas. La C queda guardada; la de control no se publica.
+- 3 en inglés: `en/03-flotante-a`, que no trae la fila en español.
+- 5 en inglés y portugués: la misma 05 aprobada en español. **Ojo:** su titular -«Tu video, con subtítulos.»- y el panel están en español dentro de las fichas en inglés y portugués. El texto alternativo lo dice.
+- 3 en portugués: la ventana recortada por encima de «Pausa / Volver a Sigo». Va a sangre por abajo y por la derecha. Los renglones salen enteros y no queda ni una línea de la fila en español: la caja de esa fila está declarada en `excluye`, y el generador y el comprobador fallan si el recorte la toca. El botón rojo de grabar queda fuera; la cámara se reconoce por el tiempo rojo 00:30. Si a Javier le parece cortada, se quita y la ficha portuguesa queda con siete capturas, sin usar la de otro idioma.
+- Portadas, captura 8:
+  - inglés: el recorte termina antes del guion «Hola»;
+  - portugués: termina antes de «My video for today» y de «Hola».
+  - La tarjeta «Continuar» queda entera en los tres idiomas, con título, Leer y Grabar, y se ve el primer guion de la lista, en el mismo idioma.
+  - Las cajas excluidas están en `contenidos.json`.
+
+**Composición de 4, 6, 7 y 8 -nuevas-:** misma tipografía, paleta, logo y posiciones de titular que la fase 1; fondo claro en las impares y oscuro en las pares.
+- **4, «Graba mirando al lente.»:** lectura con el punto rojo, el recuadro chico y el micrófono, en tres piezas de la misma cruda, con la misma escala. En español, la cara sale entera en el recuadro: 1,0 % de la imagen, por una caja marcada a mano. En inglés y portugués, el recuadro muestra el techo.
+- **6, «Pausa con un gesto.»:** el panel de la cámara con «Control por gestos».
+- **7, «En tu idioma.»:** Ajustes con el menú de idioma abierto.
+- **8, «Tus guiones, contigo.»:** la portada.
+- Las cifras de cada una están en `registro-1.1/medidas.json`.
+
+**Gráficos en inglés y portugués:** la misma dirección que el aprobado: 02-espera-pausa a sangre, de x 600 a 1024, y el micrófono quieto debajo.
+- Titulares: «It waits. / It follows you.» y «Ele espera. / E segue você.».
+- El renglón de arriba arranca en «it» y en «pensar,». Es la misma excepción a la regla del borde que en español, declarada; los de abajo arrancan en el margen.
+- «E segue você.» y no «E segue com você.»: la segunda no cabía antes de la zona libre del botón de reproducir.
+
+**Tabletas -pendiente-:** el comprobador ya exige 24 en `capturas/tableta/<idioma>/{7,10}/01-04.png`. Revisa:
+- 16:9 exacto y horizontal, lados entre 1080 y 7680, RGB sin alfa;
+- el ancho completo de la cruda, sin escalar;
+- sin barra de estado ni de tareas;
+- que solo se corten filas lisas;
+- las cajas excluidas;
+- que no se use Ajustes.
+
+El ZIP `adjuntos-grok-tabletas-1.1.zip` no estaba en el equipo de trabajo, así que no hay crudas en `herramientas/entradas/emulador-1.1/` ni salidas.
+
+**Antes -12-11-2026-:**
+- `armar_ficha.py` y `verificar_ficha.py` leían la ficha 1.0 en `capturas/`, `grafico-*`, `textos-*` y el CSV. Ahora la leen en `historial/ficha-1.0-20261030/`, con las mismas huellas.
+- La breve de control se comparaba con `textos-*.txt`. Ahora se compara con la de la 1.0, en el historial.
+
+**Regenerar y comprobar:**
+
+```powershell
+.herramientas/ficha-python/Scripts/python.exe docs/play/ficha/herramientas/armar_ficha.py --salida .herramientas/ficha-1.1 --alcance 1.1
+.herramientas/ficha-python/Scripts/python.exe docs/play/ficha/herramientas/verificar_ficha.py --generada .herramientas/ficha-1.1 --alcance 1.1
+```
+
+El comprobador de la ficha 1.1 revisa:
+- las huellas de `registro-1.1/huellas.json`, y que lo aprobado en la fase 1 sea idéntico a la dirección;
+- cada recorte píxel a píxel contra la cruda escalada, y que esté en la procedencia;
+- la regla del borde y las cajas excluidas;
+- las franjas sin contenido, hasta el 15 % del alto;
+- texto bajo 20 % e interfaz desde 50 % en 1 a 3;
+- titulares de hasta dos renglones;
+- la cara medida, bajo 25 %, y solo en 3 a 5;
+- las palabras prohibidas en los tres idiomas, como palabras enteras -mejor, nuevo, gratis, precio, Sigo+, nunca, siempre, descarga y sus equivalentes-;
+- la zona libre del gráfico y que llegue al borde derecho;
+- los límites de los textos;
+- que la breve sea la B y que no se publiquen ni la C ni la de control;
+- que no haya voseo;
+- las tabletas.
+
+### Crítica de diseño sobre la lámina de 270 px
+
+| Captura | Qué funciona | Qué queda débil |
+| --- | --- | --- |
+| 1 y 2, los tres idiomas | La prueba se lee: el renglón ámbar en la 1 y el texto detenido con el micrófono quieto en la 2. | La 2 en inglés tiene tres franjas oscuras de 285 px, el 14,8 %, justo bajo el límite. La pausa se lee por contraste con la 1, no sola. |
+| 3, inglés | La escena entera, como la aprobada en español: banda, tiempo rojo y botón de grabar. | El texto de la ventana no se lee a 270 px. |
+| 3, portugués | Es la que más se lee de las tres: la ventana a 1,06×, con «avança com a minha voz» en ámbar. | No se ve el botón de grabar, y la ventana termina a sangre, no en su borde. Es la que más se aparta de la serie. |
+| 4 | Se entiende «grabo mientras leo»: el punto rojo, el recuadro chico y el micrófono. | En español, la cara del recuadro es pequeña -1 %-. En inglés y portugués, el recuadro muestra un techo y se lee peor como cámara. |
+| 5, inglés y portugués | La misma prueba fuerte de español. | El titular y el panel en español rompen la serie en esas fichas. Lo mejor sería una cruda en cada idioma. |
+| 6 | El panel completo con la palma y la ventana flotante. | Mucha interfaz chica: a 270 px, «Control por gestos» apenas se lee. Lo que comunica es el titular. |
+| 7 | Se ve el menú abierto con los tres idiomas. | Es una pantalla de ajustes, la menos atractiva de la serie. En inglés asoma «Restore purcha…», recortado, sin precio ni Sigo+. |
+| 8 | La tarjeta «Continuar» entera y legible, con Leer y Grabar. | Abajo quedan 271 px de fondo oscuro, el 14,1 %, porque la lista se corta antes del guion de otro idioma. |
+| Gráficos en inglés y portugués | Siguen la dirección aprobada; el titular se lee a 540 px. | Igual que en español: el corte izquierdo en «it» o en «pensar,» rompe la regla del borde, aunque esté declarado. |
+
+**Orden:** se mantiene 1 a 8. La 7 es la más floja y podría ir al final si se sacara la 3 portuguesa.

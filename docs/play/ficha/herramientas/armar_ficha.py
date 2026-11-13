@@ -27,6 +27,11 @@ REV=SOURCE/'entradas/composicion'
 DATA=json.loads((SOURCE/'contenidos.json').read_text(encoding='utf-8'))
 # La dirección 1.1 vive en el mismo contenidos.json, aparte de los tres idiomas de la ficha 1.0.
 DIRECCION=DATA.pop('direccion-1.1',None)
+# 12-11-2026, fase 2 -t169u-: la ficha 1.1 completa, también en contenidos.json, después de la dirección.
+FICHA11=DATA.pop('ficha-1.1',None)
+# Desde la fase 2, la ficha aprobada el 30-10 vive en historial/ficha-1.0-20261030/, con las mismas rutas relativas
+# y las mismas huellas; en su lugar canónico va la 1.1. Antes -12-11-2026-: la 1.0 se leía desde FICHA.
+HIST10=FICHA/'historial/ficha-1.0-20261030'
 for folder in ['capturas','graficos','textos','miniaturas','licencias','video']:(R/folder).mkdir(exist_ok=True)
 PROVENANCE=[]
 
@@ -244,8 +249,9 @@ def armar_direccion_11():
     def mini(p):
         im=(p if isinstance(p,Image.Image) else Image.open(p)).convert('RGB')
         return im.resize((270,round(im.height*270/im.width)),Image.Resampling.LANCZOS)
+    # Antes -12-11-2026-: la fila de la 1.0 leía FICHA/capturas/es-419; desde la fase 2 lee la misma copia en HIST10, idéntica por huella.
     filas=[('Sigo 1.1 · dirección fase 1 (capturas 1, 2, 3 y 5)',[mini(imc) for _,imc in finales]),
-           ('Sigo 1.0 · en producción (capturas 1 a 4)',[mini(FICHA/f'capturas/es-419/{k:02}.png') for k in range(1,5)])]
+           ('Sigo 1.0 · en producción (capturas 1 a 4)',[mini(HIST10/f'capturas/es-419/{k:02}.png') for k in range(1,5)])]
     for ref in D['lamina']['referentes']:
         filas.append((ref['nombre']+' · capturas 1 a 3',[mini(SOURCE/'entradas'/a) for a in ref['archivos']]))
     g2=24;alto_fila=max(m.height for _,ms in filas for m in ms)
@@ -259,9 +265,220 @@ def armar_direccion_11():
     (OUT/'medidas.json').write_text(json.dumps(medidas,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\r\n')
     print('Dirección 1.1: capturas 1, 2, 3 y 5, gráfico, breves y dos láminas en',OUT)
 
+
+# ---------------------------------------------------------------------------
+# FICHA 1.1, FASE 2 -12-11-2026, t169u-
+# Las ocho capturas de teléfono, el gráfico y los textos de es-419, en-US y pt-BR, las 24 de tableta, el CSV
+# de textos alternativos, las láminas, la procedencia y las medidas. Lee contenidos.json["ficha-1.1"] y las
+# crudas de entradas/motorola-1.1/<idioma> y entradas/emulador-1.1. Se escribe en <salida>/ficha-1.1/ con las
+# mismas rutas que la ficha canónica; lo ya aprobado en la fase 1 se copia byte a byte desde <salida>/direccion-1.1/.
+# Solo recorte, escala y fondo de la ficha: sin marco, sin rótulo y sin tapar ni retocar nada de la interfaz.
+# ---------------------------------------------------------------------------
+def armar_ficha_11():
+    from PIL import ImageChops as _IC
+    globals()['ImageChops']=_IC
+    F=FICHA11;OUT=R/'ficha-1.1';REG=OUT/'registro-1.1'
+    REG.mkdir(parents=True,exist_ok=True)
+    sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+    procedencia=[];medidas={'capturas':{},'graficos':{},'tabletas':{}}
+    COLORES={'claro':('#F0EAE4','#29231F','#5E5147'),'oscuro':('#171412','#ECE6E0','#C6B6A6')}
+    CORTO={'es-419':'es','en-US':'en','pt-BR':'pt'}
+
+    def texto(im,t,reg):
+        # Igual que en la dirección: la tinta tiene que caber en la caja declarada en contenidos.json.
+        d=ImageDraw.Draw(im);f=font(reg['tam'],reg.get('peso',600))
+        d.text((reg['x'],reg['base']),t,font=f,fill=reg['color'],anchor='ls')
+        tinta=list(d.textbbox((reg['x'],reg['base']),t,font=f,anchor='ls'))
+        caja=reg.get('caja')
+        if caja and not (tinta[0]>=caja[0] and tinta[1]>=caja[1] and tinta[2]<=caja[0]+caja[2] and tinta[3]<=caja[1]+caja[3]):
+            raise ValueError(f'La tinta {tinta} se sale de la caja declarada {caja}: {t}')
+        if tinta[2]>im.width-40:raise ValueError('Texto demasiado ancho: '+t)
+        return tinta
+
+    def logo(im,claro,L):
+        m=Image.open(REV/('marca-oscura.png' if claro else 'marca-clara.png')).convert('RGBA')
+        m=m.crop(m.getbbox());m=m.resize((round(m.width*L['alto']/m.height),L['alto']),Image.Resampling.LANCZOS)
+        im.alpha_composite(m,(L['x'],L['y']));caja=[L['x'],L['y'],m.width,m.height]
+        if L.get('caja') and L['caja']!=caja:raise ValueError(f'Caja del logo distinta de la declarada: {caja}')
+        return caja
+
+    def pegar(im,crudas,r,nombre):
+        src=SOURCE/crudas/r['cruda'];x0,y0,x1,y1=r['recorte']
+        cw,ch=x1-x0,y1-y0;escala=r['ancho']/cw;alto=round(ch*escala)
+        p=Image.open(src).convert('RGB').crop((x0,y0,x1,y1))
+        if r['ancho']!=cw:p=p.resize((r['ancho'],alto),Image.Resampling.LANCZOS)
+        dx,dy=r['destino']
+        if dx<0 or dy<0 or dx+p.width>im.width or dy+p.height>im.height:raise ValueError('El recorte se sale de la imagen: '+nombre)
+        im.paste(p,(dx,dy))
+        extra={k:r[k] for k in ('margen_texto_app','motivo_escala','excepcion_borde','excluye') if k in r}
+        procedencia.append(dict(imagen=nombre,cruda=src.relative_to(REPO).as_posix(),sha256_cruda=sha(src),recorte_cruda=[x0,y0,x1,y1],
+            caja_destino=[dx,dy,p.width,alto],escala=round(escala,4),parte=r['parte'],
+            tratamiento='Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.',**extra))
+        return dict(cruda=r['cruda'],recorte_cruda=[x0,y0,x1,y1],ancho_recorte=cw,alto_recorte=ch,escala=round(escala,4),caja=[dx,dy,p.width,alto],**extra)
+
+    def franja_vacia(im):
+        # La misma medida de la dirección: filas seguidas en que ningún canal varía más de 16 niveles a lo ancho.
+        im=im.convert('RGB');mejor=(0,0,0);ini=None
+        for y in range(im.height+1):
+            lisa=y<im.height and max(hi-lo for lo,hi in im.crop((0,y,im.width,y+1)).getextrema())<=16
+            if lisa and ini is None:ini=y
+            if not lisa and ini is not None:
+                if y-ini>mejor[0]:mejor=(y-ini,ini,y)
+                ini=None
+        return dict(alto_px=mejor[0],pct_alto=round(100*mejor[0]/im.height,2),filas=[mejor[1],mejor[2]])
+
+    def cara_en_captura(k,recortes,ancho,alto_im):
+        if not k:return None
+        cx0,cy0,cx1,cy1=k['caja'];area=0;cajas=[]
+        for r in recortes:
+            if r['cruda']!=k['cruda']:continue
+            x0,y0,x1,y1=r['recorte'];ix0,iy0,ix1,iy1=max(cx0,x0),max(cy0,y0),min(cx1,x1),min(cy1,y1)
+            if ix0>=ix1 or iy0>=iy1:continue
+            e=r['ancho']/(x1-x0);dx,dy=r['destino']
+            b=[round(dx+(ix0-x0)*e),round(dy+(iy0-y0)*e),round(dx+(ix1-x0)*e),round(dy+(iy1-y0)*e)]
+            cajas.append(b);area+=(b[2]-b[0])*(b[3]-b[1])
+        return dict(cruda=k['cruda'],caja_cruda=k['caja'],cajas_captura=cajas,pct_captura=round(100*area/(ancho*alto_im),2),metodo=k['metodo'])
+
+    def copiar_aprobada(rel,dest,nombre):
+        # Lo aprobado en la fase 1 se copia tal cual, byte a byte, desde la dirección recién regenerada.
+        src=R/rel
+        dest.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(src,dest)
+        procedencia.append(dict(imagen=nombre,copia_de=rel,sha256=sha(dest),tratamiento='Copia byte a byte de la pieza aprobada en la fase 1 -t169u-.'))
+
+    telefono={};graficos={}
+    for lang,L in F['idiomas'].items():
+        crudas=F['crudas'][CORTO[lang]]
+        telefono[lang]=[]
+        for c in L['capturas']:
+            n=c['n'];nombre=f'capturas/{lang}/{n:02}.png';dest=OUT/nombre
+            if c.get('aprobada'):
+                copiar_aprobada(c['aprobada'],dest,nombre)
+                medidas['capturas'][f'{lang}/{n:02}']=dict(aprobada=c['aprobada'])
+                telefono[lang].append((n,Image.open(dest).convert('RGB')));continue
+            bg,fg,sub=COLORES[c['fondo']];claro=c['fondo']=='claro'
+            im=Image.new('RGBA',(1080,1920),bg)
+            cajas=[dict(que='logo',caja=logo(im,claro,c['logo']))]
+            for t,reg in zip(c['titular'],c['textos_titular']):
+                cajas.append(dict(que=t,caja=reg['caja'],tinta=texto(im,t,dict(reg,color=fg))))
+            if c.get('bajada'):
+                cajas.append(dict(que=c['bajada'],caja=c['texto_bajada']['caja'],tinta=texto(im,c['bajada'],dict(c['texto_bajada'],color=sub,peso=400))))
+            recs=[pegar(im,crudas,r,nombre) for r in c['recortes']]
+            area=1080*1920
+            medidas['capturas'][f'{lang}/{n:02}']=dict(recortes=recs,cajas_texto=cajas,
+                texto_pct=round(100*sum(k['caja'][2]*k['caja'][3] for k in cajas)/area,2),
+                interfaz_pct=round(100*sum(r['caja'][2]*r['caja'][3] for r in recs)/area,2),
+                ancho_recorte_max=max(r['ancho_recorte'] for r in recs),escala_min=min(r['escala'] for r in recs),cara=c['cara'],
+                cara_medida=cara_en_captura(c.get('cara_caja_cruda'),c['recortes'],1080,1920),franja_vacia_max=franja_vacia(im))
+            procedencia.append(dict(imagen=nombre,textos=[k['que'] for k in cajas[1:]],logo=(REV/('marca-oscura.png' if claro else 'marca-clara.png')).relative_to(REPO).as_posix(),fondo=bg))
+            dest.parent.mkdir(parents=True,exist_ok=True);png_estable(im,dest);telefono[lang].append((n,im.convert('RGB')))
+
+        # Gráfico: el de español es el aprobado; inglés y portugués siguen la misma dirección.
+        gnombre=f'grafico-1024x500-{CORTO[lang]}.png';G=L['grafico']
+        if G.get('aprobado'):
+            copiar_aprobada(G['aprobado'],OUT/gnombre,gnombre);medidas['graficos'][lang]=dict(aprobado=G['aprobado'])
+        else:
+            g=Image.new('RGBA',(1024,500),'#F0EAE4')
+            gc=[dict(que='logo',caja=logo(g,True,G['logo']))]
+            for t,reg in zip(G['titular'],G['textos_titular']):
+                gc.append(dict(que=t,caja=reg['caja'],tinta=texto(g,t,dict(reg,color='#29231F'))))
+            ImageDraw.Draw(g).line(G['raya'],fill='#9E462E',width=5)
+            rgs=[pegar(g,crudas,r,gnombre) for r in G['recortes']]
+            zx,zy,zw,zh=G['zona_libre']
+            for k in gc+[dict(que='recorte '+r['cruda'],caja=r['caja']) for r in rgs]:
+                b=k.get('tinta') or [k['caja'][0],k['caja'][1],k['caja'][0]+k['caja'][2],k['caja'][1]+k['caja'][3]]
+                if b[0]<zx+zw and b[2]>zx and b[1]<zy+zh and b[3]>zy:raise ValueError('El gráfico invade la zona del botón de reproducir: '+k['que'])
+            bloque=[min(r['caja'][0] for r in rgs),min(r['caja'][1] for r in rgs),max(r['caja'][0]+r['caja'][2] for r in rgs),max(r['caja'][1]+r['caja'][3] for r in rgs)]
+            medidas['graficos'][lang]=dict(recortes=rgs,cajas_texto=gc,zona_libre_centro=G['zona_libre'],bloque_interfaz=bloque,
+                a_sangre=dict(derecha=bloque[2]==1024,arriba=bloque[1]==0,abajo=bloque[3]==500),ancho_pct=round(100*(bloque[2]-bloque[0])/1024,2),
+                texto_pct=round(100*sum(k['caja'][2]*k['caja'][3] for k in gc)/(1024*500),2))
+            procedencia.append(dict(imagen=gnombre,textos=G['titular'],fondo='#F0EAE4'))
+            png_estable(g,OUT/gnombre)
+        graficos[lang]=Image.open(OUT/gnombre).convert('RGB')
+
+        # Textos: la breve publicada es la B -t169u-; la C queda guardada para un experimento después de publicar.
+        breve=next(o['texto'] for o in DIRECCION['breves'][lang] if o['papel']==L['breve_publicada'])
+        text=f"NOMBRE ({len(L['titulo'])}/30)\n[[{L['titulo']}]]\n\nDESCRIPCIÓN BREVE ({len(breve)}/80)\n[[{breve}]]\n\nDESCRIPCIÓN COMPLETA ({len(L['completa'])}/4000)\n[[{L['completa']}]]\n"
+        if len(L['titulo'])>30 or len(breve)>80 or len(L['completa'])>4000:raise ValueError('Límite de texto: '+lang)
+        (OUT/f'textos-{lang}.txt').write_text(text,encoding='utf-8',newline='\r\n')
+
+    # Tabletas: solo recorte, sin escala -ni hacia arriba ni hacia abajo-, 16:9 exacto. Sin titulares ni textos agregados.
+    tabletas={}
+    T=F.get('tabletas')
+    if T:
+        for t in T['piezas']:
+            nombre=f"capturas/tableta/{t['idioma']}/{t['tamano']}/{t['n']:02}.png";src=SOURCE/T['crudas']/t['cruda']
+            x0,y0,x1,y1=t['recorte'];w,h=x1-x0,y1-y0
+            if w*9!=h*16 or not (1080<=min(w,h) and max(w,h)<=7680):raise ValueError('La tableta no queda en 16:9 o fuera de 1080-7680: '+nombre)
+            with Image.open(src) as cr:
+                if not (0<=x0<x1<=cr.width and t['barra_estado']<=y0<y1<=t['barra_tareas']<=cr.height):raise ValueError('El recorte toca una barra del sistema: '+nombre)
+                p=cr.convert('RGB').crop((x0,y0,x1,y1))
+            for ex in t.get('excluye',[]):
+                a=ex['caja']
+                if a[0]<x1 and a[2]>x0 and a[1]<y1 and a[3]>y0:raise ValueError(f'El recorte deja ver {ex["que"]}: {nombre}')
+            dest=OUT/nombre;dest.parent.mkdir(parents=True,exist_ok=True);png_estable(p,dest);tabletas[nombre]=p
+            medidas['tabletas'][nombre]=dict(cruda=t['cruda'],recorte_cruda=[x0,y0,x1,y1],tamano=[w,h],barra_estado=t['barra_estado'],barra_tareas=t['barra_tareas'],
+                cortes=t['cortes'],excluye=t.get('excluye',[]))
+            procedencia.append(dict(imagen=nombre,cruda=src.relative_to(REPO).as_posix(),sha256_cruda=sha(src),recorte_cruda=[x0,y0,x1,y1],escala=1,
+                parte=t['parte'],cortes=t['cortes'],tratamiento='Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco.'))
+
+    # CSV de textos alternativos: el teléfono, y las tabletas si están.
+    with (OUT/'Descripciones de las imagenes.csv').open('w',encoding='utf-8-sig',newline='') as f:
+        w=csv.writer(f);w.writerow(['idioma','archivo','descripcion'])
+        for lang,L in F['idiomas'].items():
+            for i,alt in enumerate(L['alts'],1):w.writerow([lang,f'{i:02}.png',alt])
+            if T:
+                for tam in ('7','10'):
+                    for i,alt in enumerate(L['alts_tableta'],1):w.writerow([lang,f'tableta/{tam}/{i:02}.png',alt])
+
+    # Breves: la publicada, la guardada para el experimento y la de control, que no se publica.
+    lineas=['DESCRIPCIONES BREVES DE SIGO 1.1 -decisión de Javier del 12-11-2026, t169u-','',
+            'PUBLICADA: la B, en los tres idiomas. Es la que va en textos-<idioma>.txt.',
+            'GUARDADA: la C, para un experimento de ficha DESPUÉS de publicar -answer/6227309-. No se publica ahora.',
+            'CONTROL: la publicada hasta la 1.0. No se publica en la 1.1; queda como registro de lo que estaba en Play.','']
+    for lang,ops in DIRECCION['breves'].items():
+        lineas.append(lang)
+        for o in ops:
+            estado={'B':'PUBLICADA','C':'GUARDADA para el experimento','control':'CONTROL, no se publica'}[o['papel']]
+            lineas+=[f'  {o["papel"]} -{estado}- ({len(o["texto"])}/80)',f'  [[{o["texto"]}]]','']
+    (REG/'breves-1.1.txt').write_text('\n'.join(lineas),encoding='utf-8',newline='\r\n')
+
+    # Láminas: una por idioma a tamaño real -ocho capturas en dos filas y el gráfico-, una de miniaturas a 270 px
+    # con los tres idiomas y el gráfico, y una de las 24 tabletas reducidas, con su nombre debajo.
+    gap=40
+    for lang in F['idiomas']:
+        W=4*1080+5*gap;lam=Image.new('RGB',(W,2*1920+500+4*gap+70),'#DCD3CA');d=ImageDraw.Draw(lam)
+        for i,(n,imc) in enumerate(telefono[lang]):
+            lam.paste(imc,(gap+(i%4)*(1080+gap),gap+(i//4)*(1920+gap)))
+        y=2*(1920+gap)+gap;lam.paste(graficos[lang],(gap,y))
+        d.text((gap+1024+gap,y+40),f'Sigo 1.1 · ficha {lang}: capturas 1 a 8 y gráfico, a tamaño real.',font=font(44,400),fill='#29231F',anchor='lt')
+        png_estable(lam,REG/f'lamina-{lang}-tamano-real.png')
+    def mini(im,ancho=270):return im.resize((ancho,round(im.height*ancho/im.width)),Image.Resampling.LANCZOS)
+    g2=24;alto=480;M=Image.new('RGB',(g2+8*(270+g2)+540+g2,g2+3*(alto+60)),'#FFFFFF');d=ImageDraw.Draw(M)
+    for j,lang in enumerate(F['idiomas']):
+        y=g2+j*(alto+60);d.text((g2,y),f'Sigo 1.1 · {lang} · capturas 1 a 8 a 270 px y gráfico a 540 px',font=font(24,600),fill='#29231F',anchor='lt')
+        for i,(n,imc) in enumerate(telefono[lang]):M.paste(mini(imc),(g2+i*(270+g2),y+40))
+        M.paste(mini(graficos[lang],540),(g2+8*(270+g2),y+40))
+    png_estable(M,REG/'lamina-miniaturas-270.png')
+    if tabletas:
+        tw=480;cols=4;filas=(len(tabletas)+cols-1)//cols;th=270
+        TL=Image.new('RGB',(g2+cols*(tw+g2),g2+filas*(th+60)),'#FFFFFF');d=ImageDraw.Draw(TL)
+        for i,(nombre,p) in enumerate(tabletas.items()):
+            x=g2+(i%cols)*(tw+g2);y=g2+(i//cols)*(th+60)
+            TL.paste(p.resize((tw,th),Image.Resampling.LANCZOS),(x,y))
+            d.text((x,y+th+8),nombre,font=font(20,400),fill='#29231F',anchor='lt')
+        png_estable(TL,REG/'lamina-tabletas.png')
+
+    (REG/'procedencia.json').write_text(json.dumps(procedencia,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\r\n')
+    (REG/'medidas.json').write_text(json.dumps(medidas,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\r\n')
+    print('Ficha 1.1, fase 2: 24 capturas de teléfono, 3 gráficos, 3 textos, CSV,',len(tabletas),'tabletas y láminas en',OUT)
+
+
 if ALCANCE in ('todo','1.1'):
     if not DIRECCION:raise ValueError('Falta direccion-1.1 en contenidos.json')
     armar_direccion_11()
+    # 12-11-2026, fase 2 -t169u-: la ficha 1.1 completa se arma después de la dirección, de la que copia lo aprobado.
+    if not FICHA11:raise ValueError('Falta ficha-1.1 en contenidos.json')
+    armar_ficha_11()
 if ALCANCE=='1.1':raise SystemExit(0)
 
 def native(lang,es,other):return NATIVE/DATA[lang]['capturas']/(es if lang=='es-419' else other)
@@ -357,7 +574,8 @@ for lang,c in DATA.items():
 
     # Se conservan las tabletas publicadas; no se hace pasar un Motorola por una tableta.
     tabdest=R/'tabletas-conservadas'/lang
-    shutil.copytree(FICHA/'capturas/tableta'/lang,tabdest,dirs_exist_ok=True)
+    # Antes -12-11-2026-: shutil.copytree(FICHA/'capturas/tableta'/lang,...). Las tabletas de 1.0 están ahora en HIST10.
+    shutil.copytree(HIST10/'capturas/tableta'/lang,tabdest,dirs_exist_ok=True)
     sheet=Image.new('RGB',(1440,1460),'#F5F1EC');d=ImageDraw.Draw(sheet)
     for i in range(8):
         x=(i%4)*360;y=(i//4)*730
