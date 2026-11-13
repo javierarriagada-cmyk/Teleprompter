@@ -1,23 +1,26 @@
-Propuesta para la primera versión de producción de Sigo, 1.0. Pendiente de aprobación final.
-Antes: las notas de la 0.11.2 trataban Sigo+, avisos, bienvenida, marca de agua y el idioma de la oferta.
+Versión 1.1 (810), enviada a revisión de producción el 13-11-2026. Aprobadas por Javier: «Sí, esas».
+Antes: las notas de la 1.0 (792) presentaban Sigo -la voz, la cámara con subtítulos, los tres idiomas y Sigo+-.
 <es-419>
-Primera versión pública de Sigo, el teleprompter que sigue tu voz.
-• Lees en voz alta y el texto avanza contigo; si haces una pausa, te espera.
-• Graba con la cámara frontal o trasera mientras lees, y agrega subtítulos con tu guion y el tiempo de tu voz.
-• Funciona en español, inglés y portugués.
-• Con Sigo+, lee y graba sin cortes y guarda tus videos sin marca de agua.
+• Nuevo: ventana flotante. Lee tu guion encima de la cámara o de otra app, y ajusta su tamaño y su giro.
+• Ahora puedes calificar y compartir Sigo.
+• El editor vacío te muestra un ejemplo para empezar, y al elegir la letra ves cómo queda.
+• Las tarjetas muestran la hora, y la calidad del video se elige por su nombre.
+• Pantalla de borde a borde y portada renovada.
+• Arreglamos un cierre al guardar en algunos teléfonos con Android 11.
 </es-419>
 <en-US>
-The first public release of Sigo, the teleprompter that follows your voice.
-• Read out loud and the text moves with you; pause, and it waits.
-• Record with the front or rear camera as you read, and add captions from your script, timed to your voice.
-• Works in Spanish, English and Portuguese.
-• With Sigo+, read and record without cuts and save your videos without a watermark.
+• New: floating window. Read your script on top of the camera or another app, and adjust its size and rotation.
+• You can now rate and share Sigo.
+• The empty editor shows you an example to get started, and you see how each font looks before you choose it.
+• Cards show the time, and video quality is chosen by name.
+• Edge-to-edge screen and a refreshed home screen.
+• We fixed a crash when saving on some Android 11 phones.
 </en-US>
 <pt-BR>
-A primeira versão pública do Sigo, o teleprompter que acompanha a sua voz.
-• Você lê em voz alta e o texto avança com você; se fizer uma pausa, ele espera.
-• Grave com a câmera frontal ou traseira enquanto lê e adicione legendas com seu roteiro e o tempo da sua voz.
-• Funciona em espanhol, inglês e português.
-• Com o Sigo+, leia e grave sem cortes e salve seus vídeos sem marca-d'água.
+• Novidade: janela flutuante. Leia seu roteiro sobre a câmera ou outro app, e ajuste o tamanho e a rotação.
+• Agora você pode avaliar e compartilhar o Sigo.
+• O editor vazio mostra um exemplo para começar, e você vê como fica cada letra antes de escolher.
+• Os cartões mostram a hora, e a qualidade do vídeo é escolhida pelo nome.
+• Tela de ponta a ponta e tela inicial renovada.
+• Corrigimos um fechamento ao salvar em alguns celulares com Android 11.
 </pt-BR>
