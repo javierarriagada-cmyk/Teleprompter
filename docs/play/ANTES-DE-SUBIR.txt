@@ -279,7 +279,8 @@ A. EN EL PC -Claude-
      'SendToRecycleBin')`. También Sigo.apk, la copia que npm run apk deja siempre. Quedan solo Sigo-play.aab
      y Sigo-<versión>-<versionCode>.apk.
      Y LA ENTREGA COMPLETA, APARTE -12-11-2026-: antes de mandar nada a la Papelera, cada entrega va entera a
-     C:\Users\56990\Sigo-entregas\<versión>-<versionCode>\: el AAB, la APK, sus SHA-256, el commit, los
+     C:\Users\56990\Desktop\teleprom\06-entregas\<versión>-<versionCode>\ -Javier, 13-11-2026: «debería
+     estar dentro de teleprom»; antes, C:\Users\56990\Sigo-entregas-: el AAB, la APK, sus SHA-256, el commit, los
      registros de npm run play y npm run apk, el mapping.txt y los demás informes de R8, las notas, la
      revisión de contenido y un LEEME con el estado. Esa carpeta nunca se limpia. El estado se escribe en
      cinco pasos separados, cada uno solo con evidencia: armado, verificado, instalado, enviado a revisión y
