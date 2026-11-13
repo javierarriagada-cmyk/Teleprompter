@@ -6,6 +6,8 @@ Cada punto salió de un error real. Se agrega uno nuevo cada vez que algo se esc
    se verifica en el código y en el paquete -el paso a paso A, abajo: npm run play, el mapping con cada
    clase que se busca por nombre, 16 KB, lo que no viaja, la versión y los permisos-, y la prueba de verdad
    es la de Javier desde Play, en el g86 -C, abajo-.
+   -12-11-2026: además, antes de subir, la APK universal sacada del AAB corre en teléfonos de Test Lab
+   -paso A3-. La 1.1 (808) pasó todo lo demás y se cerraba al abrir.-
    -15-10-2026: la 0.9.1 salió con los gestos rotos. R8 sacó piezas de MediaPipe: «gestos reconocedor
    no arranca: ExceptionInInitializerError» en cada sesión del moto g86. La ficha los anuncia.-
    -18-10-2026, Javier: la versión de Play NO se instala en el Redmi desde el PC. Cada app nueva que no
@@ -216,6 +218,18 @@ A. EN EL PC -Claude-
        conectarlo queda para una orden. 12-11-2026, sobre la 808: todo en OK.
      - La ventana flotante: sus entradas y componentes tienen que estar en el modo Play, sin depender de un
        interruptor de herramientas de prueba. flotante.html no puede registrar service worker.
+     - EL PAQUETE EN UN TELÉFONO -12-11-2026-: la 1.1 (808) pasó todo lo de arriba y se cerraba al abrir en
+       todos los teléfonos. R8 le quitó el constructor a WorkDatabase_Impl -plugin 9, reglas en modo
+       estricto-, y nadie lo vio porque ningún armado de Play hecho con el plugin 9 se había corrido nunca:
+       la APK gemela es debug y R8 no la toca. Desde entonces, antes de dar un AAB por bueno, se saca de él
+       la APK universal -`java -jar .herramientas\bundletool-all-1.18.3.jar build-apks --bundle=<aab>
+       --output=<x>.apks --mode=universal`; sin --ks, bundletool la firma con ~/.android/debug.keystore- y
+       se corre en Test Lab con los recorridos de pruebas-agente/build-de-play -abrir, y guardar con marca
+       de agua y con filtro-: `npx firebase-tools apptesting:execute <apk> --project sigoteleprompter --app
+       1:505619935722:android:449893e0c5d723d98d8293 --test-dir pruebas-agente/build-de-play
+       --test-devices "model=RMX3231,version=30,locale=es_419,orientation=portrait"`, y lo mismo con
+       model=pa1q,version=36. Tiene que abrir y guardar sin cierre, y en el logcat no puede aparecer
+       LogSessionId. El comando sube la APK como una versión de App Distribution, sin repartirla.
      - 16 KB: `node scripts/elf16k.mjs <carpeta>\base\lib\arm64-v8a`, con las dos condiciones del punto 4.
      - Lo que no viaja -punto 3-: en base/assets/public/assets/ no tienen que estar panel-corpus,
        panel-mediciones, btn-abrir-mediciones, btn-abrir-corpus ni btn-borrar-copias-medicion. CON

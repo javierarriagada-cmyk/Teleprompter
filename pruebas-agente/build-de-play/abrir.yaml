@@ -1,0 +1,15 @@
+# -12-11-2026- Vive en el repo desde ese dia: todo armado de Play se corre con estos recorridos en Test Lab
+# antes de darlo por bueno, con la APK universal sacada del AAB -docs/play/ANTES-DE-SUBIR.txt, paso A3-.
+# -12-11-2026- La APK universal del AAB de la 808 se cerro al abrir en el realme con Android 11: WorkManager
+# no encuentra WorkDatabase. Esto mira si pasa tambien en un Android moderno. Solo abrir.
+tests:
+  - id: abrir
+    displayName: La app abre en la portada
+    steps:
+      - goal: Open the app and wait until the main screen is shown.
+        hint: >-
+          The main screen shows the brand "Sigo" at the top and a large card with a welcome
+          script titled "Hola". If a welcome or offer screen appears first, close it.
+        finalScreenAssertion: >-
+          The main screen shows the word "Sigo" and a script titled "Hola". No crash dialog
+          and no Android home screen is visible.

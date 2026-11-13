@@ -1,0 +1,77 @@
+# -12-11-2026- Vive en el repo desde ese dia: todo armado de Play se corre con estos recorridos en Test Lab
+# antes de darlo por bueno, con la APK universal sacada del AAB -docs/play/ANTES-DE-SUBIR.txt, paso A3-.
+# EL CIERRE DE ANDROID 11 AL GUARDAR -12-11-2026-. Google Play vio en la 1.0 (792) un cierre en un OPPO
+# CPH2239 con Android 11: NoClassDefFoundError de LogSessionId al entrar a Transformer desde exportarToma.
+# La 808 se armo con R8 9.5.29, que trae la correccion a5acccb. Esto lo comprueba en un telefono fisico
+# con Android 11, con la APK universal sacada del AAB de la 808 -la APK gemela es debug y R8 no la toca-.
+# Sin Sigo+, la marca de agua hace que guardar pase por Transformer aun con filtro Natural.
+# Los modelos de voz van a pedido en el AAB y no vienen en la APK universal: se graba con velocidad fija.
+tests:
+  - id: guardar-marca
+    displayName: Guardar una toma con marca de agua
+    steps:
+      - goal: Open the app and wait until the main screen is shown.
+        hint: >-
+          The main screen shows the brand "Sigo" at the top and a large card with a welcome
+          script titled "Hola". If a welcome or offer screen appears first, close it.
+        finalScreenAssertion: The main screen shows the word "Sigo" and a script titled "Hola".
+      - goal: Open the welcome script in recording mode with fixed speed.
+        hint: >-
+          On the large card at the top, tap "Grabar". If Android asks for permission to use the
+          camera or the microphone, allow it. On the recording screen there is a small pill that
+          says "Con la voz" above the other small buttons; tap it and choose "Velocidad fija".
+          If a message about downloading the voice appears, close it.
+        finalScreenAssertion: >-
+          A recording screen with a round start button near the bottom, and the pill shows
+          "Velocidad fija" or a small level bar instead of "Con la voz".
+      - goal: Record for about 8 seconds and then stop.
+        hint: >-
+          Tap the round "Empezar" button, wait for the 3, 2, 1 countdown and then about 8 more
+          seconds. Then press the system back button once: that stops the recording.
+        finalScreenAssertion: A video player shows the recorded take, with a button "Guardar".
+      - goal: Save the take to the gallery and wait until it finishes.
+        hint: >-
+          Tap the button "Guardar" (its full name is "Guardar en galería"). It shows "Guardando"
+          and a percentage while it works; wait up to 90 seconds until that ends. Do not tap
+          anything else meanwhile.
+        finalScreenAssertion: >-
+          The app is still open, the message "Tu video quedó guardado." was shown or the
+          "Guardar" button is gone, and no message "No se pudo guardar en la galería", no
+          crash dialog and no Android home screen is visible.
+
+  - id: guardar-filtro
+    displayName: Guardar una toma con filtro Calido
+    steps:
+      - goal: Open the app and wait until the main screen is shown.
+        hint: >-
+          The main screen shows the brand "Sigo" at the top and a large card with a welcome
+          script titled "Hola". If a welcome or offer screen appears first, close it.
+        finalScreenAssertion: The main screen shows the word "Sigo" and a script titled "Hola".
+      - goal: Open the welcome script in recording mode with fixed speed.
+        hint: >-
+          On the large card at the top, tap "Grabar". If Android asks for permission to use the
+          camera or the microphone, allow it. On the recording screen there is a small pill that
+          says "Con la voz" above the other small buttons; tap it and choose "Velocidad fija".
+          If a message about downloading the voice appears, close it.
+        finalScreenAssertion: >-
+          A recording screen with a round start button near the bottom, and the pill shows
+          "Velocidad fija" or a small level bar instead of "Con la voz".
+      - goal: Record for about 8 seconds and then stop.
+        hint: >-
+          Tap the round "Empezar" button, wait for the 3, 2, 1 countdown and then about 8 more
+          seconds. Then press the system back button once: that stops the recording.
+        finalScreenAssertion: A video player shows the recorded take, with a button "Guardar".
+      - goal: Apply the warm filter to the take.
+        hint: >-
+          In the video player, tap the control "Filtro". A row of small thumbnails opens; tap
+          the one named "Cálido".
+        finalScreenAssertion: The "Filtro" control shows the value "Cálido".
+      - goal: Save the take to the gallery and wait until it finishes.
+        hint: >-
+          Tap the button "Guardar" (its full name is "Guardar en galería"). It shows "Guardando"
+          and a percentage while it works; wait up to 90 seconds until that ends. Do not tap
+          anything else meanwhile.
+        finalScreenAssertion: >-
+          The app is still open, the message "Tu video quedó guardado." was shown or the
+          "Guardar" button is gone, and no message "No se pudo guardar en la galería", no
+          crash dialog and no Android home screen is visible.

@@ -125,6 +125,15 @@
 # MEDIA3 Y CAMERAX: traen sus propias reglas de consumidor. No se agrega nada hasta que algo falle
 # -encargo, C2-: una regla de más solo engorda el paquete y esconde lo que de verdad hace falta.
 
+# ROOM, LA BASE DE DATOS DE WORKMANAGER -12-11-2026-. Al abrir Sigo, WorkManager arma su base de datos y
+# Room crea androidx.work.impl.WorkDatabase_Impl POR REFLEXIÓN, con su constructor vacío. La regla que
+# trae room-runtime 2.5.0 -la que llega con WorkManager 2.9.1- es `-keep class * extends
+# androidx.room.RoomDatabase`, sin miembros, y desde el plugin 9.0 eso ya no conserva el constructor: R8 lo
+# quitó y la 1.1 (808) se cerraba al abrir, en todos los teléfonos. Room la corrigió en 2.7.0-beta01
+# -b/392657750-. android/gradle.properties además apaga el modo estricto para todas las reglas; esta deja
+# este caso cubierto aunque esa propiedad desaparezca.
+-keep class * extends androidx.room.RoomDatabase { <init>(); }
+
 # MEDIAPIPE -tarea 88, 04-10-2026, el control por gestos, GestosPlugin.java-. Los .aar de MediaPipe
 # Tasks 1.0.0 NO traen reglas de consumidor -no hay proguard.txt en tasks-core ni en tasks-vision-.
 # Su biblioteca nativa -libmediapipe_tasks_jni.so- llama de vuelta a clases de Java POR NOMBRE desde
