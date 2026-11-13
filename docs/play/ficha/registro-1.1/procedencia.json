@@ -1023,5 +1023,140 @@
       "E segue você."
     ],
     "fondo": "#F0EAE4"
+  },
+  {
+    "imagen": "capturas/tableta/es-419/10/01.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/es/4-lectura-avanza.png",
+    "sha256_cruda": "0991226802047a77c63658ccf69e67bad51e8d820d25134ef65a04ef7d4354a4",
+    "recorte_cruda": [
+      16,
+      62,
+      2544,
+      1484
+    ],
+    "escala": 1,
+    "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/es-419/10/02.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/es/3-antes-de-leer.png",
+    "sha256_cruda": "32fb9bcc6dfbbe772d099b7c4154d2dbd86fee75096f29c0fe5b02889631e296",
+    "recorte_cruda": [
+      15,
+      61,
+      2543,
+      1483
+    ],
+    "escala": 1,
+    "parte": "lectura lista antes de empezar, con los controles a los lados -Voz, tamaño, posición, brillo, Ventana flotante y Más- y el botón de reproducir",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 7 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 5 filas lisas de fondo encima. A los lados, 15 y 17 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/es-419/10/03.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/es/2-editor-colores.png",
+    "sha256_cruda": "885b9201467b305328d65aa7eb33e6373d283e21c40f8a0f5168668ffe2ecc94",
+    "recorte_cruda": [
+      16,
+      62,
+      2544,
+      1484
+    ],
+    "escala": 1,
+    "parte": "editor con el guion en colores, con Leer y Grabar",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/en-US/10/01.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/en/4-lectura-avanza.png",
+    "sha256_cruda": "a9e4d1af367e2a7e9aee246fd5af29e0fa1cba35b9b73771dabab3d8980c866a",
+    "recorte_cruda": [
+      16,
+      62,
+      2544,
+      1484
+    ],
+    "escala": 1,
+    "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/en-US/10/02.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/en/3-antes-de-leer.png",
+    "sha256_cruda": "d091a2f6c03c5a190a6204d7853e7c84803d9507b20217792f7fb6649c8de201",
+    "recorte_cruda": [
+      15,
+      61,
+      2543,
+      1483
+    ],
+    "escala": 1,
+    "parte": "lectura lista antes de empezar, con los controles a los lados -Voz, tamaño, posición, brillo, Ventana flotante y Más- y el botón de reproducir",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 7 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 5 filas lisas de fondo encima. A los lados, 15 y 17 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/en-US/10/03.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/en/2-editor-colores.png",
+    "sha256_cruda": "3ec540f89ec9acdc2061eeb1f3a08931be33e26df16eb597270b0ff33b5575ed",
+    "recorte_cruda": [
+      16,
+      62,
+      2544,
+      1484
+    ],
+    "escala": 1,
+    "parte": "editor con el guion en colores, con Leer y Grabar",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/pt-BR/10/01.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/pt/4-lectura-avanza.png",
+    "sha256_cruda": "9a56b73b0297027248589b3afd139508639199f73322d684a179fef73689cd8b",
+    "recorte_cruda": [
+      16,
+      62,
+      2544,
+      1484
+    ],
+    "escala": 1,
+    "parte": "lectura en curso con el renglón ámbar subrayado, el micrófono y el tiempo",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/pt-BR/10/02.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/pt/3-antes-de-leer.png",
+    "sha256_cruda": "d5f218a20ade9511c7742842ee9e8b5b156d65e9c60c9f44789897fc9613d4a8",
+    "recorte_cruda": [
+      15,
+      61,
+      2543,
+      1483
+    ],
+    "escala": 1,
+    "parte": "lectura lista antes de empezar, con los controles a los lados -Voz, tamaño, posición, brillo, Ventana flotante y Más- y el botón de reproducir",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 7 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 5 filas lisas de fondo encima. A los lados, 15 y 17 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
+  },
+  {
+    "imagen": "capturas/tableta/pt-BR/10/03.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/emulador-1.1/tableta-10/pt/2-editor-colores.png",
+    "sha256_cruda": "2434b97a0ce9cdec674fb1def8660cc24e50fa03caf56832cdd179d491f037e1",
+    "recorte_cruda": [
+      16,
+      62,
+      2544,
+      1484
+    ],
+    "escala": 1,
+    "parte": "editor con el guion en colores, con Leer y Grabar",
+    "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+    "tratamiento": "Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco."
   }
 ]

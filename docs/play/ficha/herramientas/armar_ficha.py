@@ -402,8 +402,33 @@ def armar_ficha_11():
         (OUT/f'textos-{lang}.txt').write_text(text,encoding='utf-8',newline='\r\n')
 
     # Tabletas: solo recorte, sin escala -ni hacia arriba ni hacia abajo-, 16:9 exacto. Sin titulares ni textos agregados.
-    tabletas={}
+    # 12-11-2026, con las crudas del emulador: el recorte puede quitar columnas a los lados además de las barras, pero solo
+    # franjas lisas -fondo o negro-, medidas igual que en verificar_ficha.py. Las esquinas redondeadas de la ventana muestran
+    # detrás el color de la barra de tareas, que es sistema: ningún píxel de ese color puede quedar dentro del recorte, y
+    # no cuenta al medir si una franja cortada es lisa.
+    # Lo que no se puede entregar sin romper una regla va en «descartadas», con su motivo; no se reemplaza con otra cruda.
+    tabletas={};descartadas={}
     T=F.get('tabletas')
+    def _cruza(a,x0,y0,x1,y1):return a[0]<x1 and a[2]>x0 and a[1]<y1 and a[3]>y0
+    TAREAS=tuple(T['color_barra_tareas']) if T else None
+    def _rango(px,x0,y0,x1,y1):
+        lo=[255]*3;hi=[0]*3;hay=False
+        for y in range(y0,y1):
+            for x in range(x0,x1):
+                v=px[x,y]
+                if v==TAREAS:continue
+                hay=True
+                for i in range(3):lo[i]=min(lo[i],v[i]);hi[i]=max(hi[i],v[i])
+        return max(hi[i]-lo[i] for i in range(3)) if hay else 0
+    def cortes_lisos(c,r,be,bt):
+        x0,y0,x1,y1=r;W=c.width;px=c.load()
+        for y in range(y0,y1):
+            if x0>0 and _rango(px,0,y,x0+1,y+1)>16:return f'columnas 0-{x0}, fila {y}'
+            if x1<W and _rango(px,x1-1,y,W,y+1)>16:return f'columnas {x1}-{W}, fila {y}'
+        for x in range(x0,x1):
+            if y0>be and _rango(px,x,be,x+1,y0+1)>16:return f'filas {be}-{y0}, columna {x}'
+            if bt>y1 and _rango(px,x,y1-1,x+1,bt)>16:return f'filas {y1}-{bt}, columna {x}'
+        return None
     if T:
         for t in T['piezas']:
             nombre=f"capturas/tableta/{t['idioma']}/{t['tamano']}/{t['n']:02}.png";src=SOURCE/T['crudas']/t['cruda']
@@ -411,24 +436,34 @@ def armar_ficha_11():
             if w*9!=h*16 or not (1080<=min(w,h) and max(w,h)<=7680):raise ValueError('La tableta no queda en 16:9 o fuera de 1080-7680: '+nombre)
             with Image.open(src) as cr:
                 if not (0<=x0<x1<=cr.width and t['barra_estado']<=y0<y1<=t['barra_tareas']<=cr.height):raise ValueError('El recorte toca una barra del sistema: '+nombre)
-                p=cr.convert('RGB').crop((x0,y0,x1,y1))
+                c=cr.convert('RGB');p=c.crop((x0,y0,x1,y1))
+            if any(v==TAREAS for v in p.getdata()):raise ValueError('El recorte deja ver una esquina de la ventana, con el color de la barra de tareas: '+nombre)
+            mal=cortes_lisos(c,(x0,y0,x1,y1),t['barra_estado'],t['barra_tareas'])
+            if mal:raise ValueError(f'El corte quita algo que no es fondo liso -{mal}-: {nombre}')
             for ex in t.get('excluye',[]):
                 a=ex['caja']
-                if a[0]<x1 and a[2]>x0 and a[1]<y1 and a[3]>y0:raise ValueError(f'El recorte deja ver {ex["que"]}: {nombre}')
+                if _cruza(a,x0,y0,x1,y1):raise ValueError(f'El recorte deja ver {ex["que"]}: {nombre}')
             dest=OUT/nombre;dest.parent.mkdir(parents=True,exist_ok=True);png_estable(p,dest);tabletas[nombre]=p
             medidas['tabletas'][nombre]=dict(cruda=t['cruda'],recorte_cruda=[x0,y0,x1,y1],tamano=[w,h],barra_estado=t['barra_estado'],barra_tareas=t['barra_tareas'],
                 cortes=t['cortes'],excluye=t.get('excluye',[]))
             procedencia.append(dict(imagen=nombre,cruda=src.relative_to(REPO).as_posix(),sha256_cruda=sha(src),recorte_cruda=[x0,y0,x1,y1],escala=1,
                 parte=t['parte'],cortes=t['cortes'],tratamiento='Solo recorte, sin escala: fuera la barra de estado y la barra de tareas del sistema. Sin titulares, sin texto agregado y sin marco.'))
+        for t in T.get('descartadas',[]):
+            nombre=f"capturas/tableta/{t['idioma']}/{t['tamano']}/{t['n']:02}.png";src=SOURCE/T['crudas']/t['cruda']
+            with Image.open(src) as cr:descartadas[nombre]=cr.convert('RGB')
+            medidas['tabletas'][nombre]=dict(descartada=True,cruda=t['cruda'],motivos=t['motivos'],barra_estado=t['barra_estado'],barra_tareas=t['barra_tareas'],
+                alto_util=t['barra_tareas']-t['barra_estado'],excluye=t.get('excluye',[]))
 
     # CSV de textos alternativos: el teléfono, y las tabletas si están.
     with (OUT/'Descripciones de las imagenes.csv').open('w',encoding='utf-8-sig',newline='') as f:
         w=csv.writer(f);w.writerow(['idioma','archivo','descripcion'])
         for lang,L in F['idiomas'].items():
             for i,alt in enumerate(L['alts'],1):w.writerow([lang,f'{i:02}.png',alt])
+            # Antes -12-11-2026-: escribía los cuatro textos de tableta de los dos tamaños. Ahora, solo los de las tabletas entregadas.
             if T:
                 for tam in ('7','10'):
-                    for i,alt in enumerate(L['alts_tableta'],1):w.writerow([lang,f'tableta/{tam}/{i:02}.png',alt])
+                    for i,alt in enumerate(L['alts_tableta'],1):
+                        if f'capturas/tableta/{lang}/{tam}/{i:02}.png' in tabletas:w.writerow([lang,f'tableta/{tam}/{i:02}.png',alt])
 
     # Breves: la publicada, la guardada para el experimento y la de control, que no se publica.
     lineas=['DESCRIPCIONES BREVES DE SIGO 1.1 -decisión de Javier del 12-11-2026, t169u-','',
@@ -459,18 +494,32 @@ def armar_ficha_11():
         for i,(n,imc) in enumerate(telefono[lang]):M.paste(mini(imc),(g2+i*(270+g2),y+40))
         M.paste(mini(graficos[lang],540),(g2+8*(270+g2),y+40))
     png_estable(M,REG/'lamina-miniaturas-270.png')
-    if tabletas:
-        tw=480;cols=4;filas=(len(tabletas)+cols-1)//cols;th=270
-        TL=Image.new('RGB',(g2+cols*(tw+g2),g2+filas*(th+60)),'#FFFFFF');d=ImageDraw.Draw(TL)
-        for i,(nombre,p) in enumerate(tabletas.items()):
-            x=g2+(i%cols)*(tw+g2);y=g2+(i//cols)*(th+60)
-            TL.paste(p.resize((tw,th),Image.Resampling.LANCZOS),(x,y))
-            d.text((x,y+th+8),nombre,font=font(20,400),fill='#29231F',anchor='lt')
+    # Antes -12-11-2026-: la lámina ponía solo las tabletas entregadas. Ahora pone los 24 lugares, en el orden de la ficha:
+    # la entregada reducida o, si no se entrega, la cruda entera reducida, atenuada y con el motivo debajo.
+    if tabletas or descartadas:
+        tw=480;cols=4;th=270;gy=96
+        lugares=[f'capturas/tableta/{l}/{s}/{n:02}.png' for l in F['idiomas'] for s in ('10','7') for n in range(1,5)]
+        filas=(len(lugares)+cols-1)//cols
+        TL=Image.new('RGB',(g2+cols*(tw+g2),g2+filas*(th+gy)),'#FFFFFF');d=ImageDraw.Draw(TL)
+        for i,nombre in enumerate(lugares):
+            x=g2+(i%cols)*(tw+g2);y=g2+(i//cols)*(th+gy)
+            if nombre in tabletas:
+                TL.paste(tabletas[nombre].resize((tw,th),Image.Resampling.LANCZOS),(x,y))
+                d.text((x,y+th+8),nombre,font=font(20,400),fill='#29231F',anchor='lt')
+                p0=tabletas[nombre];d.text((x,y+th+34),f'{p0.width}×{p0.height}',font=font(18,400),fill='#5E5147',anchor='lt')
+            elif nombre in descartadas:
+                cr=descartadas[nombre];alto=round(cr.height*tw/cr.width);mini_c=cr.resize((tw,alto),Image.Resampling.LANCZOS)
+                mini_c=Image.blend(mini_c,Image.new('RGB',mini_c.size,'#FFFFFF'),0.55);TL.paste(mini_c.crop((0,0,tw,min(alto,th))),(x,y))
+                d.rectangle((x,y,x+tw-1,y+th-1),outline='#B3261E',width=3)
+                d.text((x+tw//2,y+th//2),'NO SE ENTREGA',font=font(30,600),fill='#B3261E',anchor='mm')
+                m=next(t for t in T['descartadas'] if f"capturas/tableta/{t['idioma']}/{t['tamano']}/{t['n']:02}.png"==nombre)
+                d.text((x,y+th+8),nombre,font=font(20,400),fill='#29231F',anchor='lt')
+                d.text((x,y+th+34),m['motivo_corto'],font=font(18,400),fill='#B3261E',anchor='lt')
         png_estable(TL,REG/'lamina-tabletas.png')
 
     (REG/'procedencia.json').write_text(json.dumps(procedencia,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\r\n')
     (REG/'medidas.json').write_text(json.dumps(medidas,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\r\n')
-    print('Ficha 1.1, fase 2: 24 capturas de teléfono, 3 gráficos, 3 textos, CSV,',len(tabletas),'tabletas y láminas en',OUT)
+    print('Ficha 1.1, fase 2: 24 capturas de teléfono, 3 gráficos, 3 textos, CSV,',len(tabletas),'tabletas,',len(descartadas),'lugares de tableta sin entregar y láminas en',OUT)
 
 
 if ALCANCE in ('todo','1.1'):

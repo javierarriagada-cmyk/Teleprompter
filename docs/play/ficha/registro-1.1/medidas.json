@@ -2151,5 +2151,396 @@
       "texto_pct": 8.97
     }
   },
-  "tabletas": {}
+  "tabletas": {
+    "capturas/tableta/es-419/10/01.png": {
+      "cruda": "tableta-10/es/4-lectura-avanza.png",
+      "recorte_cruda": [
+        16,
+        62,
+        2544,
+        1484
+      ],
+      "tamano": [
+        2528,
+        1422
+      ],
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": []
+    },
+    "capturas/tableta/es-419/10/02.png": {
+      "cruda": "tableta-10/es/3-antes-de-leer.png",
+      "recorte_cruda": [
+        15,
+        61,
+        2543,
+        1483
+      ],
+      "tamano": [
+        2528,
+        1422
+      ],
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 7 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 5 filas lisas de fondo encima. A los lados, 15 y 17 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": []
+    },
+    "capturas/tableta/es-419/10/03.png": {
+      "cruda": "tableta-10/es/2-editor-colores.png",
+      "recorte_cruda": [
+        16,
+        62,
+        2544,
+        1484
+      ],
+      "tamano": [
+        2528,
+        1422
+      ],
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": []
+    },
+    "capturas/tableta/en-US/10/01.png": {
+      "cruda": "tableta-10/en/4-lectura-avanza.png",
+      "recorte_cruda": [
+        16,
+        62,
+        2544,
+        1484
+      ],
+      "tamano": [
+        2528,
+        1422
+      ],
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": []
+    },
+    "capturas/tableta/en-US/10/02.png": {
+      "cruda": "tableta-10/en/3-antes-de-leer.png",
+      "recorte_cruda": [
+        15,
+        61,
+        2543,
+        1483
+      ],
+      "tamano": [
+        2528,
+        1422
+      ],
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 7 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 5 filas lisas de fondo encima. A los lados, 15 y 17 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": []
+    },
+    "capturas/tableta/en-US/10/03.png": {
+      "cruda": "tableta-10/en/2-editor-colores.png",
+      "recorte_cruda": [
+        16,
+        62,
+        2544,
+        1484
+      ],
+      "tamano": [
+        2528,
+        1422
+      ],
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": []
+    },
+    "capturas/tableta/pt-BR/10/01.png": {
+      "cruda": "tableta-10/pt/4-lectura-avanza.png",
+      "recorte_cruda": [
+        16,
+        62,
+        2544,
+        1484
+      ],
+      "tamano": [
+        2528,
+        1422
+      ],
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": []
+    },
+    "capturas/tableta/pt-BR/10/02.png": {
+      "cruda": "tableta-10/pt/3-antes-de-leer.png",
+      "recorte_cruda": [
+        15,
+        61,
+        2543,
+        1483
+      ],
+      "tamano": [
+        2528,
+        1422
+      ],
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 7 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 5 filas lisas de fondo encima. A los lados, 15 y 17 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": []
+    },
+    "capturas/tableta/pt-BR/10/03.png": {
+      "cruda": "tableta-10/pt/2-editor-colores.png",
+      "recorte_cruda": [
+        16,
+        62,
+        2544,
+        1484
+      ],
+      "tamano": [
+        2528,
+        1422
+      ],
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "cortes": "Arriba, la barra de estado -íconos hasta la fila 53- y 8 filas lisas de fondo debajo. Abajo, la barra de tareas desde la fila 1488 y 4 filas lisas de fondo encima. A los lados, 16 y 16 columnas lisas de fondo, para llegar a 16:9 exacto -2528×1422- sin escalar y sin dejar dentro las esquinas redondeadas de la ventana.",
+      "excluye": []
+    },
+    "capturas/tableta/es-419/10/04.png": {
+      "descartada": true,
+      "cruda": "tableta-10/es/1-portada.png",
+      "motivos": [
+        "Portada: la lista de guiones muestra guion «Hi», en inglés. Por encima de esa tarjeta quedan menos de 1080 filas desde la barra de estado, así que ningún 16:9 de al menos 1080 de alto la deja fuera."
+      ],
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "alto_util": 1434,
+      "excluye": [
+        {
+          "que": "guion «Hi», en inglés",
+          "caja": [
+            480,
+            934,
+            2080,
+            1076
+          ]
+        }
+      ]
+    },
+    "capturas/tableta/es-419/7/01.png": {
+      "descartada": true,
+      "cruda": "tableta-7/es/4-lectura-avanza.png",
+      "motivos": [
+        "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema."
+      ],
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "alto_util": 1044,
+      "excluye": []
+    },
+    "capturas/tableta/es-419/7/02.png": {
+      "descartada": true,
+      "cruda": "tableta-7/es/3-antes-de-leer.png",
+      "motivos": [
+        "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema."
+      ],
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "alto_util": 1044,
+      "excluye": []
+    },
+    "capturas/tableta/es-419/7/03.png": {
+      "descartada": true,
+      "cruda": "tableta-7/es/2-editor-colores.png",
+      "motivos": [
+        "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema."
+      ],
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "alto_util": 1044,
+      "excluye": []
+    },
+    "capturas/tableta/es-419/7/04.png": {
+      "descartada": true,
+      "cruda": "tableta-7/es/1-portada.png",
+      "motivos": [
+        "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema.",
+        "Portada: la lista de guiones muestra guion «My video for today», en inglés. Por encima de esa tarjeta quedan menos de 1080 filas desde la barra de estado, así que ningún 16:9 de al menos 1080 de alto la deja fuera."
+      ],
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "alto_util": 1044,
+      "excluye": [
+        {
+          "que": "guion «My video for today», en inglés",
+          "caja": [
+            160,
+            914,
+            1760,
+            1056
+          ]
+        }
+      ]
+    },
+    "capturas/tableta/en-US/10/04.png": {
+      "descartada": true,
+      "cruda": "tableta-10/en/1-portada.png",
+      "motivos": [
+        "Portada: la lista de guiones muestra guion «Mi video de hoy», en español. Por encima de esa tarjeta quedan menos de 1080 filas desde la barra de estado, así que ningún 16:9 de al menos 1080 de alto la deja fuera."
+      ],
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "alto_util": 1434,
+      "excluye": [
+        {
+          "que": "guion «Mi video de hoy», en español",
+          "caja": [
+            480,
+            934,
+            2080,
+            1076
+          ]
+        }
+      ]
+    },
+    "capturas/tableta/en-US/7/01.png": {
+      "descartada": true,
+      "cruda": "tableta-7/en/4-lectura-avanza.png",
+      "motivos": [
+        "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema."
+      ],
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "alto_util": 1044,
+      "excluye": []
+    },
+    "capturas/tableta/en-US/7/02.png": {
+      "descartada": true,
+      "cruda": "tableta-7/en/3-antes-de-leer.png",
+      "motivos": [
+        "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema."
+      ],
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "alto_util": 1044,
+      "excluye": []
+    },
+    "capturas/tableta/en-US/7/03.png": {
+      "descartada": true,
+      "cruda": "tableta-7/en/2-editor-colores.png",
+      "motivos": [
+        "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema."
+      ],
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "alto_util": 1044,
+      "excluye": []
+    },
+    "capturas/tableta/en-US/7/04.png": {
+      "descartada": true,
+      "cruda": "tableta-7/en/1-portada.png",
+      "motivos": [
+        "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema.",
+        "Portada: la lista de guiones muestra guion «Mi video de hoy», en español. Por encima de esa tarjeta quedan menos de 1080 filas desde la barra de estado, así que ningún 16:9 de al menos 1080 de alto la deja fuera."
+      ],
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "alto_util": 1044,
+      "excluye": [
+        {
+          "que": "guion «Mi video de hoy», en español",
+          "caja": [
+            160,
+            914,
+            1760,
+            1056
+          ]
+        }
+      ]
+    },
+    "capturas/tableta/pt-BR/10/04.png": {
+      "descartada": true,
+      "cruda": "tableta-10/pt/1-portada.png",
+      "motivos": [
+        "Portada: la lista de guiones muestra guion «My video for today», en inglés, guion «Mi video de hoy», en español. Por encima de esa tarjeta quedan menos de 1080 filas desde la barra de estado, así que ningún 16:9 de al menos 1080 de alto la deja fuera."
+      ],
+      "barra_estado": 54,
+      "barra_tareas": 1488,
+      "alto_util": 1434,
+      "excluye": [
+        {
+          "que": "guion «My video for today», en inglés",
+          "caja": [
+            480,
+            934,
+            2080,
+            1076
+          ]
+        },
+        {
+          "que": "guion «Mi video de hoy», en español",
+          "caja": [
+            480,
+            1102,
+            2080,
+            1243
+          ]
+        }
+      ]
+    },
+    "capturas/tableta/pt-BR/7/01.png": {
+      "descartada": true,
+      "cruda": "tableta-7/pt/4-lectura-avanza.png",
+      "motivos": [
+        "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema."
+      ],
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "alto_util": 1044,
+      "excluye": []
+    },
+    "capturas/tableta/pt-BR/7/02.png": {
+      "descartada": true,
+      "cruda": "tableta-7/pt/3-antes-de-leer.png",
+      "motivos": [
+        "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema."
+      ],
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "alto_util": 1044,
+      "excluye": []
+    },
+    "capturas/tableta/pt-BR/7/03.png": {
+      "descartada": true,
+      "cruda": "tableta-7/pt/2-editor-colores.png",
+      "motivos": [
+        "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema."
+      ],
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "alto_util": 1044,
+      "excluye": []
+    },
+    "capturas/tableta/pt-BR/7/04.png": {
+      "descartada": true,
+      "cruda": "tableta-7/pt/1-portada.png",
+      "motivos": [
+        "Alto útil: entre la barra de estado -íconos hasta la fila 43- y la barra de tareas -desde la fila 1088- quedan 1044 filas. Un 16:9 de 1920 de ancho pide 1080, y Google pide cada lado de al menos 1080; habría que escalar hacia arriba o dejar una barra del sistema.",
+        "Portada: la lista de guiones muestra guion «My video for today», en inglés. Por encima de esa tarjeta quedan menos de 1080 filas desde la barra de estado, así que ningún 16:9 de al menos 1080 de alto la deja fuera."
+      ],
+      "barra_estado": 44,
+      "barra_tareas": 1088,
+      "alto_util": 1044,
+      "excluye": [
+        {
+          "que": "guion «My video for today», en inglés",
+          "caja": [
+            160,
+            914,
+            1760,
+            1056
+          ]
+        }
+      ]
+    }
+  }
 }

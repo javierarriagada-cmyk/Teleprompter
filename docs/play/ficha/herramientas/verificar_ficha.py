@@ -325,32 +325,87 @@ def comprobar_ficha_11():
         for o in D['breves'][lang]:
             if '[['+o['texto']+']]' not in breves: errores.append(f'Falta en breves-1.1.txt: {lang} {o["papel"]}')
     # Tabletas: 16:9 exacto, lados entre 1080 y 7680, RGB sin alfa, solo recorte -sin escala- de la cruda, sin las barras del sistema.
-    T = F.get('tabletas')
-    esperadas = [f'capturas/tableta/{l}/{s}/{n:02}.png' for l in F['idiomas'] for s in ('7', '10') for n in range(1, 5)]
+    # Antes -12-11-2026-: exigía el ancho completo de la cruda y filas cortadas lisas a lo ancho. Con las crudas del emulador,
+    # el corte puede quitar columnas a los lados, y se exige lo mismo que en armar_ficha.py: que cada franja cortada sea
+    # la continuación lisa -≤ 16 niveles- del borde que queda. Las barras se miden en la cruda, no se toman de contenidos.
+    # Los lugares que no se entregan van en «descartadas», y su imposibilidad también se comprueba aquí.
+    T = F.get('tabletas') or {'piezas': [], 'descartadas': []}
+    TAREAS = tuple(T.get('color_barra_tareas', (17, 19, 24)))
+    ORDEN_CRUDA = {1: '4-lectura-avanza', 2: '3-antes-de-leer', 3: '2-editor-colores', 4: '1-portada'}
+    ANCHO_TAM = {'10': 2560, '7': 1920}
+    def rango(px, x0, y0, x1, y1):
+        # Los píxeles del color de la barra de tareas -las esquinas redondeadas de la ventana- son sistema y no cuentan.
+        lo = [255]*3; hi = [0]*3; hay = False
+        for y in range(y0, y1):
+            for x in range(x0, x1):
+                v = px[x, y]
+                if v == TAREAS: continue
+                hay = True
+                for i in range(3): lo[i] = min(lo[i], v[i]); hi[i] = max(hi[i], v[i])
+        return max(hi[i]-lo[i] for i in range(3)) if hay else 0
+    def barras(c):
+        W, H = c.size; px = c.load()
+        def var(y, x0, x1): return max(hi-lo for lo, hi in c.crop((x0, y, x1, y+1)).getextrema())
+        filas = [y for y in range(0, 200) if var(y, 0, int(W*0.12)) > 4 or var(y, int(W*0.88), W) > 4]
+        ult = filas[0]
+        for y in filas[1:]:
+            if y != ult+1: break
+            ult = y
+        # La barra de tareas empieza en la primera fila que tiene su color en todo el 30 % izquierdo y el 10 % derecho, fuera de los íconos.
+        bt = next(y for y in range(H//2, H) if all(px[x, y] == TAREAS for x in list(range(0, int(W*0.3)))+list(range(int(W*0.9), W))))
+        return ult+1, bt
+    def cruza(a, x0, y0, x1, y1): return a[0] < x1 and a[2] > x0 and a[1] < y1 and a[3] > y0
+    lugares = [f'capturas/tableta/{l}/{s}/{n:02}.png' for l in F['idiomas'] for s in ('7', '10') for n in range(1, 5)]
+    nombre_de = lambda t: f"capturas/tableta/{t['idioma']}/{t['tamano']}/{t['n']:02}.png"
+    declarados = [nombre_de(t) for t in T['piezas']]+[nombre_de(t) for t in T.get('descartadas', [])]
+    if sorted(declarados) != sorted(lugares): errores.append('Tabletas: los 24 lugares deben estar, una vez cada uno, en piezas o en descartadas')
     halladas = sorted(p.relative_to(FICHA).as_posix() for p in (FICHA/'capturas/tableta').rglob('*.png')) if (FICHA/'capturas/tableta').is_dir() else []
-    if halladas != sorted(esperadas): errores.append(f'Tabletas: se esperan 24 en capturas/tableta/<idioma>/{{7,10}}/01-04.png; hay {len(halladas)}')
-    if T:
-        for t in T['piezas']:
-            nombre = f"capturas/tableta/{t['idioma']}/{t['tamano']}/{t['n']:02}.png"; path = FICHA/nombre
-            if not path.is_file(): errores.append('Falta '+nombre); continue
-            if 'ajustes' in t['cruda'].lower(): errores.append('Tableta hecha con Ajustes, que muestra la promoción de Sigo+: '+nombre)
-            x0, y0, x1, y1 = t['recorte']
-            with Image.open(path) as im, Image.open(SOURCE/T['crudas']/t['cruda']) as cr:
-                w, h = im.size
-                if w*9 != h*16 or not (1080 <= min(w, h) and max(w, h) <= 7680) or w <= h: errores.append(f'Tableta fuera de 16:9 horizontal o de 1080-7680: {nombre} {w}×{h}')
-                if im.mode != 'RGB' or 'transparency' in im.info: errores.append('Tableta con alfa o sin RGB: '+nombre)
-                if (w, h) != (x1-x0, y1-y0) or w != cr.width: errores.append('La tableta no sale del ancho completo de su cruda, sin escalar: '+nombre)
-                if not (t['barra_estado'] <= y0 and y1 <= t['barra_tareas']): errores.append('Se ve la barra de estado o la de tareas: '+nombre)
-                c = cr.convert('RGB')
-                if ImageChops.difference(im.convert('RGB'), c.crop((x0, y0, x1, y1))).getbbox(): errores.append('La tableta no es el recorte exacto de la cruda: '+nombre)
-                # Lo que se corta además de las barras tiene que ser fondo liso: así ningún texto ni botón de Sigo queda cortado.
-                for a, b in ((t['barra_estado'], y0), (y1, t['barra_tareas'])):
-                    for y in range(a, b):
-                        if max(hi-lo for lo, hi in c.crop((0, y, c.width, y+1)).getextrema()) > 16:
-                            errores.append(f'Se cortó una fila con contenido de la app, y={y}: {nombre}'); break
-                for ex in t.get('excluye', []):
-                    e = ex['caja']
-                    if e[0] < x1 and e[2] > x0 and e[1] < y1 and e[3] > y0: errores.append(f'La tableta deja ver {ex["que"]}: {nombre}')
+    if halladas != sorted(nombre_de(t) for t in T['piezas']): errores.append('Tabletas: los archivos de capturas/tableta no son exactamente las piezas declaradas')
+    for t in T['piezas']+T.get('descartadas', []):
+        nombre = nombre_de(t)
+        if 'ajustes' in t['cruda'].lower(): errores.append('Tableta hecha con Ajustes, que muestra la promoción de Sigo+: '+nombre)
+        if t['cruda'] != f"tableta-{t['tamano']}/{CORTO[t['idioma']]}/{ORDEN_CRUDA[t['n']]}.png": errores.append('Cruda de otro idioma, tamaño u orden: '+nombre)
+        with Image.open(SOURCE/T['crudas']/t['cruda']) as cr:
+            c = cr.convert('RGB')
+            if cr.mode == 'RGBA' and cr.getextrema()[3][0] != 255: errores.append('La cruda tiene transparencia: '+t['cruda'])
+        if c.width != ANCHO_TAM[t['tamano']]: errores.append('La cruda no tiene el ancho de su tamaño: '+nombre)
+        be, bt = barras(c)
+        if (be, bt) != (t['barra_estado'], t['barra_tareas']): errores.append(f'Barras declaradas {t["barra_estado"]}/{t["barra_tareas"]}, medidas {be}/{bt}: '+nombre)
+        if t in T.get('descartadas', []):
+            # Que de verdad no se pueda: sin escalar, un 16:9 necesita al menos 1080 filas útiles; y en las portadas,
+            # ninguna ventana de 1920×1080 entre las barras puede quedar fuera de los guiones de otro idioma.
+            if 'alto' in t['tipos'] and bt-be >= 1080: errores.append('Descartada por alto, pero hay 1080 filas útiles: '+nombre)
+            if 'guion' in t['tipos']:
+                cajas = [e['caja'] for e in t['excluye']]
+                libre = [(x0, y0) for y0 in range(be, bt-1080+1) for x0 in range(0, c.width-1920+1)
+                         if not any(cruza(k, x0, y0, x0+1920, y0+1080) for k in cajas)]
+                if libre: errores.append('Descartada por guion de otro idioma, pero hay un recorte posible: '+nombre)
+            avisos.append(f'Tableta no entregada, {nombre}: '+' '.join(t['motivos']))
+            continue
+        path = FICHA/nombre
+        x0, y0, x1, y1 = t['recorte']
+        with Image.open(path) as im:
+            w, h = im.size
+            if w*9 != h*16 or not (1080 <= min(w, h) and max(w, h) <= 7680) or w <= h: errores.append(f'Tableta fuera de 16:9 horizontal o de 1080-7680: {nombre} {w}×{h}')
+            if im.mode != 'RGB' or 'transparency' in im.info: errores.append('Tableta con alfa o sin RGB: '+nombre)
+            if (w, h) != (x1-x0, y1-y0): errores.append('La tableta no es un recorte sin escala de su cruda: '+nombre)
+            final = im.convert('RGB')
+        if ImageChops.difference(final, c.crop((x0, y0, x1, y1))).getbbox(): errores.append('La tableta no es el recorte exacto de la cruda: '+nombre)
+        if not (be <= y0 and y1 <= bt): errores.append('Se ve la barra de estado o la de tareas: '+nombre)
+        if sum(1 for v in final.getdata() if v == TAREAS): errores.append('Quedan píxeles del color de la barra de tareas -esquinas de la ventana-: '+nombre)
+        px = c.load(); W = c.width; mal = None
+        for y in range(y0, y1):
+            if x0 > 0 and rango(px, 0, y, x0+1, y+1) > 16: mal = f'columnas 0-{x0}, fila {y}'; break
+            if x1 < W and rango(px, x1-1, y, W, y+1) > 16: mal = f'columnas {x1}-{W}, fila {y}'; break
+        if not mal:
+            for x in range(x0, x1):
+                if y0 > be and rango(px, x, be, x+1, y0+1) > 16: mal = f'filas {be}-{y0}, columna {x}'; break
+                if bt > y1 and rango(px, x, y1-1, x+1, bt) > 16: mal = f'filas {y1}-{bt}, columna {x}'; break
+        if mal: errores.append(f'El corte quita algo que no es fondo liso -{mal}-: '+nombre)
+        for ex in t.get('excluye', []):
+            if cruza(ex['caja'], x0, y0, x1, y1): errores.append(f'La tableta deja ver {ex["que"]}: {nombre}')
+        if not any(e.get('imagen') == nombre and e.get('recorte_cruda') == t['recorte'] and e.get('sha256_cruda') == sha(SOURCE/T['crudas']/t['cruda']) for e in procedencia):
+            errores.append('Falta en procedencia.json: '+nombre)
     if args.generada:
         for rel, expected in H['salidas'].items():
             path = args.generada/'ficha-1.1'/rel

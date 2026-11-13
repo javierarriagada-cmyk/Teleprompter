@@ -47,5 +47,6 @@ Referencia de código: main `fe422ee`. Afirmaciones nuevas de las capturas 4, 6,
 | Sigo en español, inglés y portugués, con menú de idioma de la app | Captura 7 | `src/lib/idioma.ts`, `src/components/PanelAjustes.tsx`, `src/textos/{es,en,pt}.ts` |
 | Continúa tu último guion desde la portada | Captura 8 | `src/components/TarjetaLectura.tsx`; `continuarConEsteGuion` en `src/textos/es.ts` |
 | Te espera y sigue contigo -gráficos en inglés y portugués- | Gráficos | Igual que el gráfico en español de la fase 1 |
+| Sigo en tableta, en horizontal: lectura que avanza, antes de leer y editor con colores | Tabletas de 10 pulgadas 01 a 03 -crudas del emulador, Android 36- | `src/components/TeleprompterView.tsx`, `src/components/EditorView.tsx`; las mismas fuentes de la lectura que siguen la voz |
 
 Lo que no se afirma: ni «sin señal» en una imagen -queda solo en la descripción, con su condición: la voz se baja una vez-, ni precios, ni «gratis», ni Sigo+ en las imágenes. La captura 5 en inglés y portugués es la de español; su texto alternativo lo dice.

@@ -180,15 +180,29 @@ Javier aprobó la fase 1 tal como quedó en `1ec2fd7` y pidió la ficha completa
 - El renglón de arriba arranca en «it» y en «pensar,». Es la misma excepción a la regla del borde que en español, declarada; los de abajo arrancan en el margen.
 - «E segue você.» y no «E segue com você.»: la segunda no cabía antes de la zona libre del botón de reproducir.
 
-**Tabletas -pendiente-:** el comprobador ya exige 24 en `capturas/tableta/<idioma>/{7,10}/01-04.png`. Revisa:
-- 16:9 exacto y horizontal, lados entre 1080 y 7680, RGB sin alfa;
-- el ancho completo de la cruda, sin escalar;
-- sin barra de estado ni de tareas;
-- que solo se corten filas lisas;
-- las cajas excluidas;
-- que no se use Ajustes.
+**Tabletas -12-11-2026, crudas del emulador-:** se entregan **9 de los 24 lugares**: las de 10 pulgadas 01, 02 y 03 de cada idioma, a **2528×1422**. Los otros 15 no se pueden hacer sin romper una regla. No se reemplazaron con otra cruda ni con otro idioma.
+- **Las 12 de 7 pulgadas:** en la cruda de 1920×1200, los íconos de estado llegan hasta la fila 43 y la barra de tareas empieza en la 1088. Entre ambas quedan 1044 filas, y un 16:9 de al menos 1080 de alto no cabe: habría que escalar hacia arriba o dejar una barra del sistema.
+- **Las 6 portadas (04), también las de 10 pulgadas:** en la lista de guiones aparece uno en otro idioma:
+  - en español, «Hi»;
+  - en inglés, «Mi video de hoy»;
+  - en portugués, «My video for today» y «Mi video de hoy».
+  Esa tarjeta empieza 880 filas debajo de la barra de estado, así que ningún 16:9 de al menos 1080 filas la deja fuera.
+  - La tarjeta «Continuar» sí queda entera en las crudas, pero eso no basta.
+- El comprobador vuelve a medir estas dos imposibilidades en las crudas:
+  - alto útil menor de 1080;
+  - ninguna ventana de 1920×1080 entre las barras que esquive la caja del guion.
+  Cada lugar sin entregar aparece como aviso, con su motivo.
+- Crudas: `herramientas/entradas/emulador-1.1/tableta-{10,7}/{es,en,pt}/` y su `LEEME.txt`, copiados tal cual del ZIP (SHA-256 del ZIP `bd4dbcff…5defa7`). Son RGBA de alfa 255 en todos los píxeles: pasarlas a RGB no cambia ningún color.
+- **Cómo se recortan las de 10 pulgadas:**
+  - arriba, la barra de estado -íconos hasta la fila 53- y unas filas lisas de fondo;
+  - abajo, la barra de tareas -desde la fila 1488- y unas filas lisas;
+  - a los lados, 15 o 16 columnas lisas por lado.
+  - Así quedan en 16:9 exacto sin escalar. Las esquinas redondeadas de la ventana dejan ver el color de la barra de tareas, (17, 19, 24), y no queda ni un píxel de ese color dentro.
+  - Orden: 01 ← 4-lectura-avanza, 02 ← 3-antes-de-leer, 03 ← 2-editor-colores. No se usa Ajustes.
+- Lámina: `registro-1.1/lamina-tabletas.png`, con los 24 lugares en el orden de la ficha. La entregada va reducida con su nombre y tamaño; la que no se entrega, como cruda atenuada, con «NO SE ENTREGA» y el motivo.
+- El CSV trae los textos alternativos solo de las 9 entregadas.
 
-El ZIP `adjuntos-grok-tabletas-1.1.zip` no estaba en el equipo de trabajo, así que no hay crudas en `herramientas/entradas/emulador-1.1/` ni salidas.
+> Antes -12-11-2026-: este punto decía «el comprobador ya exige 24 en `capturas/tableta/<idioma>/{7,10}/01-04.png`. Revisa: - 16:9 exacto y horizontal, lados entre 1080 y 7680, RGB sin alfa; - el ancho completo de la cruda, sin escalar; - sin barra de estado ni de tareas; - que solo se corten filas lisas; - las cajas excluidas; - que no se use Ajustes.  El ZIP `adjuntos-grok-tabletas-1.1.zip` no estaba en el equipo de trabajo, así que no hay crudas en `herramientas/entradas/emulador-1.1/` ni salidas.»
 
 **Antes -12-11-2026-:**
 - `armar_ficha.py` y `verificar_ficha.py` leían la ficha 1.0 en `capturas/`, `grafico-*`, `textos-*` y el CSV. Ahora la leen en `historial/ficha-1.0-20261030/`, con las mismas huellas.
@@ -214,7 +228,15 @@ El comprobador de la ficha 1.1 revisa:
 - los límites de los textos;
 - que la breve sea la B y que no se publiquen ni la C ni la de control;
 - que no haya voseo;
-- las tabletas.
+- las tabletas:
+  - los 24 lugares, cada uno entregado o descartado con motivo;
+  - 16:9, de 1080 a 7680, RGB sin alfa;
+  - recorte exacto y sin escala de la cruda de su tamaño, su idioma y su orden;
+  - barras medidas en la cruda, no tomadas de `contenidos.json`;
+  - que no quede ningún píxel del color de la barra de tareas;
+  - que las franjas cortadas sean lisas, ≤ 16 niveles, fuera de ese color;
+  - que no se use Ajustes;
+  - que los descartes sean de verdad imposibles.
 
 ### Crítica de diseño sobre la lámina de 270 px
 
@@ -229,5 +251,18 @@ El comprobador de la ficha 1.1 revisa:
 | 7 | Se ve el menú abierto con los tres idiomas. | Es una pantalla de ajustes, la menos atractiva de la serie. En inglés asoma «Restore purcha…», recortado, sin precio ni Sigo+. |
 | 8 | La tarjeta «Continuar» entera y legible, con Leer y Grabar. | Abajo quedan 271 px de fondo oscuro, el 14,1 %, porque la lista se corta antes del guion de otro idioma. |
 | Gráficos en inglés y portugués | Siguen la dirección aprobada; el titular se lee a 540 px. | Igual que en español: el corte izquierdo en «it» o en «pensar,» rompe la regla del borde, aunque esté declarado. |
+
+**Tabletas, sobre `lamina-tabletas.png`:**
+
+| Tableta de 10 pulgadas | Qué funciona | Qué queda débil |
+| --- | --- | --- |
+| 01, la lectura | El renglón ámbar subrayado se lee bien. | El texto ocupa solo el cuarto de arriba; el resto es negro, salvo el micrófono y el tiempo, chicos, en la esquina. Es la más vacía de las tres. |
+| 02, antes de leer | La mejor: el guion con colores al centro y los controles reales a los lados -Voz, tamaño, Arriba, Auto, Ventana flotante, Más y reproducir-. | Los controles de los lados quedan a pocos píxeles del borde, porque solo había 15 columnas de fondo para cortar a cada lado. |
+| 03, el editor | Las palabras en colores se leen grandes. | La tarjeta del guion sigue bajo el borde inferior, como en la app, y el último renglón queda a 10 px del borde. «Leer / Grabar» flotan encima de un renglón, como en la app. |
+
+- **Faltan las portadas y todas las de 7 pulgadas.** Para tenerlas hay que sacar crudas nuevas en el emulador:
+  - portadas solo con guiones del mismo idioma;
+  - en 7 pulgadas, una pantalla con al menos 1080 filas útiles, por ejemplo con la barra de tareas oculta o en modo de gestos.
+- Mientras tanto, en Play, cada idioma tendría 3 capturas de tableta de 10 pulgadas y ninguna de 7. Google pide al menos 4 para pantallas grandes (answer/9866151).
 
 **Orden:** se mantiene 1 a 8. La 7 es la más floja y podría ir al final si se sacara la 3 portuguesa.
