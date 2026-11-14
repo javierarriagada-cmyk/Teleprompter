@@ -279,7 +279,13 @@ def comprobar_ficha_11():
             # 12-11-2026, t170u: una captura puede traer sus propias crudas -la 5 en inglés y portugués usa las de español-.
             rs = [recorte_fiel(final, c.get('crudas', crudas), r, nombre) for r in c['recortes']]
             # 14-11-2026, t171u: en la 5, el video de arriba es 05-b -boca cerrada-, no 05-a -hablando, con la boca abierta-.
-            if c['n'] == 5 and any(r['cruda'].startswith('05-subtitulos-a') for r in c['recortes']): errores.append('La 5 usa 05-a, con la boca abierta: '+nombre)
+            # Antes -14-11-2026-: la regla era «if c['n'] == 5 and any(r['cruda'].startswith('05-subtitulos-a') for r in c['recortes'])».
+            # Ahora -t177u-: Javier no quiso 05-b; el video de arriba es el cuadro que mandó, 05-subtitulos-e-cuadro-video-javier.png,
+            # con su huella, y el panel sigue siendo 05-d.
+            if c['n'] == 5:
+                CUADRO5 = ('05-subtitulos-e-cuadro-video-javier.png', '5b94bc33d33cb8b380a3691cd6cb4d44d87c934ae426a025792865cebba573de')
+                if [r['cruda'] for r in c['recortes']] != [CUADRO5[0], '05-subtitulos-d-visor-guardar-agrupado.png']: errores.append('La 5 no usa el cuadro de Javier arriba y 05-d abajo: '+nombre)
+                elif sha(SOURCE/c.get('crudas', crudas)/CUADRO5[0]) != CUADRO5[1]: errores.append('El cuadro de Javier de la 5 no es el que mandó -huella distinta-: '+nombre)
             if c.get('zona_igual'):
                 # La zona de la captura -la unión de las cajas de destino de los recortes- tiene que ser, píxel por píxel, la de la
                 # pieza de referencia; y fuera de esa zona, del logo y de las cajas de texto, solo el fondo liso: ninguna palabra en

@@ -164,24 +164,25 @@
     "es-419/05": {
       "recortes": [
         {
-          "cruda": "05-subtitulos-b-video-guardado.png",
+          "cruda": "05-subtitulos-e-cuadro-video-javier.png",
           "recorte_cruda": [
-            130,
-            700,
-            1090,
-            1760
+            0,
+            463,
+            842,
+            1520
           ],
-          "ancho_recorte": 960,
-          "alto_recorte": 1060,
-          "escala": 0.7104,
+          "ancho_recorte": 842,
+          "alto_recorte": 1057,
+          "escala": 0.7126,
           "caja": [
-            199,
+            240,
             480,
-            682,
+            600,
             753
           ],
-          "margen_texto_app": 160,
-          "motivo_escala": "Javier -t171u-: en 05-a se ve hablando, con la boca abierta; 05-b es el mismo video a 0:04, con la boca cerrada. Mismo recorte, escala y posición que la 5 de la fase 1. Antes -14-11-2026-: «05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u.»"
+          "margen_texto_app": 130,
+          "motivo_escala": "Javier -t177u- aprobó este cuadro y la prueba: todo el ancho de la cruda -842 px, de borde a borde, sin cortar el subtítulo, que va de la columna 130 a la 709-, reducido a 0,713× para que entren enteros el pelo -desde la fila 479- y el subtítulo -hasta la fila 1503- en 753 de alto, el mismo alto de antes. La prueba aprobada empezaba en la fila 468; se bajó a 463 para dejar el mismo aire arriba del pelo -16 filas- que bajo el subtítulo -17-, que quedaba a 15 px del panel.",
+          "origen_cruda": "Cuadro del video exportado por Sigo, de la misma sesión de grabación que 05-a a 05-d, según Javier. Lo mandó Javier por el chat el 14-11-2026 -t177u-; copiado tal cual, PNG de 842×1869, RGB."
         },
         {
           "cruda": "05-subtitulos-d-visor-guardar-agrupado.png",
@@ -261,28 +262,28 @@
         }
       ],
       "texto_pct": 7.52,
-      "interfaz_pct": 60.55,
+      "interfaz_pct": 57.57,
       "ancho_recorte_max": 1108,
-      "escala_min": 0.7104,
+      "escala_min": 0.7126,
       "cara": true,
       "cara_medida": {
-        "cruda": "05-subtitulos-b-video-guardado.png",
+        "cruda": "05-subtitulos-e-cuadro-video-javier.png",
         "caja_cruda": [
-          400,
-          720,
-          850,
-          1310
+          210,
+          470,
+          710,
+          1115
         ],
         "cajas_captura": [
           [
-            391,
-            494,
-            710,
-            913
+            390,
+            485,
+            746,
+            945
           ]
         ],
-        "pct_captura": 6.45,
-        "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda 05-b con una rejilla de 50 px y comprobado dibujándolo encima. Antes -14-11-2026-: la caja era [390, 720, 840, 1320], sobre 05-a."
+        "pct_captura": 7.9,
+        "metodo": "Rectángulo que encierra la cabeza entera -del pelo, fila 479, a la punta de la barba, y de los mechones de la izquierda a los de la derecha-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima. Antes -14-11-2026-: la caja era [400, 720, 850, 1310], sobre 05-b; antes de t171u, [390, 720, 840, 1320], sobre 05-a."
       },
       "franja_vacia_max": {
         "alto_px": 63,
@@ -1004,24 +1005,25 @@
     "en-US/05": {
       "recortes": [
         {
-          "cruda": "05-subtitulos-b-video-guardado.png",
+          "cruda": "05-subtitulos-e-cuadro-video-javier.png",
           "recorte_cruda": [
-            130,
-            700,
-            1090,
-            1760
+            0,
+            463,
+            842,
+            1520
           ],
-          "ancho_recorte": 960,
-          "alto_recorte": 1060,
-          "escala": 0.7104,
+          "ancho_recorte": 842,
+          "alto_recorte": 1057,
+          "escala": 0.7126,
           "caja": [
-            199,
+            240,
             480,
-            682,
+            600,
             753
           ],
-          "margen_texto_app": 160,
-          "motivo_escala": "Javier -t171u-: en 05-a se ve hablando, con la boca abierta; 05-b es el mismo video a 0:04, con la boca cerrada. Mismo recorte, escala y posición que la 5 de la fase 1. Antes -14-11-2026-: «05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u.»"
+          "margen_texto_app": 130,
+          "motivo_escala": "Javier -t177u- aprobó este cuadro y la prueba: todo el ancho de la cruda -842 px, de borde a borde, sin cortar el subtítulo, que va de la columna 130 a la 709-, reducido a 0,713× para que entren enteros el pelo -desde la fila 479- y el subtítulo -hasta la fila 1503- en 753 de alto, el mismo alto de antes. La prueba aprobada empezaba en la fila 468; se bajó a 463 para dejar el mismo aire arriba del pelo -16 filas- que bajo el subtítulo -17-, que quedaba a 15 px del panel.",
+          "origen_cruda": "Cuadro del video exportado por Sigo, de la misma sesión de grabación que 05-a a 05-d, según Javier. Lo mandó Javier por el chat el 14-11-2026 -t177u-; copiado tal cual, PNG de 842×1869, RGB."
         },
         {
           "cruda": "05-subtitulos-d-visor-guardar-agrupado.png",
@@ -1101,18 +1103,18 @@
         }
       ],
       "texto_pct": 8.1,
-      "interfaz_pct": 60.55,
+      "interfaz_pct": 57.57,
       "ancho_recorte_max": 1108,
-      "escala_min": 0.7104,
+      "escala_min": 0.7126,
       "cara": true,
       "zona_igual": {
         "referencia": "capturas/es-419/05.png",
         "nota": "Javier -t170u y t171u-: la captura es la de español, píxel por píxel -la app se ve en español-. Solo cambian el titular y la bajada, con el mismo tamaño, lugar y letra que en español. Zona de la captura: la unión de las cajas de destino de los recortes.",
         "cajas": [
           [
-            199,
+            240,
             480,
-            682,
+            600,
             753
           ],
           [
@@ -1125,23 +1127,23 @@
         "igual": true
       },
       "cara_medida": {
-        "cruda": "05-subtitulos-b-video-guardado.png",
+        "cruda": "05-subtitulos-e-cuadro-video-javier.png",
         "caja_cruda": [
-          400,
-          720,
-          850,
-          1310
+          210,
+          470,
+          710,
+          1115
         ],
         "cajas_captura": [
           [
-            391,
-            494,
-            710,
-            913
+            390,
+            485,
+            746,
+            945
           ]
         ],
-        "pct_captura": 6.45,
-        "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda 05-b con una rejilla de 50 px y comprobado dibujándolo encima. Antes -14-11-2026-: la caja era [390, 720, 840, 1320], sobre 05-a."
+        "pct_captura": 7.9,
+        "metodo": "Rectángulo que encierra la cabeza entera -del pelo, fila 479, a la punta de la barba, y de los mechones de la izquierda a los de la derecha-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima. Antes -14-11-2026-: la caja era [400, 720, 850, 1310], sobre 05-b; antes de t171u, [390, 720, 840, 1320], sobre 05-a."
       },
       "franja_vacia_max": {
         "alto_px": 63,
@@ -1885,24 +1887,25 @@
     "pt-BR/05": {
       "recortes": [
         {
-          "cruda": "05-subtitulos-b-video-guardado.png",
+          "cruda": "05-subtitulos-e-cuadro-video-javier.png",
           "recorte_cruda": [
-            130,
-            700,
-            1090,
-            1760
+            0,
+            463,
+            842,
+            1520
           ],
-          "ancho_recorte": 960,
-          "alto_recorte": 1060,
-          "escala": 0.7104,
+          "ancho_recorte": 842,
+          "alto_recorte": 1057,
+          "escala": 0.7126,
           "caja": [
-            199,
+            240,
             480,
-            682,
+            600,
             753
           ],
-          "margen_texto_app": 160,
-          "motivo_escala": "Javier -t171u-: en 05-a se ve hablando, con la boca abierta; 05-b es el mismo video a 0:04, con la boca cerrada. Mismo recorte, escala y posición que la 5 de la fase 1. Antes -14-11-2026-: «05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u.»"
+          "margen_texto_app": 130,
+          "motivo_escala": "Javier -t177u- aprobó este cuadro y la prueba: todo el ancho de la cruda -842 px, de borde a borde, sin cortar el subtítulo, que va de la columna 130 a la 709-, reducido a 0,713× para que entren enteros el pelo -desde la fila 479- y el subtítulo -hasta la fila 1503- en 753 de alto, el mismo alto de antes. La prueba aprobada empezaba en la fila 468; se bajó a 463 para dejar el mismo aire arriba del pelo -16 filas- que bajo el subtítulo -17-, que quedaba a 15 px del panel.",
+          "origen_cruda": "Cuadro del video exportado por Sigo, de la misma sesión de grabación que 05-a a 05-d, según Javier. Lo mandó Javier por el chat el 14-11-2026 -t177u-; copiado tal cual, PNG de 842×1869, RGB."
         },
         {
           "cruda": "05-subtitulos-d-visor-guardar-agrupado.png",
@@ -1982,18 +1985,18 @@
         }
       ],
       "texto_pct": 8.57,
-      "interfaz_pct": 60.55,
+      "interfaz_pct": 57.57,
       "ancho_recorte_max": 1108,
-      "escala_min": 0.7104,
+      "escala_min": 0.7126,
       "cara": true,
       "zona_igual": {
         "referencia": "capturas/es-419/05.png",
         "nota": "Javier -t170u y t171u-: la captura es la de español, píxel por píxel -la app se ve en español-. Solo cambian el titular y la bajada, con el mismo tamaño, lugar y letra que en español. Zona de la captura: la unión de las cajas de destino de los recortes.",
         "cajas": [
           [
-            199,
+            240,
             480,
-            682,
+            600,
             753
           ],
           [
@@ -2006,23 +2009,23 @@
         "igual": true
       },
       "cara_medida": {
-        "cruda": "05-subtitulos-b-video-guardado.png",
+        "cruda": "05-subtitulos-e-cuadro-video-javier.png",
         "caja_cruda": [
-          400,
-          720,
-          850,
-          1310
+          210,
+          470,
+          710,
+          1115
         ],
         "cajas_captura": [
           [
-            391,
-            494,
-            710,
-            913
+            390,
+            485,
+            746,
+            945
           ]
         ],
-        "pct_captura": 6.45,
-        "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda 05-b con una rejilla de 50 px y comprobado dibujándolo encima. Antes -14-11-2026-: la caja era [390, 720, 840, 1320], sobre 05-a."
+        "pct_captura": 7.9,
+        "metodo": "Rectángulo que encierra la cabeza entera -del pelo, fila 479, a la punta de la barba, y de los mechones de la izquierda a los de la derecha-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima. Antes -14-11-2026-: la caja era [400, 720, 850, 1310], sobre 05-b; antes de t171u, [390, 720, 840, 1320], sobre 05-a."
       },
       "franja_vacia_max": {
         "alto_px": 60,

@@ -310,7 +310,9 @@ def armar_ficha_11():
         dx,dy=r['destino']
         if dx<0 or dy<0 or dx+p.width>im.width or dy+p.height>im.height:raise ValueError('El recorte se sale de la imagen: '+nombre)
         im.paste(p,(dx,dy))
-        extra={k:r[k] for k in ('margen_texto_app','motivo_escala','excepcion_borde','excluye') if k in r}
+        # 14-11-2026, t177u: «origen_cruda» dice de dónde llegó una cruda que no vino en los ZIP -el cuadro que mandó Javier por el chat-.
+        # Antes -14-11-2026-: extra tomaba solo margen_texto_app, motivo_escala, excepcion_borde y excluye.
+        extra={k:r[k] for k in ('margen_texto_app','motivo_escala','excepcion_borde','excluye','origen_cruda') if k in r}
         procedencia.append(dict(imagen=nombre,cruda=src.relative_to(REPO).as_posix(),sha256_cruda=sha(src),recorte_cruda=[x0,y0,x1,y1],
             caja_destino=[dx,dy,p.width,alto],escala=round(escala,4),parte=r['parte'],
             tratamiento='Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.',**extra))

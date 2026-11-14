@@ -95,25 +95,26 @@
   },
   {
     "imagen": "capturas/es-419/05.png",
-    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-b-video-guardado.png",
-    "sha256_cruda": "fdb820d37c6f2a4f6d9f2e63e4f55576b5a70e3fd0e7ee23ece043de3c1817f0",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-e-cuadro-video-javier.png",
+    "sha256_cruda": "5b94bc33d33cb8b380a3691cd6cb4d44d87c934ae426a025792865cebba573de",
     "recorte_cruda": [
-      130,
-      700,
-      1090,
-      1760
+      0,
+      463,
+      842,
+      1520
     ],
     "caja_destino": [
-      199,
+      240,
       480,
-      682,
+      600,
       753
     ],
-    "escala": 0.7104,
-    "parte": "video guardado a 0:04 con subtítulos rojos palabra por palabra -«forma» resaltado-; la cara entera y chica, con la boca cerrada",
+    "escala": 0.7126,
+    "parte": "cuadro del video guardado con el subtítulo «Y cuando retomo, sigue / conmigo hasta el final.» -«final» en rojo-; la cara entera, con la boca cerrada",
     "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
-    "margen_texto_app": 160,
-    "motivo_escala": "Javier -t171u-: en 05-a se ve hablando, con la boca abierta; 05-b es el mismo video a 0:04, con la boca cerrada. Mismo recorte, escala y posición que la 5 de la fase 1. Antes -14-11-2026-: «05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u.»"
+    "margen_texto_app": 130,
+    "motivo_escala": "Javier -t177u- aprobó este cuadro y la prueba: todo el ancho de la cruda -842 px, de borde a borde, sin cortar el subtítulo, que va de la columna 130 a la 709-, reducido a 0,713× para que entren enteros el pelo -desde la fila 479- y el subtítulo -hasta la fila 1503- en 753 de alto, el mismo alto de antes. La prueba aprobada empezaba en la fila 468; se bajó a 463 para dejar el mismo aire arriba del pelo -16 filas- que bajo el subtítulo -17-, que quedaba a 15 px del panel.",
+    "origen_cruda": "Cuadro del video exportado por Sigo, de la misma sesión de grabación que 05-a a 05-d, según Javier. Lo mandó Javier por el chat el 14-11-2026 -t177u-; copiado tal cual, PNG de 842×1869, RGB."
   },
   {
     "imagen": "capturas/es-419/05.png",
@@ -465,25 +466,26 @@
   },
   {
     "imagen": "capturas/en-US/05.png",
-    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-b-video-guardado.png",
-    "sha256_cruda": "fdb820d37c6f2a4f6d9f2e63e4f55576b5a70e3fd0e7ee23ece043de3c1817f0",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-e-cuadro-video-javier.png",
+    "sha256_cruda": "5b94bc33d33cb8b380a3691cd6cb4d44d87c934ae426a025792865cebba573de",
     "recorte_cruda": [
-      130,
-      700,
-      1090,
-      1760
+      0,
+      463,
+      842,
+      1520
     ],
     "caja_destino": [
-      199,
+      240,
       480,
-      682,
+      600,
       753
     ],
-    "escala": 0.7104,
-    "parte": "video guardado a 0:04 con subtítulos rojos palabra por palabra -«forma» resaltado-; la cara entera y chica, con la boca cerrada",
+    "escala": 0.7126,
+    "parte": "cuadro del video guardado con el subtítulo «Y cuando retomo, sigue / conmigo hasta el final.» -«final» en rojo-; la cara entera, con la boca cerrada",
     "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
-    "margen_texto_app": 160,
-    "motivo_escala": "Javier -t171u-: en 05-a se ve hablando, con la boca abierta; 05-b es el mismo video a 0:04, con la boca cerrada. Mismo recorte, escala y posición que la 5 de la fase 1. Antes -14-11-2026-: «05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u.»"
+    "margen_texto_app": 130,
+    "motivo_escala": "Javier -t177u- aprobó este cuadro y la prueba: todo el ancho de la cruda -842 px, de borde a borde, sin cortar el subtítulo, que va de la columna 130 a la 709-, reducido a 0,713× para que entren enteros el pelo -desde la fila 479- y el subtítulo -hasta la fila 1503- en 753 de alto, el mismo alto de antes. La prueba aprobada empezaba en la fila 468; se bajó a 463 para dejar el mismo aire arriba del pelo -16 filas- que bajo el subtítulo -17-, que quedaba a 15 px del panel.",
+    "origen_cruda": "Cuadro del video exportado por Sigo, de la misma sesión de grabación que 05-a a 05-d, según Javier. Lo mandó Javier por el chat el 14-11-2026 -t177u-; copiado tal cual, PNG de 842×1869, RGB."
   },
   {
     "imagen": "capturas/en-US/05.png",
@@ -926,25 +928,26 @@
   },
   {
     "imagen": "capturas/pt-BR/05.png",
-    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-b-video-guardado.png",
-    "sha256_cruda": "fdb820d37c6f2a4f6d9f2e63e4f55576b5a70e3fd0e7ee23ece043de3c1817f0",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-e-cuadro-video-javier.png",
+    "sha256_cruda": "5b94bc33d33cb8b380a3691cd6cb4d44d87c934ae426a025792865cebba573de",
     "recorte_cruda": [
-      130,
-      700,
-      1090,
-      1760
+      0,
+      463,
+      842,
+      1520
     ],
     "caja_destino": [
-      199,
+      240,
       480,
-      682,
+      600,
       753
     ],
-    "escala": 0.7104,
-    "parte": "video guardado a 0:04 con subtítulos rojos palabra por palabra -«forma» resaltado-; la cara entera y chica, con la boca cerrada",
+    "escala": 0.7126,
+    "parte": "cuadro del video guardado con el subtítulo «Y cuando retomo, sigue / conmigo hasta el final.» -«final» en rojo-; la cara entera, con la boca cerrada",
     "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
-    "margen_texto_app": 160,
-    "motivo_escala": "Javier -t171u-: en 05-a se ve hablando, con la boca abierta; 05-b es el mismo video a 0:04, con la boca cerrada. Mismo recorte, escala y posición que la 5 de la fase 1. Antes -14-11-2026-: «05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u.»"
+    "margen_texto_app": 130,
+    "motivo_escala": "Javier -t177u- aprobó este cuadro y la prueba: todo el ancho de la cruda -842 px, de borde a borde, sin cortar el subtítulo, que va de la columna 130 a la 709-, reducido a 0,713× para que entren enteros el pelo -desde la fila 479- y el subtítulo -hasta la fila 1503- en 753 de alto, el mismo alto de antes. La prueba aprobada empezaba en la fila 468; se bajó a 463 para dejar el mismo aire arriba del pelo -16 filas- que bajo el subtítulo -17-, que quedaba a 15 px del panel.",
+    "origen_cruda": "Cuadro del video exportado por Sigo, de la misma sesión de grabación que 05-a a 05-d, según Javier. Lo mandó Javier por el chat el 14-11-2026 -t177u-; copiado tal cual, PNG de 842×1869, RGB."
   },
   {
     "imagen": "capturas/pt-BR/05.png",
