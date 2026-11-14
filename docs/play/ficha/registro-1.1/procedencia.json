@@ -95,9 +95,57 @@
   },
   {
     "imagen": "capturas/es-419/05.png",
-    "copia_de": "direccion-1.1/capturas/es-419/05.png",
-    "sha256": "6d819e7a82df90daa16e927d5ea11fcc5545958b48a4abecc8a6b1877c67ef14",
-    "tratamiento": "Copia byte a byte de la pieza aprobada en la fase 1 -t169u-."
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-b-video-guardado.png",
+    "sha256_cruda": "fdb820d37c6f2a4f6d9f2e63e4f55576b5a70e3fd0e7ee23ece043de3c1817f0",
+    "recorte_cruda": [
+      130,
+      700,
+      1090,
+      1760
+    ],
+    "caja_destino": [
+      199,
+      480,
+      682,
+      753
+    ],
+    "escala": 0.7104,
+    "parte": "video guardado a 0:04 con subtítulos rojos palabra por palabra -«forma» resaltado-; la cara entera y chica, con la boca cerrada",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 160,
+    "motivo_escala": "Javier -t171u-: en 05-a se ve hablando, con la boca abierta; 05-b es el mismo video a 0:04, con la boca cerrada. Mismo recorte, escala y posición que la 5 de la fase 1. Antes -14-11-2026-: «05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u.»"
+  },
+  {
+    "imagen": "capturas/es-419/05.png",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-d-visor-guardar-agrupado.png",
+    "sha256_cruda": "abd0fdc36ca8c237b1f2ee597ef7b68d3a1f92df4461be60f298a7aaa1a987b3",
+    "recorte_cruda": [
+      56,
+      1830,
+      1164,
+      2535
+    ],
+    "caja_destino": [
+      0,
+      1233,
+      1080,
+      687
+    ],
+    "escala": 0.9747,
+    "parte": "control que produce los subtítulos: «Subtítulos Rojo», «Filtro Natural», «Guardar» y «Guardar y compartir»",
+    "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
+    "margen_texto_app": 90,
+    "motivo_escala": "El panel entero de 05-d, de borde a borde, para que «Subtítulos Rojo» y los dos botones de guardar entren sin cortar."
+  },
+  {
+    "imagen": "capturas/es-419/05.png",
+    "textos": [
+      "Tu video,",
+      "con subtítulos.",
+      "Con las palabras de tu guion, al ritmo de tu voz."
+    ],
+    "logo": "docs/play/ficha/herramientas/entradas/composicion/marca-oscura.png",
+    "fondo": "#F0EAE4"
   },
   {
     "imagen": "capturas/es-419/06.png",
@@ -417,8 +465,8 @@
   },
   {
     "imagen": "capturas/en-US/05.png",
-    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-a-video-guardado.png",
-    "sha256_cruda": "5df9ad9dc0b49590fce648fd34bf31f1156f22e6b4c080fa74ce49911bc7586f",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-b-video-guardado.png",
+    "sha256_cruda": "fdb820d37c6f2a4f6d9f2e63e4f55576b5a70e3fd0e7ee23ece043de3c1817f0",
     "recorte_cruda": [
       130,
       700,
@@ -432,10 +480,10 @@
       753
     ],
     "escala": 0.7104,
-    "parte": "video guardado con subtítulos rojos palabra por palabra -«algo» resaltado-; la cara entera y chica",
+    "parte": "video guardado a 0:04 con subtítulos rojos palabra por palabra -«forma» resaltado-; la cara entera y chica, con la boca cerrada",
     "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
     "margen_texto_app": 160,
-    "motivo_escala": "05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u."
+    "motivo_escala": "Javier -t171u-: en 05-a se ve hablando, con la boca abierta; 05-b es el mismo video a 0:04, con la boca cerrada. Mismo recorte, escala y posición que la 5 de la fase 1. Antes -14-11-2026-: «05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u.»"
   },
   {
     "imagen": "capturas/en-US/05.png",
@@ -878,8 +926,8 @@
   },
   {
     "imagen": "capturas/pt-BR/05.png",
-    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-a-video-guardado.png",
-    "sha256_cruda": "5df9ad9dc0b49590fce648fd34bf31f1156f22e6b4c080fa74ce49911bc7586f",
+    "cruda": "docs/play/ficha/herramientas/entradas/motorola-1.1/es/05-subtitulos-b-video-guardado.png",
+    "sha256_cruda": "fdb820d37c6f2a4f6d9f2e63e4f55576b5a70e3fd0e7ee23ece043de3c1817f0",
     "recorte_cruda": [
       130,
       700,
@@ -893,10 +941,10 @@
       753
     ],
     "escala": 0.7104,
-    "parte": "video guardado con subtítulos rojos palabra por palabra -«algo» resaltado-; la cara entera y chica",
+    "parte": "video guardado a 0:04 con subtítulos rojos palabra por palabra -«forma» resaltado-; la cara entera y chica, con la boca cerrada",
     "tratamiento": "Recorte y escala proporcional LANCZOS -o sin escala, si la escala es 1-. Sin retoque, sin marco y sin tapar nada; la barra de estado queda fuera del recorte.",
     "margen_texto_app": 160,
-    "motivo_escala": "05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u."
+    "motivo_escala": "Javier -t171u-: en 05-a se ve hablando, con la boca abierta; 05-b es el mismo video a 0:04, con la boca cerrada. Mismo recorte, escala y posición que la 5 de la fase 1. Antes -14-11-2026-: «05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u.»"
   },
   {
     "imagen": "capturas/pt-BR/05.png",

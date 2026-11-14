@@ -162,7 +162,136 @@
       }
     },
     "es-419/05": {
-      "aprobada": "direccion-1.1/capturas/es-419/05.png"
+      "recortes": [
+        {
+          "cruda": "05-subtitulos-b-video-guardado.png",
+          "recorte_cruda": [
+            130,
+            700,
+            1090,
+            1760
+          ],
+          "ancho_recorte": 960,
+          "alto_recorte": 1060,
+          "escala": 0.7104,
+          "caja": [
+            199,
+            480,
+            682,
+            753
+          ],
+          "margen_texto_app": 160,
+          "motivo_escala": "Javier -t171u-: en 05-a se ve hablando, con la boca abierta; 05-b es el mismo video a 0:04, con la boca cerrada. Mismo recorte, escala y posición que la 5 de la fase 1. Antes -14-11-2026-: «05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u.»"
+        },
+        {
+          "cruda": "05-subtitulos-d-visor-guardar-agrupado.png",
+          "recorte_cruda": [
+            56,
+            1830,
+            1164,
+            2535
+          ],
+          "ancho_recorte": 1108,
+          "alto_recorte": 705,
+          "escala": 0.9747,
+          "caja": [
+            0,
+            1233,
+            1080,
+            687
+          ],
+          "margen_texto_app": 90,
+          "motivo_escala": "El panel entero de 05-d, de borde a borde, para que «Subtítulos Rojo» y los dos botones de guardar entren sin cortar."
+        }
+      ],
+      "cajas_texto": [
+        {
+          "que": "logo",
+          "caja": [
+            66,
+            60,
+            118,
+            60
+          ]
+        },
+        {
+          "que": "Tu video,",
+          "caja": [
+            62,
+            179,
+            449,
+            108
+          ],
+          "tinta": [
+            66,
+            183,
+            507,
+            283
+          ]
+        },
+        {
+          "que": "con subtítulos.",
+          "caja": [
+            62,
+            295,
+            726,
+            93
+          ],
+          "tinta": [
+            66,
+            299,
+            784,
+            384
+          ]
+        },
+        {
+          "que": "Con las palabras de tu guion, al ritmo de tu voz.",
+          "caja": [
+            64,
+            415,
+            766,
+            43
+          ],
+          "tinta": [
+            68,
+            419,
+            826,
+            454
+          ]
+        }
+      ],
+      "texto_pct": 7.52,
+      "interfaz_pct": 60.55,
+      "ancho_recorte_max": 1108,
+      "escala_min": 0.7104,
+      "cara": true,
+      "cara_medida": {
+        "cruda": "05-subtitulos-b-video-guardado.png",
+        "caja_cruda": [
+          400,
+          720,
+          850,
+          1310
+        ],
+        "cajas_captura": [
+          [
+            391,
+            494,
+            710,
+            913
+          ]
+        ],
+        "pct_captura": 6.45,
+        "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda 05-b con una rejilla de 50 px y comprobado dibujándolo encima. Antes -14-11-2026-: la caja era [390, 720, 840, 1320], sobre 05-a."
+      },
+      "franja_vacia_max": {
+        "alto_px": 63,
+        "pct_alto": 3.28,
+        "filas": [
+          120,
+          183
+        ]
+      }
     },
     "es-419/06": {
       "recortes": [
@@ -875,7 +1004,7 @@
     "en-US/05": {
       "recortes": [
         {
-          "cruda": "05-subtitulos-a-video-guardado.png",
+          "cruda": "05-subtitulos-b-video-guardado.png",
           "recorte_cruda": [
             130,
             700,
@@ -892,7 +1021,7 @@
             753
           ],
           "margen_texto_app": 160,
-          "motivo_escala": "05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u."
+          "motivo_escala": "Javier -t171u-: en 05-a se ve hablando, con la boca abierta; 05-b es el mismo video a 0:04, con la boca cerrada. Mismo recorte, escala y posición que la 5 de la fase 1. Antes -14-11-2026-: «05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u.»"
         },
         {
           "cruda": "05-subtitulos-d-visor-guardar-agrupado.png",
@@ -978,7 +1107,7 @@
       "cara": true,
       "zona_igual": {
         "referencia": "capturas/es-419/05.png",
-        "nota": "Javier -t170u-: la captura es la de español, píxel por píxel -la app se ve en español-. Solo cambian el titular y la bajada, con el mismo tamaño, lugar y letra que en español. Zona de la captura: la unión de las cajas de destino de los recortes.",
+        "nota": "Javier -t170u y t171u-: la captura es la de español, píxel por píxel -la app se ve en español-. Solo cambian el titular y la bajada, con el mismo tamaño, lugar y letra que en español. Zona de la captura: la unión de las cajas de destino de los recortes.",
         "cajas": [
           [
             199,
@@ -996,23 +1125,23 @@
         "igual": true
       },
       "cara_medida": {
-        "cruda": "05-subtitulos-a-video-guardado.png",
+        "cruda": "05-subtitulos-b-video-guardado.png",
         "caja_cruda": [
-          390,
+          400,
           720,
-          840,
-          1320
+          850,
+          1310
         ],
         "cajas_captura": [
           [
-            384,
+            391,
             494,
-            703,
-            920
+            710,
+            913
           ]
         ],
-        "pct_captura": 6.55,
-        "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima."
+        "pct_captura": 6.45,
+        "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda 05-b con una rejilla de 50 px y comprobado dibujándolo encima. Antes -14-11-2026-: la caja era [390, 720, 840, 1320], sobre 05-a."
       },
       "franja_vacia_max": {
         "alto_px": 63,
@@ -1756,7 +1885,7 @@
     "pt-BR/05": {
       "recortes": [
         {
-          "cruda": "05-subtitulos-a-video-guardado.png",
+          "cruda": "05-subtitulos-b-video-guardado.png",
           "recorte_cruda": [
             130,
             700,
@@ -1773,7 +1902,7 @@
             753
           ],
           "margen_texto_app": 160,
-          "motivo_escala": "05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u."
+          "motivo_escala": "Javier -t171u-: en 05-a se ve hablando, con la boca abierta; 05-b es el mismo video a 0:04, con la boca cerrada. Mismo recorte, escala y posición que la 5 de la fase 1. Antes -14-11-2026-: «05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u.»"
         },
         {
           "cruda": "05-subtitulos-d-visor-guardar-agrupado.png",
@@ -1859,7 +1988,7 @@
       "cara": true,
       "zona_igual": {
         "referencia": "capturas/es-419/05.png",
-        "nota": "Javier -t170u-: la captura es la de español, píxel por píxel -la app se ve en español-. Solo cambian el titular y la bajada, con el mismo tamaño, lugar y letra que en español. Zona de la captura: la unión de las cajas de destino de los recortes.",
+        "nota": "Javier -t170u y t171u-: la captura es la de español, píxel por píxel -la app se ve en español-. Solo cambian el titular y la bajada, con el mismo tamaño, lugar y letra que en español. Zona de la captura: la unión de las cajas de destino de los recortes.",
         "cajas": [
           [
             199,
@@ -1877,23 +2006,23 @@
         "igual": true
       },
       "cara_medida": {
-        "cruda": "05-subtitulos-a-video-guardado.png",
+        "cruda": "05-subtitulos-b-video-guardado.png",
         "caja_cruda": [
-          390,
+          400,
           720,
-          840,
-          1320
+          850,
+          1310
         ],
         "cajas_captura": [
           [
-            384,
+            391,
             494,
-            703,
-            920
+            710,
+            913
           ]
         ],
-        "pct_captura": 6.55,
-        "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima."
+        "pct_captura": 6.45,
+        "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda 05-b con una rejilla de 50 px y comprobado dibujándolo encima. Antes -14-11-2026-: la caja era [390, 720, 840, 1320], sobre 05-a."
       },
       "franja_vacia_max": {
         "alto_px": 60,

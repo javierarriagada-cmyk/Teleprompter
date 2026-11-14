@@ -157,13 +157,16 @@ Javier aprobó la fase 1 tal como quedó en `1ec2fd7` y pidió la ficha completa
 - Textos, cajas y recortes: `contenidos.json`, clave `ficha-1.1`, agregada al final, después de `direccion-1.1`. La parte aprobada del 30-10 sigue idéntica byte a byte.
 
 **Decisiones de Javier aplicadas:**
-- Capturas 1, 2, 3 y 5 en español y gráfico en español: las de la fase 1, copiadas byte a byte. El gráfico empieza en «pensar,».
+- Capturas 1, 2 y 3 en español y gráfico en español: las de la fase 1, copiadas byte a byte. El gráfico empieza en «pensar,».
+- Captura 5, en los tres idiomas -t171u, 14-11-2026-: el video de arriba sale ahora de `05-subtitulos-b-video-guardado.png`, el mismo video a 0:04, con la boca cerrada y «forma» en rojo en «Hoy te quiero mostrar algo que me cambió la forma de grabar.». Mismo recorte -[130, 700, 1090, 1760]-, escala -0,710×- y posición -[199, 480]- que en la fase 1; el panel de 05-d queda igual. En 05-a se veía hablando, con la boca abierta. La 5 en español ya no es la copia de la fase 1: se arma igual que en inglés y portugués, con el titular y la bajada de la fase 1. La cara, medida con una caja nueva sobre 05-b -[400, 720, 850, 1310]-, ocupa el 6,45 %. El comprobador falla si una 5 vuelve a usar 05-a.
+
+  > Antes -14-11-2026-: «Capturas 1, 2, 3 y 5 en español y gráfico en español: las de la fase 1, copiadas byte a byte. El gráfico empieza en «pensar,».»
 - Breve B en los tres idiomas. La C queda guardada; la de control no se publica.
 - 3 en inglés: `en/03-flotante-a`, que no trae la fila en español.
 - 5 en inglés y portugués -t170u-: la captura es la de español, píxel por píxel, y solo cambian el titular y la bajada, con el mismo tamaño, lugar y letra:
   - inglés: «Your video, / with subtitles.» y «With the words from your script, in time with your voice.»;
   - portugués: «Seu vídeo, / com legendas.» y «Com as palavras do seu roteiro, no ritmo da sua voz.».
-  - Se arma con los mismos dos recortes de las crudas en español -`motorola-1.1/es`, 05-a y 05-d- y se comprueba que la zona de la captura sea igual a `capturas/es-419/05.png`; dentro de la app se sigue viendo español -«Subtítulos Rojo», «Guardar»- y el texto alternativo lo dice.
+  - Se arma con los mismos dos recortes de las crudas en español -`motorola-1.1/es`, 05-b y 05-d; antes -14-11-2026-: «05-a y 05-d»- y se comprueba que la zona de la captura sea igual a `capturas/es-419/05.png`; dentro de la app se sigue viendo español -«Subtítulos Rojo», «Guardar»- y el texto alternativo lo dice.
 
   > Antes -12-11-2026-: «5 en inglés y portugués: la misma 05 aprobada en español. **Ojo:** su titular -«Tu video, con subtítulos.»- y el panel están en español dentro de las fichas en inglés y portugués. El texto alternativo lo dice.»
 - 3 en portugués: la ventana recortada por encima de «Pausa / Volver a Sigo». Va a sangre por abajo y por la derecha. Los renglones salen enteros y no queda ni una línea de la fila en español: la caja de esa fila está declarada en `excluye`, y el generador y el comprobador fallan si el recorte la toca. El botón rojo de grabar queda fuera; la cámara se reconoce por el tiempo rojo 00:30. Si a Javier le parece cortada, se quita y la ficha portuguesa queda con siete capturas, sin usar la de otro idioma.

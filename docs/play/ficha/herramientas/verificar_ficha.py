@@ -278,6 +278,8 @@ def comprobar_ficha_11():
                 continue
             # 12-11-2026, t170u: una captura puede traer sus propias crudas -la 5 en inglés y portugués usa las de español-.
             rs = [recorte_fiel(final, c.get('crudas', crudas), r, nombre) for r in c['recortes']]
+            # 14-11-2026, t171u: en la 5, el video de arriba es 05-b -boca cerrada-, no 05-a -hablando, con la boca abierta-.
+            if c['n'] == 5 and any(r['cruda'].startswith('05-subtitulos-a') for r in c['recortes']): errores.append('La 5 usa 05-a, con la boca abierta: '+nombre)
             if c.get('zona_igual'):
                 # La zona de la captura -la unión de las cajas de destino de los recortes- tiene que ser, píxel por píxel, la de la
                 # pieza de referencia; y fuera de esa zona, del logo y de las cajas de texto, solo el fondo liso: ninguna palabra en

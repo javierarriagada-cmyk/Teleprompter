@@ -591,7 +591,7 @@
     }
   },
   "ficha-1.1": {
-    "nota": "Ficha 1.1, fase 2 (12-11-2026, t169u y t170u). Reemplaza la ficha canónica en la rama fichas-1.1; la 1.0 aprobada el 30-10 queda en historial/ficha-1.0-20261030/. armar_ficha.py la escribe en <salida>/ficha-1.1/. Cajas [x, y, ancho, alto] sobre la imagen final; recortes [x0, y0, x1, y1] sobre la cruda. Las breves salen de direccion-1.1.breves: se publica la B; la C queda guardada para un experimento después de publicar.",
+    "nota": "Ficha 1.1, fase 2 (12-11-2026, t169u y t170u; 14-11-2026, t171u). Reemplaza la ficha canónica en la rama fichas-1.1; la 1.0 aprobada el 30-10 queda en historial/ficha-1.0-20261030/. armar_ficha.py la escribe en <salida>/ficha-1.1/. Cajas [x, y, ancho, alto] sobre la imagen final; recortes [x0, y0, x1, y1] sobre la cruda. Las breves salen de direccion-1.1.breves: se publica la B; la C queda guardada para un experimento después de publicar.",
     "crudas": {
       "es": "entradas/motorola-1.1/es",
       "en": "entradas/motorola-1.1/en",
@@ -752,7 +752,106 @@
           },
           {
             "n": 5,
-            "aprobada": "direccion-1.1/capturas/es-419/05.png"
+            "fondo": "claro",
+            "titular": [
+              "Tu video,",
+              "con subtítulos."
+            ],
+            "bajada": "Con las palabras de tu guion, al ritmo de tu voz.",
+            "textos_titular": [
+              {
+                "x": 66,
+                "base": 262,
+                "tam": 112,
+                "caja": [
+                  62,
+                  179,
+                  449,
+                  108
+                ]
+              },
+              {
+                "x": 66,
+                "base": 382,
+                "tam": 112,
+                "caja": [
+                  62,
+                  295,
+                  726,
+                  93
+                ]
+              }
+            ],
+            "logo": {
+              "x": 66,
+              "y": 60,
+              "alto": 60,
+              "caja": [
+                66,
+                60,
+                118,
+                60
+              ]
+            },
+            "texto_bajada": {
+              "x": 68,
+              "base": 446,
+              "tam": 38,
+              "caja": [
+                64,
+                415,
+                766,
+                43
+              ]
+            },
+            "recortes": [
+              {
+                "cruda": "05-subtitulos-b-video-guardado.png",
+                "recorte": [
+                  130,
+                  700,
+                  1090,
+                  1760
+                ],
+                "destino": [
+                  199,
+                  480
+                ],
+                "ancho": 682,
+                "parte": "video guardado a 0:04 con subtítulos rojos palabra por palabra -«forma» resaltado-; la cara entera y chica, con la boca cerrada",
+                "margen_texto_app": 160,
+                "motivo_escala": "Javier -t171u-: en 05-a se ve hablando, con la boca abierta; 05-b es el mismo video a 0:04, con la boca cerrada. Mismo recorte, escala y posición que la 5 de la fase 1. Antes -14-11-2026-: «05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u.»"
+              },
+              {
+                "cruda": "05-subtitulos-d-visor-guardar-agrupado.png",
+                "recorte": [
+                  56,
+                  1830,
+                  1164,
+                  2535
+                ],
+                "destino": [
+                  0,
+                  1233
+                ],
+                "ancho": 1080,
+                "parte": "control que produce los subtítulos: «Subtítulos Rojo», «Filtro Natural», «Guardar» y «Guardar y compartir»",
+                "margen_texto_app": 90,
+                "motivo_escala": "El panel entero de 05-d, de borde a borde, para que «Subtítulos Rojo» y los dos botones de guardar entren sin cortar."
+              }
+            ],
+            "cara": true,
+            "cara_caja_cruda": {
+              "cruda": "05-subtitulos-b-video-guardado.png",
+              "caja": [
+                400,
+                720,
+                850,
+                1310
+              ],
+              "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda 05-b con una rejilla de 50 px y comprobado dibujándolo encima. Antes -14-11-2026-: la caja era [390, 720, 840, 1320], sobre 05-a."
+            },
+            "crudas": "entradas/motorola-1.1/es"
           },
           {
             "n": 6,
@@ -1406,7 +1505,7 @@
             },
             "recortes": [
               {
-                "cruda": "05-subtitulos-a-video-guardado.png",
+                "cruda": "05-subtitulos-b-video-guardado.png",
                 "recorte": [
                   130,
                   700,
@@ -1418,9 +1517,9 @@
                   480
                 ],
                 "ancho": 682,
-                "parte": "video guardado con subtítulos rojos palabra por palabra -«algo» resaltado-; la cara entera y chica",
+                "parte": "video guardado a 0:04 con subtítulos rojos palabra por palabra -«forma» resaltado-; la cara entera y chica, con la boca cerrada",
                 "margen_texto_app": 160,
-                "motivo_escala": "05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u."
+                "motivo_escala": "Javier -t171u-: en 05-a se ve hablando, con la boca abierta; 05-b es el mismo video a 0:04, con la boca cerrada. Mismo recorte, escala y posición que la 5 de la fase 1. Antes -14-11-2026-: «05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u.»"
               },
               {
                 "cruda": "05-subtitulos-d-visor-guardar-agrupado.png",
@@ -1442,19 +1541,19 @@
             ],
             "cara": true,
             "cara_caja_cruda": {
-              "cruda": "05-subtitulos-a-video-guardado.png",
+              "cruda": "05-subtitulos-b-video-guardado.png",
               "caja": [
-                390,
+                400,
                 720,
-                840,
-                1320
+                850,
+                1310
               ],
-              "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima."
+              "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda 05-b con una rejilla de 50 px y comprobado dibujándolo encima. Antes -14-11-2026-: la caja era [390, 720, 840, 1320], sobre 05-a."
             },
             "crudas": "entradas/motorola-1.1/es",
             "zona_igual": {
               "referencia": "capturas/es-419/05.png",
-              "nota": "Javier -t170u-: la captura es la de español, píxel por píxel -la app se ve en español-. Solo cambian el titular y la bajada, con el mismo tamaño, lugar y letra que en español. Zona de la captura: la unión de las cajas de destino de los recortes."
+              "nota": "Javier -t170u y t171u-: la captura es la de español, píxel por píxel -la app se ve en español-. Solo cambian el titular y la bajada, con el mismo tamaño, lugar y letra que en español. Zona de la captura: la unión de las cajas de destino de los recortes."
             }
           },
           {
@@ -2235,7 +2334,7 @@
             },
             "recortes": [
               {
-                "cruda": "05-subtitulos-a-video-guardado.png",
+                "cruda": "05-subtitulos-b-video-guardado.png",
                 "recorte": [
                   130,
                   700,
@@ -2247,9 +2346,9 @@
                   480
                 ],
                 "ancho": 682,
-                "parte": "video guardado con subtítulos rojos palabra por palabra -«algo» resaltado-; la cara entera y chica",
+                "parte": "video guardado a 0:04 con subtítulos rojos palabra por palabra -«forma» resaltado-; la cara entera y chica, con la boca cerrada",
                 "margen_texto_app": 160,
-                "motivo_escala": "05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u."
+                "motivo_escala": "Javier -t171u-: en 05-a se ve hablando, con la boca abierta; 05-b es el mismo video a 0:04, con la boca cerrada. Mismo recorte, escala y posición que la 5 de la fase 1. Antes -14-11-2026-: «05-d está en pausa en 0:00 y no muestra subtítulos: se usa el video de 05-a, con la cara entera, tal como permite t166u.»"
               },
               {
                 "cruda": "05-subtitulos-d-visor-guardar-agrupado.png",
@@ -2271,19 +2370,19 @@
             ],
             "cara": true,
             "cara_caja_cruda": {
-              "cruda": "05-subtitulos-a-video-guardado.png",
+              "cruda": "05-subtitulos-b-video-guardado.png",
               "caja": [
-                390,
+                400,
                 720,
-                840,
-                1320
+                850,
+                1310
               ],
-              "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda con una rejilla de 50 px y comprobado dibujándolo encima."
+              "metodo": "Rectángulo que encierra la cabeza entera -del pelo a la punta de la barba y de oreja a oreja-, marcado a mano sobre la cruda 05-b con una rejilla de 50 px y comprobado dibujándolo encima. Antes -14-11-2026-: la caja era [390, 720, 840, 1320], sobre 05-a."
             },
             "crudas": "entradas/motorola-1.1/es",
             "zona_igual": {
               "referencia": "capturas/es-419/05.png",
-              "nota": "Javier -t170u-: la captura es la de español, píxel por píxel -la app se ve en español-. Solo cambian el titular y la bajada, con el mismo tamaño, lugar y letra que en español. Zona de la captura: la unión de las cajas de destino de los recortes."
+              "nota": "Javier -t170u y t171u-: la captura es la de español, píxel por píxel -la app se ve en español-. Solo cambian el titular y la bajada, con el mismo tamaño, lugar y letra que en español. Zona de la captura: la unión de las cajas de destino de los recortes."
             }
           },
           {
